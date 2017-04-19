@@ -1,0 +1,91 @@
+[
+  {
+    "name": "休闲娱乐",
+    "gid":71,
+    "login":false,
+    "forums": [
+        {"name": "灌水专区", "fid": 72, "login": false},
+        {"name": "摄影天地", "fid": 561, "login": false},
+        {"name": "原创精品区", "fid": 147, "login": true},
+        {"name": "西电后街", "fid": 215, "login": false},
+        {"name": "我爱运动", "fid": 216, "login": false},
+        {"name": "音乐纵贯线", "fid": 125, "login": true},
+        {"name": "绝对漫域", "fid": 140, "login": true},
+        {"name": "游间客栈", "fid": 139, "login": true},
+        {"name": "大话体坛", "fid": 122, "login": true},
+        {"name": "邀请专区", "fid": 563, "login": false}
+      ]
+  },
+
+  {
+    "name": "西电生活",
+    "gid":89,
+    "login":false,
+    "forums": [
+      {"name": "文章天地", "fid": 549, "login": false},
+      {"name": "心灵花园", "fid": 550, "login": false},
+      {"name": "校园交易", "fid": 110, "login": false},
+      {"name": "我是女生", "fid": 108, "login": false},
+      {"name": "版聊专区", "fid": 115, "login": false},
+      {"name": "缘聚睿思", "fid": 217, "login": false},
+      {"name": "失物招领", "fid": 142, "login": false},
+      {"name": "西电问答", "fid": 551, "login": false},
+      {"name": "校园活动", "fid": 157, "login": false},
+      {"name": "我要毕业啦", "fid": 552, "login": false},
+      {"name": "就业招聘", "fid": 554, "login": false}
+    ]
+  },
+
+  {
+    "name": "学术交流",
+    "login":false,
+    "gid":101,
+    "forums": [
+      {"name": "技术博客", "fid": 560, "login": false},
+      {"name": "学习交流", "fid": 548, "login": false},
+      {"name": "软件技术", "fid": 145, "login": false},
+      {"name": "嵌入式技术", "fid": 144, "login": false},
+      {"name": "考研交流", "fid": 91, "login": false},
+      {"name": "竞赛交流", "fid": 152, "login": false},
+      {"name": "Abroad&English", "fid": 134, "login": false}
+    ]
+  },
+
+  {
+    "name":"BT资源",
+    "gid":11,
+    "login":true,
+    "forums": [
+      {"name": "电影", "fid": 13, "login": true},
+      {"name": "剧集", "fid": 14, "login": true},
+      {"name": "音乐", "fid": 15, "login": true},
+      {"name": "动漫", "fid": 16, "login": true},
+      {"name": "游戏", "fid": 17, "login": true},
+      {"name": "综艺", "fid": 18, "login": true},
+      {"name": "体育", "fid": 19, "login": true},
+      {"name": "软件", "fid": 20, "login": true},
+      {"name": "学习", "fid": 21, "login": true},
+      {"name": "纪录片", "fid": 214, "login": true},
+      {"name": "其他", "fid": 22, "login": true},
+      {"name": "西电", "fid": 557, "login": true},
+      {"name": "求种专区", "fid": 165, "login": true},
+      {"name": "新手试种专区", "fid": 534, "login": true},
+      {"name": "资源回收站", "fid": 559, "login": true}
+    ]
+  },
+
+  {
+    "name": "社团&站务",
+    "login":false,
+    "gid":1,
+    "forums": [
+      {"name": "腾讯创新俱乐部", "fid": 138, "login": false},
+      {"name": "华为创新俱乐部", "fid": 150, "login": false},
+      {"name": "举报专区", "fid": 119, "login": true},
+      {"name": "帮助专区", "fid": 2, "login": false},
+      {"name": "发展建议", "fid": 141, "login": false},
+      {"name": "邀请码申请", "fid": 137, "login": false},
+      {"name": "公告活动", "fid": 94, "login": false}
+    ]
+  }
+]

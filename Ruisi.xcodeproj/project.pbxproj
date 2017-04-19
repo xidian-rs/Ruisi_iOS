@@ -8,22 +8,49 @@
 
 /* Begin PBXBuildFile section */
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
-		2F16B5E51EA502420068EE20 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E41EA502420068EE20 /* ViewController.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E91EA502420068EE20 /* Ruisi.xcdatamodeld */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
 		2F16B5F01EA502420068EE20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EE1EA502420068EE20 /* LaunchScreen.storyboard */; };
+		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
+		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
+		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
+		2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E41EA615A90058EDB4 /* MyViewController.swift */; };
+		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
+		2F9772441EA652740058EDB4 /* Kanna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9772431EA652740058EDB4 /* Kanna.framework */; };
+		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2F9772401EA652350058EDB4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2F16B5E41EA502420068EE20 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F16B5EA1EA502420068EE20 /* Ruisi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Ruisi.xcdatamodel; sourceTree = "<group>"; };
 		2F16B5EC1EA502420068EE20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F16B5EF1EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F16B5F11EA502420068EE20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
+		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
+		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		2F9771E41EA615A90058EDB4 /* MyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
+		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
+		2F97723B1EA651AA0058EDB4 /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kanna.framework; path = ../libs/build/Debug/Kanna.framework; sourceTree = "<group>"; };
+		2F9772411EA652530058EDB4 /* libs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libs.framework; path = ../libs/build/Debug/libs.framework; sourceTree = "<group>"; };
+		2F9772431EA652740058EDB4 /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kanna.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Ruisi-fzyqubwoudfizvhjyzpcssecsrhh/Build/Products/Debug-iphonesimulator/Kanna.framework"; sourceTree = "<group>"; };
+		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F9772441EA652740058EDB4 /* Kanna.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +70,7 @@
 			children = (
 				2F16B5E11EA502420068EE20 /* Ruisi */,
 				2F16B5E01EA502420068EE20 /* Products */,
+				2F97723A1EA651AA0058EDB4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +85,38 @@
 		2F16B5E11EA502420068EE20 /* Ruisi */ = {
 			isa = PBXGroup;
 			children = (
+				2F16B74F1EA50A390068EE20 /* assets */,
+				2F16B66A1EA504CB0068EE20 /* model */,
 				2F16B5E21EA502420068EE20 /* AppDelegate.swift */,
-				2F16B5E41EA502420068EE20 /* ViewController.swift */,
 				2F16B5E61EA502420068EE20 /* Main.storyboard */,
 				2F16B5EC1EA502420068EE20 /* Assets.xcassets */,
 				2F16B5EE1EA502420068EE20 /* LaunchScreen.storyboard */,
 				2F16B5F11EA502420068EE20 /* Info.plist */,
 				2F16B5E91EA502420068EE20 /* Ruisi.xcdatamodeld */,
+				2F16B5F71EA504330068EE20 /* ForumsController.swift */,
+				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
+				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
+				2F9772451EA65A3F0058EDB4 /* Constant.swift */,
 			);
 			path = Ruisi;
+			sourceTree = "<group>";
+		};
+		2F16B66A1EA504CB0068EE20 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				2F16B66B1EA504DD0068EE20 /* Forum.swift */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		2F97723A1EA651AA0058EDB4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2F9772431EA652740058EDB4 /* Kanna.framework */,
+				2F9772411EA652530058EDB4 /* libs.framework */,
+				2F97723B1EA651AA0058EDB4 /* Kanna.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +129,7 @@
 				2F16B5DB1EA502420068EE20 /* Sources */,
 				2F16B5DC1EA502420068EE20 /* Frameworks */,
 				2F16B5DD1EA502420068EE20 /* Resources */,
+				2F9772401EA652350058EDB4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F16B5F01EA502420068EE20 /* LaunchScreen.storyboard in Resources */,
+				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
 				2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */,
 			);
@@ -139,9 +193,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F16B5E51EA502420068EE20 /* ViewController.swift in Sources */,
+				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
+				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
+				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
+				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
+				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +361,7 @@
 				2F16B5F61EA502420068EE20 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
