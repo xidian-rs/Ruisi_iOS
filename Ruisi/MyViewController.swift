@@ -8,9 +8,12 @@
 
 import UIKit
 
-class MyViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class MyViewController: UIViewController,UITableViewDelegate,
+    UITableViewDataSource,UINavigationControllerDelegate{
 
     @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var avaterImage: UIImageView!
+    
     
     var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
     var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
@@ -18,11 +21,41 @@ class MyViewController: UIViewController,UITableViewDelegate,UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //获得导航栏控制权
+        self.navigationController?.delegate = self
+        
         myTableView.dataSource = self
         myTableView.delegate = self
         
-        myTableView.tableFooterView = UIView(frame: CGRect.zero)
+        let tap =  UITapGestureRecognizer(target: self, action: #selector(MyViewController.handleAvaterTap))
+        avaterImage.addGestureRecognizer(tap)
     }
+    
+    func handleAvaterTap() {
+        print("avater click")
+        if isLogin{
+            //detail
+        }else{
+            //login
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as? LoginViewController
+            self.present(dest!, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    //控制显示隐藏导航栏
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        print(viewController)
+        
+        // 判断要显示的控制器是否是自己
+        if let _ = viewController as? MyViewController {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+        }else{
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

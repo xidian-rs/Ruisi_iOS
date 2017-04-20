@@ -9,6 +9,7 @@
 import Foundation
 
 var isSchoolNet = false
+var isLogin = false
 
 let BASE_URL = "http://rs.xidian.edu.cn/"
 let BASE_URL_ME = "http://bbs.rs.xidian.me/"

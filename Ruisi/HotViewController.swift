@@ -10,9 +10,17 @@ import UIKit
 
 
 class HotViewController: UITableViewController {
+    
+    let testData  = ["(每人50金币)各位睿思er帮帮忙，花一分钟帮忙填下调查问卷！",
+                     "*告诉大家一件事情*",
+                     "【5200金币】中兴2018届校招岗位大咖推介会 | 4月19日 19:00 阶教112",
+                     "读研有风险，一定要谨慎谨慎再谨慎！"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.estimatedRowHeight = 85
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         DispatchQueue.main.async {
             if let url = URL(string: HOT_URL){
@@ -20,17 +28,12 @@ class HotViewController: UITableViewController {
                     
                     print(s)
                     
-                    let regex = try? NSRegularExpression(pattern: "<[/]?ul.*?>", options: .caseInsensitive)
+                    //let regex = try? NSRegularExpression(pattern: "<[/]?ul.*?>", options: .caseInsensitive)
                     
                     //let neede: String = "<ul class=\"hotlist\">"
                     
                     //let range =  s.range(of: neede)
                     
-                    
-                    if let r =  regex?.firstMatch(in: s, options: [], range: NSRange(location: 0,length: (s as NSString).length)) {
-                        
-                        //print(r.components ?? "not match")
-                    }
                 }
             }
         }
@@ -43,7 +46,6 @@ class HotViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -55,45 +57,20 @@ class HotViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
-        // Configure the cell...
-
+        let titleLabel = cell.viewWithTag(1) as! UILabel
+        //let usernameLabel = cell.viewWithTag(2) as! UILabel
+        //let viewsLabel = cell.viewWithTag(3) as! UILabel
+        
+        titleLabel.text = testData[indexPath.row % 3]
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation

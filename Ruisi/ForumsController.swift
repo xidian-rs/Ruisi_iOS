@@ -62,16 +62,7 @@ class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowL
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -84,18 +75,18 @@ class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowL
 
         let cellSize = (collectionView.frame.width - 90)/4.0
         
-        return CGSize(width: cellSize, height: cellSize+25)
+        return CGSize(width: cellSize, height: cellSize+16)
     }
     
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
+        return UIEdgeInsets(top: 8, left: 16, bottom: 12, right: 16)
     }
     
     
     // 单元的行间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 16
+        return 8
     }
     
     
@@ -150,6 +141,20 @@ class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowL
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("select")
+    }
+    
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toPosts"{//版块帖子列表
+            if let dest = (segue.destination as? PostsViewController) {
+                
+                if let index = collectionView?.indexPathsForSelectedItems?[0]{
+                    dest.title = datas[index.section].forums?[index.row].name
+                }
+            }
+        }
     }
 
 
