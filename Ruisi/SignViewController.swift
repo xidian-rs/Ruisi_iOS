@@ -103,10 +103,10 @@ class SignViewController: UIViewController {
         isSigned = true
         setLoadingState(isLoading: true)
        
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds+NSEC_PER_SEC*2)) {
+        DispatchQueue.global(qos:.userInitiated).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds+NSEC_PER_SEC*2)) {
+            [weak self] in
             DispatchQueue.main.async {
-                print("============")
-                self.setLoadingState(isLoading: false)
+                self?.setLoadingState(isLoading: false)
             }
         }
     }

@@ -40,39 +40,65 @@ class LoginViewController: UIViewController,UINavigationControllerDelegate{
     }
     
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
-        print("click")
-        //self.dismiss(animated: true, completion: nil)
-        var r =  URLRequest(url: URL(string: LOGIN_URL)!)
-        print(LOGIN_URL)
-        r.httpMethod = "POST"
-        r.httpBody = "username=谁用了FREEDOM&password=justice".data(using: .utf8)
+        showLoadingView()
         
-        //params.put("fastloginfield", "username");
-        //params.put("cookietime", "2592000");
-        //params.put("questionid", answerSelect + "");
-        //if (answerSelect == 0) {
-        //    params.put("answer", "");
-        //} else {
-         //   params.put("answer", edAnswer.getText().toString());
-        //}
-    
-        
-        let task = URLSession.shared.dataTask(with: r) { data, response, error in
-            guard let data = data, error == nil else {
-                print("error=\(String(describing: error))")
-                return
+        HttpUtil.GET(url: LOGIN_URL, params: nil) { ok, res in
+            print(res)
+            if ok {
+                if res.contains("欢迎您回来"){
+                    self.loginResult(isok: true)
+                    return
+                }
+                
+                if let start = res.endIndex(of: "action=\""){
+                    let substr = res.substring(from: start)
+                    let end = substr.index(of: "\"")
+                    let loginUrl = substr.substring(to: end!)
+                
+                    let params = "username=谁用了FREEDOM&password=justice&fastloginfield=username&cookietime=2592000"
+                    HttpUtil.POST(url: loginUrl, params: params, callback: { ok, res in
+                        if ok && res.contains("欢迎您回来"){
+                            print(res)
+                            self.loginResult(isok: true)
+                            return
+                        }else{
+                            self.loginResult()
+                        }
+                    })
+                    
+                    return
+                }
+            
             }
             
-            // check for http errors
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-            }
-            
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(String(describing: responseString))")
+            self.loginResult()
+            return
         }
-        task.resume()
+    }
+    
+    var loadingView:UIAlertController?
+    
+    func showLoadingView() {
+        if loadingView==nil{
+            loadingView = UIAlertController(title: "登陆中", message: "请稍后...", preferredStyle: .alert)
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.activityIndicatorViewStyle = .gray
+            loadingIndicator.startAnimating()
+            loadingView!.view.addSubview(loadingIndicator)
+        }
+        
+        present(loadingView!, animated: true, completion: nil)
+    }
+    
+    func hideLoadingView() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func loginResult(isok: Bool = false) {
+        hideLoadingView()
+        
+        print(isok)
     }
     
     /*
@@ -84,5 +110,5 @@ class LoginViewController: UIViewController,UINavigationControllerDelegate{
         // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
