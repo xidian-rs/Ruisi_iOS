@@ -26,11 +26,6 @@ class LoginViewController: UIViewController,UINavigationControllerDelegate{
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func login(_ sender: UIButton) {
-        print("click")
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     
     @IBAction func usernameInputEnd(_ sender: UITextField) {
         print("end",sender.text ?? "")
@@ -40,11 +35,45 @@ class LoginViewController: UIViewController,UINavigationControllerDelegate{
         print("change",sender.text ?? "")
     }
     
-    @IBAction func cancelClick(_ sender: UIButton) {
+    @IBAction func cencelClick(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func loginClick(_ sender: UIBarButtonItem) {
+        print("click")
+        //self.dismiss(animated: true, completion: nil)
+        var r =  URLRequest(url: URL(string: LOGIN_URL)!)
+        print(LOGIN_URL)
+        r.httpMethod = "POST"
+        r.httpBody = "username=谁用了FREEDOM&password=justice".data(using: .utf8)
+        
+        //params.put("fastloginfield", "username");
+        //params.put("cookietime", "2592000");
+        //params.put("questionid", answerSelect + "");
+        //if (answerSelect == 0) {
+        //    params.put("answer", "");
+        //} else {
+         //   params.put("answer", edAnswer.getText().toString());
+        //}
     
+        
+        let task = URLSession.shared.dataTask(with: r) { data, response, error in
+            guard let data = data, error == nil else {
+                print("error=\(String(describing: error))")
+                return
+            }
+            
+            // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(String(describing: response))")
+            }
+            
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(String(describing: responseString))")
+        }
+        task.resume()
+    }
     
     /*
     // MARK: - Navigation

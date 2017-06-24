@@ -24,3 +24,5 @@ var baseUrl:String {
 let HOT_URL = baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
 
 let NEW_URL = baseUrl + "forum.php?mod=guide&view=new&mobile=2"//&page=1
+
+let LOGIN_URL = baseUrl + "member.php?mod=logging&action=login" + (isSchoolNet ? "" : "&mobile=2")

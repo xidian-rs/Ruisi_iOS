@@ -15,8 +15,10 @@
 		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
+		2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7C75B01EFE356F0067D499 /* SignViewController.swift */; };
 		2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AD6951EA787EE002540AA /* LoginViewController.swift */; };
 		2F8AD6981EA7AF89002540AA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AD6971EA7AF89002540AA /* DetailViewController.swift */; };
+		2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */; };
 		2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E41EA615A90058EDB4 /* MyViewController.swift */; };
 		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
 		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
@@ -50,8 +52,10 @@
 		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		2F7C75B01EFE356F0067D499 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
 		2F8AD6951EA787EE002540AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F8AD6971EA7AF89002540AA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2F9771E41EA615A90058EDB4 /* MyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
 		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 				2F8AD6971EA7AF89002540AA /* DetailViewController.swift */,
 				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
 				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
+				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
+				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -170,6 +176,7 @@
 				TargetAttributes = {
 					2F16B5DE1EA502420068EE20 = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = 3B86X32L6X;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -218,9 +225,11 @@
 				2F8AD6981EA7AF89002540AA /* DetailViewController.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
+				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
+				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
@@ -346,6 +355,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3B86X32L6X;
 				INFOPLIST_FILE = Ruisi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;
@@ -358,6 +368,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 3B86X32L6X;
 				INFOPLIST_FILE = Ruisi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;

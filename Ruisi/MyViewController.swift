@@ -14,6 +14,11 @@ class MyViewController: UIViewController,UITableViewDelegate,
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var avaterImage: UIImageView!
     
+    @IBOutlet weak var historyBtn: UIStackView!
+    @IBOutlet weak var starBtn: UIStackView!
+    @IBOutlet weak var friendsBtn: UIStackView!
+    @IBOutlet weak var postsBtn: UIStackView!
+    
     
     var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
     var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
@@ -26,22 +31,42 @@ class MyViewController: UIViewController,UITableViewDelegate,
         
         myTableView.dataSource = self
         myTableView.delegate = self
+
         
-        let tap =  UITapGestureRecognizer(target: self, action: #selector(MyViewController.handleAvaterTap))
-        avaterImage.addGestureRecognizer(tap)
+        avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        historyBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        starBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        friendsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        postsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
     }
     
-    func handleAvaterTap() {
-        print("avater click")
-        if isLogin{
-            //detail
-        }else{
-            //login
-            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as? LoginViewController
-            self.present(dest!, animated: true, completion: nil)
+    
+    //////手势处理函数
+    func tapHandler(sender:UITapGestureRecognizer) {
+        if let v = sender.view {
+            switch v {
+            case avaterImage:
+                print("avater click")
+                if isLogin{
+                    //detail
+                }else{
+                    //login
+                    let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+                    self.present(dest!, animated: true, completion: nil)
+                }
+            case historyBtn:
+                print("history click")
+            case starBtn:
+                print("start click")
+            case friendsBtn:
+                print("frindes click")
+            case postsBtn:
+                print("posts click")
+            default:
+                break
+            }
         }
     }
-    
     
     
     //控制显示隐藏导航栏
@@ -89,9 +114,24 @@ class MyViewController: UIViewController,UITableViewDelegate,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        //["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
+        switch indexPath.row {
+        case 0:
+            //about
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "signViewController")
+            self.show(dest!, sender: self)
+            break
+        case 1:
+            //about
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "aboutViewController")
+            self.show(dest!, sender: self)
+        default:
+            break
+        }
     }
-
-
+    
+    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
