@@ -8,21 +8,24 @@
 
 import Foundation
 
-var isSchoolNet = false
-var isLogin = false
-
-let BASE_URL = "http://rs.xidian.edu.cn/"
-let BASE_URL_ME = "http://bbs.rs.xidian.me/"
-
-var baseUrl:String {
-    get{
-        return isSchoolNet ? BASE_URL : BASE_URL_ME
+var isLogin = false //是否登陆
+public class Urls {
+    public static var baseUrl:String{
+        return BASE_URL_ME
+    }
+    
+    public static let BASE_URL = "http://rs.xidian.edu.cn/"
+    public static let BASE_URL_ME = "http://bbs.rs.xidian.me/"
+    
+    public static var hotUrl:String{
+        return baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
+    }
+    
+    public static var newUrl:String{
+        return baseUrl + "forum.php?mod=guide&view=new&mobile=2"//&page=1
+    }
+    
+    public static var loginUrl:String{
+        return baseUrl + "member.php?mod=logging&action=login&mobile=2"
     }
 }
-
-
-let HOT_URL = baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
-
-let NEW_URL = baseUrl + "forum.php?mod=guide&view=new&mobile=2"//&page=1
-
-let LOGIN_URL = baseUrl + "member.php?mod=logging&action=login" + (isSchoolNet ? "" : "&mobile=2")

@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F01C2381EFF946600102CF2 /* Kanna.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2371EFF946600102CF2 /* Kanna.swift */; };
+		2F01C23A1EFF947000102CF2 /* CSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2391EFF947000102CF2 /* CSS.swift */; };
+		2F01C23C1EFF949100102CF2 /* libxmlHTMLDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */; };
+		2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */; };
+		2F01C2401EFF94A100102CF2 /* libxmlParserOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */; };
+		2F01C2421EFF94B800102CF2 /* Modules in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2411EFF94B800102CF2 /* Modules */; };
+		2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2451EFF9CE900102CF2 /* Launch.storyboard */; };
+		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
+		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E91EA502420068EE20 /* Ruisi.xcdatamodeld */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
-		2F16B5F01EA502420068EE20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EE1EA502420068EE20 /* LaunchScreen.storyboard */; };
 		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
@@ -44,12 +52,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2F01C2371EFF946600102CF2 /* Kanna.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kanna.swift; sourceTree = "<group>"; };
+		2F01C2391EFF947000102CF2 /* CSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSS.swift; sourceTree = "<group>"; };
+		2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLDocument.swift; sourceTree = "<group>"; };
+		2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLNode.swift; sourceTree = "<group>"; };
+		2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlParserOption.swift; sourceTree = "<group>"; };
+		2F01C2411EFF94B800102CF2 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
+		2F01C2451EFF9CE900102CF2 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F16B5EA1EA502420068EE20 /* Ruisi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Ruisi.xcdatamodel; sourceTree = "<group>"; };
 		2F16B5EC1EA502420068EE20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2F16B5EF1EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F16B5F11EA502420068EE20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
@@ -80,6 +96,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F01C2351EFF8FC600102CF2 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				2F01C2491EFFA46400102CF2 /* MainViewController.swift */,
+				2F16B5F71EA504330068EE20 /* ForumsController.swift */,
+				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
+				2F8AD6951EA787EE002540AA /* LoginViewController.swift */,
+				2F8AD6971EA7AF89002540AA /* DetailViewController.swift */,
+				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
+				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
+				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
+				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
+				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
+				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
+			);
+			name = controller;
+			sourceTree = "<group>";
+		};
+		2F01C2361EFF942600102CF2 /* Kanna */ = {
+			isa = PBXGroup;
+			children = (
+				2F01C2371EFF946600102CF2 /* Kanna.swift */,
+				2F01C2391EFF947000102CF2 /* CSS.swift */,
+				2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */,
+				2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */,
+				2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */,
+				2F01C2411EFF94B800102CF2 /* Modules */,
+			);
+			name = Kanna;
+			sourceTree = "<group>";
+		};
 		2F16B5D61EA502420068EE20 = {
 			isa = PBXGroup;
 			children = (
@@ -100,26 +147,18 @@
 		2F16B5E11EA502420068EE20 /* Ruisi */ = {
 			isa = PBXGroup;
 			children = (
-				2FD4ADC91EA74D2300602516 /* widget */,
-				2F16B74F1EA50A390068EE20 /* assets */,
+				2F01C2351EFF8FC600102CF2 /* controller */,
 				2F16B66A1EA504CB0068EE20 /* model */,
+				2FD4ADC91EA74D2300602516 /* widget */,
+				2F01C2361EFF942600102CF2 /* Kanna */,
+				2F16B74F1EA50A390068EE20 /* assets */,
 				2F16B5E21EA502420068EE20 /* AppDelegate.swift */,
 				2F16B5E61EA502420068EE20 /* Main.storyboard */,
 				2F16B5EC1EA502420068EE20 /* Assets.xcassets */,
-				2F16B5EE1EA502420068EE20 /* LaunchScreen.storyboard */,
+				2F01C2451EFF9CE900102CF2 /* Launch.storyboard */,
 				2F16B5F11EA502420068EE20 /* Info.plist */,
 				2F16B5E91EA502420068EE20 /* Ruisi.xcdatamodeld */,
-				2F16B5F71EA504330068EE20 /* ForumsController.swift */,
-				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
-				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
 				2F9772451EA65A3F0058EDB4 /* Constant.swift */,
-				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
-				2F8AD6951EA787EE002540AA /* LoginViewController.swift */,
-				2F8AD6971EA7AF89002540AA /* DetailViewController.swift */,
-				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
-				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
-				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
-				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
 				2F5DF0C41EFE750A00428EE1 /* Settings.swift */,
 				2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */,
 			);
@@ -130,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				2F16B66B1EA504DD0068EE20 /* Forum.swift */,
+				2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -210,10 +250,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F16B5F01EA502420068EE20 /* LaunchScreen.storyboard in Resources */,
+				2F01C2421EFF94B800102CF2 /* Modules in Resources */,
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
 				2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */,
+				2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,22 +266,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
+				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
+				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
+				2F01C23C1EFF949100102CF2 /* libxmlHTMLDocument.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
 				2F8AD6981EA7AF89002540AA /* DetailViewController.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
+				2F01C2401EFF94A100102CF2 /* libxmlParserOption.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
+				2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
+				2F01C23A1EFF947000102CF2 /* CSS.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
+				2F01C2381EFF946600102CF2 /* Kanna.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,14 +301,6 @@
 				2F16B5E71EA502420068EE20 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2F16B5EE1EA502420068EE20 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2F16B5EF1EA502420068EE20 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -363,11 +403,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -376,11 +419,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

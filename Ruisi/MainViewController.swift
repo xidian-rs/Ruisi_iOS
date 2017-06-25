@@ -1,0 +1,36 @@
+//
+//  MainViewController.swift
+//  Ruisi
+//
+//  Created by yang on 2017/6/25.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+import UIKit
+
+class MainViewController: UITabBarController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        print("main")
+    }
+    
+    //selectedIndex 之前选择的位置
+    
+    // 切换tab
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("tab position : \(selectedIndex)")
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+}

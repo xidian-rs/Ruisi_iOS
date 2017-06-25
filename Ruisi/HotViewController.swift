@@ -11,46 +11,127 @@ import UIKit
 
 class HotViewController: UITableViewController {
     
-    let testData  = ["(每人50金币)各位睿思er帮帮忙，花一分钟帮忙填下调查问卷！",
-                     "*告诉大家一件事情*",
-                     "【5200金币】中兴2018届校招岗位大咖推介会 | 4月19日 19:00 阶教112",
-                     "读研有风险，一定要谨慎谨慎再谨慎！"]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // 切换热帖0 和 新帖1
+    @IBAction func viewTypeChnage(_ sender: UISegmentedControl) {
+        print(sender.selectedSegmentIndex)
+        position = sender.selectedSegmentIndex
         
-        self.tableView.estimatedRowHeight = 85
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        DispatchQueue.main.async {
-            if let url = URL(string: HOT_URL){
-                if let s = try? String(contentsOf: url , encoding: String.Encoding.utf8){
-                    
-                    print(s)
-                    
-                    //let regex = try? NSRegularExpression(pattern: "<[/]?ul.*?>", options: .caseInsensitive)
-                    
-                    //let neede: String = "<ul class=\"hotlist\">"
-                    
-                    //let range =  s.range(of: neede)
-                    
-                }
-            }
+        currentPage = 1
+        loadData(position)
+    }
+    
+    var position = 0
+    var datas  = [ArticleListDataSimple]()
+    var isHotLoading = false
+    var isNewLoading = false
+    var currentPage = 1
+    
+    var url:String {
+        if position==0{
+            return Urls.hotUrl + "&page=\(currentPage)"
+        }else{
+            return Urls.newUrl + "&page=\(currentPage)"
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.estimatedRowHeight = 85
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        loadData(position)
+    }
+    
+    func loadData(_ pos: Int) {
+        // 所持请求的数据正在加载中/未加载
+        if pos == 0{
+            if isHotLoading {
+                return
+            }
+            isHotLoading = true
+        }else{
+            if isNewLoading{
+                return
+            }
+            isNewLoading = true
+        }
+        
+        HttpUtil.GET(url: url, params: nil) { ok, res in
+            var subDatas = [ArticleListDataSimple]()
+            if ok && pos == self.position { //返回的数据是我们要的
+                if let doc = HTML(html: res, encoding: .utf8) {
+                    print(doc.title ?? "empty title")
+                    for li in doc.css(".threadlist ul.hotlist li") {
+                        let a = li.css("a").first
+                        let urls = a?["href"]
+                        var replysStr: String?
+                        var authorStr: String?
+                        let replys = li.css("span.num").first
+                        let author = li.css(".by").first
+                        if let r =  replys{
+                            replysStr = r.text
+                            a?.removeChild(r)
+                        }
+                        if let au =  author {
+                            authorStr = au.text
+                            a?.removeChild(au)
+                        }
+                        let img = (li.css("img").first)?["src"]
+                        var haveImg = false
+                        if let i =  img {
+                            haveImg = i.contains("icon_tu.png")
+                        }
+                        let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+                        //int titleColor = GetId.getColor(getActivity(), src.select("a").attr("style"));
+                        // todo
+                        let d = ArticleListDataSimple(title: title ?? "未获取到标题", tid: 12354, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: nil)
+                        subDatas.append(d)
+                        print("finish load data pos:\(pos) count:\(subDatas.count)")
+                    }
+                }
+            }
+            
+            //load data ok
+            if pos == self.position{
+                // 第一次换页清空
+                if self.currentPage == 1 {
+                    self.datas = subDatas
+                    DispatchQueue.main.async{
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    let count = self.datas.count
+                    self.datas.append(contentsOf: subDatas)
+                    
+                    DispatchQueue.main.async{
+                        self.tableView.beginUpdates()
+                        var indexs = [IndexPath]()
+                        for i in 0 ..< subDatas.count {
+                            indexs.append(IndexPath(row: count + i, section: 0))
+                        }
+                        self.tableView.insertRows(at: indexs, with: .automatic)
+                        self.tableView.endUpdates()
+                    }
+                }
+                self.currentPage += 1
+            }
+            
+            if pos == 0 {
+                self.isHotLoading = false
+            }else{
+                self.isNewLoading = false
+            }
+            print("finish http")
+        }
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return datas.count
     }
 
     
@@ -58,10 +139,17 @@ class HotViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         let titleLabel = cell.viewWithTag(1) as! UILabel
-        //let usernameLabel = cell.viewWithTag(2) as! UILabel
-        //let viewsLabel = cell.viewWithTag(3) as! UILabel
+        let usernameLabel = cell.viewWithTag(2) as! UILabel
+        let commentsLabel = cell.viewWithTag(3) as! UILabel
+        let d = datas[indexPath.row]
         
-        titleLabel.text = testData[indexPath.row % 3]
+        titleLabel.text = d.title
+        if let color = d.titleColor {
+            //titleLabel.textColor = UIColor()
+        }
+        usernameLabel.text = d.author
+        commentsLabel.text = d.replyCount
+        
         return cell
     }
     

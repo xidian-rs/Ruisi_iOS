@@ -42,7 +42,7 @@ class LoginViewController: UIViewController,UINavigationControllerDelegate{
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
         showLoadingView()
         
-        HttpUtil.GET(url: LOGIN_URL, params: nil) { ok, res in
+        HttpUtil.GET(url: Urls.loginUrl, params: nil) { ok, res in
             print(res)
             if ok {
                 if res.contains("欢迎您回来"){

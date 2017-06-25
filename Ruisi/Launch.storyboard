@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="T5H-1d-ROa">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="92J-jE-gwj">
+            <objects>
+                <viewController id="T5H-1d-ROa" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7Qx-mm-Uii"/>
+                        <viewControllerLayoutGuide type="bottom" id="eeY-WE-GEB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7EN-Fz-3nb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_round" translatesAutoresizingMaskIntoConstraints="NO" id="F5o-MQ-1XK">
+                                <rect key="frame" x="167" y="120" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="dAV-QW-z7C"/>
+                                    <constraint firstAttribute="width" secondItem="F5o-MQ-1XK" secondAttribute="height" multiplier="1:1" id="gm6-u0-zZh"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rs.xidian.edu.cn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDk-d2-cec">
+                                <rect key="frame" x="159" y="700" width="96" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©2016-2017 谁用了FREEDOM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yRp-24-GqC">
+                                <rect key="frame" x="111" y="678" width="192" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="CCC-ke-2HW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="F5o-MQ-1XK" firstAttribute="centerX" secondItem="7EN-Fz-3nb" secondAttribute="centerX" id="Akx-H5-UGl"/>
+                            <constraint firstItem="mDk-d2-cec" firstAttribute="centerX" secondItem="7EN-Fz-3nb" secondAttribute="centerX" id="BuQ-R2-aw7"/>
+                            <constraint firstItem="mDk-d2-cec" firstAttribute="top" secondItem="yRp-24-GqC" secondAttribute="bottom" constant="8" symbolic="YES" id="RiW-Oq-hyi"/>
+                            <constraint firstItem="F5o-MQ-1XK" firstAttribute="top" secondItem="7Qx-mm-Uii" secondAttribute="bottom" constant="100" id="dP0-kn-Rd8"/>
+                            <constraint firstItem="yRp-24-GqC" firstAttribute="centerX" secondItem="7EN-Fz-3nb" secondAttribute="centerX" id="ogZ-3a-Sgj"/>
+                            <constraint firstAttribute="bottom" secondItem="mDk-d2-cec" secondAttribute="bottom" constant="20" symbolic="YES" id="qid-BX-AIq"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8MK-SH-PIq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-190" y="-5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo_round" width="176" height="176"/>
+    </resources>
+</document>

@@ -173,6 +173,6 @@ public class HttpUtil {
             return decodeUrl(url: url)
         }
         
-        return baseUrl + decodeUrl(url: url)
+        return Urls.baseUrl + decodeUrl(url: url)
     }
 }
