@@ -82,9 +82,14 @@ public class HttpUtil {
         request.httpMethod = "GET"
         
         if let p = encodeParameters(params){
-            url =  url + p
+            if url.contains("?") {
+                url = url + "&" + p
+            }else{
+                url = url + "?" + p
+            }
         }
         
+        print("start http get url:\(url)")
         let task = URLSession.shared.dataTask (with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
@@ -119,6 +124,8 @@ public class HttpUtil {
         if let p = params{
             request.httpBody = p.data(using: .utf8)
         }
+        
+        print("start http post url:\(url)")
         let task = URLSession.shared.dataTask (with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
@@ -158,10 +165,6 @@ public class HttpUtil {
                 pp.append(encodeUrl(url: value))
             })
             
-            if pp.length > 0{
-                pp = "?" + pp
-            }
-            print("params is \(pp)")
             return pp
         }else{
             return nil

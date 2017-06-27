@@ -174,15 +174,10 @@ class HotViewController: UITableViewController {
         }
     }
     
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
+    // MARK : tabview data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
@@ -224,14 +219,14 @@ class HotViewController: UITableViewController {
         }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = datas[index.row].title
+        }
+    }
 }

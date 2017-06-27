@@ -24,6 +24,7 @@
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
+		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
 		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
@@ -75,6 +76,7 @@
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
 		2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreView.xib; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
 				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
 				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
+				2F175F821F02976D00DDEED9 /* SettingViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
+				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
 				2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */,

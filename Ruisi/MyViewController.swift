@@ -13,6 +13,8 @@ class MyViewController: UIViewController,UITableViewDelegate,
 
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var avaterImage: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var usergradeLabel: UILabel!
     
     @IBOutlet weak var historyBtn: UIStackView!
     @IBOutlet weak var starBtn: UIStackView!
@@ -23,6 +25,9 @@ class MyViewController: UIViewController,UITableViewDelegate,
     var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
     var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
 
+    // 创建的时候的登陆状态
+    var isLogin: Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,23 +36,52 @@ class MyViewController: UIViewController,UITableViewDelegate,
         
         myTableView.dataSource = self
         myTableView.delegate = self
-
         
         avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
         historyBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
         starBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
         friendsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
         postsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        
+        isLogin = App.isLogin
+        updateUi()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if App.isLogin != isLogin {
+            isLogin = App.isLogin
+            updateUi()
+        }
+    }
+    
+    private func updateUi() {
+        usergradeLabel.isHidden = !isLogin
+        if isLogin {
+            usernameLabel.text = App.username
+            usergradeLabel.text = App.grade
+            
+            Settings.getAvater(uid: App.uid!) { data in
+                DispatchQueue.main.async { [weak self] in
+                    if let d = data {
+                        self?.avaterImage.image = UIImage(data: d)
+                    }
+                }
+            }
+        }else{
+            usernameLabel.text = "点击头像登陆"
+            avaterImage.image = #imageLiteral(resourceName: "placeholder")
+        }
     }
     
     
-    //////手势处理函数
+    // 手势处理函数
     func tapHandler(sender:UITapGestureRecognizer) {
         if let v = sender.view {
             switch v {
             case avaterImage:
                 print("avater click")
-                if isLogin{
+                if App.isLogin{
                     //detail
                 }else{
                     //login
@@ -96,8 +130,6 @@ class MyViewController: UIViewController,UITableViewDelegate,
         return 5
     }
     
-
-   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
@@ -118,7 +150,7 @@ class MyViewController: UIViewController,UITableViewDelegate,
         //["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
         switch indexPath.row {
         case 0:
-            //about
+            //sign
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "signViewController")
             self.show(dest!, sender: self)
             break
@@ -126,11 +158,25 @@ class MyViewController: UIViewController,UITableViewDelegate,
             //about
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "aboutViewController")
             self.show(dest!, sender: self)
+        case 2:
+            //share
+            break
+        case 3:
+            //evaluate
+            break
+        case 4:
+            //setting
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "settingViewController")
+            self.show(dest!, sender: self)
         default:
             break
         }
     }
     
+    // 从登陆返回 可以获取登陆结果
+    @IBAction func goBackFromLogin(segue: UIStoryboardSegue) {
+    
+    }
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -8,11 +8,15 @@
 
 import Foundation
 
-var isLogin = false //是否登陆
+
 
 public class App {
     //发布地址tid
     public static let POST_ID = 805203
+    public static var isLogin = false //是否登陆
+    public static var username:String? //用户名
+    public static var uid: Int? // uid
+    public static var grade: String? //等级
 }
 
 public class Urls {
@@ -42,4 +46,20 @@ public class Urls {
     public static func getPostUrl(tid: Int) -> String {
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&mobile=2"
     }
+    
+    
+    // size =0 small 1-middle 2-large
+    public static func getAvaterUrl(uid: Int, size: Int = 1) -> String {
+        let sizeStr: String
+        if size == 0 {
+            sizeStr = "small"
+        }else if size == 2 {
+            sizeStr = "big"
+        }else {
+            sizeStr = "middle"
+        }
+        
+        return "\(baseUrl)ucenter/avatar.php?uid=\(uid)&size=\(sizeStr)&mobile=2"
+    }
+    
 }
