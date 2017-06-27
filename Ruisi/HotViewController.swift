@@ -8,16 +8,44 @@
 
 import UIKit
 
-
 class HotViewController: UITableViewController {
-    
     // 切换热帖0 和 新帖1
     @IBAction func viewTypeChnage(_ sender: UISegmentedControl) {
         print(sender.selectedSegmentIndex)
         position = sender.selectedSegmentIndex
-        
         currentPage = 1
         loadData(position)
+        //tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+    
+    func isLoading(_ pos: Int) -> Bool {
+        if pos == 0 {
+            return isHotLoading
+        }else{
+            return isNewLoading
+        }
+    }
+    
+    func setLoading(_ pos:Int, value: Bool) {
+        if pos == 0 {
+            isHotLoading = value
+        }else{
+            isNewLoading = value
+        }
+        
+        if !value {
+            refreshView.endRefreshing()
+            if let f = (tableView.tableFooterView as? LoadMoreView) {
+                f.endLoading()
+            }
+        }else {
+            //refreshView.beginRefreshing()
+            if currentPage > 1 { //上拉刷新
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.startLoading()
+                }
+            }
+        }
     }
     
     var position = 0
@@ -25,6 +53,7 @@ class HotViewController: UITableViewController {
     var isHotLoading = false
     var isNewLoading = false
     var currentPage = 1
+    var refreshView: UIRefreshControl!
     
     var url:String {
         if position==0{
@@ -33,34 +62,42 @@ class HotViewController: UITableViewController {
             return Urls.newUrl + "&page=\(currentPage)"
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.estimatedRowHeight = 85
+        self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
+        // Initialize the refresh control.
+        refreshView = UIRefreshControl()
+        Widgets.setRefreshControl(refreshView)
+        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
+        self.refreshControl = refreshView
+        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+        
+        refreshView.beginRefreshing()
+        loadData(position)
+    }
+    
+    func pullRefresh() {
+        currentPage = 1
         loadData(position)
     }
     
     func loadData(_ pos: Int) {
         // 所持请求的数据正在加载中/未加载
-        if pos == 0{
-            if isHotLoading {
-                return
-            }
-            isHotLoading = true
-        }else{
-            if isNewLoading{
-                return
-            }
-            isNewLoading = true
+        if isLoading(pos) {
+            return
         }
         
+        refreshView.attributedTitle = NSAttributedString(string: "正在加载")
+        setLoading(pos, value: true)
+        
+        print("load data page \(currentPage)")
         HttpUtil.GET(url: url, params: nil) { ok, res in
             var subDatas = [ArticleListDataSimple]()
             if ok && pos == self.position { //返回的数据是我们要的
                 if let doc = HTML(html: res, encoding: .utf8) {
-                    print(doc.title ?? "empty title")
                     for li in doc.css(".threadlist ul.hotlist li") {
                         let a = li.css("a").first
                         let urls = a?["href"]
@@ -86,13 +123,14 @@ class HotViewController: UITableViewController {
                         // todo
                         let d = ArticleListDataSimple(title: title ?? "未获取到标题", tid: 12354, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: nil)
                         subDatas.append(d)
-                        print("finish load data pos:\(pos) count:\(subDatas.count)")
                     }
+                    
+                    print("finish load data pos:\(pos) count:\(subDatas.count)")
                 }
             }
             
             //load data ok
-            if pos == self.position{
+            if pos == self.position {
                 // 第一次换页清空
                 if self.currentPage == 1 {
                     self.datas = subDatas
@@ -102,7 +140,6 @@ class HotViewController: UITableViewController {
                 } else {
                     let count = self.datas.count
                     self.datas.append(contentsOf: subDatas)
-                    
                     DispatchQueue.main.async{
                         self.tableView.beginUpdates()
                         var indexs = [IndexPath]()
@@ -114,30 +151,42 @@ class HotViewController: UITableViewController {
                     }
                 }
                 self.currentPage += 1
+                
+                var str: String
+                if subDatas.count > 0 {
+                    let df =  DateFormatter()
+                    df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
+                    str = "Last update: "+df.string(from: Date())
+                }else{
+                    str = "加载失败"
+                }
+                
+                let attrStr = NSAttributedString(string: str, attributes: [
+                    NSForegroundColorAttributeName:UIColor.gray])
+                
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
+                    self.refreshView.attributedTitle = attrStr
+                    self.setLoading(pos, value: false)
+                }
             }
             
-            if pos == 0 {
-                self.isHotLoading = false
-            }else{
-                self.isNewLoading = false
-            }
             print("finish http")
         }
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let usernameLabel = cell.viewWithTag(2) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
@@ -156,18 +205,33 @@ class HotViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // UITableView only moves in one direction, y axis
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        
+        
+        // Change 10.0 to adjust the distance from bottom
+        if maximumOffset - currentOffset <= 10.0 {
+            if !isLoading(position) {
+                
+                print("load more")
+                loadData(position)
+            }
+            
+        }
     }
-    */
-
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

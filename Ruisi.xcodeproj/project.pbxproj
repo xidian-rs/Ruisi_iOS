@@ -23,6 +23,10 @@
 		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
+		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
+		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
+		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
+		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
 		2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C41EFE750A00428EE1 /* Settings.swift */; };
 		2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */; };
 		2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7C75B01EFE356F0067D499 /* SignViewController.swift */; };
@@ -70,6 +74,10 @@
 		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
+		2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
+		2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreView.xib; sourceTree = "<group>"; };
 		2F5DF0C41EFE750A00428EE1 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
 		2F7C75B01EFE356F0067D499 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +169,7 @@
 				2F9772451EA65A3F0058EDB4 /* Constant.swift */,
 				2F5DF0C41EFE750A00428EE1 /* Settings.swift */,
 				2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */,
+				2F175F801F01FCCA00DDEED9 /* Utils.swift */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -185,6 +194,9 @@
 			isa = PBXGroup;
 			children = (
 				2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */,
+				2F35E9A91F00A48700CDD60D /* Widgets.swift */,
+				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
+				2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */,
 			);
 			name = widget;
 			sourceTree = "<group>";
@@ -250,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */,
 				2F01C2421EFF94B800102CF2 /* Modules in Resources */,
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
@@ -267,17 +280,20 @@
 			files = (
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
+				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
 				2F01C23C1EFF949100102CF2 /* libxmlHTMLDocument.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
+				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
 				2F8AD6981EA7AF89002540AA /* DetailViewController.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
 				2F01C2401EFF94A100102CF2 /* libxmlParserOption.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
+				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,

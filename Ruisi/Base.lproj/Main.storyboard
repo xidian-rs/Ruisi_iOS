@@ -181,7 +181,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="turing19" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDL-7i-002" userLabel="username">
                                             <rect key="frame" x="12" y="70.5" width="47" height="15"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ecg-ub-2mI" userLabel="views">
@@ -300,7 +300,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="turing19" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KBj-hU-JOi" userLabel="username">
                                             <rect key="frame" x="12" y="62.5" width="47" height="15"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -638,23 +638,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="关于本程序" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="osJ-db-H1n" userLabel="关于本程序">
-                                <rect key="frame" x="116.5" y="274" width="87" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjJ-Ie-RNe">
+                                <rect key="frame" x="16" y="72" width="46.5" height="17"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="加载中">
+                                        <attributes>
+                                            <font key="NSFont" size="12" name="PingFangSC-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="...">
+                                        <attributes>
+                                            <font key="NSFont" size="12" name="Helvetica"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前版本 1.0.0 beta" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o8F-yj-N8d">
+                                <rect key="frame" x="98" y="506" width="124" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在检查更新..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wp7-Ej-w6c">
+                                <rect key="frame" x="111.5" y="531" width="98" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="osJ-db-H1n" firstAttribute="centerY" secondItem="4lW-10-i7o" secondAttribute="centerY" id="CyL-x8-DzQ"/>
-                            <constraint firstItem="osJ-db-H1n" firstAttribute="centerX" secondItem="4lW-10-i7o" secondAttribute="centerX" id="lTF-Gq-fgt"/>
+                            <constraint firstItem="o8F-yj-N8d" firstAttribute="centerX" secondItem="4lW-10-i7o" secondAttribute="centerX" id="Jua-qm-Gqb"/>
+                            <constraint firstItem="Wp7-Ej-w6c" firstAttribute="top" secondItem="o8F-yj-N8d" secondAttribute="bottom" constant="8" id="MJ7-um-KSL"/>
+                            <constraint firstItem="YjJ-Ie-RNe" firstAttribute="leading" secondItem="4lW-10-i7o" secondAttribute="leadingMargin" id="SeU-qc-ffh"/>
+                            <constraint firstItem="Wp7-Ej-w6c" firstAttribute="centerX" secondItem="4lW-10-i7o" secondAttribute="centerX" id="eS5-3I-hiV"/>
+                            <constraint firstItem="YjJ-Ie-RNe" firstAttribute="top" secondItem="W29-Lr-R7g" secondAttribute="bottom" constant="8" symbolic="YES" id="vh4-Z0-eDJ"/>
+                            <constraint firstAttribute="bottom" secondItem="Wp7-Ej-w6c" secondAttribute="bottom" constant="20" symbolic="YES" id="x5b-C1-sVv"/>
                         </constraints>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="aboutText" destination="YjJ-Ie-RNe" id="G6Y-Vv-TPk"/>
+                        <outlet property="checkVersionLabel" destination="Wp7-Ej-w6c" id="USt-tN-YFW"/>
+                        <outlet property="versionLabel" destination="o8F-yj-N8d" id="Au1-Os-aBd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FFM-V6-u5o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="889" y="689"/>
+            <point key="canvasLocation" x="332" y="971"/>
         </scene>
         <!--签到中心-->
         <scene sceneID="4wV-hR-dOS">

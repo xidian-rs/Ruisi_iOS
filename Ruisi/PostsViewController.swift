@@ -10,6 +10,7 @@ import UIKit
 
 class PostsViewController: UITableViewController {
     
+    var fid: Int? // 由前一个页面传过来的值
     var dataCount = 0
     var isLoading = false
     
@@ -25,25 +26,18 @@ class PostsViewController: UITableViewController {
         
         // Initialize the refresh control.
         let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor.purple
-        refreshControl.tintColor = UIColor.white
+        Widgets.setRefreshControl(refreshControl)
         refreshControl.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
-        refreshControl.attributedTitle = NSAttributedString(string: "下拉刷新",attributes: [
-            NSForegroundColorAttributeName:UIColor.white
-            ])
-        
         self.refreshControl = refreshControl
     }
     
     func pullRefresh(){
         print("下拉刷新'")
         
-        
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.init(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 3*NSEC_PER_SEC)) { 
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 3*NSEC_PER_SEC)) { 
             DispatchQueue.main.async {
                 self.dataCount += 3
                 if self.tableView.numberOfSections == 0 {
-                    
                     self.tableView.reloadData()
                 }else{
                     self.tableView.beginUpdates()
@@ -76,10 +70,9 @@ class PostsViewController: UITableViewController {
     
     //加载更多
     func loadMore(){
-        if isLoading{
+        if isLoading {
             return
         }
-        
         isLoading = true
         print("start 加载更多")
         footerIndicate.startAnimating()
@@ -107,17 +100,13 @@ class PostsViewController: UITableViewController {
         }
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if dataCount==0{//no data avaliable
+        if dataCount == 0 {//no data avaliable
             let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = "No data is currently available. Please pull down to refresh."
+            label.text = "暂无数据 请下拉刷新"
             label.textColor = UIColor.black
             label.numberOfLines = 0
             label.textAlignment = .center
@@ -126,12 +115,9 @@ class PostsViewController: UITableViewController {
             
             tableView.backgroundView = label;
             tableView.separatorStyle = .none;
-            
             tableView.tableFooterView?.isHidden = true
-            
             return 0
         }else{
-            
             tableView.backgroundView = nil
             tableView.tableFooterView?.isHidden = false
             tableView.separatorStyle = .singleLine
@@ -154,9 +140,7 @@ class PostsViewController: UITableViewController {
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height) {
-            if !isLoading{
-                loadMore()
-            }
+            loadMore()
         }
     }
 
