@@ -47,6 +47,10 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&mobile=2"
     }
     
+    public static func getPostsUrl(fid: Int) -> String {
+        return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
+    }
+    
     
     // size =0 small 1-middle 2-large
     public static func getAvaterUrl(uid: Int, size: Int = 1) -> String {

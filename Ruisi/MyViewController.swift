@@ -16,11 +16,6 @@ class MyViewController: UIViewController,UITableViewDelegate,
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var usergradeLabel: UILabel!
     
-    @IBOutlet weak var historyBtn: UIStackView!
-    @IBOutlet weak var starBtn: UIStackView!
-    @IBOutlet weak var friendsBtn: UIStackView!
-    @IBOutlet weak var postsBtn: UIStackView!
-    
     
     var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
     var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
@@ -38,10 +33,6 @@ class MyViewController: UIViewController,UITableViewDelegate,
         myTableView.delegate = self
         
         avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        historyBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        starBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        friendsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        postsBtn.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
         
         isLogin = App.isLogin
         updateUi()
@@ -88,14 +79,6 @@ class MyViewController: UIViewController,UITableViewDelegate,
                     let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
                     self.present(dest!, animated: true, completion: nil)
                 }
-            case historyBtn:
-                print("history click")
-            case starBtn:
-                print("start click")
-            case friendsBtn:
-                print("frindes click")
-            case postsBtn:
-                print("posts click")
             default:
                 break
             }
@@ -146,7 +129,6 @@ class MyViewController: UIViewController,UITableViewDelegate,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         //["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
         switch indexPath.row {
         case 0:
@@ -160,10 +142,19 @@ class MyViewController: UIViewController,UITableViewDelegate,
             self.show(dest!, sender: self)
         case 2:
             //share
+            let activityController = UIActivityViewController(activityItems: ["分享:手机睿思IOS版[\(Urls.getPostUrl(tid: App.POST_ID))]"], applicationActivities: nil)
+            // should be the rect that the pop over should anchor to
+            activityController.popoverPresentationController?.sourceRect = view.frame
+            activityController.popoverPresentationController?.sourceView = view
+            activityController.popoverPresentationController?.permittedArrowDirections = .any
+            // present the controller
+            present(activityController, animated: true, completion: nil)
             break
         case 3:
             //evaluate
-            break
+            let ac = UIAlertController(title: "到商店评分", message: "暂时不准备上架商店,无法评分(99美刀～～)", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+            present(ac, animated: true)
         case 4:
             //setting
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "settingViewController")
@@ -173,9 +164,23 @@ class MyViewController: UIViewController,UITableViewDelegate,
         }
     }
     
-    // 从登陆返回 可以获取登陆结果
-    @IBAction func goBackFromLogin(segue: UIStoryboardSegue) {
     
+    // 转场之前的检查
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        switch identifier {
+        case "toHistoryController":
+            print("to history")
+        case "toStarController":
+            print("to star")
+        case "toFriendController":
+            print("to friend")
+        case "toMyPostsController":
+            print("to my posts")
+        default:
+            break
+        }
+        
+        return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
     }
     
 

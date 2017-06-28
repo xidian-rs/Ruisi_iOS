@@ -11,92 +11,159 @@ import UIKit
 class PostsViewController: UITableViewController {
     
     var fid: Int? // 由前一个页面传过来的值
-    var dataCount = 0
-    var isLoading = false
+    private var loading = false
+    var currentPage = 1
+    var position = 0 //为了hotnew而准备的
+    var refreshView: UIRefreshControl!
+    var datas  = [ArticleListDataSimple]()
     
-    @IBOutlet weak var footerIndicate: UIActivityIndicatorView!
-    @IBOutlet weak var footerLabel: UILabel!
+    open var isLoading: Bool{
+        get{
+            return loading
+        }
+        set {
+            loading = newValue
+            if !loading {
+                refreshView.endRefreshing()
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.endLoading()
+                }
+            }else {
+                //refreshView.beginRefreshing()
+                if currentPage > 1 { //上拉刷新
+                    if let f = (tableView.tableFooterView as? LoadMoreView) {
+                        f.startLoading()
+                    }
+                }
+            }
 
+        }
+    }
+    
+    open var url: String {
+        return Urls.getPostsUrl(fid: fid!) + "&page=\(currentPage)"
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.estimatedRowHeight = 85
+        self.tableView.estimatedRowHeight = 55
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.tableFooterView?.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        
+       
         // Initialize the refresh control.
-        let refreshControl = UIRefreshControl()
-        Widgets.setRefreshControl(refreshControl)
-        refreshControl.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
-        self.refreshControl = refreshControl
+        refreshView = UIRefreshControl()
+        Widgets.setRefreshControl(refreshView)
+        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
+        self.refreshControl = refreshView
+        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+        
+        refreshView.beginRefreshing()
+        loadData()
     }
     
     func pullRefresh(){
         print("下拉刷新'")
-        
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 3*NSEC_PER_SEC)) { 
-            DispatchQueue.main.async {
-                self.dataCount += 3
-                if self.tableView.numberOfSections == 0 {
-                    self.tableView.reloadData()
-                }else{
-                    self.tableView.beginUpdates()
-                    self.tableView.insertRows(at: [
-                        IndexPath(row: self.dataCount-3, section: 0),
-                        IndexPath(row: self.dataCount-2, section: 0),
-                        IndexPath(row: self.dataCount-1 , section: 0)],
-                                              with: .automatic)
-                    self.tableView.endUpdates()
-                }
-                
-                if let refreshCtr = self.refreshControl{
-                    let df =  DateFormatter()
-                    df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
-                    let str = "Last update: "+df.string(from: Date())
-                    
-                    let attrStr = NSAttributedString(string: str, attributes: [
-                        NSForegroundColorAttributeName:UIColor.white
-                        ])
-                    
-                    refreshCtr.attributedTitle = attrStr
-                    refreshCtr.endRefreshing()
-                }
-            }
-        }
-        
-        
-        
+        currentPage = 1
+        loadData(position)
     }
     
-    //加载更多
-    func loadMore(){
+    func loadData(_ pos: Int = 0) {
+        // 所持请求的数据正在加载中/未加载
         if isLoading {
             return
         }
+        refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
-        print("start 加载更多")
-        footerIndicate.startAnimating()
-        footerLabel.text = "正在加载..."
         
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(
-        deadline: DispatchTime(uptimeNanoseconds: (DispatchTime.now().uptimeNanoseconds + 3*NSEC_PER_SEC))) { [weak self] in
-            if let this = self{//加载完毕而且此页面未结束
-                print("finish 加载更多")
-                this.isLoading = false
-                DispatchQueue.main.async {
-                    this.footerIndicate.stopAnimating()
-                    this.footerLabel.text = "暂无更多"
-                    this.dataCount += 3
-                    this.tableView.beginUpdates()
+        print("load data page \(currentPage)")
+        HttpUtil.GET(url: url, params: nil) { ok, res in
+            var subDatas = [ArticleListDataSimple]()
+            if ok && pos == self.position { //返回的数据是我们要的
+                if let doc = HTML(html: res, encoding: .utf8) {
+                    for li in doc.css(".threadlist ul li") {
+                        let a = li.css("a").first
+                        
+                        var tid: Int?
+                        if let u = a?["href"] {
+                            tid = Utils.getNum(from: u)
+                        } else {
+                            //没有tid和咸鱼有什么区别
+                            continue
+                        }
+                        
+                        var replysStr: String?
+                        var authorStr: String?
+                        let replys = li.css("span.num").first
+                        let author = li.css(".by").first
+                        if let r =  replys {
+                            replysStr = r.text
+                            a?.removeChild(r)
+                        }
+                        if let au =  author {
+                            authorStr = au.text
+                            a?.removeChild(au)
+                        }
+                        let img = (li.css("img").first)?["src"]
+                        var haveImg = false
+                        if let i =  img {
+                            haveImg = i.contains("icon_tu.png")
+                        }
+                        
                     
-                    this.tableView.insertRows(at: [
-                        IndexPath(row: this.dataCount - 3, section: 0),
-                        IndexPath(row: this.dataCount - 2, section: 0),
-                        IndexPath(row: this.dataCount - 1 , section: 0)],
-                                               with: .automatic)
-                    this.tableView.endUpdates()
+                        let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+                        
+                        let color =  Utils.getHtmlColor(from: a?["style"])
+                        let d = ArticleListDataSimple(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+                        subDatas.append(d)
+                    }
+                    
+                    print("finish load data pos:\(pos) count:\(subDatas.count)")
                 }
             }
+            
+            //load data ok
+            if pos == self.position {
+                // 第一次换页清空
+                if self.currentPage == 1 {
+                    self.datas = subDatas
+                    DispatchQueue.main.async{
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    let count = self.datas.count
+                    self.datas.append(contentsOf: subDatas)
+                    DispatchQueue.main.async{
+                        self.tableView.beginUpdates()
+                        var indexs = [IndexPath]()
+                        for i in 0 ..< subDatas.count {
+                            indexs.append(IndexPath(row: count + i, section: 0))
+                        }
+                        self.tableView.insertRows(at: indexs, with: .automatic)
+                        self.tableView.endUpdates()
+                    }
+                }
+                self.currentPage += 1
+                
+                var str: String
+                if subDatas.count > 0 {
+                    let df =  DateFormatter()
+                    df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
+                    str = "Last update: "+df.string(from: Date())
+                }else{
+                    str = "加载失败"
+                }
+                
+                let attrStr = NSAttributedString(string: str, attributes: [
+                    NSForegroundColorAttributeName:UIColor.gray])
+                
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
+                    self.refreshView.attributedTitle = attrStr
+                    self.isLoading = false
+                }
+            }
+            
+            print("finish http")
         }
     }
     
@@ -104,9 +171,9 @@ class PostsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if dataCount == 0 {//no data avaliable
+        if datas.count == 0 {//no data avaliable
             let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = "暂无数据 请下拉刷新"
+            label.text = "加载中..."
             label.textColor = UIColor.black
             label.numberOfLines = 0
             label.textAlignment = .center
@@ -117,7 +184,7 @@ class PostsViewController: UITableViewController {
             tableView.separatorStyle = .none;
             tableView.tableFooterView?.isHidden = true
             return 0
-        }else{
+        } else {
             tableView.backgroundView = nil
             tableView.tableFooterView?.isHidden = false
             tableView.separatorStyle = .singleLine
@@ -127,30 +194,57 @@ class PostsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataCount
+        return datas.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
+        let titleLabel = cell.viewWithTag(1) as! UILabel
+        let usernameLabel = cell.viewWithTag(2) as! UILabel
+        let commentsLabel = cell.viewWithTag(3) as! UILabel
+        let d = datas[indexPath.row]
+        
+        titleLabel.text = d.title
+        if let color = d.titleColor {
+            titleLabel.textColor = color
+        }
+        usernameLabel.text = d.author
+        commentsLabel.text = d.replyCount
+        
         return cell
     }
     
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.contentOffset.y + scrollView.frame.size.height == scrollView.contentSize.height) {
-            loadMore()
+    
+    // load more
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // UITableView only moves in one direction, y axis
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        
+        // Change 10.0 to adjust the distance from bottom
+        if maximumOffset - currentOffset <= 10.0 {
+            if !isLoading {
+                print("load more")
+                loadData(position)
+            }
         }
     }
 
-
-    /*
     // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = datas[index.row].title
+        }
     }
-    */
 
 }

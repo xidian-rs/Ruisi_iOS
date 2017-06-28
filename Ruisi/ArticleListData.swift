@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // 文章列表数据元
 public class ArticleListDataSimple {
@@ -16,9 +17,9 @@ public class ArticleListDataSimple {
     public var replyCount: String
     public var isRead: Bool
     public var haveImage: Bool
-    public var titleColor: Int? //文章颜色
+    public var titleColor: UIColor? //文章颜色
     
-    init(title:String,tid: Int,author:String,replys:String,read:Bool = false,haveImage:Bool = false,titleColor:Int? = nil) {
+    init(title:String,tid: Int,author:String,replys:String,read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil) {
         self.title = title
         self.tid = tid
         self.author = author

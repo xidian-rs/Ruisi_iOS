@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public class Utils {
    public static func getNum(from str: String) -> Int? {
@@ -28,5 +29,18 @@ public class Utils {
         
         return Int(String(digitals))
     }
-
+    
+    // style="color: #EE1B2E;" 在这之中提取颜色
+    public static func getHtmlColor (from str: String?) -> UIColor? {
+        if let ss = str {
+            if let s = ss.range(of: "#")?.upperBound {
+                if let e = ss.range(of: ";", range: s ..< ss.endIndex)?.lowerBound {
+                    if let i = Int(ss.substring(with: s ..< e), radix: 16) {
+                        return UIColor(red: CGFloat((i >> 16) & 0xFF)/255.0, green: CGFloat((i >> 8) & 0xFF)/255.0, blue: CGFloat(i & 0xFF)/255.0, alpha: 1)
+                    }
+                }
+            }
+        }
+        return nil
+    }
 }
