@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostViewController: UITableViewController {
+class PostViewController: UITableViewController,UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,7 @@ class PostViewController: UITableViewController {
             UIBarButtonItem(barButtonSystemItem: .action , target: self, action: #selector(PostViewController.showMoreView)),
             UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(PostViewController.refreshData))
         ]
+        
     }
     
     
@@ -66,24 +67,28 @@ class PostViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if section == 0 {
+            return 1
+        }else {
+            return 10
+        }
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let label =  cell.viewWithTag(1) as! UILabel
-        let data = try! Data(contentsOf: Bundle.main.url(forResource: "assets/test", withExtension: "html")!)
-        //print(String(data: data, encoding: .utf8))
-        let attrText = try?
-            NSAttributedString(data: data,
-                               options: [NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType],
-                               documentAttributes:nil)
-        label.attributedText = attrText
+        let cell: UITableViewCell
+        if indexPath.section == 0 {
+            cell = tableView.dequeueReusableCell(withIdentifier: "content", for: indexPath)
+        }else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath)
+        }
+        //textView.delegate = self
+        //textView.isEditable = false
+        //textView.isScrollEnabled  = false
+        //textView.attributedText = AtrributeConveter().convert(src: str!)
         return cell
     }
     
@@ -91,6 +96,16 @@ class PostViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    // textview 链接点击事件
+    // textView.delegate = self
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        
+        print(URL.absoluteString)
+        
+        return false
     }
 
     /*
