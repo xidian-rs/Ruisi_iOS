@@ -51,6 +51,7 @@
 		2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADC71EA7371400602516 /* MessageViewController.swift */; };
 		2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */; };
 		2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */; };
+		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,6 +114,7 @@
 		2FD4ADC71EA7371400602516 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowLabel.swift; sourceTree = "<group>"; };
 		2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +209,7 @@
 			children = (
 				2F16B66B1EA504DD0068EE20 /* Forum.swift */,
 				2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */,
+				2FEDBB621F1113A6006E645D /* PostData.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
 				2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */,
+				2FEDBB631F1113A6006E645D /* PostData.swift in Sources */,
 				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
 				2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,

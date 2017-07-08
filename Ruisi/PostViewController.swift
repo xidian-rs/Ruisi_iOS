@@ -8,19 +8,58 @@
 
 import UIKit
 
+// 帖子详情页
 class PostViewController: UITableViewController,UITextViewDelegate {
+    
+    var tid: Int? // 由前一个页面传过来的值
+    private var loading = false
+    var datas =  [PostData]()
+    var contentTitle: String?
+    var currentPage = 1
+    var pageSum: Int = 1
+    
+    
+    var url :String {
+        return Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
+    }
+    
+    var isLoading: Bool{
+        get{
+            return loading
+        }
+        set {
+            loading = newValue
+            if !loading {
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.endLoading()
+                }
+            }else {
+                //refreshView.beginRefreshing()
+                if currentPage > 1 { //上拉刷新
+                    if let f = (tableView.tableFooterView as? LoadMoreView) {
+                        f.startLoading()
+                    }
+                }
+            }
+            
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView =
+            LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
         
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(barButtonSystemItem: .action , target: self, action: #selector(PostViewController.showMoreView)),
             UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(PostViewController.refreshData))
         ]
         
+        loadData()
     }
     
     
@@ -59,17 +98,14 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         
         self.present(sheet, animated: true, completion: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
+    
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
@@ -77,7 +113,7 @@ class PostViewController: UITableViewController,UITextViewDelegate {
             return 10
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         if indexPath.section == 0 {
@@ -92,6 +128,129 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         return cell
     }
     
+    func loadData(_ pos: Int = 0) {
+        // 所持请求的数据正在加载中/未加载
+        if isLoading {
+            return
+        }
+        isLoading = true
+        print("load data page \(currentPage)")
+        
+        
+        HttpUtil.GET(url: url, params: nil) { ok, res in
+            var subDatas = [PostData]()
+            if ok ,let doc = HTML(html: res, encoding: .utf8) {
+                if self.contentTitle == nil, let t = doc.title {
+                    self.contentTitle = t.substring(to: t.index(of: " - ")!)
+                }
+                
+                let comments = doc.css(".postlist .plc.cl")
+                if comments.count > 0 {
+                    //获得回复楼主的url
+                    var replyUrl: String?
+                    if self.datas.count == 0 {
+                        replyUrl = doc.css("form#fastpostform").first?["action"]
+                    }
+                    
+                    //获取总页数 和当前页数
+                    if let pg =  doc.css(".pg").first {
+                        // var page = Utils.getNum(from: pg.css("strong").first?.text ?? "1")
+                        let sum = Utils.getNum(from: pg.css("span").first?["title"] ?? "1")
+                        if let s = sum , sum! > 1 {
+                            self.pageSum = s
+                        }
+                    }
+                    
+                    //解析评论列表
+                    for comment in comments {
+                        var pid: String?
+                        if let spid = comment["id"] {
+                            pid = spid.substring(from: spid.range(of: "pid")!.upperBound)
+                        }
+                        
+                        var author: String?
+                        var uid: String?
+                        var time: String?
+                        var index: String?
+                        
+                        let infoNode = comment.css("ul.authi")
+                        if let sinfo = infoNode.first?.css("li") {
+                            author = (sinfo.first?.css("a").first?.text)!
+                            uid = String(Utils.getNum(from: (sinfo.first?.css("a").first?["href"])!) ?? 0)
+                            index = sinfo.first?.css("em").first?.text
+                            
+                            if infoNode.count > 1 {
+                                time = infoNode[1].text!.replacingOccurrences(of: "收藏", with: "")
+                            }
+                        }
+                        
+                        //层主url
+                        if self.datas.count > 0 || subDatas.count > 0 {
+                            replyUrl = comment.css(".replybtn input").first?["href"]
+                        }
+                        
+                        let content = comment.css(".message").first!.innerHTML!
+                        
+                        let c = PostData(content: content, author: author ?? "未知作者",
+                                         uid: uid ?? "0", time: time ?? "未知时间",
+                                         pid: pid ?? "0", index: index ?? "#?",replyUrl: replyUrl)
+                        
+                        subDatas.append(c)
+                    }
+                    
+                    
+                } else { //错误
+                    //有可能没有列表处理错误
+                    let errorText = doc.css(".jump_c").first?.text
+                    print(errorText ?? "网络错误")
+                    
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "加载失败", message: errorText, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "关闭", style: .cancel, handler: { action in
+                            //todo
+                        }))
+                        
+                        self.present(alert, animated: true)
+                    }
+                    return
+                }
+            } else {
+                print("加载失败 网络错误")
+            }
+            
+            //load data ok
+            // 第一次换页清空
+            if self.currentPage == 1 {
+                self.datas = subDatas
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                let count = self.datas.count
+                self.datas.append(contentsOf: subDatas)
+                DispatchQueue.main.async {
+                    self.tableView.beginUpdates()
+                    var indexs = [IndexPath]()
+                    for i in 0 ..< subDatas.count {
+                        indexs.append(IndexPath(row: count + i, section: 0))
+                    }
+                    self.tableView.insertRows(at: indexs, with: .automatic)
+                    self.tableView.endUpdates()
+                }
+            }
+            
+            if self.currentPage < self.pageSum {
+                self.currentPage += 1
+            }
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
+                self.isLoading = false
+            }
+            print("finish http")
+        }
+    }
+    
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -102,55 +261,21 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     // textview 链接点击事件
     // textView.delegate = self
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        
         print(URL.absoluteString)
-        
         return false
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
-
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
