@@ -27,6 +27,10 @@ public class Urls {
     public static let BASE_URL = "http://rs.xidian.edu.cn/"
     public static let BASE_URL_ME = "http://bbs.rs.xidian.me/"
     
+    // 签到
+    public static let signUrl = "\(BASE_URL)plugin.php?id=dsu_paulsign:sign"
+    public static let signPostUrl = "\(BASE_URL)plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1"
+    
     public static var hotUrl:String{
         return baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
     }

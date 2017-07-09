@@ -379,8 +379,11 @@ class HtmlParser {
         }
 
         //不是空
-        if !buf.isEmpty {
-            delegate.characters(text: String(buf))
+        if buf.count > 0 {
+            let text = String(buf).trimmingCharacters(in: .whitespacesAndNewlines)
+            if text.characters.count > 0 {
+                delegate.characters(text: text)
+            }
         }
     }
 

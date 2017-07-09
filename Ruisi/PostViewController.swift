@@ -59,6 +59,11 @@ class PostViewController: UITableViewController,UITextViewDelegate {
             UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(PostViewController.refreshData))
         ]
         
+        if tid == nil {
+            showBackAlert(message: "没有传入tid参数")
+            return
+        }
+        
         loadData()
     }
     
@@ -101,8 +106,11 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     
     
     // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
+        if datas.count == 0 {
+            return 0
+        }
+        
         return 2
     }
     
@@ -110,21 +118,38 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         if section == 0 {
             return 1
         }else {
-            return 10
+            return datas.count - 1
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let data: PostData
         let cell: UITableViewCell
         if indexPath.section == 0 {
+            data = datas[0]
             cell = tableView.dequeueReusableCell(withIdentifier: "content", for: indexPath)
-        }else {
+            let title = cell.viewWithTag(6) as! UILabel
+            title.text = contentTitle ?? self.title
+        } else {
+            data = datas[indexPath.row + 1]
             cell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath)
+            let index = cell.viewWithTag(6) as! UILabel
+            index.text = data.index
         }
-        //textView.delegate = self
-        //textView.isEditable = false
-        //textView.isScrollEnabled  = false
-        //textView.attributedText = AtrributeConveter().convert(src: str!)
+        
+        let img = cell.viewWithTag(1) as! UIImageView
+        let author = cell.viewWithTag(2) as! UILabel
+        let lz = cell.viewWithTag(3) as! UILabel
+        let time = cell.viewWithTag(4) as! UILabel
+        let content = cell.viewWithTag(5) as! UITextView
+        
+        author.text = data.author
+        time.text = "发表于:\(data.time)"
+        
+        content.delegate = self
+        content.isEditable = false
+        content.isScrollEnabled  = false
+        content.attributedText = AtrributeConveter().convert(src: data.content)
         return cell
     }
     
@@ -166,22 +191,24 @@ class PostViewController: UITableViewController,UITextViewDelegate {
                         var pid: String?
                         if let spid = comment["id"] {
                             pid = spid.substring(from: spid.range(of: "pid")!.upperBound)
+                        } else {
+                            // pid 都没有和咸鱼有什么区别
+                            continue
                         }
                         
                         var author: String?
                         var uid: String?
-                        var time: String?
                         var index: String?
-                        
                         let infoNode = comment.css("ul.authi")
-                        if let sinfo = infoNode.first?.css("li") {
-                            author = (sinfo.first?.css("a").first?.text)!
-                            uid = String(Utils.getNum(from: (sinfo.first?.css("a").first?["href"])!) ?? 0)
-                            index = sinfo.first?.css("em").first?.text
-                            
-                            if infoNode.count > 1 {
-                                time = infoNode[1].text!.replacingOccurrences(of: "收藏", with: "")
-                            }
+                        if let sinfo = infoNode.first?.css("li").first {
+                            author = (sinfo.css("a").first?.text)!
+                            uid = String(Utils.getNum(from: (sinfo.css("a").first?["href"])!) ?? 0)
+                            index = sinfo.css("em").first?.text
+                        }
+                        
+                        var time: String?
+                        if let stime = infoNode.first?.css(".rela").first {
+                            time = stime.text?.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "收藏", with: "")
                         }
                         
                         //层主url
@@ -189,28 +216,19 @@ class PostViewController: UITableViewController,UITextViewDelegate {
                             replyUrl = comment.css(".replybtn input").first?["href"]
                         }
                         
-                        let content = comment.css(".message").first!.innerHTML!
-                        
-                        let c = PostData(content: content, author: author ?? "未知作者",
+                        let content = comment.css(".message").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let c = PostData(content: content ?? "获取内容失败", author: author ?? "未知作者",
                                          uid: uid ?? "0", time: time ?? "未知时间",
                                          pid: pid ?? "0", index: index ?? "#?",replyUrl: replyUrl)
                         
                         subDatas.append(c)
                     }
-                    
-                    
                 } else { //错误
                     //有可能没有列表处理错误
                     let errorText = doc.css(".jump_c").first?.text
                     print(errorText ?? "网络错误")
-                    
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "加载失败", message: errorText, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "关闭", style: .cancel, handler: { action in
-                            //todo
-                        }))
-                        
-                        self.present(alert, animated: true)
+                        self.showBackAlert(message: errorText ?? "帖子不存在")
                     }
                     return
                 }
@@ -263,6 +281,15 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         print(URL.absoluteString)
         return false
+    }
+    
+    private func showBackAlert(message: String) {
+        let alert = UIAlertController(title: "无法打开帖子", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "关闭", style: .cancel, handler: { action in
+            self.navigationController?.popViewController(animated: true)
+        })
+        alert.addAction(action)
+        self.present(alert, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

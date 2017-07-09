@@ -238,12 +238,12 @@ class PostsViewController: UITableViewController {
     }
 
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController,
             let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
             dest.title = datas[index.row].title
+            dest.tid = datas[index.row].tid
         }
     }
 

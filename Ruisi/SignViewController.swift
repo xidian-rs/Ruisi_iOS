@@ -14,7 +14,6 @@ class SignViewController: UIViewController {
     
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     
-    @IBOutlet weak var userImg: UIImageView!
     @IBOutlet weak var labelSmiley: UILabel!
     @IBOutlet weak var btnSmiley: UIButton!
     @IBOutlet weak var inputText: UITextField!
@@ -26,8 +25,8 @@ class SignViewController: UIViewController {
     @IBOutlet weak var labelTotal: UILabel!
     @IBOutlet weak var labelTotal2: UILabel!
     
-    var isSigned :Bool! {
-        didSet{
+    var isSigned :Bool = false {
+        didSet {
             haveSignImg.isHidden = !isSigned
             labelStatus.isHidden = !isSigned
             labelTotal.isHidden = !isSigned
@@ -55,9 +54,6 @@ class SignViewController: UIViewController {
             btnSmiley.isHidden = true
             inputText.isHidden = true
             btnSign.isHidden = true
-        }else{
-            let a = isSigned
-            isSigned = a
         }
     }
     
@@ -67,13 +63,44 @@ class SignViewController: UIViewController {
     }
     
     @IBAction func signBtnClick(_ sender: UIButton) {
+        showLoadingView()
         
+        let xinqin = itemsValue[currentSelect]
+        let say = inputText.text
+        
+        let qmode: String
+        if say == nil {
+            qmode = "1"
+        }else {
+            qmode = "3"
+        }
+        let data = "qdxq=\(xinqin)&qdmode=\(qmode)&todaysay=\(say ?? "来自手机睿思IOS")&fastreplay=0"
+        HttpUtil.POST(url: Urls.signPostUrl, params: data) { ok, res in
+            let message: String
+            if ok, let s = res.range(of: "恭喜你签到成功"){
+                let end = res.range(of: "</div>", options: .literal, range: s.upperBound ..< res.endIndex)
+                message = res.substring(with: s.lowerBound ..< end!.lowerBound)
+            } else {
+                message = "签到失败 " + res
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.dismiss(animated: true, completion: { 
+                    let vc = UIAlertController(title: "签到结果", message: message, preferredStyle: .alert)
+                    vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
+                        self?.dismiss(animated: true)
+                    }))
+                    self?.present(vc, animated: true)
+                })
+                
+                self?.checkSignStatus()
+            }
+        }
     }
     
     // 处理选择心情
     func handlePick(action: UIAlertAction) {
         let title = action.title
-        
         for (i,v) in items.enumerated(){
             if v==title{
                 currentSelect = i
@@ -84,11 +111,57 @@ class SignViewController: UIViewController {
         }
     }
     
+    // 检查是否签到
+    func checkSignStatus() {
+        setLoadingState(isLoading: true)
+        HttpUtil.GET(url: Urls.signUrl, params: nil) { ok, res in
+            DispatchQueue.main.async { [weak self] in
+                self?.setLoadingState(isLoading: false)
+                if ok ,let doc = HTML(html: res, encoding: .utf8) {
+                    if res.contains("您今天已经签到过了或者签到时间还未开始") {
+                        var daytxt = "0"
+                        var monthtxt = "0"
+                        for ele in doc.css(".mn p") {
+                            if ele.text!.contains("您累计已签到") {
+                                let r = ele.text!.range(of: "您累计已签到")
+                                daytxt = ele.text!.substring(from: r!.lowerBound)
+                            } else if ele.text!.contains("您本月已累计签到") {
+                                monthtxt = ele.text!
+                            }
+                        }
+                        self?.labelStatus.text = "今日已签到"
+                        self?.labelTotal.text = daytxt
+                        self?.labelTotal2.text = monthtxt
+                        self?.isSigned = true
+                    } else {
+                        self?.isSigned = false
+                    }
+                } else {
+                    self?.labelStatus.isHidden = false
+                    self?.labelStatus.text = "非校园网无法签到"
+                }
+            }
+        }
+    }
+    
+    
+    var loadingAlert: UIAlertController?
+    func showLoadingView() {
+        if loadingAlert == nil {
+            loadingAlert = UIAlertController(title: "签到中", message: "请稍后...", preferredStyle: .alert)
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.activityIndicatorViewStyle = .gray
+            loadingIndicator.startAnimating()
+            loadingAlert!.view.addSubview(loadingIndicator)
+        }
+        present(loadingAlert!, animated: true)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         chooseAlert = UIAlertController(title: "选择心情", message: nil, preferredStyle: .actionSheet)
-    
         for v in items{
             let ac = UIAlertAction(title: v, style: .default, handler: handlePick)
             chooseAlert.addAction(ac)
@@ -100,38 +173,19 @@ class SignViewController: UIViewController {
         btnSmiley.setTitle(items[currentSelect], for: .normal)
         btnSmiley.setTitle(items[currentSelect], for: .focused)
         
-        isSigned = true
-        setLoadingState(isLoading: true)
-       
-        DispatchQueue.global(qos:.userInitiated).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds+NSEC_PER_SEC*2)) {
-            [weak self] in
-            DispatchQueue.main.async {
-                self?.setLoadingState(isLoading: false)
-            }
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        
+        if !(7 <= hour && hour < 23) {
+            labelStatus.isHidden = false
+            labelStatus.text = "不在签到时间 无法签到"
+        } else {
+            checkSignStatus()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-                
         super.viewWillAppear(animated)
     }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    
-     }
-    */
-
 }

@@ -102,54 +102,54 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             loadingIndicator.startAnimating()
             loadingView!.view.addSubview(loadingIndicator)
         }
-        
-        present(loadingView!, animated: true, completion: nil)
+        present(loadingView!, animated: true)
     }
     
-    func hideLoadingView() {
-        dismiss(animated: true, completion: nil)
-    }
     
     func loginResult(isok: Bool = false,res: String) {
         print("=== login result \(isok) ===")
         DispatchQueue.main.async { [weak self] in
-            self?.hideLoadingView()
+            let vc:UIAlertController
             if !isok {
-                self?.alert(message: res)
+                vc = UIAlertController(title: "登陆失败", message: res, preferredStyle: .alert)
+                vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil ))
+            } else {
+                let start = res.range(of: "欢迎您回来")!.upperBound
+                let end = res.range(of: "</p>", range: start ..< res.endIndex)!.lowerBound
+                let info = res.substring(with: start ..< end).components(separatedBy: "，")
+                let name = info[1].components(separatedBy: " ")[1]
+                let grade = info[1].components(separatedBy: " ")[0] //注意这是html
+                let indexStart =  res.range(of: "home.php?mod=space",range: start ..< res.endIndex)!.upperBound
+                let indexEnd = res.range(of: "</a>", range: indexStart ..< res.endIndex)!.lowerBound
+                let uid = Utils.getNum(from: res.substring(with: indexStart ..< indexEnd))!
+                
+                print("name: \(name) grade: \(grade) uid:\(uid)")
+                
+                App.isLogin = true
+                App.username = name
+                App.uid = uid
+                App.grade = grade
+                
+                //记住密码
+                if let on = self?.remberSwitch.isOn, on {
+                    print("save username and password")
+                    Settings.username = name
+                    Settings.password = self?.password
+                    Settings.remberPassword = true
+                } else {
+                    Settings.remberPassword = false
+                }
+                
+                vc = UIAlertController(title: "登陆成功", message: "欢迎[\(grade) \(name)]", preferredStyle: .alert)
+                vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
+                    self?.dismiss(animated: true, completion: nil)
+                }))
             }
-        }
-        
-        if isok {
-            let start = res.range(of: "欢迎您回来")!.upperBound
-            let end = res.range(of: "</p>", range: start ..< res.endIndex)!.lowerBound
-            let info = res.substring(with: start ..< end).components(separatedBy: "，")
-            let name = info[1].components(separatedBy: " ")[1]
-            let grade = info[1].components(separatedBy: " ")[0] //注意这是html
-            let indexStart =  res.range(of: "home.php?mod=space",range: start ..< res.endIndex)!.upperBound
-            let indexEnd = res.range(of: "</a>", range: indexStart ..< res.endIndex)!.lowerBound
-            let uid = Utils.getNum(from: res.substring(with: indexStart ..< indexEnd))!
             
-            print("name: \(name) grade: \(grade) uid:\(uid)")
-            
-            App.isLogin = true
-            App.username = name
-            App.uid = uid
-            App.grade = grade
-            
-            //记住密码
-            if remberSwitch.isOn {
-                print("save username and password")
-                Settings.username = name
-                Settings.password = password
-            }
-            
-            Settings.remberPassword = remberSwitch.isOn
-            let vc = UIAlertController(title: "登陆成功", message: "欢迎[\(grade) \(name)]", preferredStyle: .alert)
-            vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
-                self.dismiss(animated: true, completion: nil)
-            }))
-            
-            self.present(vc, animated: true)
+            // 取消loading
+            self?.dismiss(animated: true, completion: { 
+                self?.present(vc, animated: true)
+            })
         }
     }
     
@@ -158,15 +158,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+
     
 }

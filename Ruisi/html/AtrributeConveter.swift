@@ -59,11 +59,11 @@ class AtrributeConveter: HtmlParserDelegate {
     
     
     func start() {
-        print("start")
+        //print("start")
     }
     
     func startNode(node: HtmlNode) {
-        print("<\(node.name)>  \(node.type)")
+        //print("<\(node.name)>  \(node.type)")
         if node.type.isBlock() {
             handleBlockTag()
         }
@@ -88,7 +88,7 @@ class AtrributeConveter: HtmlParserDelegate {
     }
     
     func endNode(type: HtmlTag, name: String) {
-        print("</\(name)>  \(type)")
+        //print("</\(name)>  \(type)")
         if type == .UNKNOWN || type == .BR || type == .IMG
             || type == .HR || nodes.isEmpty {
             return
@@ -130,7 +130,7 @@ class AtrributeConveter: HtmlParserDelegate {
             //setSpan(start, new Li());
             break;
         case .PRE ,.BLOCKQUOTE:
-            addAttrs(attrs: [NSBackgroundColorAttributeName: UIColor(white: 0.96, alpha: 1)], start: start)
+            addAttrs(attrs: [NSForegroundColorAttributeName: UIColor.darkGray], start: start)
         case .Q, .CODE, .KBD:
             //等宽 字体
             addAttrs(attrs: [NSBackgroundColorAttributeName: UIColor(white: 0.96, alpha: 1)], start: start)
@@ -156,7 +156,7 @@ class AtrributeConveter: HtmlParserDelegate {
     }
     
     func end() {
-        print("end")
+        //print("end")
     }
     
     //div ul 等块状标签
@@ -165,8 +165,7 @@ class AtrributeConveter: HtmlParserDelegate {
         if position <= 1 {
             return
         }
-        
-        let c = attributedString.string.characters.last
+        let c = attributedString.string.characters.last!
         if c != "\n" {
             attributedString.append(NSAttributedString(string: "\n"))
         }
@@ -199,7 +198,7 @@ class AtrributeConveter: HtmlParserDelegate {
             //表情
             if range?.lowerBound ==  src.startIndex {
                 let name = "tb001"
-                let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "smiley/tieba")!
+                let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "assets/smiley/tieba")!
                 let attach = NSTextAttachment()
                 attach.image = UIImage(contentsOfFile: path)
                 attach.bounds = CGRect(x: 0, y: -6, width: 28, height: 28)
