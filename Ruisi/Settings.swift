@@ -16,6 +16,35 @@ public class Settings {
     private static let key_enable_tail = "key_enable_tail"
     private static let key_tail_content = "key_tail_content"
     private static let key_show_zhiding = "key_show_zhiding"
+    private static let key_message_id_reply = "key_message_id_reply"
+    private static let key_message_id_pm = "key_message_id_pm"
+    private static let key_message_id_at = "key_message_id_at"
+    
+    static func getMessageId(type: Int) -> Int{
+        switch type {
+        case 0:
+            return UserDefaults.standard.integer(forKey: key_message_id_reply)
+        case 1:
+            return UserDefaults.standard.integer(forKey: key_message_id_pm)
+        case 2:
+            return UserDefaults.standard.integer(forKey: key_message_id_at)
+        default:
+            return 0
+        }
+    }
+    
+    static func setMessageId (type: Int, value: Int) {
+        switch type {
+        case 0:
+            return UserDefaults.standard.set(value, forKey: key_message_id_reply)
+        case 1:
+            return UserDefaults.standard.set(value, forKey: key_message_id_pm)
+        case 2:
+            return UserDefaults.standard.set(value, forKey: key_message_id_at)
+        default:
+            return
+        }
+    }
     
     
     public static var username: String? {

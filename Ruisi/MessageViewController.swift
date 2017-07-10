@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 我的消息页面
 class MessageViewController: UITableViewController {
     
     var datas = [MessageData]()
@@ -19,7 +20,7 @@ class MessageViewController: UITableViewController {
     var isAtLoading = false
     var refreshView: UIRefreshControl!
     var lastLoginState = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.estimatedRowHeight = 120
@@ -54,7 +55,7 @@ class MessageViewController: UITableViewController {
             }
         }
     }
-
+    
     // 切换回复0 和 PM1 AT2
     @IBAction func messageTypeChange(_ sender: UISegmentedControl) {
         position = sender.selectedSegmentIndex
@@ -129,52 +130,94 @@ class MessageViewController: UITableViewController {
         
         print("load data page \(currentPage)")
         HttpUtil.GET(url: url, params: nil) { ok, res in
-            var subDatas = [ArticleListDataSimple]()
+            var subDatas = [MessageData]()
+            var infoText: String?
             if ok && pos == self.position { //返回的数据是我们要的
-                if let doc = HTML(html: res, encoding: .utf8) {
-                    for li in doc.css(".threadlist ul li") {
-                        let a = li.css("a").first
-                        
-                        var tid: Int?
-                        if let u = a?["href"] {
-                            tid = Utils.getNum(from: u)
-                        } else {
-                            //没有tid和咸鱼有什么区别
-                            continue
-                        }
-                        
-                        var replysStr: String?
-                        var authorStr: String?
-                        let replys = li.css("span.num").first
-                        let author = li.css(".by").first
-                        if let r =  replys {
-                            replysStr = r.text
-                            a?.removeChild(r)
-                        }
-                        if let au =  author {
-                            authorStr = au.text
-                            a?.removeChild(au)
-                        }
-                        let img = (li.css("img").first)?["src"]
-                        var haveImg = false
-                        if let i =  img {
-                            haveImg = i.contains("icon_tu.png")
-                        }
-                        
-                        
-                        let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
-                        
-                        let color =  Utils.getHtmlColor(from: a?["style"])
-                        let d = ArticleListDataSimple(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
-                        subDatas.append(d)
-                    }
-                    
-                    print("finish load data pos:\(pos) count:\(subDatas.count)")
+                let nodes: XPathObject
+                if pos == 0 || pos == 2 { // reply at
+                    nodes = (HTML(html: res, encoding: .utf8)?.css(".nts .cl"))!
+                } else {// pm
+                    nodes = (HTML(html: res, encoding: .utf8)?.css(".pmbox ul li"))!
                 }
-            }
+                
+                
+                var type: MessageType
+                var title: String
+                var tid: Int
+                var author: String //处理过后的
+                var uid: Int? // 系统无uid
+                var time: String
+                var content: String
+                var isRead: Bool
+                
+                let messageId = Settings.getMessageId(type: pos)
+                for ele in nodes {
+                    if pos == 0 {//reply
+                        type = .Reply
+                        let id = Utils.getNum(from: ele["notice"] ?? "0") ?? 0
+                        isRead =  (id <= messageId)
+                        time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
+                        let a = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first
+                        if let aa = a {
+                            let authorA = ele.css(".ntc_body a[href^=home.php?mod=space]").first!
+                            uid = Utils.getNum(from: authorA["href"] ?? "0")
+                            author = "\(authorA.text!) 回复了我"
+                            title = aa.text ?? "未知主题"
+                            content = title
+                            tid = Utils.getNum(from: aa["href"]!) ?? 0
+                        } else { //系统消息
+                            author = "系统消息"
+                            let a = ele.css(".ntc_body a").first
+                            title = a?.text ?? "未知主题"
+                            content = (ele.css(".ntc_body").first?.text)!
+                            tid = Utils.getNum(from: a?["href"] ?? "0") ?? 0
+                            uid = nil
+                        }
+                    }else if pos == 1 { //pm
+                        type = .Pm
+                        if let _ = ele.css(".num").first {
+                            isRead = false
+                        }else {
+                            isRead = true
+                        }
+                        title = ""
+                        author = ele.css(".cl").first?.css(".name").first?.text ?? ""
+                        time = ele.css(".cl.grey .time").first?.text ?? "未知时间"
+                        content = ele.css(".cl.grey span")[1].text ?? ""
+                        uid = Utils.getNum(from: ele.css("img").first?["src"] ?? "0")
+                        //在这里tid = tuid
+                        tid = Utils.getNum(from: ele.css("a").first?["href"] ?? "0") ?? 0
+                    }else { //at
+                        type = .At
+                        let id = Utils.getNum(from: ele["notice"] ?? "0") ?? 0
+                        isRead =  (id <= messageId)
+                        time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
+                        if let t = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first {
+                            tid = Utils.getNum(from: t.text!) ?? 0
+                        } else {
+                            tid = 0
+                        }
+        
+                        let authorA = ele.css(".ntc_body a[href^=home.php?mod=space]").first
+                        if let aa = authorA {
+                            author = "\(aa.text!) 提到了我"
+                            uid = Utils.getNum(from: aa["href"]!)
+                        } else {
+                            author = "未知"
+                            uid = nil
+                        }
+                        
+                        title = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first?.text ?? "未知主题"
+                        content = "在主题[\(title)]\n\(ele.css(".ntc_body .quote").first?.text ?? "未获取到内容")"
+                    }
+                
+                    
+                    let d = MessageData(type: type, title: title, tid: tid, uid: uid, author: author,
+                                        time: time, content: content.trimmingCharacters(in: .whitespacesAndNewlines),isRead: isRead)
+                    subDatas.append(d)
+                }
             
-            //load data ok
-            if pos == self.position {
+                print("finish load data pos:\(pos) count:\(subDatas.count)")
                 // 第一次换页清空
                 if self.currentPage == 1 {
                     self.datas = subDatas
@@ -194,31 +237,37 @@ class MessageViewController: UITableViewController {
                         self.tableView.endUpdates()
                     }
                 }
-                self.currentPage += 1
                 
-                var str: String
+                self.currentPage += 1
                 if subDatas.count > 0 {
                     let df =  DateFormatter()
                     df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
-                    str = "Last update: "+df.string(from: Date())
+                    infoText = "Last update: "+df.string(from: Date())
                 }else{
-                    str = "加载失败"
+                    infoText = "暂无更多"
                 }
-                
-                let attrStr = NSAttributedString(string: str, attributes: [
-                    NSForegroundColorAttributeName:UIColor.gray])
-                
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
+            } else {
+                if !ok {
+                    infoText = "网络错误"
+                }
+                print("not ok or pos not same")
+            }
+            
+            
+            DispatchQueue.main.async {
+                if let text = infoText {
+                    let attrStr = NSAttributedString(string: text, attributes: [
+                        NSForegroundColorAttributeName:UIColor.gray])
                     self.refreshView.attributedTitle = attrStr
-                    self.isLoading = false
                 }
+                self.isLoading = false
             }
             
             print("finish http")
         }
-
+        
     }
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         if datas.count == 0 {//no data avaliable
             if App.isLogin {
@@ -253,12 +302,12 @@ class MessageViewController: UITableViewController {
             return 1
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-
-  
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
@@ -272,21 +321,10 @@ class MessageViewController: UITableViewController {
         imageView.layer.cornerRadius = imageView.frame.width / 2
         timeLabel.text = data.time
         authorLabel.text = data.author//[解析过后的]
-        
-        switch data.type {
-        case .At:
-            messageContent.text = "在主题[\(data.title)]\n\(data.content)"
-        case .Pm:
-            messageContent.text = data.content
-        default: //reply
-            
-            messageContent.text = data.title
-        }
-        
-        messageContent.text = data.title
+        messageContent.text = data.content
         return cell
     }
-
+    
     func loginClick()  {
         //login
         let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
@@ -297,21 +335,21 @@ class MessageViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return !datas[indexPath.row].isRead
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
     }
-  
-
+    
+    
 }

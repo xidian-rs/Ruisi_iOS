@@ -40,7 +40,7 @@ class ArrowLabel: UILabel {
     }
     
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: 7, left: 3, bottom: 3, right: 3)
+        let insets = UIEdgeInsets(top: 12, left: 5, bottom: 5, right: 5)
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 
