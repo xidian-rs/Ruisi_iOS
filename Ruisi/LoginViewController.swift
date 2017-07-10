@@ -25,9 +25,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print("login controller")
-        
         if Settings.remberPassword {
             remberSwitch.isOn = true
             usernameTextField.text = Settings.username

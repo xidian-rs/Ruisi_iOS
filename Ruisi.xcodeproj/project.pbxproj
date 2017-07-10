@@ -52,6 +52,7 @@
 		2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */; };
 		2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */; };
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
+		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -115,6 +116,7 @@
 		2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowLabel.swift; sourceTree = "<group>"; };
 		2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
+		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 				2F16B66B1EA504DD0068EE20 /* Forum.swift */,
 				2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */,
 				2FEDBB621F1113A6006E645D /* PostData.swift */,
+				2FF905841F125F4500B88DA6 /* MessageData.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
+				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2F01C23A1EFF947000102CF2 /* CSS.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
 				2F01C2381EFF946600102CF2 /* Kanna.swift in Sources */,

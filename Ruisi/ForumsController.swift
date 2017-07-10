@@ -8,41 +8,65 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
 
+// didload -> willappear
 class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowLayout{
-
+    let reuseIdentifier = "Cell"
     var datas:[Forums] = []
     let logoDir = "assets/forumlogo/"
     let jsonPath = "assets/forums"
+    var loginState: Bool = false
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if App.isLogin != loginState { //第一次
+            loginState = App.isLogin
+            loadData(loginState: loginState)
+        }
+    }
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.clearsSelectionOnViewWillAppear = true
-        //load json data
+        loginState = App.isLogin
+        loadData(loginState: loginState)
+    }
+    
+    func loadData(loginState: Bool) {
+        print("load forums \(loginState)")
         let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
-        
         if let d = try? Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false)){
-                let json = try? JSONSerialization.jsonObject(with: d, options: [])
-                if let jarray =  json as? [Any]{
-                    for case let jo as [String:Any] in jarray{
-                        let  forumGroup  = Forums(gid: jo["gid"] as! Int, name: jo["name"] as! String,
-                                                  login: jo["login"] as! Bool)
-                        //print("gid = \(jo["gid"] as! Int), name = \(jo["name"] as! String)")
-                        let fs = jo["forums"] as! [Any]
-                        var forums:[Forums.Forum] = []
-                        for case let  f as [String:Any] in fs{
-                            let forum = Forums.Forum(fid: f["fid"] as! Int, name: f["name"] as! String,
-                                                     login: f["login"] as! Bool)
-                            //print("\tfid = \(f["fid"] as! Int), name = \(f["name"] as! String)")
-                            forums.append(forum)
-                        }
-                        
-                        forumGroup.setForums(forums: forums)
-                        datas.append(forumGroup)
+            let json = try? JSONSerialization.jsonObject(with: d, options: [])
+            if let jarray =  json as? [Any]{
+                datas.removeAll()
+                for case let jo as [String:Any] in jarray{
+                    let  forumGroup  = Forums(gid: jo["gid"] as! Int, name: jo["name"] as! String,
+                                              login: jo["login"] as! Bool)
+                    
+                    if !loginState && forumGroup.login {
+                        continue
                     }
+                    
+                    let fs = jo["forums"] as! [Any]
+                    var forums:[Forums.Forum] = []
+                    for case let  f as [String:Any] in fs{
+                        let forum = Forums.Forum(fid: f["fid"] as! Int, name: f["name"] as! String,
+                                                 login: f["login"] as! Bool)
+                        if !loginState && forum.login {
+                            continue
+                        }
+                        forums.append(forum)
+                    }
+                    
+                    forumGroup.setForums(forums: forums)
+                    datas.append(forumGroup)
                 }
-          }
+            }
+        }
+        
+        collectionView?.reloadData()
     }
 
     
@@ -116,7 +140,6 @@ class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowL
     
 
     // MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toPosts"{//版块帖子列表
             if let dest = (segue.destination as? PostsViewController) {
@@ -127,21 +150,5 @@ class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowL
             }
         }
     }
-
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

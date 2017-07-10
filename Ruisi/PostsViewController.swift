@@ -169,7 +169,6 @@ class PostsViewController: UITableViewController {
     
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         if datas.count == 0 {//no data avaliable
             let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
@@ -177,7 +176,8 @@ class PostsViewController: UITableViewController {
             label.textColor = UIColor.black
             label.numberOfLines = 0
             label.textAlignment = .center
-            label.font = UIFont(name: "Palatino-Italic", size: 20)
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = UIColor.lightGray
             label.sizeToFit()
             
             tableView.backgroundView = label;
@@ -190,7 +190,6 @@ class PostsViewController: UITableViewController {
             tableView.separatorStyle = .singleLine
             return 1
         }
-        
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

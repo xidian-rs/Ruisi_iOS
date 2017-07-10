@@ -76,9 +76,7 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     //显示跟多按钮
     func showMoreView(){
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
-        
-        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { (UIAlertAction) in
-            
+        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
             UIApplication.shared.open(URL(string: "http://www.baidu.com")! ,
                                       options: [:],
                                       completionHandler: nil)
@@ -92,8 +90,7 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { (UIAlertAction) in
             print("share click")
             let shareVc =  UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
-            shareVc.setValue("fusjhfbsd", forKey: "subject")
-            
+            shareVc.setValue(self.contentTitle, forKey: "subject")
             self.present(shareVc, animated: true, completion: nil)
         }))
         

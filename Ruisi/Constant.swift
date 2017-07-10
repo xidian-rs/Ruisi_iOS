@@ -55,6 +55,21 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
     }
     
+    //回复
+    public static var messageReply: String {
+        return "\(baseUrl)home.php?mod=space&do=notice&mobile=2"
+    }
+    
+    //pm
+    public static var messagePm: String {
+        return "\(baseUrl)home.php?mod=space&do=pm&mobile=2"
+    }
+    
+    //at
+    public static var messageAt: String {
+        return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&mobile=2"
+    }
+    
     
     // size =0 small 1-middle 2-large
     public static func getAvaterUrl(uid: Int, size: Int = 1) -> String {

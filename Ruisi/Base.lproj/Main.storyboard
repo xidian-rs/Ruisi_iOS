@@ -713,7 +713,11 @@
                             <segments>
                                 <segment title="回复"/>
                                 <segment title="消息"/>
+                                <segment title="提到"/>
                             </segments>
+                            <connections>
+                                <action selector="messageTypeChange:" destination="8Ut-P7-9UV" eventType="valueChanged" id="TNn-OB-6Wf"/>
+                            </connections>
                         </segmentedControl>
                     </navigationItem>
                 </tableViewController>
@@ -1700,6 +1704,6 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xbI-4M-Wcm"/>
+        <segue reference="zbN-ez-pqK"/>
     </inferredMetricsTieBreakers>
 </document>
