@@ -9,13 +9,11 @@
 import Foundation
 
 extension String {
-    var length:Int {
-        return self.characters.count
-    }
-
+    
+    
     func indexOf(target: Character) -> Int?{
-        if let idx = self.characters.index(of: target) {
-            let pos = self.characters.distance(from: self.startIndex, to: idx)
+        if let idx = self.index(of: target) {
+            let pos = self.distance(from: self.startIndex, to: idx)
             return pos
         }else {
             return nil
@@ -58,10 +56,6 @@ extension String {
         return result
     }
     
-    
-    func contains(s: String) -> Bool {
-        return (self.range(of: s) != nil) ? true : false
-    }
 }
 
 
@@ -157,7 +151,7 @@ public class HttpUtil {
         if let p = params{
             var pp: String = ""
             p.forEach({ key,value in
-                if pp.length > 0{
+                if pp.count > 0{
                     pp.append("&")
                 }
                 pp.append(encodeUrl(url: key))

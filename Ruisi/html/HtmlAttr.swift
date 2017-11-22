@@ -94,8 +94,7 @@ class HtmlAttr {
         if let start = start {
             if let s = src.range(of: "\"", range: start..<src.endIndex) {
                 if s.upperBound < src.endIndex, let e = src.range(of: "\"", range: s.upperBound..<src.endIndex) {
-                    return src.substring(with: s.upperBound..<e.lowerBound)
-
+                    return String(src[s.upperBound..<e.lowerBound])
                 }
             }
         }
@@ -114,7 +113,7 @@ class HtmlAttr {
             }
 
             if let color = getAttr(src: src, start: s.upperBound) {
-                if color.characters.first == "#" {
+                if color.first == "#" {
                     return Utils.getHtmlColor(from: color)
                 } else {
                     return Utils.parseColor(int: colors[color.lowercased()])
@@ -128,10 +127,10 @@ class HtmlAttr {
     static func getBgColor(src: String) -> UIColor? {
         if let s = src.range(of: "background-color:") {
             if let end = src.range(of: "\"", range: s.upperBound ..< src.endIndex) {
-                let color = src.substring(with: s.upperBound ..< end.lowerBound)
+                let color = src[s.upperBound ..< end.lowerBound]
                 print("bgcolor \(color)")
-                if color.characters.first == "#" {
-                    return Utils.getHtmlColor(from: color)
+                if color.first == "#" {
+                    return Utils.getHtmlColor(from: String(color))
                 } else {
                     return Utils.parseColor(int: colors[color.lowercased()])
                 }

@@ -17,7 +17,7 @@ class HistoryViewController: UITableViewController {
         
     }
     
-    func delBtnClick() {
+    @objc func delBtnClick() {
         let alert = UIAlertController(title: "清空浏览历史", message: "你要清空你的浏览记录吗", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "清空", style: .destructive, handler: { (action) in
             print("empty history")

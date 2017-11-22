@@ -90,7 +90,7 @@ class HtmlParser {
         repeat {
             if readItem! >= "A" && readItem! <= "Z" {
                 // 大写转小写
-                readItem! = String(readItem!).lowercased().characters.first!
+                readItem! = String(readItem!).lowercased().first!
             }
             buf.append(readItem!)
             read()
@@ -381,7 +381,7 @@ class HtmlParser {
         //不是空
         if buf.count > 0 {
             let text = String(buf).trimmingCharacters(in: .whitespacesAndNewlines)
-            if text.characters.count > 0 {
+            if text.count > 0 {
                 delegate.characters(text: text)
             }
         }
@@ -703,12 +703,12 @@ class HtmlParser {
 
     //判断tag是否相等
     func equalTag(_ start: Int, _ des: String) -> Bool {
-        if buf.count - start < des.characters.count {
+        if buf.count - start < des.count {
             return false
         }
 
         var i = start
-        for c in des.characters {
+        for c in des {
             if buf[i] != c {
                 return false
             }

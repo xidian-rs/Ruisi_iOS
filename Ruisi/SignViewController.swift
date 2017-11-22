@@ -79,7 +79,7 @@ class SignViewController: UIViewController {
             let message: String
             if ok, let s = res.range(of: "恭喜你签到成功"){
                 let end = res.range(of: "</div>", options: .literal, range: s.upperBound ..< res.endIndex)
-                message = res.substring(with: s.lowerBound ..< end!.lowerBound)
+                message = String(res[s.lowerBound ..< end!.lowerBound])
             } else {
                 message = "签到失败 " + res
             }
@@ -117,14 +117,14 @@ class SignViewController: UIViewController {
         HttpUtil.GET(url: Urls.signUrl, params: nil) { ok, res in
             DispatchQueue.main.async { [weak self] in
                 self?.setLoadingState(isLoading: false)
-                if ok ,let doc = HTML(html: res, encoding: .utf8) {
+                if ok ,let doc = try? HTML(html: res, encoding: .utf8) {
                     if res.contains("您今天已经签到过了或者签到时间还未开始") {
                         var daytxt = "0"
                         var monthtxt = "0"
                         for ele in doc.css(".mn p") {
                             if ele.text!.contains("您累计已签到") {
                                 let r = ele.text!.range(of: "您累计已签到")
-                                daytxt = ele.text!.substring(from: r!.lowerBound)
+                                daytxt = String(ele.text![r!.lowerBound])
                             } else if ele.text!.contains("您本月已累计签到") {
                                 monthtxt = ele.text!
                             }

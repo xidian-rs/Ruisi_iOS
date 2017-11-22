@@ -55,9 +55,9 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
         HttpUtil.GET(url: Urls.checkUpdate, params: nil) { ok, res in
             var versionText: String
             if ok {
-                if let doc = HTML(html: res, encoding: .utf8) {
+                if let doc = try? HTML(html: res, encoding: .utf8) {
                     if let i = doc.title?.endIndex(of: "code"){
-                        if let version = Utils.getNum(from: (doc.title!.substring(from: i))) {
+                        if let version = Utils.getNum(from: (String(doc.title![i...]))) {
                             print("server version \(version)")
                             if versionCode < version {
                                 versionText = "已经有新的版本更新,服务器版本 V\(version)"
@@ -101,7 +101,7 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
         self.dismiss(animated: true, completion: nil)
     }
     
-    func feedBackClick() {
+    @objc func feedBackClick() {
         print("feed back")
         
         let emailTitle = "Feedback"
@@ -141,8 +141,8 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
             let data = string.data(using: String.Encoding.unicode, allowLossyConversion: true)
             if let d = data {
                 let str = try NSMutableAttributedString(data: d, options: [
-                    NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],documentAttributes: nil)
-                str.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(18)) as Any], range: NSRange(location: 0, length: str.length))
+                    NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],documentAttributes: nil)
+                str.addAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: CGFloat(18)) as Any], range: NSRange(location: 0, length: str.length))
                 return str
             }
         } catch {

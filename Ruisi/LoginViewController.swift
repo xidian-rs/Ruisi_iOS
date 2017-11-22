@@ -45,12 +45,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
-        if username.characters.count <= 0 {
+        if username.count <= 0 {
             alert(message: "用户名不能为空")
             return
         }
         
-        if password.characters.count <= 0 {
+        if password.count <= 0 {
             alert(message: "密码不能为空")
             return
         }
@@ -65,10 +65,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 }
                 
                 if let start = res.endIndex(of: "action=\""){
-                    let substr = res.substring(from: start)
+                    let substr = String(res[start...])
                     let end = substr.index(of: "\"")
-                    let loginUrl = substr.substring(to: end!)
-                    
+                    let loginUrl = String(substr[..<end!])
                     let params = "username=\(self.username)&password=\(self.password)&fastloginfield=username&cookietime=2592000"
                     
                     HttpUtil.POST(url: loginUrl, params: params, callback: { ok, res in
@@ -113,12 +112,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             } else {
                 let start = res.range(of: "欢迎您回来")!.upperBound
                 let end = res.range(of: "</p>", range: start ..< res.endIndex)!.lowerBound
-                let info = res.substring(with: start ..< end).components(separatedBy: "，")
+                let info = res[start..<end].components(separatedBy: "，")
                 let name = info[1].components(separatedBy: " ")[1]
                 let grade = info[1].components(separatedBy: " ")[0] //注意这是html
                 let indexStart =  res.range(of: "home.php?mod=space",range: start ..< res.endIndex)!.upperBound
                 let indexEnd = res.range(of: "</a>", range: indexStart ..< res.endIndex)!.lowerBound
-                let uid = Utils.getNum(from: res.substring(with: indexStart ..< indexEnd))!
+                let uid = Utils.getNum(from: String(res[indexStart ..< indexEnd]))!
                 
                 print("name: \(name) grade: \(grade) uid:\(uid)")
                 

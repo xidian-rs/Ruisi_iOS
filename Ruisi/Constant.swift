@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 public class App {
     //发布地址tid
     public static let POST_ID = 805203
@@ -25,7 +23,7 @@ public class Urls {
     }
     
     public static let BASE_URL = "http://rs.xidian.edu.cn/"
-    public static let BASE_URL_ME = "http://bbs.rs.xidian.me/"
+    public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
     
     // 签到
     public static let signUrl = "\(BASE_URL)plugin.php?id=dsu_paulsign:sign"

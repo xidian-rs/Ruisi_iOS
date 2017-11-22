@@ -62,7 +62,7 @@ class PostsViewController: UITableViewController {
         loadData()
     }
     
-    func pullRefresh(){
+    @objc func pullRefresh(){
         print("下拉刷新'")
         currentPage = 1
         loadData(position)
@@ -80,7 +80,7 @@ class PostsViewController: UITableViewController {
         HttpUtil.GET(url: url, params: nil) { ok, res in
             var subDatas = [ArticleListDataSimple]()
             if ok && pos == self.position { //返回的数据是我们要的
-                if let doc = HTML(html: res, encoding: .utf8) {
+                if let doc = try? HTML(html: res, encoding: .utf8) {
                     for li in doc.css(".threadlist ul li") {
                         let a = li.css("a").first
                         
@@ -155,7 +155,7 @@ class PostsViewController: UITableViewController {
                 }
                 
                 let attrStr = NSAttributedString(string: str, attributes: [
-                    NSForegroundColorAttributeName:UIColor.gray])
+                    NSAttributedStringKey.foregroundColor:UIColor.gray])
                 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
                     self.refreshView.attributedTitle = attrStr

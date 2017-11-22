@@ -97,24 +97,30 @@ internal final class libxmlHTMLDocument: HTMLDocument {
         }
     }
     
-    init?(html: String, url: String?, encoding: String.Encoding, option: UInt) {
+    init(html: String, url: String?, encoding: String.Encoding, option: UInt) throws {
         self.html = html
         self.url  = url
         self.encoding = encoding
         
-        if html.lengthOfBytes(using: encoding) <= 0 {
-            return nil
+        guard html.lengthOfBytes(using: encoding) > 0 else {
+            throw ParseError.Empty
         }
-
+        
         let cfenc : CFStringEncoding = CFStringConvertNSStringEncodingToEncoding(encoding.rawValue)
-        let cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc)
-        if let cur = html.cString(using: encoding) {
-            let url : String = ""
-            docPtr = htmlReadDoc(UnsafeRawPointer(cur).assumingMemoryBound(to: xmlChar.self), url, String(describing: cfencstr!), CInt(option))
-            rootNode  = libxmlHTMLNode(document: self, docPtr: docPtr!)
-        } else {
-            return nil
+
+        guard let cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc),
+            let cur = html.cString(using: encoding) else {
+            throw ParseError.EncodingMismatch
         }
+        
+        let url : String = ""
+        docPtr = htmlReadDoc(UnsafeRawPointer(cur).assumingMemoryBound(to: xmlChar.self), url, String(describing: cfencstr), CInt(option))
+        
+        guard let docPtr = docPtr else {
+            throw ParseError.EncodingMismatch
+        }
+        
+        rootNode  = libxmlHTMLNode(document: self, docPtr: docPtr)
     }
     
     deinit {
@@ -224,13 +230,13 @@ internal final class libxmlXMLDocument: XMLDocument {
         }
     }
     
-    init?(xml: String, url: String?, encoding: String.Encoding, option: UInt) {
+    init(xml: String, url: String?, encoding: String.Encoding, option: UInt) throws {
         self.xml  = xml
         self.url  = url
         self.encoding = encoding
         
-        if xml.lengthOfBytes(using: encoding) <= 0 {
-            return nil
+        if xml.isEmpty {
+            throw ParseError.Empty
         }
         let cfenc : CFStringEncoding = CFStringConvertNSStringEncodingToEncoding(encoding.rawValue)
         let cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc)
@@ -239,7 +245,7 @@ internal final class libxmlXMLDocument: XMLDocument {
             docPtr = xmlReadDoc(UnsafeRawPointer(cur).assumingMemoryBound(to: xmlChar.self), url, String(describing:  cfencstr!), CInt(option))
             rootNode  = libxmlHTMLNode(document: self, docPtr: docPtr!)
         } else {
-            return nil
+            throw ParseError.EncodingMismatch
         }
     }
 

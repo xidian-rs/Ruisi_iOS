@@ -13,7 +13,7 @@
         {"name": "绝对漫域", "fid": 140, "login": true},
         {"name": "游间客栈", "fid": 139, "login": true},
         {"name": "大话体坛", "fid": 122, "login": true},
-        {"name": "邀请专区", "fid": 563, "login": false}
+        {"name": "邀请专区", "fid": 563, "login": true}
       ]
   },
 

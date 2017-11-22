@@ -16,7 +16,7 @@ public class Widgets {
         target.backgroundColor = UIColor(white: 0.98, alpha: 1)
         target.tintColor = UIColor.gray
         target.attributedTitle = NSAttributedString(string: "下拉刷新",attributes: [
-            NSForegroundColorAttributeName:UIColor.gray])
+            NSAttributedStringKey.foregroundColor:UIColor.gray])
     }
     
 }

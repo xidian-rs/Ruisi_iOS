@@ -69,12 +69,12 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     
     
     //刷新数据
-    func refreshData() {
+    @objc func refreshData() {
         print("refresh click")
     }
     
     //显示跟多按钮
-    func showMoreView(){
+    @objc func showMoreView(){
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
             UIApplication.shared.open(URL(string: "http://www.baidu.com")! ,
@@ -161,9 +161,9 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         
         HttpUtil.GET(url: url, params: nil) { ok, res in
             var subDatas = [PostData]()
-            if ok ,let doc = HTML(html: res, encoding: .utf8) {
+            if ok , let doc = try? HTML(html: res, encoding: .utf8) {
                 if self.contentTitle == nil, let t = doc.title {
-                    self.contentTitle = t.substring(to: t.index(of: " - ")!)
+                    self.contentTitle = String(t[..<t.index(of: " - ")!])
                 }
                 
                 let comments = doc.css(".postlist .plc.cl")
@@ -187,7 +187,7 @@ class PostViewController: UITableViewController,UITextViewDelegate {
                     for comment in comments {
                         var pid: String?
                         if let spid = comment["id"] {
-                            pid = spid.substring(from: spid.range(of: "pid")!.upperBound)
+                            pid = String(spid[spid.range(of: "pid")!.upperBound...])
                         } else {
                             // pid 都没有和咸鱼有什么区别
                             continue

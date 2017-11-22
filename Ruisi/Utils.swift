@@ -13,7 +13,7 @@ public class Utils {
     public static func getNum(from str: String) -> Int? {
         var digitals = [Character]()
         
-        for i in str.characters {
+        for i in str {
             if digitals.count > 0 {
                 if i >= "0" && i <= "9" {
                     digitals.append(i)
@@ -36,7 +36,7 @@ public class Utils {
         if let ss = str {
             if let s = ss.range(of: "#")?.upperBound {
                 if let e = ss.index(s, offsetBy: 6, limitedBy: ss.endIndex) {
-                    if let i = Int(ss.substring(with: s ..< e), radix: 16) {
+                    if let i = Int(ss[s ..< e], radix: 16) {
                         return parseColor(int: i)
                     }
                 }

@@ -7,11 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F01C2381EFF946600102CF2 /* Kanna.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2371EFF946600102CF2 /* Kanna.swift */; };
-		2F01C23A1EFF947000102CF2 /* CSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2391EFF947000102CF2 /* CSS.swift */; };
-		2F01C23C1EFF949100102CF2 /* libxmlHTMLDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */; };
-		2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */; };
-		2F01C2401EFF94A100102CF2 /* libxmlParserOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */; };
 		2F01C2421EFF94B800102CF2 /* Modules in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2411EFF94B800102CF2 /* Modules */; };
 		2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2451EFF9CE900102CF2 /* Launch.storyboard */; };
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
@@ -44,6 +39,12 @@
 		2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7C75B01EFE356F0067D499 /* SignViewController.swift */; };
 		2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AD6951EA787EE002540AA /* LoginViewController.swift */; };
 		2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */; };
+		2F90869B1FC5B1E6008773AA /* libxmlParserOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9086961FC5B1E6008773AA /* libxmlParserOption.swift */; };
+		2F90869C1FC5B1E6008773AA /* libxmlHTMLNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9086971FC5B1E6008773AA /* libxmlHTMLNode.swift */; };
+		2F90869D1FC5B1E6008773AA /* CSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9086981FC5B1E6008773AA /* CSS.swift */; };
+		2F90869E1FC5B1E6008773AA /* Kanna.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9086991FC5B1E6008773AA /* Kanna.swift */; };
+		2F90869F1FC5B1E6008773AA /* libxmlHTMLDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F90869A1FC5B1E6008773AA /* libxmlHTMLDocument.swift */; };
+		2F9086A51FC5B7FD008773AA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F9086A41FC5B7FD008773AA /* Info.plist */; };
 		2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E41EA615A90058EDB4 /* MyViewController.swift */; };
 		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
 		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
@@ -69,11 +70,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2F01C2371EFF946600102CF2 /* Kanna.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kanna.swift; sourceTree = "<group>"; };
-		2F01C2391EFF947000102CF2 /* CSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSS.swift; sourceTree = "<group>"; };
-		2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLDocument.swift; sourceTree = "<group>"; };
-		2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLNode.swift; sourceTree = "<group>"; };
-		2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlParserOption.swift; sourceTree = "<group>"; };
 		2F01C2411EFF94B800102CF2 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Modules; sourceTree = "<group>"; };
 		2F01C2451EFF9CE900102CF2 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +79,6 @@
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F16B5EA1EA502420068EE20 /* Ruisi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Ruisi.xcdatamodel; sourceTree = "<group>"; };
 		2F16B5EC1EA502420068EE20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2F16B5F11EA502420068EE20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
@@ -108,6 +103,14 @@
 		2F7C75B01EFE356F0067D499 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
 		2F8AD6951EA787EE002540AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		2F9086951FC5B1E6008773AA /* Kanna.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kanna.h; path = "../../../../Downloads/Kanna-feature-v4.0.0/Sources/Kanna/Kanna.h"; sourceTree = "<group>"; };
+		2F9086961FC5B1E6008773AA /* libxmlParserOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlParserOption.swift; sourceTree = "<group>"; };
+		2F9086971FC5B1E6008773AA /* libxmlHTMLNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLNode.swift; sourceTree = "<group>"; };
+		2F9086981FC5B1E6008773AA /* CSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSS.swift; sourceTree = "<group>"; };
+		2F9086991FC5B1E6008773AA /* Kanna.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kanna.swift; sourceTree = "<group>"; };
+		2F90869A1FC5B1E6008773AA /* libxmlHTMLDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = libxmlHTMLDocument.swift; sourceTree = "<group>"; };
+		2F9086A41FC5B7FD008773AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2F9086A81FC5C804008773AA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		2F9771E41EA615A90058EDB4 /* MyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
 		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -156,11 +159,12 @@
 		2F01C2361EFF942600102CF2 /* Kanna */ = {
 			isa = PBXGroup;
 			children = (
-				2F01C2371EFF946600102CF2 /* Kanna.swift */,
-				2F01C2391EFF947000102CF2 /* CSS.swift */,
-				2F01C23B1EFF949100102CF2 /* libxmlHTMLDocument.swift */,
-				2F01C23D1EFF949600102CF2 /* libxmlHTMLNode.swift */,
-				2F01C23F1EFF94A100102CF2 /* libxmlParserOption.swift */,
+				2F9086981FC5B1E6008773AA /* CSS.swift */,
+				2F9086951FC5B1E6008773AA /* Kanna.h */,
+				2F9086991FC5B1E6008773AA /* Kanna.swift */,
+				2F90869A1FC5B1E6008773AA /* libxmlHTMLDocument.swift */,
+				2F9086971FC5B1E6008773AA /* libxmlHTMLNode.swift */,
+				2F9086961FC5B1E6008773AA /* libxmlParserOption.swift */,
 				2F01C2411EFF94B800102CF2 /* Modules */,
 			);
 			name = Kanna;
@@ -196,12 +200,12 @@
 				2F16B5E61EA502420068EE20 /* Main.storyboard */,
 				2F16B5EC1EA502420068EE20 /* Assets.xcassets */,
 				2F01C2451EFF9CE900102CF2 /* Launch.storyboard */,
-				2F16B5F11EA502420068EE20 /* Info.plist */,
 				2F16B5E91EA502420068EE20 /* Ruisi.xcdatamodeld */,
 				2F9772451EA65A3F0058EDB4 /* Constant.swift */,
 				2F5DF0C41EFE750A00428EE1 /* Settings.swift */,
 				2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */,
 				2F175F801F01FCCA00DDEED9 /* Utils.swift */,
+				2F9086A41FC5B7FD008773AA /* Info.plist */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -276,12 +280,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = yang;
 				TargetAttributes = {
 					2F16B5DE1EA502420068EE20 = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = 3B86X32L6X;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -291,7 +295,6 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 			);
 			mainGroup = 2F16B5D61EA502420068EE20;
@@ -315,6 +318,7 @@
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
 				2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */,
 				2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */,
+				2F9086A51FC5B7FD008773AA /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */,
+				2F90869B1FC5B1E6008773AA /* libxmlParserOption.swift in Sources */,
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
 				2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */,
@@ -335,35 +340,34 @@
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
-				2F01C23C1EFF949100102CF2 /* libxmlHTMLDocument.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
 				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
-				2F01C2401EFF94A100102CF2 /* libxmlParserOption.swift in Sources */,
 				2F46F7271F0786F700207B17 /* HtmlNode.swift in Sources */,
+				2F90869C1FC5B1E6008773AA /* libxmlHTMLNode.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
 				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
+				2F90869F1FC5B1E6008773AA /* libxmlHTMLDocument.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F46F7251F0786F700207B17 /* AtrributeConveter.swift in Sources */,
 				2F16B5EB1EA502420068EE20 /* Ruisi.xcdatamodeld in Sources */,
+				2F90869E1FC5B1E6008773AA /* Kanna.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
 				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
-				2F01C23E1EFF949600102CF2 /* libxmlHTMLNode.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
-				2F01C23A1EFF947000102CF2 /* CSS.swift in Sources */,
+				2F90869D1FC5B1E6008773AA /* CSS.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
-				2F01C2381EFF946600102CF2 /* Kanna.swift in Sources */,
 				2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,6 +379,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				2F16B5E71EA502420068EE20 /* Base */,
+				2F9086A81FC5C804008773AA /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -386,13 +391,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -400,7 +408,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -423,7 +435,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -436,13 +448,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -450,7 +465,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -467,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -479,15 +498,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3B86X32L6X;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -496,15 +516,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3B86X32L6X;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.yluo.Ruisi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

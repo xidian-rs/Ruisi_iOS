@@ -113,7 +113,7 @@ class MessageViewController: UITableViewController {
         }
     }
     
-    func pullRefresh() {
+    @objc func pullRefresh() {
         print("下拉刷新'")
         currentPage = 1
         loadData(pos: position)
@@ -135,9 +135,9 @@ class MessageViewController: UITableViewController {
             if ok && pos == self.position { //返回的数据是我们要的
                 let nodes: XPathObject
                 if pos == 0 || pos == 2 { // reply at
-                    nodes = (HTML(html: res, encoding: .utf8)?.css(".nts .cl"))!
+                    nodes = try! HTML(html: res, encoding: .utf8).css(".nts .cl")
                 } else {// pm
-                    nodes = (HTML(html: res, encoding: .utf8)?.css(".pmbox ul li"))!
+                    nodes = try! HTML(html: res, encoding: .utf8).css(".pmbox ul li")
                 }
                 
                 
@@ -257,7 +257,7 @@ class MessageViewController: UITableViewController {
             DispatchQueue.main.async {
                 if let text = infoText {
                     let attrStr = NSAttributedString(string: text, attributes: [
-                        NSForegroundColorAttributeName:UIColor.gray])
+                        NSAttributedStringKey.foregroundColor:UIColor.gray])
                     self.refreshView.attributedTitle = attrStr
                 }
                 self.isLoading = false
@@ -325,7 +325,7 @@ class MessageViewController: UITableViewController {
         return cell
     }
     
-    func loginClick()  {
+    @objc func loginClick()  {
         //login
         let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
         self.present(dest!, animated: true, completion: nil)

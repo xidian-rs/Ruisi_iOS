@@ -49,11 +49,11 @@ class AtrributeConveter: HtmlParserDelegate {
     func convert(src: String) -> NSAttributedString {
         HtmlParser(src: src, delegate: self).parse()
         
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: fontSize), range: NSMakeRange(0, position))
+        attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: fontSize), range: NSMakeRange(0, position))
         
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.lineHeightMultiple = CGFloat(1.2)
-        attributedString.addAttribute(NSParagraphStyleAttributeName,value: paraStyle,range: NSMakeRange(0, position))
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,value: paraStyle,range: NSMakeRange(0, position))
         return attributedString
     }
     
@@ -107,7 +107,7 @@ class AtrributeConveter: HtmlParserDelegate {
             // todo 会覆盖表情 待解决
             break
         case .B,.STRONG,.H1, .H2, .H3, .H4, .H5, .H6:
-            addAttrs(attrs: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: fontSize)], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue):UIFont.boldSystemFont(ofSize: fontSize)], start: start)
         case .P:
             handleParagraph(start: start, attr: node?.attr)
         case .A:
@@ -118,34 +118,34 @@ class AtrributeConveter: HtmlParserDelegate {
                     start += 1
                 }
             }
-            addAttrs(attrs: [NSLinkAttributeName: URL(string: node!.attr?.href ?? "", relativeTo: baseURL) ?? baseURL as Any], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.link.rawValue): URL(string: node!.attr?.href ?? "", relativeTo: baseURL) ?? baseURL as Any], start: start)
             break
         case .I, .EM, .CITE, .DFN:
-            addAttrs(attrs: [NSObliquenessAttributeName:0.3], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.obliqueness.rawValue):0.3], start: start)
         case .DEL, .S, .STRIKE:
-            addAttrs(attrs: [NSStrikethroughStyleAttributeName: 1], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.strikethroughStyle.rawValue): 1], start: start)
         case .U, .INS:
-            addAttrs(attrs: [NSUnderlineStyleAttributeName: 1], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.underlineStyle.rawValue): 1], start: start)
         case .LI:
             //setSpan(start, new Li());
             break;
         case .PRE ,.BLOCKQUOTE:
-            addAttrs(attrs: [NSForegroundColorAttributeName: UIColor.darkGray], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.darkGray], start: start)
         case .Q, .CODE, .KBD:
             //等宽 字体
-            addAttrs(attrs: [NSBackgroundColorAttributeName: UIColor(white: 0.96, alpha: 1)], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.backgroundColor.rawValue): UIColor(white: 0.96, alpha: 1)], start: start)
         case .FONT:
             if let color = node?.attr?.color {
-                addAttrs(attrs: [NSForegroundColorAttributeName: color], start: start)
+                addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): color], start: start)
             }
             
             if let bgColor = node?.attr?.bgColor {
-                addAttrs(attrs: [NSBackgroundColorAttributeName: bgColor], start: start)
+                addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.backgroundColor.rawValue): bgColor], start: start)
             }
         case .BIG:
-            addAttrs(attrs: [NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(fontSize  * 1.2))], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont.systemFont(ofSize: CGFloat(fontSize  * 1.2))], start: start)
         case .SMALL:
-            addAttrs(attrs: [NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(fontSize * 0.8))], start: start)
+            addAttrs(attrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont.systemFont(ofSize: CGFloat(fontSize * 0.8))], start: start)
         default:
             break
         }
@@ -165,7 +165,7 @@ class AtrributeConveter: HtmlParserDelegate {
         if position <= 1 {
             return
         }
-        let c = attributedString.string.characters.last!
+        let c = attributedString.string.last!
         if c != "\n" {
             attributedString.append(NSAttributedString(string: "\n"))
         }
@@ -173,7 +173,7 @@ class AtrributeConveter: HtmlParserDelegate {
     
     
     // 添加属性
-    private func addAttrs(attrs: [String: Any], start: Int) {
+    private func addAttrs(attrs: [NSAttributedStringKey: Any], start: Int) {
         if start >= position {
             return
         }
@@ -186,7 +186,7 @@ class AtrributeConveter: HtmlParserDelegate {
         if let textAlign = attr?.textAlign {
             let style = NSMutableParagraphStyle()
             style.alignment = textAlign
-            attributedString.addAttributes([NSParagraphStyleAttributeName:style],range: NSMakeRange(0, position))
+            attributedString.addAttributes([NSAttributedStringKey.paragraphStyle:style],range: NSMakeRange(0, position))
         }
     }
     

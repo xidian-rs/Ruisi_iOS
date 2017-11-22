@@ -67,7 +67,7 @@ class MyViewController: UIViewController,UITableViewDelegate,
     
     
     // 手势处理函数
-    func tapHandler(sender:UITapGestureRecognizer) {
+    @objc func tapHandler(sender:UITapGestureRecognizer) {
         if let v = sender.view {
             switch v {
             case avaterImage:
