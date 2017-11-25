@@ -6,10 +6,10 @@ Android客户端见[Ruisi](https://github.com/freedom10086/Ruisi)
 暂无
 
 ### 软件截图
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/1.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/2.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/3.jpg)
-![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/4.jpg)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/1.jpg)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/2.jpg)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/3.jpg)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/4.jpg)
 
 ### 意见和反馈
 - freedom10086 <2351386755@qq.com>
