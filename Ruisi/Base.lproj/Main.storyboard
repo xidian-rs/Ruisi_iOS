@@ -219,7 +219,7 @@
         <!--帖子详情-->
         <scene sceneID="yFl-Fa-IO4">
             <objects>
-                <tableViewController title="帖子内容" id="9dS-VM-kf0" userLabel="帖子详情" customClass="PostViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="帖子内容" hidesBottomBarWhenPushed="YES" id="9dS-VM-kf0" userLabel="帖子详情" customClass="PostViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VFD-QX-IFy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -238,7 +238,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="1At-G4-2P9" userLabel="头像">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="1At-G4-2P9" userLabel="头像">
                                             <rect key="frame" x="16" y="41.5" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="40" id="doz-oe-jtP"/>
@@ -305,7 +305,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="164.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="AAd-k9-llh" userLabel="头像">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="AAd-k9-llh" userLabel="头像">
                                             <rect key="frame" x="16" y="14" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="AAd-k9-llh" secondAttribute="height" multiplier="1:1" id="4O5-BB-Raq"/>
@@ -377,6 +377,7 @@
                         </connections>
                     </tableView>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxu-p5-xxX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -849,7 +850,7 @@
                                             <action selector="signBtnClick:" destination="SrL-DD-cGj" eventType="touchUpInside" id="xZh-Ss-80M"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Fd9-kx-NDK">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Fd9-kx-NDK">
                                         <rect key="frame" x="118" y="135" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="SbR-XL-njz"/>
@@ -1719,6 +1720,6 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zbN-ez-pqK"/>
+        <segue reference="Nxy-6Q-Wol"/>
     </inferredMetricsTieBreakers>
 </document>

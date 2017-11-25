@@ -46,7 +46,7 @@ public class Settings {
         }
     }
     
-    
+    //用户名
     public static var username: String? {
         get {
             return UserDefaults.standard.string(forKey: key_username)
@@ -57,6 +57,7 @@ public class Settings {
         }
     }
     
+    //密码
     public static var password: String? {
         get {
             return UserDefaults.standard.string(forKey: key_password)
@@ -67,6 +68,7 @@ public class Settings {
         }
     }
     
+    //是否记住密码
     public static var remberPassword: Bool {
         get {
             return UserDefaults.standard.bool(forKey: key_rember_password)
@@ -111,6 +113,7 @@ public class Settings {
     }
     
     //size = 0 small 1 = middle 2 = large
+    //下载并保存头像
     private static var isLoadingAvater = false
     public static func getAvater(uid: Int,size: Int = 1,callback: @escaping (Data?) -> Void) {
         var d: Data?
@@ -121,8 +124,7 @@ public class Settings {
         
         DispatchQueue.global(qos:.userInitiated).async {
             do {
-                try d =  Data(contentsOf: URL(string: Urls.getAvaterUrl(uid: uid,size: size))!)
-                
+                try d =  Data(contentsOf: Urls.getAvaterUrl(uid: uid,size: size)!)
                 if d != nil {
                     setAvater(uid: uid,size: size, data: d!)
                     callback(d)
@@ -136,6 +138,7 @@ public class Settings {
         }
     }
     
+    //设置头像
     public static func setAvater(uid: Int, size: Int = 1,data: Data) {
         DispatchQueue.global(qos: .background).async {
             UserDefaults.standard.set(data, forKey: "\(key_avater)_\(size)")

@@ -79,6 +79,7 @@
     "login":false,
     "gid":1,
     "forums": [
+      {"name": "新人指南", "fid": 566, "login": false},
       {"name": "腾讯创新俱乐部", "fid": 138, "login": false},
       {"name": "华为创新俱乐部", "fid": 150, "login": false},
       {"name": "举报专区", "fid": 119, "login": true},

@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import CoreData
+import Kingfisher
 
 // 帖子详情页
 class PostViewController: UITableViewController,UITextViewDelegate {
     
     var tid: Int? // 由前一个页面传过来的值
+    var saveToHistory = false //是否保存到历史记录
     private var loading = false
     var datas =  [PostData]()
     var contentTitle: String?
@@ -73,14 +76,12 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         print("refresh click")
     }
     
-    //显示跟多按钮
+    //显示更多按钮
     @objc func showMoreView(){
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
-            UIApplication.shared.open(URL(string: "http://www.baidu.com")! ,
-                                      options: [:],
-                                      completionHandler: nil)
-            
+            UIApplication.shared.open(URL(string: self.url)! ,
+                                      options: [:], completionHandler: nil)
         }))
         
         sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { (UIAlertAction) in
@@ -140,9 +141,11 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         let time = cell.viewWithTag(4) as! UILabel
         let content = cell.viewWithTag(5) as! UITextView
         
+        lz.isHidden = datas[0].author != data.author
+        
         author.text = data.author
         time.text = "发表于:\(data.time)"
-        
+        img.kf.setImage(with:  Urls.getAvaterUrl(uid: data.uid))
         content.delegate = self
         content.isEditable = false
         content.isScrollEnabled  = false
@@ -205,7 +208,7 @@ class PostViewController: UITableViewController,UITextViewDelegate {
                         
                         var time: String?
                         if let stime = infoNode.first?.css(".rela").first {
-                            time = stime.text?.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "收藏", with: "")
+                            time = stime.text?.replacingOccurrences(of: "收藏", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                         }
                         
                         //层主url
@@ -239,6 +242,11 @@ class PostViewController: UITableViewController,UITextViewDelegate {
                 self.datas = subDatas
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    
+                    if !self.saveToHistory && subDatas.count > 0{
+                        self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
+                        self.saveToHistory = true
+                    }
                 }
             } else {
                 let count = self.datas.count
@@ -267,7 +275,6 @@ class PostViewController: UITableViewController,UITextViewDelegate {
     }
     
     
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -289,9 +296,43 @@ class PostViewController: UITableViewController,UITextViewDelegate {
         self.present(alert, animated: true)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    // 保存到历史记录
+    private func saveToHistory(tid:String,title:String,author:String?,created:String?){
+        let app = UIApplication.shared.delegate as! AppDelegate
+        let context = app.persistentContainer.viewContext
+        
+        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
+        fetchRequest.fetchLimit = 1
+        fetchRequest.fetchOffset = 0
+        let entity = NSEntityDescription.entity(forEntityName: "History", in: context)
+        fetchRequest.entity = entity
+        
+        let predicate = NSPredicate.init(format: "tid = '\(String(describing: tid))'", "")
+        fetchRequest.predicate = predicate
+        
+        let fetchedObjects = try? context.fetch(fetchRequest) as? [History]
+        if fetchedObjects != nil && fetchedObjects!!.count > 0 {
+            for one in fetchedObjects!! {
+                print("update history...")
+                one.title = title
+                one.author = author
+                one.created = created
+                one.time = Int64(Date().timeIntervalSince1970)
+                app.saveContext()
+            }
+        } else {
+            print("insert to history...")
+            let insert = NSEntityDescription.insertNewObject(forEntityName: "History", into:context) as! History
+            insert.tid = tid
+            insert.title = title
+            insert.author = author
+            insert.created = created
+            insert.time = Int64(Date().timeIntervalSince1970)
+            app.saveContext()
+        }
     }
+    
+
     /*
      // MARK: - Navigation
      

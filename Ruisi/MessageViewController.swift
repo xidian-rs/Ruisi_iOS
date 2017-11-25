@@ -135,12 +135,10 @@ class MessageViewController: UITableViewController {
             if ok && pos == self.position { //返回的数据是我们要的
                 let nodes: XPathObject
                 if pos == 0 || pos == 2 { // reply at
-                    nodes = try! HTML(html: res, encoding: .utf8).css(".nts .cl")
+                    nodes = try! HTML(html: res, encoding: .utf8).xpath("//*[@id=\"ct\"]/div[1]/div/div[1]/div/dl") //.css(".nts .cl")
                 } else {// pm
-                    nodes = try! HTML(html: res, encoding: .utf8).css(".pmbox ul li")
+                    nodes = try! HTML(html: res, encoding: .utf8).xpath("/html/body/div[1]/ul/li") //.css(".pmbox ul li")
                 }
-                
-                
                 var type: MessageType
                 var title: String
                 var tid: Int
@@ -192,8 +190,9 @@ class MessageViewController: UITableViewController {
                         let id = Utils.getNum(from: ele["notice"] ?? "0") ?? 0
                         isRead =  (id <= messageId)
                         time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
-                        if let t = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first {
-                            tid = Utils.getNum(from: t.text!) ?? 0
+                    
+                        if let t = ele.xpath("dd[2]/a[2]").first {
+                            tid = Utils.getNum(from: t["href"]!) ?? 0
                         } else {
                             tid = 0
                         }
@@ -348,7 +347,12 @@ class MessageViewController: UITableViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+                let index = tableView.indexPath(for: cell)!
+                dest.title = datas[index.row].title
+                dest.tid = datas[index.row].tid
+            }
     }
     
     

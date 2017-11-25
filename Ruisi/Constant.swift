@@ -70,7 +70,8 @@ public class Urls {
     
     
     // size =0 small 1-middle 2-large
-    public static func getAvaterUrl(uid: Int, size: Int = 1) -> String {
+    // 获得头像链接
+    public static func getAvaterUrl(uid: Any, size: Int = 1) -> URL?{
         let sizeStr: String
         if size == 0 {
             sizeStr = "small"
@@ -80,7 +81,7 @@ public class Urls {
             sizeStr = "middle"
         }
         
-        return "\(baseUrl)ucenter/avatar.php?uid=\(uid)&size=\(sizeStr)&mobile=2"
+        return URL(string: "\(baseUrl)ucenter/avatar.php?uid=\(uid)&size=\(sizeStr)&mobile=2")
     }
     
 }
