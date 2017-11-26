@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 // 文章列表数据元
-public class ArticleListDataSimple {
+public class ArticleListData {
     public var title: String
     public var tid: Int
     public var author: String
@@ -19,7 +19,7 @@ public class ArticleListDataSimple {
     public var haveImage: Bool
     public var titleColor: UIColor? //文章颜色
     
-    init(title:String,tid: Int,author:String,replys:String,read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil) {
+    init(title:String,tid: Int,author:String = "未知",replys:String = "0",read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil) {
         self.title = title
         self.tid = tid
         self.author = author

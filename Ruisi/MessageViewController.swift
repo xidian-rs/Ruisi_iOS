@@ -312,12 +312,13 @@ class MessageViewController: UITableViewController {
         
         let data  = datas[indexPath.row]
         
-        let imageView = cell.viewWithTag(1) as! UIImageView
+        let avaterView = cell.viewWithTag(1) as! UIImageView
         let authorLabel = cell.viewWithTag(2) as! UILabel
         let timeLabel  = cell.viewWithTag(3) as! UILabel
         let messageContent = cell.viewWithTag(4) as! UILabel
         
-        imageView.layer.cornerRadius = imageView.frame.width / 2
+        avaterView.layer.cornerRadius = avaterView.frame.width / 2
+        avaterView.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid ?? 0), placeholder: #imageLiteral(resourceName: "placeholder"), options: nil, progressBlock: nil, completionHandler: nil)
         timeLabel.text = data.time
         authorLabel.text = data.author//[解析过后的]
         messageContent.text = data.content

@@ -15,7 +15,7 @@ class PostsViewController: UITableViewController {
     var currentPage = 1
     var position = 0 //为了hotnew而准备的
     var refreshView: UIRefreshControl!
-    var datas  = [ArticleListDataSimple]()
+    var datas  = [ArticleListData]()
     
     open var isLoading: Bool{
         get{
@@ -78,49 +78,13 @@ class PostsViewController: UITableViewController {
         
         print("load data page \(currentPage)")
         HttpUtil.GET(url: url, params: nil) { ok, res in
-            var subDatas = [ArticleListDataSimple]()
+            var subDatas:[ArticleListData] = []
             if ok && pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
-                    for li in doc.css(".threadlist ul li") {
-                        let a = li.css("a").first
-                        
-                        var tid: Int?
-                        if let u = a?["href"] {
-                            tid = Utils.getNum(from: u)
-                        } else {
-                            //没有tid和咸鱼有什么区别
-                            continue
-                        }
-                        
-                        var replysStr: String?
-                        var authorStr: String?
-                        let replys = li.css("span.num").first
-                        let author = li.css(".by").first
-                        if let r =  replys {
-                            replysStr = r.text
-                            a?.removeChild(r)
-                        }
-                        if let au =  author {
-                            authorStr = au.text
-                            a?.removeChild(au)
-                        }
-                        let img = (li.css("img").first)?["src"]
-                        var haveImg = false
-                        if let i =  img {
-                            haveImg = i.contains("icon_tu.png")
-                        }
-                        
-                    
-                        let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
-                        
-                        let color =  Utils.getHtmlColor(from: a?["style"])
-                        let d = ArticleListDataSimple(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
-                        subDatas.append(d)
-                    }
-                    
-                    print("finish load data pos:\(pos) count:\(subDatas.count)")
+                    subDatas = self.parseData(pos: pos, doc: doc)
                 }
             }
+        
             
             //load data ok
             if pos == self.position {
@@ -165,6 +129,48 @@ class PostsViewController: UITableViewController {
             
             print("finish http")
         }
+    }
+    
+    func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
+        var subDatas:[ArticleListData] = []
+        for li in doc.css(".threadlist ul li") {
+            let a = li.css("a").first
+            
+            var tid: Int?
+            if let u = a?["href"] {
+                tid = Utils.getNum(from: u)
+            } else {
+                //没有tid和咸鱼有什么区别
+                continue
+            }
+            
+            var replysStr: String?
+            var authorStr: String?
+            let replys = li.css("span.num").first
+            let author = li.css(".by").first
+            if let r =  replys {
+                replysStr = r.text
+                a?.removeChild(r)
+            }
+            if let au =  author {
+                authorStr = au.text
+                a?.removeChild(au)
+            }
+            let img = (li.css("img").first)?["src"]
+            var haveImg = false
+            if let i =  img {
+                haveImg = i.contains("icon_tu.png")
+            }
+            
+            let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+            let color =  Utils.getHtmlColor(from: a?["style"])
+            let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+            subDatas.append(d)
+        }
+        
+        print("finish load data pos:\(pos) count:\(subDatas.count)")
+        
+        return subDatas
     }
     
 

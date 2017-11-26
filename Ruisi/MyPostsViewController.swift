@@ -8,7 +8,12 @@
 
 import UIKit
 
-class MyPostsViewController: UITableViewController {
+// 我的帖子
+class MyPostsViewController: PostsViewController {
+    
+    override open var url: String {
+        return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(currentPage)"
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,76 +25,59 @@ class MyPostsViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
+    override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
+        var subDatas:[ArticleListData] = []
+        for li in doc.xpath("/html/body/div[1]/ul/li") {
+            let a = li.css("a").first
+            var tid: Int?
+            if let u = a?["href"] {
+                tid = Utils.getNum(from: u)
+            } else {
+                //没有tid和咸鱼有什么区别
+                continue
+            }
+            
+            let img = (li.css("img").first)?["src"]
+            var haveImg = false
+            if let i =  img {
+                haveImg = i.contains("icon_tu.png")
+            }
+            
+            var replyStr: String
+            let replys = li.css("span.num").first
+            if let r =  replys {
+                replyStr = r.text!
+            }else {
+                replyStr = "-"
+            }
+            
+            
+            let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+            let color =  Utils.getHtmlColor(from: a?["style"])
+            
+            let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!,replys: replyStr, haveImage:haveImg, titleColor: color)
+            subDatas.append(d)
+        }
+        
+        print("finish load data pos:\(pos) count:\(subDatas.count)")
+        return subDatas
     }
 
-    // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        let titleLabel = cell.viewWithTag(1) as! UILabel
+        let commentsLabel = cell.viewWithTag(3) as! UILabel
+        let d = datas[indexPath.row]
+        
+        titleLabel.text = d.title
+        if let color = d.titleColor {
+            titleLabel.textColor = color
+        }
 
-        // Configure the cell...
-
+        commentsLabel.text = d.replyCount
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -68,6 +68,21 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&mobile=2"
     }
     
+    //收藏
+    public static func getStarUrl(uid:Int?) -> String {
+        if uid == nil {
+            return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
+        }
+        return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=favorite&view=me&type=thread&mobile=2"
+    }
+    
+    // 我的帖子
+    public static func getMyPostsUrl(uid:Int?) -> String {
+        if uid == nil {
+            return "\(baseUrl)forum.php?mod=guide&view=my&mobile=2"
+        }
+        return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=thread&view=me&mobile=2"
+    }
     
     // size =0 small 1-middle 2-large
     // 获得头像链接

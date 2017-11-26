@@ -13,8 +13,7 @@ class MainViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        print("main")
+        checkUpdate()
     }
     
     //selectedIndex 之前选择的位置
@@ -22,6 +21,11 @@ class MainViewController: UITabBarController {
     // 切换tab
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         print("tab position : \(selectedIndex)")
+    }
+    
+    // 第一次进入首页检查登陆状态
+    func checkUpdate() {
+        //TODO
     }
     
 

@@ -145,7 +145,12 @@ class HistoryViewController: UITableViewController {
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = historys[index.row].title
+            dest.tid = Int(historys[index.row].tid)
+            dest.saveToHistory = true
+        }
     }
 }
