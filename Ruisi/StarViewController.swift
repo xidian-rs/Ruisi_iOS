@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kanna
 
 // 我的收藏页面
 class StarViewController: PostsViewController {

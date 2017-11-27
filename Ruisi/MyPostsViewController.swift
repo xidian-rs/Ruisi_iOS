@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kanna
 
 // 我的帖子
 class MyPostsViewController: PostsViewController {

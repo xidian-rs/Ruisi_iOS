@@ -115,7 +115,7 @@ public class HttpUtil {
         let url  =  getUrl(url: url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
-        if let p = params{
+        if let p = params {
             request.httpBody = p.data(using: .utf8)
         }
         

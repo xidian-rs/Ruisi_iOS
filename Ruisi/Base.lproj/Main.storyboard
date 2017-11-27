@@ -911,7 +911,7 @@
         <!--设置-->
         <scene sceneID="dT3-Hi-EUl">
             <objects>
-                <tableViewController storyboardIdentifier="settingViewController" title="设置" id="s2Q-hM-sdr" customClass="SettingViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settingViewController" title="设置" hidesBottomBarWhenPushed="YES" id="s2Q-hM-sdr" customClass="SettingViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="xaN-Qd-mxT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1427,7 +1427,7 @@
         <!--浏览历史-->
         <scene sceneID="9So-HP-jjW">
             <objects>
-                <tableViewController title="浏览历史" id="rlj-6V-Bpb" customClass="HistoryViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="浏览历史" hidesBottomBarWhenPushed="YES" id="rlj-6V-Bpb" customClass="HistoryViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="71" sectionHeaderHeight="28" sectionFooterHeight="28" id="jyK-WQ-XQa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1489,7 +1489,7 @@
         <!--我的收藏-->
         <scene sceneID="gYd-AM-Ai2">
             <objects>
-                <tableViewController title="我的收藏" id="K76-b0-SfP" customClass="StarViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="我的收藏" hidesBottomBarWhenPushed="YES" id="K76-b0-SfP" customClass="StarViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="43I-0F-JGF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1530,7 +1530,7 @@
         <!--我的帖子-->
         <scene sceneID="7h6-Q6-62K">
             <objects>
-                <tableViewController title="我的帖子" id="rDo-h1-G1Q" customClass="MyPostsViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="我的帖子" hidesBottomBarWhenPushed="YES" id="rDo-h1-G1Q" customClass="MyPostsViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="65" sectionHeaderHeight="28" sectionFooterHeight="28" id="HDS-oj-9et">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1582,8 +1582,8 @@
         <!--我的好友-->
         <scene sceneID="GZ8-FZ-PrB">
             <objects>
-                <tableViewController title="我的好友" id="eys-sI-Ukn" customClass="FriendViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="aq8-rf-cMB">
+                <tableViewController title="我的好友" hidesBottomBarWhenPushed="YES" id="eys-sI-Ukn" customClass="FriendViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="28" sectionFooterHeight="28" id="aq8-rf-cMB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1594,11 +1594,48 @@
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="oqZ-Hi-72O">
-                                <rect key="frame" x="0.0" y="72" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="320" height="76"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oqZ-Hi-72O" id="ekg-wc-4D1">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="75.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="eef-As-8xq" userLabel="头像">
+                                            <rect key="frame" x="10" y="12" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="44" id="J5N-IK-dsd"/>
+                                                <constraint firstAttribute="height" constant="44" id="y7P-EV-KqA"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="22"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ien-UB-GHZ" userLabel="用户名">
+                                            <rect key="frame" x="62" y="12" width="248" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3C1-9v-Rvu" userLabel="动态">
+                                            <rect key="frame" x="62" y="37" width="248" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="top" secondItem="ekg-wc-4D1" secondAttribute="top" constant="12" id="05v-fS-y5g"/>
+                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="leading" secondItem="eef-As-8xq" secondAttribute="trailing" constant="8" id="9o5-bP-1io"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="eef-As-8xq" secondAttribute="bottom" constant="12" id="FD7-JU-Z8X"/>
+                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="leading" secondItem="Ien-UB-GHZ" secondAttribute="leading" id="JrX-6O-K2q"/>
+                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="top" secondItem="Ien-UB-GHZ" secondAttribute="bottom" constant="4" id="UOT-Uc-BsV"/>
+                                        <constraint firstItem="eef-As-8xq" firstAttribute="leading" secondItem="ekg-wc-4D1" secondAttribute="leading" constant="10" id="WPw-Pk-0jc"/>
+                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="trailing" secondItem="Ien-UB-GHZ" secondAttribute="trailing" id="hpm-ym-O8O"/>
+                                        <constraint firstAttribute="trailing" secondItem="Ien-UB-GHZ" secondAttribute="trailing" constant="10" id="iSf-UX-4iG"/>
+                                        <constraint firstItem="eef-As-8xq" firstAttribute="top" secondItem="ekg-wc-4D1" secondAttribute="top" constant="12" id="qpW-aN-Mxq"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="MBf-zb-Kcw" kind="show" id="bui-Hd-caR"/>
@@ -1614,7 +1651,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wJo-Y6-i1u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-439" y="1935"/>
+            <point key="canvasLocation" x="-440.625" y="1934.1549295774648"/>
         </scene>
         <!--Main-->
         <scene sceneID="KsH-6k-4Of">
@@ -1743,6 +1780,6 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xwk-zK-WJF"/>
+        <segue reference="OXw-Ga-2dQ"/>
     </inferredMetricsTieBreakers>
 </document>

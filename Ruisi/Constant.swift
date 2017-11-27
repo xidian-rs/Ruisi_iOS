@@ -84,6 +84,16 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=thread&view=me&mobile=2"
     }
     
+    // 我的好友
+    public static var friendsUrl:String {
+        return "\(baseUrl)home.php?mod=space&do=friend&mobile=2"
+    }
+    
+    // 删除好友
+    public static func deleteFriendUrl(uid: Int) -> String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=friend&op=ignore&uid=\(uid)&confirm=1&mobile=2"
+    }
+    
     // size =0 small 1-middle 2-large
     // 获得头像链接
     public static func getAvaterUrl(uid: Any, size: Int = 1) -> URL?{

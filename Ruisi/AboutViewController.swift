@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import Kanna
 
 class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
     

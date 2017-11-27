@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kanna
 
 class SignViewController: UIViewController {
     let items = ["开心", "难过", "郁闷", "无聊", "怒", "擦汗", "奋斗", "慵懒", "衰"]

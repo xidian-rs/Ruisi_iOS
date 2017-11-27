@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kanna
 
 class PostsViewController: UITableViewController {
     
@@ -85,7 +86,6 @@ class PostsViewController: UITableViewController {
                 }
             }
         
-            
             //load data ok
             if pos == self.position {
                 // 第一次换页清空
@@ -131,6 +131,7 @@ class PostsViewController: UITableViewController {
         }
     }
     
+    // 子类重写此方法支持解析自己的数据
     func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
         for li in doc.css(".threadlist ul li") {

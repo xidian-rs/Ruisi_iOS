@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Kingfisher
+import Kanna
 
 // 帖子详情页
 class PostViewController: UITableViewController,UITextViewDelegate {

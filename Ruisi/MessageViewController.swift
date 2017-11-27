@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kanna
 
 // 我的消息页面
 class MessageViewController: UITableViewController {
