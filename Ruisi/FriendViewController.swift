@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 我的好友页面
-class FriendViewController: AbstractTableViewController<ArticleListData> {
+class FriendViewController: AbstractTableViewController<FriendData> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +27,8 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
     }
 
     
-    override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
-        var subDatas:[ArticleListData] = []
+    override func parseData(pos:Int, doc: HTMLDocument) -> [FriendData]{
+        var subDatas:[FriendData] = []
         //print(doc.body?.text)
         let nodes = doc.xpath("//*[@id=\"friend_ul\"]/ul/li")
         for li in nodes {
@@ -39,7 +39,7 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
                 let description = li.xpath("p").first?.text
                 let isOnline = li.xpath("em").first?["title"] != nil
                 
-                let d = ArticleListData(title: uname ?? "未获取用户名", tid: uid!, author: description ?? "", read: false, haveImage: isOnline, titleColor: unameColor)
+                let d = FriendData(uid: uid!, username: uname ?? "未获取用户名", description: description, usernameColor: unameColor, online: isOnline)
                 subDatas.append(d)
             }
         }
@@ -56,12 +56,12 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
         let usernameView = cell.viewWithTag(2) as! UILabel
         let descriptionView = cell.viewWithTag(3) as! UILabel
         
-        avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: datas[indexPath.row].tid), placeholder: #imageLiteral(resourceName: "placeholder"))
-        usernameView.text = datas[indexPath.row].title
-        if let color = datas[indexPath.row].titleColor {
+        avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: datas[indexPath.row].uid), placeholder: #imageLiteral(resourceName: "placeholder"))
+        usernameView.text = datas[indexPath.row].username
+        if let color = datas[indexPath.row].usernameColor {
             usernameView.textColor = color
         }
-        descriptionView.text = datas[indexPath.row].author
+        descriptionView.text = datas[indexPath.row].description
         
         return cell
     }
@@ -71,7 +71,6 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
         return true
     }
 
-
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             showDeleteFriendAlert(indexPath: indexPath)
@@ -80,8 +79,8 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
     }
     
     func showDeleteFriendAlert(indexPath: IndexPath) {
-        let username = datas[indexPath.row].title
-        let uid =  datas[indexPath.row].tid
+        let username = datas[indexPath.row].username
+        let uid =  datas[indexPath.row].uid
         let alert = UIAlertController(title: "删除好友", message: "你要删除好友【\(username)】?吗?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
             print("删除好友\(username) uid:\(uid)")
@@ -118,11 +117,11 @@ class FriendViewController: AbstractTableViewController<ArticleListData> {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? PostViewController,
+        if let dest = segue.destination as? UserDetailViewController,
             let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
-            dest.title = datas[index.row].title
-            dest.tid = datas[index.row].tid
+            dest.uid = datas[index.row].uid
+            dest.username = datas[index.row].username
         }
     }
 

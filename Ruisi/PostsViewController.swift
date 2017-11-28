@@ -70,6 +70,7 @@ class PostsViewController: AbstractTableViewController<ArticleListData> {
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let usernameLabel = cell.viewWithTag(2) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
+        let haveImageLabel = cell.viewWithTag(4) as! UILabel
         let d = datas[indexPath.row]
         
         titleLabel.text = d.title
@@ -78,6 +79,7 @@ class PostsViewController: AbstractTableViewController<ArticleListData> {
         }
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount
+        haveImageLabel.isHidden = !d.haveImage
         
         return cell
     }

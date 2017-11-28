@@ -9,8 +9,8 @@
 import UIKit
 
 class MyViewController: UIViewController,UITableViewDelegate,
-    UITableViewDataSource,UINavigationControllerDelegate{
-
+UITableViewDataSource,UINavigationControllerDelegate{
+    
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var avaterImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -19,13 +19,13 @@ class MyViewController: UIViewController,UITableViewDelegate,
     
     var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
     var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
-
+    
     // 创建的时候的登陆状态
     var isLogin: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //获得导航栏控制权
         self.navigationController?.delegate = self
         
@@ -74,6 +74,12 @@ class MyViewController: UIViewController,UITableViewDelegate,
                 print("avater click")
                 if App.isLogin{
                     //detail
+//                    let desc = self.storyboard?.instantiateViewController(withIdentifier: "userDetailView") as! UserDetailViewController
+//                    desc.uid = App.uid
+//                    desc.username = App.username
+//                    self.show(desc, sender: self)
+                    
+                    self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
                 }else{
                     //login
                     let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
@@ -98,17 +104,13 @@ class MyViewController: UIViewController,UITableViewDelegate,
         }
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
+    
     // MARK: - Table view data source
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
@@ -123,7 +125,7 @@ class MyViewController: UIViewController,UITableViewDelegate,
         imageview.image = UIImage(named: images[indexPath.row])
         
         label.text = titles[indexPath.row]
-
+        
         return cell
     }
     
@@ -133,8 +135,16 @@ class MyViewController: UIViewController,UITableViewDelegate,
         switch indexPath.row {
         case 0:
             //sign
-            let dest = self.storyboard?.instantiateViewController(withIdentifier: "signViewController")
-            self.show(dest!, sender: self)
+            if !App.isSchoolNet {
+                let alert = UIAlertController(title: "提示", message: "签到功能只在校园网环境下有效,你当前的网络环境不是校园网", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
+                self.present( alert, animated: true, completion: nil)
+            } else if !App.isLogin {
+                showLoginAlert()
+            } else {
+                let dest = self.storyboard?.instantiateViewController(withIdentifier: "signViewController")
+                self.show(dest!, sender: self)
+            }
             break
         case 1:
             //about
@@ -164,18 +174,25 @@ class MyViewController: UIViewController,UITableViewDelegate,
         }
     }
     
+    func showLoginAlert() {
+        let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            self.present(dest!, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     // 转场之前的检查
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         switch identifier {
-        case "toHistoryController":
-            print("to history")
-        case "toStarController":
-            print("to star")
-        case "toFriendController":
-            print("to friend")
-        case "toMyPostsController":
-            print("to my posts")
+        case "toStarController","toFriendController","toMyPostsController":
+            if !App.isLogin {
+                showLoginAlert()
+                return false
+            }
+            break
         default:
             break
         }
@@ -183,9 +200,10 @@ class MyViewController: UIViewController,UITableViewDelegate,
         return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
     }
     
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if let dest = segue.destination as? UserDetailViewController {
+            dest.uid = App.uid!
+            dest.username = App.username!
+        }
     }
-
 }

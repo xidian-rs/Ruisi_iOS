@@ -17,6 +17,11 @@
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
 		2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */; };
+		2F175AB91FCD36B800917895 /* StarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AB81FCD36B800917895 /* StarData.swift */; };
+		2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC61FCD37EE00917895 /* FriendData.swift */; };
+		2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC81FCD499100917895 /* KeyValueData.swift */; };
+		2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */; };
+		2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
@@ -211,6 +216,11 @@
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTableViewController.swift; sourceTree = "<group>"; };
+		2F175AB81FCD36B800917895 /* StarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarData.swift; sourceTree = "<group>"; };
+		2F175AC61FCD37EE00917895 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
+		2F175AC81FCD499100917895 /* KeyValueData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueData.swift; sourceTree = "<group>"; };
+		2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuisiUtil.swift; sourceTree = "<group>"; };
+		2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
@@ -323,6 +333,8 @@
 				2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */,
 				2F175F801F01FCCA00DDEED9 /* Utils.swift */,
 				2F9086A41FC5B7FD008773AA /* Info.plist */,
+				2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */,
+				2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -335,6 +347,9 @@
 				2FEDBB621F1113A6006E645D /* PostData.swift */,
 				2FF905841F125F4500B88DA6 /* MessageData.swift */,
 				2FB627761FC980E3005D33F0 /* History.swift */,
+				2F175AB81FCD36B800917895 /* StarData.swift */,
+				2F175AC61FCD37EE00917895 /* FriendData.swift */,
+				2F175AC81FCD499100917895 /* KeyValueData.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -573,6 +588,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */,
 				2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */,
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
@@ -597,16 +613,20 @@
 				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
 				2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
+				2F175AB91FCD36B800917895 /* StarData.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
+				2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
 				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
+				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
 				2F46F7271F0786F700207B17 /* HtmlNode.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
+				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
 				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
 				2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,

@@ -42,6 +42,9 @@ class SignViewController: UIViewController {
     var chooseAlert: UIAlertController!
     var currentSelect = 0
     
+    @IBAction func confirmClick(_ sender: UITextField) {
+        inputText.resignFirstResponder()
+    }
     
     func setLoadingState(isLoading :Bool) {
         loadingView.isHidden = !isLoading

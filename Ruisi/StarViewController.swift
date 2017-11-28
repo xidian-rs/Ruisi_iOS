@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 我的收藏页面
-class StarViewController: AbstractTableViewController<ArticleListData> {
+class StarViewController: AbstractTableViewController<StarData> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +27,8 @@ class StarViewController: AbstractTableViewController<ArticleListData> {
     }
     
     
-    override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
-        var subDatas:[ArticleListData] = []
+    override func parseData(pos:Int, doc: HTMLDocument) -> [StarData]{
+        var subDatas:[StarData] = []
         for li in doc.xpath("/html/body/div[1]/ul/li") {
             let a = li.css("a").first
             var tid: Int?
@@ -41,7 +41,7 @@ class StarViewController: AbstractTableViewController<ArticleListData> {
             
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             let color =  Utils.getHtmlColor(from: a?["style"])
-            let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!,titleColor: color)
+            let d = StarData(title: title ?? "未获取到标题", tid: tid!,titleColor: color)
             subDatas.append(d)
         }
         

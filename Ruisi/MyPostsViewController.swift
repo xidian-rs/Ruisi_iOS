@@ -11,23 +11,22 @@ import Kanna
 
 // 我的帖子
 class MyPostsViewController: AbstractTableViewController<ArticleListData> {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-
+    
     override func getUrl(page: Int) -> String {
         return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(page)"
     }
-
-
+    
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
         for li in doc.xpath("/html/body/div[1]/ul/li") {
@@ -65,8 +64,8 @@ class MyPostsViewController: AbstractTableViewController<ArticleListData> {
         print("finish load data pos:\(pos) count:\(subDatas.count)")
         return subDatas
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
@@ -78,7 +77,7 @@ class MyPostsViewController: AbstractTableViewController<ArticleListData> {
         if let color = d.titleColor {
             titleLabel.textColor = color
         }
-
+        
         commentsLabel.text = d.replyCount
         return cell
     }
