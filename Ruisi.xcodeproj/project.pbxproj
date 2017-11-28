@@ -16,6 +16,7 @@
 		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
+		2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
@@ -209,6 +210,7 @@
 		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTableViewController.swift; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
@@ -264,10 +266,11 @@
 			isa = PBXGroup;
 			children = (
 				2F01C2491EFFA46400102CF2 /* MainViewController.swift */,
+				2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */,
+				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
 				2F16B5F71EA504330068EE20 /* ForumsController.swift */,
 				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
 				2F8AD6951EA787EE002540AA /* LoginViewController.swift */,
-				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
 				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
 				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
 				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
@@ -605,6 +608,7 @@
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
 				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
+				2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,

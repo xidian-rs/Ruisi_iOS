@@ -10,11 +10,7 @@ import UIKit
 import Kanna
 
 // 我的帖子
-class MyPostsViewController: PostsViewController {
-    
-    override open var url: String {
-        return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(currentPage)"
-    }
+class MyPostsViewController: AbstractTableViewController<ArticleListData> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +20,11 @@ class MyPostsViewController: PostsViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+
+    override func getUrl(page: Int) -> String {
+        return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(page)"
     }
 
 
@@ -80,5 +81,15 @@ class MyPostsViewController: PostsViewController {
 
         commentsLabel.text = d.replyCount
         return cell
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = datas[index.row].title
+            dest.tid = datas[index.row].tid
+        }
     }
 }

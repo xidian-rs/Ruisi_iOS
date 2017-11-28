@@ -10,21 +10,22 @@ import UIKit
 import Kanna
 
 // 我的收藏页面
-class StarViewController: PostsViewController {
+class StarViewController: AbstractTableViewController<ArticleListData> {
     
-    override open var url: String {
-        return Urls.getStarUrl(uid: App.uid) + "&page=\(currentPage)"
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func getUrl(page: Int) -> String {
+        return Urls.getStarUrl(uid: App.uid) + "&page=\(page)"
+    }
+    
     
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
@@ -61,12 +62,21 @@ class StarViewController: PostsViewController {
         }
         return cell
     }
-
-
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = datas[index.row].title
+            dest.tid = datas[index.row].tid
         }
     }
 }

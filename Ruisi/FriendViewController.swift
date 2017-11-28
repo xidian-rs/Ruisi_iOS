@@ -9,22 +9,23 @@
 import UIKit
 import Kanna
 
-class FriendViewController: PostsViewController {
+// 我的好友页面
+class FriendViewController: AbstractTableViewController<ArticleListData> {
 
-    override var url: String {
-        return Urls.friendsUrl + "&page=\(currentPage)"
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func getUrl(page: Int) -> String {
+        return Urls.friendsUrl + "&page=\(page)"
+    }
+
     
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
@@ -115,14 +116,14 @@ class FriendViewController: PostsViewController {
         }
     }
     
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let dest = segue.destination as? PostViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            dest.title = datas[index.row].title
+            dest.tid = datas[index.row].tid
+        }
     }
-    */
 
 }

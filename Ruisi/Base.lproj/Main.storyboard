@@ -381,7 +381,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxu-p5-xxX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="960" y="67.605633802816897"/>
+            <point key="canvasLocation" x="1401" y="161"/>
         </scene>
         <!--热帖-->
         <scene sceneID="ppi-9d-c7N">
@@ -1566,6 +1566,9 @@
                                         <constraint firstItem="ElW-X1-Rvl" firstAttribute="top" secondItem="ABQ-Jp-UCm" secondAttribute="bottom" constant="5" id="wO9-ZU-aI5"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="9dS-VM-kf0" kind="show" id="kcq-sa-9GX"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1577,7 +1580,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XME-8D-Ux2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1325.625" y="1935.2112676056338"/>
+            <point key="canvasLocation" x="645" y="1028"/>
         </scene>
         <!--我的好友-->
         <scene sceneID="GZ8-FZ-PrB">
@@ -1780,6 +1783,6 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OXw-Ga-2dQ"/>
+        <segue reference="kcq-sa-9GX"/>
     </inferredMetricsTieBreakers>
 </document>

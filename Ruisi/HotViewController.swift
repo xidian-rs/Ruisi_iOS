@@ -9,6 +9,10 @@
 import UIKit
 
 class HotViewController: PostsViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
     // 切换热帖0 和 新帖1
     @IBAction func viewTypeChnage(_ sender: UISegmentedControl) {
         print(sender.selectedSegmentIndex)
@@ -54,15 +58,11 @@ class HotViewController: PostsViewController {
     var isHotLoading = false
     var isNewLoading = false
     
-    override var url:String {
+    override func getUrl(page: Int) -> String {
         if position == 0 {
             return Urls.hotUrl + "&page=\(currentPage)"
         }else{
             return Urls.newUrl + "&page=\(currentPage)"
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 }
