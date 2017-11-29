@@ -24,6 +24,8 @@
 		2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
+		2F24B9931FCE9213001D287E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9921FCE9213001D287E /* Reachability.swift */; };
+		2F24B9A11FCEE394001D287E /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9A01FCEE394001D287E /* extension.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
 		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
@@ -223,6 +225,8 @@
 		2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		2F24B9921FCE9213001D287E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		2F24B9A01FCEE394001D287E /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
 		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
@@ -335,6 +339,8 @@
 				2F9086A41FC5B7FD008773AA /* Info.plist */,
 				2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */,
 				2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */,
+				2F24B9921FCE9213001D287E /* Reachability.swift */,
+				2F24B9A01FCEE394001D287E /* extension.swift */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -618,6 +624,8 @@
 				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
 				2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
+				2F24B9A11FCEE394001D287E /* extension.swift in Sources */,
+				2F24B9931FCE9213001D287E /* Reachability.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
 				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,

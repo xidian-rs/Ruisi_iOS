@@ -65,10 +65,21 @@ class StarViewController: AbstractTableViewController<StarData> {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            showDeleteStarAlert(indexPath: indexPath)
         }
     }
+    
+    func showDeleteStarAlert(indexPath: IndexPath) {
+        let title = datas[indexPath.row].title
+        let _ =  datas[indexPath.row].tid
+        let alert = UIAlertController(title: "删除收藏", message: "取消收藏【\(title)】?吗?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消收藏(暂不支持)", style: .destructive, handler: { (action) in
+            // TODO
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

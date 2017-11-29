@@ -9,26 +9,29 @@
 import Foundation
 
 public class App {
-    //发布地址tid
-    public static let POST_ID = 805203
     public static var isLogin = false //是否登陆
     public static var isSchoolNet = false //是否是校园网
     public static var username:String? //用户名
     public static var uid: Int? // uid
     public static var grade: String? //等级
+    public static var formHash: String? //fromhash
+    
+    //发布地址tid
+    public static let POST_ID = 805203
+    public static let HOST_RS = "rs.xidian.edu.cn"
 }
 
 public class Urls {
-    public static var baseUrl:String{
-        return BASE_URL_ME
-    }
-    
-    public static let BASE_URL = "http://rs.xidian.edu.cn/"
+    public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
     public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
     
-    // 签到
-    public static let signUrl = "\(BASE_URL)plugin.php?id=dsu_paulsign:sign"
-    public static let signPostUrl = "\(BASE_URL)plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1"
+    public static var baseUrl:String{
+        return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_ME
+    }
+    
+    // 签到 需要校园网
+    public static let signUrl = "\(BASE_URL_EDU)plugin.php?id=dsu_paulsign:sign"
+    public static let signPostUrl = "\(BASE_URL_EDU)plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1"
     
     public static var hotUrl:String{
         return baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
@@ -75,6 +78,11 @@ public class Urls {
             return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
         }
         return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=favorite&view=me&type=thread&mobile=2"
+    }
+    
+    // 删除收藏 TODO 不支持外网
+    public static func getDelStarUrl(favid:Int) -> String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=favorite&op=delete&favid=\(favid)&type=all&inajax=1"
     }
     
     // 我的帖子

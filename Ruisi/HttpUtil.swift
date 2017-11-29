@@ -8,57 +8,6 @@
 
 import Foundation
 
-extension String {
-    
-    
-    func indexOf(target: Character) -> Int?{
-        if let idx = self.index(of: target) {
-            let pos = self.distance(from: self.startIndex, to: idx)
-            return pos
-        }else {
-            return nil
-        }
-    }
-    
-    func index(of string: String, options: CompareOptions = .literal) -> Index? {
-        return range(of: string, options: options)?.lowerBound
-    }
-    
-    func endIndex(of string: String, options: CompareOptions = .literal) -> Index? {
-        return range(of: string, options: options)?.upperBound
-    }
-    
-    func lastIndex(of string: String) -> Index? {
-        return self.index(of: string, options: .backwards)
-    }
-    
-    func lastEndIndex(of string: String) -> Index? {
-        return self.endIndex(of: string, options: .backwards)
-    }
-    
-    func indexes(of string: String, options: CompareOptions = .literal) -> [Index] {
-        var result: [Index] = []
-        var start = startIndex
-        while let range = range(of: string, options: options, range: start..<endIndex) {
-            result.append(range.lowerBound)
-            start = range.upperBound
-        }
-        return result
-    }
-    
-    func ranges(of string: String, options: CompareOptions = .literal) -> [Range<Index>] {
-        var result: [Range<Index>] = []
-        var start = startIndex
-        while let range = range(of: string, options: options, range: start..<endIndex) {
-            result.append(range)
-            start = range.upperBound
-        }
-        return result
-    }
-    
-}
-
-
 public class HttpUtil {
 
     public static func encodeUrl(url:String) -> String {
@@ -115,8 +64,17 @@ public class HttpUtil {
         let url  =  getUrl(url: url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
-        if let p = params {
-            request.httpBody = p.data(using: .utf8)
+        
+        if let hash = App.formHash {
+            if let p = params {
+                request.httpBody = "\(p)&formhash=\(hash)".data(using: .utf8)
+            }else {
+                request.httpBody = "formhash=\(hash)".data(using: .utf8)
+            }
+        }else {
+            if let p = params {
+                request.httpBody = p.data(using: .utf8)
+            }
         }
         
         print("start http post url:\(url)")

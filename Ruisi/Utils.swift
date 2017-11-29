@@ -30,6 +30,29 @@ public class Utils {
         return Int(String(digitals))
     }
     
+    public static func getFormHash(from:String?) -> String? {
+        if let s = from {
+            let results = matchingStrings(regex: "formhash=(.{6,8})&?",from: s)
+            if results.count > 0 {
+                return results[0][1]
+            }
+        }
+        
+        return nil
+    }
+    
+    public static func matchingStrings(regex: String,from: String) -> [[String]] {
+        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return [] }
+        let nsString = from as NSString
+        let results  = regex.matches(in: from, options: [], range: NSMakeRange(0, nsString.length))
+        return results.map { result in
+            (0..<result.numberOfRanges).map { result.range(at: $0).location != NSNotFound
+                ? nsString.substring(with: result.range(at: $0))
+                : ""
+            }
+        }
+    }
+    
     // style="color: #EE1B2E;" 在这之中提取颜色
     // color="#8b0000"
     public static func getHtmlColor (from str: String?) -> UIColor? {

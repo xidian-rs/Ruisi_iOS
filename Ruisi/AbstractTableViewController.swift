@@ -22,6 +22,7 @@ class AbstractTableViewController<T>: UITableViewController {
     var datas  = [T]()
     private var loading = false
     var currentPage = 1
+    var pageSume = Int.max
     var refreshView: UIRefreshControl!
     var position = 0 //为了hotnew而准备的
     
@@ -52,7 +53,7 @@ class AbstractTableViewController<T>: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.estimatedRowHeight = 55
+        self.tableView.estimatedRowHeight = 60
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         // Initialize the refresh control.
@@ -85,9 +86,18 @@ class AbstractTableViewController<T>: UITableViewController {
             var subDatas:[T] = []
             if ok && pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
+                    // load fromHash
+                    let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
+                    if let hash =  Utils.getFormHash(from: exitNode?["href"]) {
+                        print("formhash: \(hash)")
+                        App.formHash = hash
+                    }
+                    
+                    //load subdata
                     subDatas = self.parseData(pos: pos, doc: doc)
                 }
             }
+            
             
             //load data ok
             if pos == self.position {
