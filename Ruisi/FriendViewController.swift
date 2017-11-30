@@ -10,22 +10,40 @@ import UIKit
 import Kanna
 
 // 我的好友页面
-class FriendViewController: AbstractTableViewController<FriendData> {
-
+class FriendViewController: AbstractTableViewController<FriendData>,UISearchBarDelegate {
+    
+    private var datasCopy:[FriendData] = []
+    private var searchMode = false
+    private var isInSearchMode: Bool {
+        set {
+            if newValue != searchMode {
+                searchMode = newValue
+                if searchMode { //enterSearchMode
+                    datasCopy = datas
+                }else { //exit searchMode
+                    datas = datasCopy
+                    tableView.reloadData()
+                }
+            }
+        }
+        get {
+            return searchMode
+        }
+    }
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        isInSearchMode = false
+        searchBar.delegate = self
     }
+    
     
     override func getUrl(page: Int) -> String {
         return Urls.friendsUrl + "&page=\(page)"
     }
-
+    
     
     override func parseData(pos:Int, doc: HTMLDocument) -> [FriendData]{
         var subDatas:[FriendData] = []
@@ -47,8 +65,8 @@ class FriendViewController: AbstractTableViewController<FriendData> {
         print("finish load data pos:\(pos) count:\(subDatas.count)")
         return subDatas
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
@@ -65,12 +83,12 @@ class FriendViewController: AbstractTableViewController<FriendData> {
         
         return cell
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             showDeleteFriendAlert(indexPath: indexPath)
@@ -115,6 +133,35 @@ class FriendViewController: AbstractTableViewController<FriendData> {
         }
     }
     
+    
+    // MARK: - UISearchBar Delegate
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("text change:\(searchText)")
+        let text = searchText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).lowercased()
+        if text.count == 0 {
+            isInSearchMode = false
+        }else {
+            isInSearchMode = true
+            datas  = datas.filter({$0.username.lowercased().contains(text)})
+            tableView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("search click")
+        isInSearchMode = true
+        doSearch()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("cancel click")
+        isInSearchMode = false
+    }
+    
+    func doSearch() {
+        
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UserDetailViewController,
@@ -124,5 +171,5 @@ class FriendViewController: AbstractTableViewController<FriendData> {
             dest.username = datas[index.row].username
         }
     }
-
+    
 }

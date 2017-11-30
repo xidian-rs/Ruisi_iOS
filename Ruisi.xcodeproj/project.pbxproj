@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F00B9091FCF04E600A6D136 /* SearchViewController.swift */; };
 		2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2451EFF9CE900102CF2 /* Launch.storyboard */; };
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
 		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
@@ -207,6 +208,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2F00B9091FCF04E600A6D136 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2F01C2451EFF9CE900102CF2 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				2F7A9E621F03AF3900994123 /* FriendViewController.swift */,
 				2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */,
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
+				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -644,6 +647,7 @@
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
+				2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */,
 				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,

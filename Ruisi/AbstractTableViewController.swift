@@ -20,12 +20,12 @@ class AbstractTableViewController<T>: UITableViewController {
     }
     
     var datas  = [T]()
-    private var loading = false
     var currentPage = 1
     var pageSume = Int.max
     var refreshView: UIRefreshControl!
     var position = 0 //为了hotnew而准备的
     
+    private var loading = false
     open var isLoading: Bool{
         get{
             return loading
@@ -62,7 +62,6 @@ class AbstractTableViewController<T>: UITableViewController {
         refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
         self.refreshControl = refreshView
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
-        
         refreshView.beginRefreshing()
         loadData()
     }

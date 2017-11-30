@@ -68,8 +68,8 @@ class LoadMoreView: UIView {
             }else {
                 label.text = "加载失败,上拉重新加载"
             }
+            
             indicate.stopAnimating()
-            label.text = "上拉加载更多"
             isLoading = false
         }
     }

@@ -123,4 +123,10 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&uid=\(uid)&do=profile&mobile=2"
     }
     
+    public static var searchUrl = "\(baseUrl)search.php?mod=forum&mobile=2"
+    
+    public static func getSearchUrl2(searchId:String) -> String {
+        return "\(baseUrl)search.php?mod=forum&searchid=\(searchId)&orderby=lastpost&ascdesc=desc&searchsubmit=yes&mobile=2"
+    }
+    
 }
