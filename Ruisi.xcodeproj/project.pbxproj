@@ -14,10 +14,10 @@
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
-		2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsController.swift */; };
+		2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5F71EA504330068EE20 /* ForumsViewController.swift */; };
 		2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B66B1EA504DD0068EE20 /* Forum.swift */; };
 		2F16B7501EA50A390068EE20 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B74F1EA50A390068EE20 /* assets */; };
-		2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */; };
+		2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AA41FCD0ABB00917895 /* BaseTableViewController.swift */; };
 		2F175AB91FCD36B800917895 /* StarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AB81FCD36B800917895 /* StarData.swift */; };
 		2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC61FCD37EE00917895 /* FriendData.swift */; };
 		2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC81FCD499100917895 /* KeyValueData.swift */; };
@@ -59,6 +59,8 @@
 		2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADC71EA7371400602516 /* MessageViewController.swift */; };
 		2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */; };
 		2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */; };
+		2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */; };
+		2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */; };
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 /* End PBXBuildFile section */
@@ -216,10 +218,10 @@
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F16B5EC1EA502420068EE20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2F16B5F71EA504330068EE20 /* ForumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsController.swift; sourceTree = "<group>"; };
+		2F16B5F71EA504330068EE20 /* ForumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumsViewController.swift; sourceTree = "<group>"; };
 		2F16B66B1EA504DD0068EE20 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Forum.swift; sourceTree = "<group>"; };
 		2F16B74F1EA50A390068EE20 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTableViewController.swift; sourceTree = "<group>"; };
+		2F175AA41FCD0ABB00917895 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		2F175AB81FCD36B800917895 /* StarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarData.swift; sourceTree = "<group>"; };
 		2F175AC61FCD37EE00917895 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
 		2F175AC81FCD499100917895 /* KeyValueData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueData.swift; sourceTree = "<group>"; };
@@ -261,6 +263,8 @@
 		2FD4ADC71EA7371400602516 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowLabel.swift; sourceTree = "<group>"; };
 		2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -282,16 +286,16 @@
 			isa = PBXGroup;
 			children = (
 				2F01C2491EFFA46400102CF2 /* MainViewController.swift */,
-				2F175AA41FCD0ABB00917895 /* AbstractTableViewController.swift */,
-				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
-				2F16B5F71EA504330068EE20 /* ForumsController.swift */,
+				2F175AA41FCD0ABB00917895 /* BaseTableViewController.swift */,
+				2F16B5F71EA504330068EE20 /* ForumsViewController.swift */,
+				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
 				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
+				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
+				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
 				2F8AD6951EA787EE002540AA /* LoginViewController.swift */,
 				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
 				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
 				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
-				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
-				2F9771E41EA615A90058EDB4 /* MyViewController.swift */,
 				2F175F821F02976D00DDEED9 /* SettingViewController.swift */,
 				2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */,
 				2F42FE911F03A92300CC8C92 /* StarViewController.swift */,
@@ -299,6 +303,7 @@
 				2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */,
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
 				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
+				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				2F175AB81FCD36B800917895 /* StarData.swift */,
 				2F175AC61FCD37EE00917895 /* FriendData.swift */,
 				2F175AC81FCD499100917895 /* KeyValueData.swift */,
+				2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -624,7 +630,7 @@
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2F175AB91FCD36B800917895 /* StarData.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
-				2F16B5F81EA504330068EE20 /* ForumsController.swift in Sources */,
+				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
 				2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2F24B9A11FCEE394001D287E /* extension.swift in Sources */,
@@ -639,13 +645,14 @@
 				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
 				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
 				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
-				2F175AA51FCD0ABB00917895 /* AbstractTableViewController.swift in Sources */,
+				2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F46F7251F0786F700207B17 /* AtrributeConveter.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
+				2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
 				2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */,
 				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,
@@ -656,6 +663,7 @@
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
+				2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */,
 				2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

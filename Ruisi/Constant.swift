@@ -67,6 +67,11 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&do=pm&mobile=2"
     }
     
+    // 聊天详情页
+    public static func getChatDetailUrl(tuid:Int) -> String {
+        return "\(baseUrl)home.php?mod=space&do=pm&subop=view&touid=\(tuid)&mobile=2"
+    }
+    
     //at
     public static var messageAt: String {
         return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&mobile=2"
@@ -123,10 +128,10 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&uid=\(uid)&do=profile&mobile=2"
     }
     
+    // 搜索
     public static var searchUrl = "\(baseUrl)search.php?mod=forum&mobile=2"
     
     public static func getSearchUrl2(searchId:String) -> String {
         return "\(baseUrl)search.php?mod=forum&searchid=\(searchId)&orderby=lastpost&ascdesc=desc&searchsubmit=yes&mobile=2"
     }
-    
 }

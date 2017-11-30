@@ -10,7 +10,7 @@ import UIKit
 
 
 // didload -> willappear
-class ForumsController: UICollectionViewController,UICollectionViewDelegateFlowLayout{
+class ForumsViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout{
     let reuseIdentifier = "Cell"
     var datas:[Forums] = []
     let logoDir = "assets/forumlogo/"

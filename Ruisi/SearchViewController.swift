@@ -138,13 +138,14 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
         return cell
     }
     
-    
+    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .insert {
-            
-        }
+//        if editingStyle == .insert {
+//            // TODO 收藏
+//        }
     }
+ */
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {

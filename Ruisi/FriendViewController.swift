@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 我的好友页面
-class FriendViewController: AbstractTableViewController<FriendData>,UISearchBarDelegate {
+class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDelegate {
     
     private var datasCopy:[FriendData] = []
     private var searchMode = false
@@ -73,7 +73,7 @@ class FriendViewController: AbstractTableViewController<FriendData>,UISearchBarD
         let avatarView = cell.viewWithTag(1) as! UIImageView
         let usernameView = cell.viewWithTag(2) as! UILabel
         let descriptionView = cell.viewWithTag(3) as! UILabel
-        
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
         avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: datas[indexPath.row].uid), placeholder: #imageLiteral(resourceName: "placeholder"))
         usernameView.text = datas[indexPath.row].username
         if let color = datas[indexPath.row].usernameColor {
@@ -133,6 +133,12 @@ class FriendViewController: AbstractTableViewController<FriendData>,UISearchBarD
         }
     }
     
+    @objc func avatarClick(_ sender : UITapGestureRecognizer)  {
+        if  let index = tableView.indexPath(for: sender.view?.superview?.superview as! UITableViewCell ) {
+            self.performSegue(withIdentifier: "friendToUserDetail", sender: index)
+        }
+    }
+    
     
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -163,10 +169,15 @@ class FriendViewController: AbstractTableViewController<FriendData>,UISearchBarD
     }
     
     // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? UserDetailViewController,
+        if let dest = segue.destination as? ChatViewController,
             let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
+            dest.uid = datas[index.row].uid
+            dest.username = datas[index.row].username
+        }else if let dest = segue.destination as? UserDetailViewController,
+            let index = sender as? IndexPath {
             dest.uid = datas[index.row].uid
             dest.username = datas[index.row].username
         }

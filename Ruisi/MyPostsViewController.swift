@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 我的帖子
-class MyPostsViewController: AbstractTableViewController<ArticleListData> {
+class MyPostsViewController: BaseTableViewController<ArticleListData> {
     
     override func viewDidLoad() {
         super.viewDidLoad()

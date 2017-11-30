@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Kanna
 
-class AbstractTableViewController<T>: UITableViewController {
+class BaseTableViewController<T>: UITableViewController {
     func getUrl(page: Int) -> String {
         fatalError("要实现")
     }
@@ -35,7 +35,7 @@ class AbstractTableViewController<T>: UITableViewController {
             if !loading {
                 refreshView.endRefreshing()
                 if let f = (tableView.tableFooterView as? LoadMoreView) {
-                    f.endLoading()
+                    f.endLoading(haveMore: currentPage < pageSume)
                 }
             }else {
                 //refreshView.beginRefreshing()
@@ -45,7 +45,6 @@ class AbstractTableViewController<T>: UITableViewController {
                     }
                 }
             }
-            
         }
     }
     
@@ -69,6 +68,7 @@ class AbstractTableViewController<T>: UITableViewController {
     @objc func pullRefresh(){
         print("下拉刷新'")
         currentPage = 1
+        pageSume = Int.max
         loadData(position)
     }
     
@@ -80,8 +80,9 @@ class AbstractTableViewController<T>: UITableViewController {
         refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
         
-        print("load data page \(currentPage)")
+        print("load data page:\(currentPage) sumPage:\(pageSume)")
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
+            //print(res)
             var subDatas:[T] = []
             if ok && pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
@@ -119,7 +120,6 @@ class AbstractTableViewController<T>: UITableViewController {
                         self.tableView.endUpdates()
                     }
                 }
-                self.currentPage += 1
                 
                 var str: String
                 if subDatas.count > 0 {
@@ -133,9 +133,13 @@ class AbstractTableViewController<T>: UITableViewController {
                 let attrStr = NSAttributedString(string: str, attributes: [
                     NSAttributedStringKey.foregroundColor:UIColor.gray])
                 
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
+                DispatchQueue.main.async {
                     self.refreshView.attributedTitle = attrStr
                     self.isLoading = false
+                    
+                    if self.currentPage < self.pageSume {
+                        self.currentPage += 1
+                    }
                 }
             }
             

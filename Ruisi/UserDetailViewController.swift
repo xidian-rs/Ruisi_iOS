@@ -13,7 +13,11 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     var uid:Int?
     var username:String?
     var datas = [KeyValueData<String,String>]()
+
+    @IBOutlet weak var chatBtn: UIButton!
+    @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var pointView: UILabel!
     @IBOutlet weak var levelProgressVIew: UIProgressView!
     @IBOutlet weak var avatarView: UIImageView!
@@ -52,24 +56,49 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         
         avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: uid!, size: 1), placeholder: #imageLiteral(resourceName: "placeholder"))
         
-        self.title = username
+        usernameLabel.text = username
         levelView.text = "--"
         loadData(uid: uid!)
         
-        if App.uid != uid {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addClick))
+        if App.uid != uid { //别人
+            self.title = username
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
         } else {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出", style: .plain, target: self, action: #selector(exitClick))
+            self.chatBtn.isHidden = true
         }
     }
+    
+    func checkLogin() -> Bool {
+        if App.isLogin { return true }
+        let alert = UIAlertController(title: "需要登陆", message: "此功能需要登陆，你要去登陆吗", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (action) in
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            self.present(dest!, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+        return false
+    }
 
-    @objc func addClick() {
+    @IBAction func addFriendBtnClick(_ sender: Any) {
+        if !checkLogin() { return }
         let alert = UIAlertController(title: "添加好友", message: "你要添加\(username ?? "")为好友吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "添加", style: .default, handler: { (action) in
             self.doAddFriend()
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+
+    @IBAction func chatClick(_ sender: Any) {
+        if !checkLogin() { return }
+        guard let chatVc = self.storyboard?.instantiateViewController(withIdentifier: "chatViewController") as? ChatViewController else { return }
+        chatVc.uid = uid
+        chatVc.username = username
+        let navController = UINavigationController(rootViewController: chatVc)
+        self.present(navController, animated: true, completion: nil)
+        //self.performSegue(withIdentifier: "detailToChatSugue", sender: self)
     }
     
     @objc func exitClick(){
@@ -93,6 +122,14 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         HttpUtil.GET(url: Urls.getUserDetailUrl(uid: uid), params: nil) { ok, res in
             if ok && uid == self.uid! { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
+                    if self.username == nil {
+                        if let u = doc.xpath("/html/body/div[1]/div[1]/h2").first?.text {
+                            self.username = u
+                            DispatchQueue.main.async {
+                                self.usernameLabel.text = self.username
+                            }
+                        }
+                    }
                     let nodes = doc.xpath("/html/body/div[1]/div[2]/ul/li")
                     for node in nodes {
                         var value = node.xpath("span").first?.text ?? ""
@@ -107,7 +144,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                                 self.levelView.text = level
                                 self.levelProgressVIew.progress = RuisiUtil.getLevelProgress(self.currentPoint)
                             }
-                            self.datas.append(KeyValueData(key: "等级", value: level))
+                            self.datas.append(KeyValueData(key: "等级", value: level.trimmingCharacters(in: CharacterSet.whitespaces)))
                         } else if key.contains("上传量") || key.contains("下载量") {
                             let a = Int64(value.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
                             let gb = Double(a) / 1024 / 1024 / 1024.0
@@ -171,16 +208,11 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
-    /*
+
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
+        
      }
-     */
-    
 }

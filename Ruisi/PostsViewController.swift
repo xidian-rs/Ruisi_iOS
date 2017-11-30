@@ -9,7 +9,8 @@
 import UIKit
 import Kanna
 
-class PostsViewController: AbstractTableViewController<ArticleListData> {
+// 帖子列表
+class PostsViewController: BaseTableViewController<ArticleListData> {
     
     var fid: Int? // 由前一个页面传过来的值
     
@@ -84,6 +85,27 @@ class PostsViewController: AbstractTableViewController<ArticleListData> {
         return cell
     }
     
+ 
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let starBtn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "收藏", handler:{action, indexpath in
+            print("star click")
+        })
+        starBtn.backgroundColor = UIColor.orange
+        return [starBtn]
+    }
+    
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .insert {
+//
+//        }
+//    }
+    
+
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

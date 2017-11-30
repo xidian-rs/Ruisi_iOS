@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 我的收藏页面
-class StarViewController: AbstractTableViewController<StarData> {
+class StarViewController: BaseTableViewController<StarData> {
     
     override func viewDidLoad() {
         super.viewDidLoad()

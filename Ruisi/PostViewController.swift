@@ -12,7 +12,7 @@ import Kingfisher
 import Kanna
 
 // 帖子详情页
-class PostViewController: AbstractTableViewController<PostData>,UITextViewDelegate {
+class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
     
     var tid: Int? // 由前一个页面传过来的值
     var saveToHistory = false //是否保存到历史记录
@@ -102,6 +102,7 @@ class PostViewController: AbstractTableViewController<PostData>,UITextViewDelega
         author.text = data.author
         time.text = "发表于:\(data.time)"
         img.kf.setImage(with:  Urls.getAvaterUrl(uid: data.uid))
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
         content.delegate = self
         content.isEditable = false
         content.isScrollEnabled  = false
@@ -191,6 +192,11 @@ class PostViewController: AbstractTableViewController<PostData>,UITextViewDelega
             }
         }
         
+        if !self.saveToHistory && subDatas.count > 0 && self.currentPage == 1{
+            self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
+            self.saveToHistory = true
+        }
+        
         return subDatas
     }
     
@@ -248,14 +254,21 @@ class PostViewController: AbstractTableViewController<PostData>,UITextViewDelega
     }
     
 
-    /*
+    @objc func avatarClick(_ sender : UITapGestureRecognizer)  {
+        self.performSegue(withIdentifier: "postToUserDetail", sender: sender.view?.superview?.superview)
+    }
+
      // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
+        if let dest = segue.destination as? UserDetailViewController,
+            let cell = sender as? UITableViewCell {
+            let index = tableView.indexPath(for: cell)!
+            if let uid = Int(datas[index.row].uid) {
+                dest.uid = uid
+                dest.username = datas[index.row].author
+            }
+        }
      }
-     */
+ 
     
 }
