@@ -13,7 +13,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     var uid:Int?
     var username:String?
     var datas = [KeyValueData<String,String>]()
-
+    
     @IBOutlet weak var chatBtn: UIButton!
     @IBOutlet weak var headerView: UIView!
     
@@ -79,8 +79,8 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         present(alert, animated: true, completion: nil)
         return false
     }
-
-    @IBAction func addFriendBtnClick(_ sender: Any) {
+    
+    @objc func addFriendBtnClick(_ sender: Any) {
         if !checkLogin() { return }
         let alert = UIAlertController(title: "添加好友", message: "你要添加\(username ?? "")为好友吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "添加", style: .default, handler: { (action) in
@@ -90,16 +90,6 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         present(alert, animated: true, completion: nil)
     }
     
-
-    @IBAction func chatClick(_ sender: Any) {
-        if !checkLogin() { return }
-        guard let chatVc = self.storyboard?.instantiateViewController(withIdentifier: "chatViewController") as? ChatViewController else { return }
-        chatVc.uid = uid
-        chatVc.username = username
-        let navController = UINavigationController(rootViewController: chatVc)
-        self.present(navController, animated: true, completion: nil)
-        //self.performSegue(withIdentifier: "detailToChatSugue", sender: self)
-    }
     
     @objc func exitClick(){
         let alert = UIAlertController(title: "提示", message: "你要退出登陆吗？", preferredStyle: .alert)
@@ -208,11 +198,14 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-     }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let dest = segue.destination as? ChatViewController,let uid = self.uid {
+            dest.uid = uid
+            dest.username = username
+        }
+    }
 }

@@ -704,7 +704,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <state key="normal" title="私  信"/>
                                         <connections>
-                                            <action selector="chatClick:" destination="MBf-zb-Kcw" eventType="touchUpInside" id="gXR-U5-DX3"/>
+                                            <segue destination="shT-u4-dhE" kind="show" id="m6d-Jx-f8V"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1846,7 +1846,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3w-Ic-uic" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1150" y="1925"/>
+            <point key="canvasLocation" x="857" y="1684"/>
         </scene>
         <!--我的好友-->
         <scene sceneID="GZ8-FZ-PrB">
@@ -2058,7 +2058,7 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5zA-VW-dPn"/>
+        <segue reference="m6d-Jx-f8V"/>
         <segue reference="qWn-2M-4PJ"/>
         <segue reference="csF-Ug-UhR"/>
     </inferredMetricsTieBreakers>
