@@ -10,23 +10,25 @@ import UIKit
 import Kanna
 
 class ChatViewController: BaseTableViewController<ChatData> {
-    
+
     var uid: Int?
     var username: String?
     var isPresented = false
+    var loadSuccess = false
     
     override func viewDidLoad() {
         if uid == nil {
             showBackAlert(message: "没有传入uid参数")
             return
         }
+        self.showFooter = false
         super.viewDidLoad()
         if ((presentingViewController as? UserDetailViewController) != nil) {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "关闭", style: .plain, target: self, action: #selector(closeClick))
         }
         
         self.title = username
-        self.tableView.tableFooterView?.isHidden = true
+        self.pageSume = 1
     }
     
     
@@ -59,7 +61,10 @@ class ChatViewController: BaseTableViewController<ChatData> {
         
         print("data count:\(subDatas.count)")
         if subDatas.count == 0 {
+            loadSuccess = false
             pageSume = currentPage
+        }else {
+            loadSuccess = true
         }
         
         if subDatas.count == 0 && currentPage == 1 { //无消息
@@ -71,10 +76,22 @@ class ChatViewController: BaseTableViewController<ChatData> {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let data = datas[indexPath.row]
         
-        // Configure the cell...
+        let cell: UITableViewCell
+        if data.uid == uid { //him
+            cell = tableView.dequeueReusableCell(withIdentifier: "leftCell", for: indexPath)
+        }else { //me
+            cell = tableView.dequeueReusableCell(withIdentifier: "rightCell", for: indexPath)
+        }
         
+        let avatar = cell.viewWithTag(1) as! UIImageView
+        let contentLabel = cell.viewWithTag(2) as! UILabel
+        let timeLabel = cell.viewWithTag(3) as! UILabel
+    
+        avatar.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName: "placeholder"))
+        timeLabel.text = data.time
+        contentLabel.text = data.message
         return cell
     }
     

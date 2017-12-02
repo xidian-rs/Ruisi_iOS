@@ -11,6 +11,7 @@ import UIKit
 import Kanna
 
 class BaseTableViewController<T>: UITableViewController {
+    
     func getUrl(page: Int) -> String {
         fatalError("要实现")
     }
@@ -19,6 +20,7 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
     
+    var showFooter = true
     var datas  = [T]()
     var currentPage = 1
     var pageSume = Int.max
@@ -60,7 +62,9 @@ class BaseTableViewController<T>: UITableViewController {
         Widgets.setRefreshControl(refreshView)
         refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
         self.refreshControl = refreshView
-        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+        if showFooter {
+            tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+        }
         refreshView.beginRefreshing()
         loadData()
     }
@@ -162,11 +166,15 @@ class BaseTableViewController<T>: UITableViewController {
             
             tableView.backgroundView = label;
             tableView.separatorStyle = .none;
-            tableView.tableFooterView?.isHidden = true
+            if showFooter {
+                tableView.tableFooterView?.isHidden = true
+            }
             return 0
         } else {
             tableView.backgroundView = nil
-            tableView.tableFooterView?.isHidden = false
+            if showFooter {
+                tableView.tableFooterView?.isHidden = false
+            }
             tableView.separatorStyle = .singleLine
             return 1
         }
@@ -183,15 +191,17 @@ class BaseTableViewController<T>: UITableViewController {
     
     // load more
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // UITableView only moves in one direction, y axis
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        
-        // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0 {
-            if !isLoading {
-                print("load more")
-                loadData(position)
+        if showFooter {
+            // UITableView only moves in one direction, y axis
+            let currentOffset = scrollView.contentOffset.y
+            let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+            
+            // Change 10.0 to adjust the distance from bottom
+            if maximumOffset - currentOffset <= 10.0 {
+                if !isLoading {
+                    print("load more")
+                    loadData(position)
+                }
             }
         }
     }
