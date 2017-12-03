@@ -20,12 +20,32 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
     
-    var showFooter = true
+    private var showFooterPrivate = true
+    var showFooter:Bool {
+        get {
+            return showFooterPrivate
+        }
+        set {
+            if showFooterPrivate != newValue {
+                showFooterPrivate = newValue
+                if showFooterPrivate { //显示footer
+                    if (tableView.tableFooterView as? LoadMoreView) != nil {
+                        tableView.tableFooterView?.isHidden = false
+                    }else {
+                        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+                    }
+                }else { //隐藏footer
+                    tableView.tableFooterView?.isHidden = true
+                }
+            }
+        }
+    }
     var datas  = [T]()
     var currentPage = 1
     var pageSume = Int.max
     var refreshView: UIRefreshControl!
     var position = 0 //为了hotnew而准备的
+    var emptyPlaceholderText = "加载中..."
     
     private var loading = false
     open var isLoading: Bool{
@@ -57,14 +77,16 @@ class BaseTableViewController<T>: UITableViewController {
         self.tableView.estimatedRowHeight = 60
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
+        if showFooter {
+            showFooterPrivate = false
+            showFooter = true
+        }
+        
         // Initialize the refresh control.
         refreshView = UIRefreshControl()
         Widgets.setRefreshControl(refreshView)
         refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
         self.refreshControl = refreshView
-        if showFooter {
-            tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
-        }
         refreshView.beginRefreshing()
         loadData()
     }
@@ -156,7 +178,7 @@ class BaseTableViewController<T>: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         if datas.count == 0 {//no data avaliable
             let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = "加载中..."
+            label.text = emptyPlaceholderText
             label.textColor = UIColor.black
             label.numberOfLines = 0
             label.textAlignment = .center
@@ -166,9 +188,7 @@ class BaseTableViewController<T>: UITableViewController {
             
             tableView.backgroundView = label;
             tableView.separatorStyle = .none;
-            if showFooter {
-                tableView.tableFooterView?.isHidden = true
-            }
+            tableView.tableFooterView?.isHidden = true
             return 0
         } else {
             tableView.backgroundView = nil

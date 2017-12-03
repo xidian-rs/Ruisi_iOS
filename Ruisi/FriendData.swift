@@ -15,12 +15,14 @@ class FriendData {
     var usernameColor:UIColor?
     var description: String?
     var isOnline:Bool
+    var isFriend:Bool
     
-    init(uid:Int,username:String,description:String?,usernameColor:UIColor? = nil,online:Bool = false) {
+    init(uid:Int,username:String,description:String?,usernameColor:UIColor? = nil,online:Bool = false,isFriend:Bool = true) {
         self.uid = uid
         self.username = username
         self.description = description
         self.usernameColor = usernameColor
         self.isOnline = online
+        self.isFriend = isFriend
     }
 }

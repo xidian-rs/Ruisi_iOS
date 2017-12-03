@@ -108,6 +108,17 @@ public class Urls {
         return "\(baseUrl)home.php?mod=spacecp&ac=friend&op=ignore&uid=\(uid)&confirm=1&mobile=2"
     }
     
+    // 搜索用户
+    public static func searchFriendUrl(username: String) -> String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=search&username=\(username)&searchsubmit=yes&mobile=2"
+    }
+    
+    // 添加好友
+    public static func addFriendUrl(uid: Int) -> String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=friend&op=add&uid=\(uid)&inajax=1&mobile=2"
+    }
+    
+    
     // size =0 small 1-middle 2-large
     // 获得头像链接
     public static func getAvaterUrl(uid: Any, size: Int = 1) -> URL?{

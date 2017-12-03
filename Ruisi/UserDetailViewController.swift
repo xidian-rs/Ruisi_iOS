@@ -12,6 +12,8 @@ import Kanna
 class UserDetailViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     var uid:Int?
     var username:String?
+    var isFriend = false
+    
     var datas = [KeyValueData<String,String>]()
     
     @IBOutlet weak var chatBtn: UIButton!
@@ -62,7 +64,11 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         
         if App.uid != uid { //别人
             self.title = username
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
+            if !isFriend {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
+            }else {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
+            }
         } else {
             self.chatBtn.isHidden = true
         }
@@ -84,10 +90,44 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         if !checkLogin() { return }
         let alert = UIAlertController(title: "添加好友", message: "你要添加\(username ?? "")为好友吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "添加", style: .default, handler: { (action) in
-            self.doAddFriend()
+            self.doAddFriend(uid:self.uid!)
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func deleteFriendClick() {
+        let alert = UIAlertController(title: "删除好友", message: "你要删除好友【\(String(username ?? ""))】?吗?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
+            self.doDeleteFriend(uid: self.uid!)
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func doDeleteFriend(uid:Int) {
+        let params = "friendsubmit=true"
+        HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: params) { (ok, res) in
+            print("post ok")
+            if ok && res.contains("操作成功"){
+                DispatchQueue.main.async { [weak self] in
+                    self?.isFriend = false
+                    self?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self?.addFriendBtnClick))
+                }
+            } else {
+                // TODO 失败
+                DispatchQueue.main.async { [weak self] in
+                    ///html/body/div[1]/p[1]
+                    var reason:String?
+                    if let doc = try? HTML(html: res, encoding: .utf8) {
+                        reason = doc.xpath("//html/body/div[1]/p[1]").first?.text
+                    }
+                    let vc = UIAlertController(title: "操作失败", message: "删除好友失败:\(reason ?? res)", preferredStyle: .alert)
+                    vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil ))
+                    self?.present(vc, animated: true)
+                }
+            }
+        }
     }
     
     
@@ -100,8 +140,37 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         present(alert, animated: true, completion: nil)
     }
     
-    func doAddFriend() {
-        
+    func doAddFriend(uid:Int) {
+        let params = "addsubmit=true&handlekey=friend_\(uid)&note=\("")&gid=1&addsubmit_btn=true"
+        HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: params) { (ok, res) in
+            var title: String
+            var message: String
+            if ok {
+                title = "提示"
+                if res.contains("好友请求已") {
+                    message =  "请求已发送成功，正在请等待对方验证"
+                } else if res.contains("正在等待验证") {
+                    message = "好友请求已经发送了，正在等待对方验证"
+                } else if res.contains("你们已成为好友") {
+                    message = "你们已经是好友了不用添加了..."
+                } else {
+                    message = "未知结果..."
+                }
+            } else {
+                title = "操作失败"
+                if let doc = try? HTML(html: res, encoding: .utf8) {
+                    message = doc.xpath("//html/body/div[1]/p[1]").first?.text ?? ""
+                }else {
+                    message = "未知错误..."
+                }
+            }
+            
+            DispatchQueue.main.async {
+                let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil ))
+                self.present(vc, animated: true)
+            }
+        }
     }
     
     func doExit() {

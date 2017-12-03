@@ -1886,7 +1886,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="eef-As-8xq" userLabel="头像">
-                                            <rect key="frame" x="10" y="12" width="44" height="44"/>
+                                            <rect key="frame" x="12" y="12" width="44" height="44"/>
                                             <gestureRecognizers/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="J5N-IK-dsd"/>
@@ -1899,28 +1899,34 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ien-UB-GHZ" userLabel="用户名">
-                                            <rect key="frame" x="62" y="12" width="303" height="21"/>
+                                            <rect key="frame" x="66" y="12" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3C1-9v-Rvu" userLabel="动态">
-                                            <rect key="frame" x="62" y="37" width="303" height="17"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                            <rect key="frame" x="66" y="37" width="31" height="14.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBU-bb-qef">
+                                            <rect key="frame" x="343" y="23" width="22" height="22"/>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="top" secondItem="ekg-wc-4D1" secondAttribute="top" constant="12" id="05v-fS-y5g"/>
-                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="leading" secondItem="eef-As-8xq" secondAttribute="trailing" constant="8" id="9o5-bP-1io"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="eef-As-8xq" secondAttribute="bottom" constant="12" id="FD7-JU-Z8X"/>
-                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="leading" secondItem="Ien-UB-GHZ" secondAttribute="leading" id="JrX-6O-K2q"/>
-                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="top" secondItem="Ien-UB-GHZ" secondAttribute="bottom" constant="4" id="UOT-Uc-BsV"/>
-                                        <constraint firstItem="eef-As-8xq" firstAttribute="leading" secondItem="ekg-wc-4D1" secondAttribute="leading" constant="10" id="WPw-Pk-0jc"/>
-                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="trailing" secondItem="Ien-UB-GHZ" secondAttribute="trailing" id="hpm-ym-O8O"/>
-                                        <constraint firstAttribute="trailing" secondItem="Ien-UB-GHZ" secondAttribute="trailing" constant="10" id="iSf-UX-4iG"/>
-                                        <constraint firstItem="eef-As-8xq" firstAttribute="top" secondItem="ekg-wc-4D1" secondAttribute="top" constant="12" id="qpW-aN-Mxq"/>
+                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="leading" secondItem="Ien-UB-GHZ" secondAttribute="leading" id="6mk-R0-neN"/>
+                                        <constraint firstItem="eef-As-8xq" firstAttribute="leading" secondItem="ekg-wc-4D1" secondAttribute="leading" constant="12" id="7X0-cn-YtW"/>
+                                        <constraint firstAttribute="bottom" secondItem="eef-As-8xq" secondAttribute="bottom" constant="12" id="Asy-sW-GF7"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ien-UB-GHZ" secondAttribute="trailing" constant="12" id="NHj-07-1ro"/>
+                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="top" secondItem="eef-As-8xq" secondAttribute="top" id="She-Uq-Q2G"/>
+                                        <constraint firstItem="Ien-UB-GHZ" firstAttribute="leading" secondItem="eef-As-8xq" secondAttribute="trailing" constant="10" id="UWc-Jk-Epb"/>
+                                        <constraint firstItem="eef-As-8xq" firstAttribute="centerY" secondItem="ekg-wc-4D1" secondAttribute="centerY" id="XlI-5l-bFb"/>
+                                        <constraint firstItem="nBU-bb-qef" firstAttribute="centerY" secondItem="ekg-wc-4D1" secondAttribute="centerY" id="dN1-U8-DFT"/>
+                                        <constraint firstAttribute="trailing" secondItem="nBU-bb-qef" secondAttribute="trailing" constant="10" id="ibs-Qr-GYI"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3C1-9v-Rvu" secondAttribute="trailing" constant="12" id="rGj-RS-4tz"/>
+                                        <constraint firstItem="eef-As-8xq" firstAttribute="top" secondItem="ekg-wc-4D1" secondAttribute="top" constant="12" id="tdv-G1-qlj"/>
+                                        <constraint firstItem="3C1-9v-Rvu" firstAttribute="top" secondItem="Ien-UB-GHZ" secondAttribute="bottom" constant="4" id="yJO-tK-52h"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -2070,8 +2076,8 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="m6d-Jx-f8V"/>
+        <segue reference="TmY-Es-Rva"/>
         <segue reference="qWn-2M-4PJ"/>
-        <segue reference="csF-Ug-UhR"/>
+        <segue reference="kcq-sa-9GX"/>
     </inferredMetricsTieBreakers>
 </document>
