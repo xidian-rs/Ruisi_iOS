@@ -361,6 +361,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         self.present(alert, animated: true)
     }
     
+    private func showAlert(title:String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "好", style: .cancel)
+        alert.addAction(action)
+        self.present(alert, animated: true)
+    }
+    
     // 保存到历史记录
     private func saveToHistory(tid:String,title:String,author:String?,created:String?){
         let app = UIApplication.shared.delegate as! AppDelegate
@@ -413,6 +420,9 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         
         sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { (UIAlertAction) in
             print("star click")
+            PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
+                self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+            })
         }))
         
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { (UIAlertAction) in
@@ -425,8 +435,21 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (UIAlertAction) in
             self.dismiss(animated: true, completion: nil)
         }))
-        
+
         self.present(sheet, animated: true, completion: nil)
+    }
+   
+    // 收藏
+    public static func doStarPost(tid:Any,callback:@escaping (Bool,String)-> Void) {
+        HttpUtil.POST(url: Urls.addStarUrl(tid: tid), params: "favoritesubmit=true") { (ok, res) in
+            if ok {
+                if res.contains("成功") || res.contains("您已收藏") {
+                    callback(true,"收藏成功")
+                    return
+                }
+            }
+            callback(false,"网络不太通畅,请稍后重试")
+        }
     }
     
     @IBAction func closeClick(_ sender: UIBarButtonItem) {

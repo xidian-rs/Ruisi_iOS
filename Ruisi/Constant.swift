@@ -77,13 +77,19 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&mobile=2"
     }
     
-    //收藏
+    // 我的收藏
     public static func getStarUrl(uid:Int?) -> String {
         if uid == nil {
             return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
         }
         return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=favorite&view=me&type=thread&mobile=2"
     }
+    
+    // 收藏文章
+    public static func addStarUrl(tid:Any) -> String {
+       return "\(baseUrl)home.php?mod=spacecp&ac=favorite&type=thread&id=\(tid)&mobile=2&handlekey=favbtn&inajax=1"
+    }
+
     
     // 删除收藏 TODO 不支持外网
     public static func getDelStarUrl(favid:Int) -> String {

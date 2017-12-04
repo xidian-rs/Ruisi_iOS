@@ -87,29 +87,38 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         return cell
     }
     
- 
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
+//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let starBtn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "收藏", handler:{action, indexpath in
             print("star click")
+            self.doStarPost(tid: self.datas[indexPath.row].tid)
         })
         starBtn.backgroundColor = UIColor.orange
         return [starBtn]
     }
     
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .insert {
-//
-//        }
-//    }
+    func doStarPost(tid:Any) {
+        PostViewController.doStarPost(tid: tid, callback: { (ok, res) in
+            print("star result \(ok) \(res)")
+        })
+    }
     
 
     @objc func newPostClick() {
-        self.performSegue(withIdentifier: "postToNewPostSegue", sender: self)
+        if !App.isLogin {
+            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+                let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+                self.present(dest!, animated: true, completion: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else {
+            self.performSegue(withIdentifier: "postToNewPostSegue", sender: self)
+        }
     }
 
     // MARK: - Navigation
