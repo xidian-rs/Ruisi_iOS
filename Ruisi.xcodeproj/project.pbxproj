@@ -11,6 +11,7 @@
 		2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2451EFF9CE900102CF2 /* Launch.storyboard */; };
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
 		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
+		2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */; };
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */; };
 		2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */; };
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
+		2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 /* End PBXBuildFile section */
 
@@ -214,6 +216,7 @@
 		2F01C2451EFF9CE900102CF2 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
+		2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseForumViewController.swift; sourceTree = "<group>"; };
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -266,6 +269,7 @@
 		2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
+		2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -304,6 +308,8 @@
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
 				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
 				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
+				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
+				2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -622,6 +628,7 @@
 				2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */,
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
+				2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */,
 				2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */,
 				2FEDBB631F1113A6006E645D /* PostData.swift in Sources */,
 				2FB627961FC9838E005D33F0 /* Ruisi.xcdatamodeld in Sources */,
@@ -653,6 +660,7 @@
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */,
+				2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
 				2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */,
 				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,

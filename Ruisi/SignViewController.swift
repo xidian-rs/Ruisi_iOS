@@ -119,6 +119,7 @@ class SignViewController: UIViewController {
     func checkSignStatus() {
         setLoadingState(isLoading: true)
         HttpUtil.GET(url: Urls.signUrl, params: nil) { ok, res in
+            print(res)
             DispatchQueue.main.async { [weak self] in
                 self?.setLoadingState(isLoading: false)
                 if ok ,let doc = try? HTML(html: res, encoding: .utf8) {
@@ -128,7 +129,7 @@ class SignViewController: UIViewController {
                         for ele in doc.css(".mn p") {
                             if ele.text!.contains("您累计已签到") {
                                 let r = ele.text!.range(of: "您累计已签到")
-                                daytxt = String(ele.text![r!.lowerBound])
+                                daytxt = String(ele.text![r!.lowerBound...])
                             } else if ele.text!.contains("您本月已累计签到") {
                                 monthtxt = ele.text!
                             }
@@ -187,9 +188,5 @@ class SignViewController: UIViewController {
         } else {
             checkSignStatus()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
 }

@@ -16,6 +16,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     
     var datas = [KeyValueData<String,String>]()
     
+    
     @IBOutlet weak var chatBtn: UIButton!
     @IBOutlet weak var headerView: UIView!
     

@@ -16,6 +16,8 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
     }
     
     override func getUrl(page: Int) -> String {
@@ -106,6 +108,9 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
 //    }
     
 
+    @objc func newPostClick() {
+        self.performSegue(withIdentifier: "postToNewPostSegue", sender: self)
+    }
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -114,6 +119,9 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             let index = tableView.indexPath(for: cell)!
             dest.title = datas[index.row].title
             dest.tid = datas[index.row].tid
+        }else if  let dest = segue.destination as? NewPostViewController {
+            dest.fid = self.fid
+            dest.name = self.title
         }
     }
 }

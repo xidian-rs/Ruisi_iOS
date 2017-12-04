@@ -145,4 +145,9 @@ public class Urls {
     public static func getSearchUrl2(searchId:String) -> String {
         return "\(baseUrl)search.php?mod=forum&searchid=\(searchId)&orderby=lastpost&ascdesc=desc&searchsubmit=yes&mobile=2"
     }
+    
+    // 发帖url
+    public static func newPostUrl(fid:Int) -> String {
+        return "\(baseUrl)forum.php?mod=post&action=newthread&fid=\(fid)&mobile=2"
+    }
 }

@@ -14,13 +14,8 @@ class MainViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         checkNetwork()
+        NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
     }
     
     //selectedIndex 之前选择的位置
@@ -52,7 +47,9 @@ class MainViewController: UITabBarController {
     //判断是否登陆
     func checkLogin() {
         HttpUtil.GET(url: Urls.loginUrl, params: nil) { (ok, res) in
-            if let doc = try? HTML(html: res, encoding: .utf8) {
+            if res.contains("id=\"loginform\"") {
+                App.isLogin = false
+            }else if let doc = try? HTML(html: res, encoding: .utf8) {
                 let messageNode = doc.xpath("/html/body/div[1]/p[1]").first
                 let userNode = doc.xpath("/html/body/div[3]/div/a[1]").first
                 let exitNode = doc.xpath("/html/body/div[3]/div/a[2]").first
@@ -65,21 +62,16 @@ class MainViewController: UITabBarController {
                     App.formHash = Utils.getFormHash(from: exitNode?["href"])
                     print("schoolnet:\(App.isSchoolNet) login:\(App.isLogin) name:\(App.username ?? "") grade:\(App.grade ?? "") uid:\(App.uid ?? 0) formhash:\(App.formHash ?? "")")
                 }
-            } else {
-                App.isLogin = false
+            }else {
+                print("unknown login state")
+            }
+            
+            if let forumVc = self.childViewControllers[0].childViewControllers[0] as? ForumsViewController,forumVc.loginState != App.isLogin {
+                DispatchQueue.main.async {
+                    forumVc.loginState = App.isLogin
+                    forumVc.loadData(loginState: App.isLogin)
+                }
             }
         }
     }
-    
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }

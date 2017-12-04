@@ -56,6 +56,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         }
         
         showLoadingView()
+        
+        let params = "username=\(self.username)&password=\(self.password)&fastloginfield=username&cookietime=2592000"
+        
         HttpUtil.GET(url: Urls.loginUrl, params: nil) { ok, res in
             if ok {
                 if res.contains("欢迎您回来"){
@@ -68,8 +71,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                     let substr = String(res[start...])
                     let end = substr.index(of: "\"")
                     let loginUrl = String(substr[..<end!])
-                    let params = "username=\(self.username)&password=\(self.password)&fastloginfield=username&cookietime=2592000"
-                    
+                
                     HttpUtil.POST(url: loginUrl, params: params, callback: { ok, res in
                         print("post ok")
                         if ok && res.contains("欢迎您回来"){

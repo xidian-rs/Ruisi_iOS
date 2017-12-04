@@ -12,14 +12,43 @@ import Kingfisher
 import Kanna
 
 // 帖子详情页
-class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
+class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource {
     
+    @IBOutlet weak var tableView: UITableView!
+    var datas = [PostData]()
     var tid: Int? // 由前一个页面传过来的值
     var saveToHistory = false //是否保存到历史记录
     var contentTitle: String?
-    var pageSum: Int = 1
     
-    override func getUrl(page: Int) -> String {
+    var currentPage: Int = 1
+    var pageSum: Int = 1
+    var refreshView: UIRefreshControl!
+    
+    
+    private var loading = false
+    open var isLoading: Bool{
+        get{
+            return loading
+        }
+        set {
+            loading = newValue
+            if !loading {
+                refreshView.endRefreshing()
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.endLoading(haveMore: currentPage < pageSum)
+                }
+            }else {
+                //refreshView.beginRefreshing()
+                if currentPage > 1 { //上拉刷新
+                    if let f = (tableView.tableFooterView as? LoadMoreView) {
+                        f.startLoading()
+                    }
+                }
+            }
+        }
+    }
+    
+    func getUrl(page: Int) -> String {
         if self.currentPage > self.pageSum {
             self.currentPage = self.pageSum
             return Urls.getPostUrl(tid: tid!) + "&page=\(pageSum)"
@@ -34,49 +63,90 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
             return
         }
         
-        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        
+        //navigationController?.hidesBarsOnSwipe = true
+        // TODO it will change all the nav
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
         
-        self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(barButtonSystemItem: .action , target: self, action: #selector(PostViewController.showMoreView)),
-            UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(PostViewController.refreshData))
-        ]
+        // Initialize the refresh control.
+        refreshView = UIRefreshControl()
+        Widgets.setRefreshControl(refreshView)
+        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
+        tableView.refreshControl = refreshView
+        refreshView.beginRefreshing()
+        
+        loadData()
     }
     
+    
+    @objc func pullRefresh(){
+        print("下拉刷新'")
+        currentPage = 1
+        pageSum = Int.max
+        loadData()
+    }
+    
+    @objc func keyboardWillShow()  {
+        print("key board will show")
+    }
     
     //刷新数据
     @objc func refreshData() {
         print("refresh click")
     }
     
-    //显示更多按钮
-    @objc func showMoreView(){
-        let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
-            UIApplication.shared.open(URL(string: self.getUrl(page: self.currentPage))! ,
-                                      options: [:], completionHandler: nil)
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { (UIAlertAction) in
-            print("star click")
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { (UIAlertAction) in
-            print("share click")
-            let shareVc =  UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
-            shareVc.setValue(self.contentTitle, forKey: "subject")
-            self.present(shareVc, animated: true, completion: nil)
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (UIAlertAction) in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(sheet, animated: true, completion: nil)
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if datas.count == 0 {//no data avaliable
+            let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+            label.text = "加载中..."
+            label.textColor = UIColor.black
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = UIColor.lightGray
+            label.sizeToFit()
+            
+            tableView.backgroundView = label;
+            tableView.separatorStyle = .none;
+            tableView.tableFooterView?.isHidden = true
+            return 0
+        } else {
+            tableView.backgroundView = nil
+            tableView.tableFooterView?.isHidden = false
+            tableView.separatorStyle = .singleLine
+            return 1
+        }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return datas.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // load more
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        // UITableView only moves in one direction, y axis
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        
+        // Change 10.0 to adjust the distance from bottom
+        if maximumOffset - currentOffset <= 10.0 {
+            if !isLoading {
+                print("==load more==")
+                loadData()
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data: PostData
         let cell: UITableViewCell
         if indexPath.row == 0 {
@@ -110,8 +180,80 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
         return cell
     }
     
+    func loadData() {
+        // 所持请求的数据正在加载中/未加载
+        if isLoading {
+            return
+        }
+        refreshView.attributedTitle = NSAttributedString(string: "正在加载")
+        isLoading = true
+        
+        print("load data page:\(currentPage) sumPage:\(pageSum)")
+        HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
+            //print(res)
+            var subDatas:[PostData] = []
+            if ok { //返回的数据是我们要的
+                if let doc = try? HTML(html: res, encoding: .utf8) {
+                    // load fromHash
+                    let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
+                    if let hash =  Utils.getFormHash(from: exitNode?["href"]) {
+                        print("formhash: \(hash)")
+                        App.formHash = hash
+                    }
+                    
+                    //load subdata
+                    subDatas = self.parseData(doc: doc)
+                }
+            }
+            
+            
+            // 第一次换页清空
+            if self.currentPage == 1 {
+                self.datas = subDatas
+                DispatchQueue.main.async{
+                    self.tableView.reloadData()
+                }
+            } else {
+                let count = self.datas.count
+                self.datas.append(contentsOf: subDatas)
+                DispatchQueue.main.async{
+                    self.tableView.beginUpdates()
+                    var indexs = [IndexPath]()
+                    for i in 0 ..< subDatas.count {
+                        indexs.append(IndexPath(row: count + i, section: 0))
+                    }
+                    self.tableView.insertRows(at: indexs, with: .automatic)
+                    self.tableView.endUpdates()
+                }
+            }
+            
+            var str: String
+            if subDatas.count > 0 {
+                let df =  DateFormatter()
+                df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
+                str = "Last update: "+df.string(from: Date())
+            }else{
+                str = "加载失败"
+            }
+            
+            let attrStr = NSAttributedString(string: str, attributes: [
+                NSAttributedStringKey.foregroundColor:UIColor.gray])
+            
+            DispatchQueue.main.async {
+                self.refreshView.attributedTitle = attrStr
+                self.isLoading = false
+                
+                if self.currentPage < self.pageSum {
+                    self.currentPage += 1
+                }
+            }
+            
+            print("finish http")
+        }
+    }
+    
     // 子类重写此方法支持解析自己的数据
-    override func parseData(pos:Int, doc: HTMLDocument) -> [PostData]{
+    func parseData(doc: HTMLDocument) -> [PostData]{
         var subDatas:[PostData] = []
         if self.contentTitle == nil, let t = doc.title {
             self.contentTitle = String(t[..<t.index(of: " - ")!])
@@ -122,7 +264,7 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
             //获得回复楼主的url
             var replyUrl: String?
             if self.datas.count == 0 {
-               replyUrl =  doc.xpath("//*[@id=\"fastpostform\"]").first?["action"]
+                replyUrl =  doc.xpath("//*[@id=\"fastpostform\"]").first?["action"]
             }
             
             //获取总页数 和当前页数
@@ -193,8 +335,10 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
         }
         
         if !self.saveToHistory && subDatas.count > 0 && self.currentPage == 1{
-            self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
-            self.saveToHistory = true
+            DispatchQueue.main.async {
+                self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
+                self.saveToHistory = true
+            }
         }
         
         return subDatas
@@ -253,13 +397,55 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
         }
     }
     
-
+    
     @objc func avatarClick(_ sender : UITapGestureRecognizer)  {
         self.performSegue(withIdentifier: "postToUserDetail", sender: sender.view?.superview?.superview)
     }
+    
+    
+    //显示更多按钮
+    @IBAction func shareBtnClick(_ sender: UIBarButtonItem) {
+        let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
+            UIApplication.shared.open(URL(string: self.getUrl(page: self.currentPage))! ,
+                                      options: [:], completionHandler: nil)
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { (UIAlertAction) in
+            print("star click")
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { (UIAlertAction) in
+            print("share click")
+            let shareVc =  UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
+            shareVc.setValue(self.contentTitle, forKey: "subject")
+            self.present(shareVc, animated: true, completion: nil)
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (UIAlertAction) in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(sheet, animated: true, completion: nil)
+    }
+    
+    @IBAction func closeClick(_ sender: UIBarButtonItem) {
+        print("closeClick")
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func commentClick(_ sender: UIBarButtonItem) {
+        print("commentClick")
+    }
+    
+    
+    @IBAction func refreshClick(_ sender: UIBarButtonItem) {
+        refreshData()
+    }
+    
 
-     // MARK: - Navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UserDetailViewController,
             let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
@@ -268,7 +454,7 @@ class PostViewController: BaseTableViewController<PostData>,UITextViewDelegate {
                 dest.username = datas[index.row].author
             }
         }
-     }
- 
+    }
+    
     
 }

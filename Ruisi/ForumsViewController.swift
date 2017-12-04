@@ -26,45 +26,25 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         }
     }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.clearsSelectionOnViewWillAppear = true
         loginState = App.isLogin
         loadData(loginState: loginState)
     }
-    
+
     func loadData(loginState: Bool) {
-        print("load forums \(loginState)")
+        print("load forums login state:\(loginState)")
         let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
-        if let d = try? Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false)){
-            let json = try? JSONSerialization.jsonObject(with: d, options: [])
-            if let jarray =  json as? [Any]{
-                datas.removeAll()
-                for case let jo as [String:Any] in jarray{
-                    let  forumGroup  = Forums(gid: jo["gid"] as! Int, name: jo["name"] as! String,
-                                              login: jo["login"] as! Bool)
-                    
-                    if !loginState && forumGroup.login {
-                        continue
-                    }
-                    
-                    let fs = jo["forums"] as! [Any]
-                    var forums:[Forums.Forum] = []
-                    for case let  f as [String:Any] in fs{
-                        let forum = Forums.Forum(fid: f["fid"] as! Int, name: f["name"] as! String,
-                                                 login: f["login"] as! Bool)
-                        if !loginState && forum.login {
-                            continue
-                        }
-                        forums.append(forum)
-                    }
-                    
-                    forumGroup.setForums(forums: forums)
-                    datas.append(forumGroup)
-                }
-            }
-        }
+        //let jsonData = jsonString.data(encoding: .utf8)!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
+        let decoder = JSONDecoder()
+        datas = try! decoder.decode([Forums].self, from: data).filter({ (f) -> Bool in
+            f.forums = f.forums?.filter({ (ff) -> Bool in
+                return loginState || !ff.login
+            })
+            return loginState || !f.login
+        })
         
         collectionView?.reloadData()
     }

@@ -6,14 +6,12 @@
 //  Copyright © 2017年 yang. All rights reserved.
 //
 
-class Forums{
+class Forums: Codable{
     
     var gid :Int
     var name:String
     var login:Bool
-    
     var forums:[Forum]?
-    
     
     init(gid:Int,name:String,login:Bool) {
         self.gid = gid
@@ -34,7 +32,7 @@ class Forums{
     }
     
     
-    class Forum  {
+    class Forum: Codable{
         
         var name :String
         var fid :Int

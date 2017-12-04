@@ -73,12 +73,6 @@ UITableViewDataSource,UINavigationControllerDelegate{
             case avaterImage:
                 print("avater click")
                 if App.isLogin{
-                    //detail
-//                    let desc = self.storyboard?.instantiateViewController(withIdentifier: "userDetailView") as! UserDetailViewController
-//                    desc.uid = App.uid
-//                    desc.username = App.username
-//                    self.show(desc, sender: self)
-                    
                     self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
                 }else{
                     //login
