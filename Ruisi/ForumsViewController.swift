@@ -118,6 +118,27 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         //print("select")
     }
     
+    func showLoginAlert() {
+        let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            self.present(dest!, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "formToSearchSegue" {
+            if !App.isLogin {
+                showLoginAlert()
+                return false
+            }
+        }
+        
+        return true
+    }
+    
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

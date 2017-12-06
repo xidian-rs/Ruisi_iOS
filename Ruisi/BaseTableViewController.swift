@@ -43,9 +43,9 @@ class BaseTableViewController<T>: UITableViewController {
     var datas  = [T]()
     var currentPage = 1
     var pageSume = Int.max
-    var refreshView: UIRefreshControl!
     var position = 0 //为了hotnew而准备的
     var emptyPlaceholderText = "加载中..."
+    var refreshView: UIRefreshControl?
     
     private var loading = false
     open var isLoading: Bool{
@@ -55,7 +55,7 @@ class BaseTableViewController<T>: UITableViewController {
         set {
             loading = newValue
             if !loading {
-                refreshView.endRefreshing()
+                self.refreshControl?.endRefreshing()
                 if let f = (tableView.tableFooterView as? LoadMoreView) {
                     f.endLoading(haveMore: currentPage < pageSume)
                 }
@@ -84,10 +84,10 @@ class BaseTableViewController<T>: UITableViewController {
         
         // Initialize the refresh control.
         refreshView = UIRefreshControl()
-        Widgets.setRefreshControl(refreshView)
-        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
+        Widgets.setRefreshControl(refreshView!)
+        refreshView?.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
         self.refreshControl = refreshView
-        refreshView.beginRefreshing()
+        refreshView?.beginRefreshing()
         loadData()
     }
     
@@ -103,7 +103,7 @@ class BaseTableViewController<T>: UITableViewController {
         if isLoading {
             return
         }
-        refreshView.attributedTitle = NSAttributedString(string: "正在加载")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
         
         print("load data page:\(currentPage) sumPage:\(pageSume)")
@@ -160,7 +160,7 @@ class BaseTableViewController<T>: UITableViewController {
                     NSAttributedStringKey.foregroundColor:UIColor.gray])
                 
                 DispatchQueue.main.async {
-                    self.refreshView.attributedTitle = attrStr
+                    self.refreshControl?.attributedTitle = attrStr
                     self.isLoading = false
                     
                     if self.currentPage < self.pageSume {

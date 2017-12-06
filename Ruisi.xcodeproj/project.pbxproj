@@ -12,6 +12,7 @@
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
 		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
 		2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */; };
+		2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */; };
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
@@ -217,6 +218,7 @@
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
 		2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseForumViewController.swift; sourceTree = "<group>"; };
+		2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboveKeyboardView.swift; sourceTree = "<group>"; };
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			children = (
 				2F01C2491EFFA46400102CF2 /* MainViewController.swift */,
 				2F175AA41FCD0ABB00917895 /* BaseTableViewController.swift */,
+				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
 				2F16B5F71EA504330068EE20 /* ForumsViewController.swift */,
 				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
 				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
@@ -307,7 +310,6 @@
 				2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */,
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
 				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
-				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
 				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
 				2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */,
 			);
@@ -430,6 +432,7 @@
 				2F35E9A91F00A48700CDD60D /* Widgets.swift */,
 				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
 				2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */,
+				2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */,
 			);
 			name = widget;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
+				2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F46F7251F0786F700207B17 /* AtrributeConveter.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
@@ -762,7 +766,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -813,7 +817,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -836,7 +840,7 @@
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -855,7 +859,7 @@
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Ruisi/Modules";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

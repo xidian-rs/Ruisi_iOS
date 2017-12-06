@@ -170,7 +170,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         lz.isHidden = datas[0].author != data.author
         
         author.text = data.author
-        time.text = "发表于:\(data.time)"
+        time.text = data.time
         img.kf.setImage(with:  Urls.getAvaterUrl(uid: data.uid))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
         content.delegate = self
