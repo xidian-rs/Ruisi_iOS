@@ -12,7 +12,7 @@ class SettingViewController: UITableViewController {
     
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var networkChangeSwitch: UISegmentedControl!
-    @IBOutlet weak var tailContentTextField: UITextField!
+    @IBOutlet weak var tailContentTextVIew: UITextView!
     @IBOutlet weak var showZhidingSwitch: UISwitch!
     @IBOutlet weak var enableTailSwitch: UISwitch!
     
@@ -23,11 +23,10 @@ class SettingViewController: UITableViewController {
         
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
-        tailContentTextField.text = Settings.tailContent
-        tailContentTextField.isEnabled = enableTailSwitch.isOn
+        tailContentTextVIew.text = Settings.tailContent
+        tailContentTextVIew.isEditable = enableTailSwitch.isOn
         networkChangeSwitch.selectedSegmentIndex = App.isSchoolNet ? 1:0
-        
-        tailContentTextField.text = Settings.tailContent ?? defaultTail
+        tailContentTextVIew.text = Settings.tailContent ?? defaultTail
         
         //CFBundleVersion
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -55,16 +54,16 @@ class SettingViewController: UITableViewController {
     // 是否允许小尾巴
     @IBAction func showTailValueChane(_ sender: UISwitch) {
         Settings.enableTail = sender.isOn
-        tailContentTextField.isEnabled = enableTailSwitch.isOn
+        tailContentTextVIew.isEditable  = enableTailSwitch.isOn
     }
-    
     
     // 小尾巴编辑结束
-    @IBAction func tailContentEditEnd(_ sender: UITextField) {
+    override func viewWillDisappear(_ animated: Bool) {
         print("end edit tail")
-        Settings.tailContent = sender.text
-        print("tail is \(sender.text ?? "")")
+        Settings.tailContent = tailContentTextVIew.text
+        print("tail is \(tailContentTextVIew.text ?? "")")
     }
+    
     
     @IBAction func viewOnGitHubClick(_ sender: UIButton) {
         if let url = URL(string: "https://github.com/freedom10086/Ruisi_Ios") {

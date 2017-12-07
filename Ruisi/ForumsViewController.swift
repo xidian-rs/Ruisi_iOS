@@ -93,8 +93,6 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         
         return UICollectionReusableView(frame: CGRect.zero)
     }
-    
-    
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return datas[section].getSize()
@@ -135,7 +133,6 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
                 return false
             }
         }
-        
         return true
     }
     

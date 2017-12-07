@@ -56,6 +56,9 @@
 		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
 		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
 		2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA780EC1EA8603800ACBEAF /* PostViewController.swift */; };
+		2FB16DF21FD7CE5800863BF9 /* ReplyBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB16DF01FD7CE5800863BF9 /* ReplyBoxView.swift */; };
+		2FB16E051FD7E83F00863BF9 /* ReplyBoxView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FB16E041FD7E83F00863BF9 /* ReplyBoxView.xib */; };
+		2FB16E071FD817A800863BF9 /* LTHRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */; };
 		2FB627771FC980E3005D33F0 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB627761FC980E3005D33F0 /* History.swift */; };
 		2FB627961FC9838E005D33F0 /* Ruisi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2FB627941FC9838E005D33F0 /* Ruisi.xcdatamodeld */; };
 		2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADC71EA7371400602516 /* MessageViewController.swift */; };
@@ -263,6 +266,9 @@
 		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
 		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2FA780EC1EA8603800ACBEAF /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		2FB16DF01FD7CE5800863BF9 /* ReplyBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBoxView.swift; sourceTree = "<group>"; };
+		2FB16E041FD7E83F00863BF9 /* ReplyBoxView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReplyBoxView.xib; sourceTree = "<group>"; };
+		2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTHRadioButton.swift; sourceTree = "<group>"; };
 		2FB627761FC980E3005D33F0 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2FB627951FC9838E005D33F0 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		2FD4ADC71EA7371400602516 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -433,6 +439,9 @@
 				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
 				2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */,
 				2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */,
+				2FB16DF01FD7CE5800863BF9 /* ReplyBoxView.swift */,
+				2FB16E041FD7E83F00863BF9 /* ReplyBoxView.xib */,
+				2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */,
 			);
 			name = widget;
 			sourceTree = "<group>";
@@ -617,6 +626,7 @@
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
 				2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */,
+				2FB16E051FD7E83F00863BF9 /* ReplyBoxView.xib in Resources */,
 				2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -655,6 +665,7 @@
 				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
 				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
 				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
+				2FB16DF21FD7CE5800863BF9 /* ReplyBoxView.swift in Sources */,
 				2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
@@ -671,6 +682,7 @@
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
+				2FB16E071FD817A800863BF9 /* LTHRadioButton.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,

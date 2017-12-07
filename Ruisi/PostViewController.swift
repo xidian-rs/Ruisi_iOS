@@ -15,6 +15,8 @@ import Kanna
 class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var replyBoxView: ReplyBoxView!
+    
     var datas = [PostData]()
     var tid: Int? // 由前一个页面传过来的值
     var saveToHistory = false //是否保存到历史记录
@@ -23,7 +25,6 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     var currentPage: Int = 1
     var pageSum: Int = 1
     var refreshView: UIRefreshControl!
-    
     
     private var loading = false
     open var isLoading: Bool{
@@ -38,11 +39,8 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     f.endLoading(haveMore: currentPage < pageSum)
                 }
             }else {
-                //refreshView.beginRefreshing()
-                if currentPage > 1 { //上拉刷新
-                    if let f = (tableView.tableFooterView as? LoadMoreView) {
-                        f.startLoading()
-                    }
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.startLoading()
                 }
             }
         }
@@ -57,13 +55,26 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         }
     }
     
+    // close
+    // self.navigationController?.popViewController(animated: true)
     override func viewDidLoad() {
         if tid == nil {
             showBackAlert(message: "没有传入tid参数")
             return
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        // 隐藏回复框
+        replyBoxView.hideInputBox()
+        replyBoxView.onSubmit { (content,isLz) in
+            if var message = content,message.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
+                let len = 13 - message.count
+                for _ in 0..<len {
+                    message += " "
+                }
+                print("message is:||\(message)||len:\(message.count)")
+                self.doReply(islz: isLz, message: message)
+            }
+        }
         
         //navigationController?.hidesBarsOnSwipe = true
         // TODO it will change all the nav
@@ -81,16 +92,19 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         loadData()
     }
     
+    override func viewSafeAreaInsetsDidChange() {
+        if #available(iOS 11.0, *) {
+            super.viewSafeAreaInsetsDidChange()
+            Settings.safeAeraBottomInset =  Float(view.safeAreaInsets.bottom)
+        }
+    }
+    
     
     @objc func pullRefresh(){
         print("下拉刷新'")
         currentPage = 1
         pageSum = Int.max
         loadData()
-    }
-    
-    @objc func keyboardWillShow()  {
-        print("key board will show")
     }
     
     //刷新数据
@@ -129,6 +143,10 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    @IBAction func backToTopClick(_ sender: Any) {
+        tableView.setContentOffset(CGPoint.zero, animated: true)
     }
     
     // load more
@@ -185,6 +203,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         if isLoading {
             return
         }
+        
         refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
         
@@ -197,7 +216,6 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     // load fromHash
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
                     if let hash =  Utils.getFormHash(from: exitNode?["href"]) {
-                        print("formhash: \(hash)")
                         App.formHash = hash
                     }
                     
@@ -205,10 +223,10 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     subDatas = self.parseData(doc: doc)
                 }
             }
-            
-            
-            // 第一次换页清空
-            if self.currentPage == 1 {
+            print("currentPage:\(self.currentPage) subCount:\(subDatas.count) count:\(self.datas.count)")
+            if subDatas.count == 0 { //没有加载到数据
+                self.pageSum = self.currentPage
+            } else if self.currentPage == 1 && self.datas.count == 0 { // 第一次换页清空
                 self.datas = subDatas
                 DispatchQueue.main.async{
                     self.tableView.reloadData()
@@ -275,6 +293,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     self.pageSum = s
                 }
             }
+            print("page:\(currentPage) sum:\(pageSum)")
             
             //解析评论列表
             for comment in comments {
@@ -285,16 +304,19 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     // pid 都没有和咸鱼有什么区别
                     continue
                 }
-                
+
+                var have = false
                 if datas.count > 0 {
                     //过滤重复的
                     for i in (0 ..< datas.count).reversed() {
                         if datas[i].pid == pid {
-                            return subDatas
+                            have = true
+                            break
                         }
                     }
                 }
-                
+                if have { continue }
+               
                 // ==data==
                 var author: String?
                 var uid: String?
@@ -322,7 +344,6 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                 let c = PostData(content: content ?? "获取内容失败", author: author ?? "未知作者",
                                  uid: uid ?? "0", time: time ?? "未知时间",
                                  pid: pid ?? "0", index: index ?? "#?",replyUrl: replyUrl)
-                
                 subDatas.append(c)
             }
         } else { //错误
@@ -451,22 +472,78 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             callback(false,"网络不太通畅,请稍后重试")
         }
     }
+
     
-    @IBAction func closeClick(_ sender: UIBarButtonItem) {
-        print("closeClick")
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+    // 评论
     @IBAction func commentClick(_ sender: UIBarButtonItem) {
         print("commentClick")
+        if !App.isLogin {
+            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才回帖", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+                let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+                self.present(dest!, animated: true, completion: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else if datas.count == 0 || datas[0].replyUrl == nil {
+            showAlert(title: "提示", message: "本帖不支持回复")
+        } else {
+            replyBoxView.showInputBox(context: self, title: "回复:楼主 \(datas[0].author)", isLz: true)
+        }
     }
     
+    // do 回复楼主/层主
+    func doReply(islz:Bool, message:String) {
+        if islz {
+            replyBoxView.startLoading()
+            HttpUtil.POST(url: datas[0].replyUrl!, params: "message=\(message)&handlekey=fastpost&loc=1&inajax=1", callback: { (ok, res) in
+                var success = false
+                var reason:String
+                if ok {
+                    if res.contains("成功") || res.contains("层主") {
+                        success = true
+                        reason = "回复发表成功"
+                    }else if res.contains("您两次发表间隔"){
+                        reason = "您两次发表间隔太短了,请稍后重试"
+                    }else if res.contains("主题自动关闭") {
+                        reason = "此主题已关闭回复,无法回复"
+                    }else if res.contains("字符的限制"){
+                        reason = "抱歉，您的帖子小于 13 个字符的限制"
+                    } else {
+                        print(res)
+                        reason = "由于未知原因发表失败"
+                    }
+                }else {
+                    reason = "连接超时,请稍后重试"
+                }
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.replyBoxView.endLoading()
+                    if !success {
+                        self?.showAlert(title: "回复失败", message: reason)
+                    }else {
+                        self?.replyBoxView.hideInputBox(clear: true)
+                        let alert = UIAlertController(title: nil, message: reason, preferredStyle: .alert)
+                        self?.present(alert, animated: true)
+                        let duration: Double = 1.5
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration){
+                            alert.dismiss(animated: true)
+                        }
+                        
+                        if self?.currentPage == 1 {
+                            print("first page refresh data")
+                            self?.refreshData()
+                        }
+                    }
+                }
+            })
+        }
+    }
     
     @IBAction func refreshClick(_ sender: UIBarButtonItem) {
         refreshData()
     }
     
-
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UserDetailViewController,
@@ -478,6 +555,4 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             }
         }
     }
-    
-    
 }

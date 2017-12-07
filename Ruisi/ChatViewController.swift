@@ -40,6 +40,8 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
     }
     
+    
+    
     override func viewDidLoad() {
         if uid == nil {
             showBackAlert(message: "没有传入uid参数")
@@ -71,6 +73,11 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         loadData()
     }
     
+    @IBAction func toggleBtnClick(_ sender: Any) {
+        self.inputTextField.resignFirstResponder()
+    }
+    //down  up 
+    
     override func viewSafeAreaInsetsDidChange() {
         if #available(iOS 11.0, *) {
             super.viewSafeAreaInsetsDidChange()
@@ -79,60 +86,46 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     @IBAction func submitClick(_ sender: UIButton) {
-        //15s 时间检测
-        //Date().timeIntervalSince1970.
-        
-        inputTextField.resignFirstResponder()
-        if var text = inputTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),text.count > 0 {
-            
-            if text.data(using: .utf8)?.count ?? 0 < 13 {
-                let i = 13 - (text.data(using: .utf8)?.count ?? 0)
-                
-                for _ in 0..<i {
-                    text.append(" ")
+        if let text = inputTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
+            text.count > 0,let url = replyUrl {
+            inputTextField.resignFirstResponder()
+            postingProgress.startAnimating()
+            postBtn.isEnabled = false
+            HttpUtil.POST(url: url, params: "touid=\(uid!)&message=\(text)", callback: { [weak self] (ok, res) in
+                //print(res)
+                var success = false
+                var reason: String?
+                if ok {
+                    if res.contains("操作成功") {
+                        success = true
+                        self?.datas.append(ChatData(uid: App.uid!, uname: App.username ?? "我", message: text, time: "刚刚"))
+                    } else if res.contains("两次发送短消息太快") {
+                        reason = "两次发送短消息太快，请稍候再发送"
+                    }else {
+                        reason = "我也不知道是什么原因发送失败"
+                    }
+                }else {
+                    reason = "无法连接到睿思服务器,请检查网络连接"
+                    //network error
                 }
                 
-                if let url = replyUrl {
-                    postingProgress.stopAnimating()
-                    postBtn.isEnabled = false
-                    HttpUtil.POST(url: url, params: "touid=\(uid!)&message=\(text)", callback: { [weak self] (ok, res) in
-                        print(res)
-                        var success = false
-                        var reason: String?
-                        if ok {
-                            if res.contains("操作成功") {
-                                success = true
-                                self?.datas.append(ChatData(uid: App.uid!, uname: App.username ?? "我", message: text, time: "刚刚"))
-                            } else if res.contains("两次发送短消息太快") {
-                                reason = "两次发送短消息太快，请稍候再发送"
-                            }else {
-                                reason = "我也不知道是什么原因发送失败"
-                            }
-                        }else {
-                            reason = "无法连接到睿思服务器,请检查网络连接"
-                            //network error
-                        }
-                        
-                        DispatchQueue.main.async {
-                            if success {
-                                self?.tableView.beginUpdates()
-                                self?.tableView.insertRows(at: [IndexPath.init(row: (self?.datas.count ?? 1) - 1, section: 0) ], with: .automatic)
-                                self?.tableView.endUpdates()
-                                self?.inputTextField.text = nil
-                            }else {
-                                let alert = UIAlertController(title: "错误", message: reason, preferredStyle: .alert)
-                                let action = UIAlertAction(title: "好", style: .cancel, handler: nil)
-                                alert.addAction(action)
-                                self?.present(alert, animated: true)
-                            }
-                            
-                            self?.postingProgress.stopAnimating()
-                            self?.postBtn.isEnabled = true
-                        }
-                    })
+                DispatchQueue.main.async {
+                    if success {
+                        self?.tableView.beginUpdates()
+                        self?.tableView.insertRows(at: [IndexPath.init(row: (self?.datas.count ?? 1) - 1, section: 0) ], with: .automatic)
+                        self?.tableView.endUpdates()
+                        self?.inputTextField.text = nil
+                    }else {
+                        let alert = UIAlertController(title: "错误", message: reason, preferredStyle: .alert)
+                        let action = UIAlertAction(title: "好", style: .cancel, handler: nil)
+                        alert.addAction(action)
+                        self?.present(alert, animated: true)
+                    }
                     
+                    self?.postingProgress.stopAnimating()
+                    self?.postBtn.isEnabled = true
                 }
-            }
+            })
         }
     }
     
