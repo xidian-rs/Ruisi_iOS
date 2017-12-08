@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        //let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        //UINavigationBar.appearance().titleTextAttributes = textAttributes
+        
         //start network check
         do {
             Network.reachability = try Reachability(hostname: App.HOST_RS)
