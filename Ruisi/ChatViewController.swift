@@ -91,7 +91,7 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             inputTextField.resignFirstResponder()
             postingProgress.startAnimating()
             postBtn.isEnabled = false
-            HttpUtil.POST(url: url, params: "touid=\(uid!)&message=\(text)", callback: { [weak self] (ok, res) in
+            HttpUtil.POST(url: url, params: ["touid":uid!,"message":text], callback: { [weak self] (ok, res) in
                 //print(res)
                 var success = false
                 var reason: String?

@@ -107,8 +107,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func doDeleteFriend(uid:Int) {
-        let params = "friendsubmit=true"
-        HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: params) { (ok, res) in
+        HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: ["friendsubmit":"true"]) { (ok, res) in
             print("post ok")
             if ok && res.contains("操作成功"){
                 DispatchQueue.main.async { [weak self] in
@@ -142,8 +141,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func doAddFriend(uid:Int) {
-        let params = "addsubmit=true&handlekey=friend_\(uid)&note=\("")&gid=1&addsubmit_btn=true"
-        HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: params) { (ok, res) in
+        HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: ["addsubmit":"true","handlekey":"friend_\(uid)","gid":1,"addsubmit_btn":"true"]) { (ok, res) in
             var title: String
             var message: String
             if ok {

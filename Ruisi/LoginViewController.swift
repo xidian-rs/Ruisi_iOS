@@ -72,7 +72,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                     let end = substr.index(of: "\"")
                     let loginUrl = String(substr[..<end!])
                 
-                    HttpUtil.POST(url: loginUrl, params: params, callback: { ok, res in
+                    HttpUtil.POST(url: loginUrl, params: ["username":self.username,"password":self.password], callback: { ok, res in
                         print("post ok")
                         if ok && res.contains("欢迎您回来"){
                             self.loginResult(isok: true,res: res)

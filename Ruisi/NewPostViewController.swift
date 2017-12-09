@@ -123,9 +123,9 @@ class NewPostViewController: UIViewController,ForumSelectDelegate {
         if !checkInput() { return }
         self.present(progress, animated: true, completion: nil)
         
-        var params  = "topicsubmit=yes&subject=\(titleInput.text!)&message=\(contentInput.text!)"
+        var params  = ["topicsubmit":"yes","subject":titleInput.text!,"message":contentInput.text!]
         if let type = typeId {
-            params = params + "&typeid="+type
+            params["typeid"] = type
         }
      
         HttpUtil.POST(url: Urls.newPostUrl(fid: self.fid!), params: params) { (ok, res) in

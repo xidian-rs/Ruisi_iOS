@@ -18,8 +18,9 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
     var loadingIndicate:UIActivityIndicatorView!
     var context:UIViewController?
     var isLz = true
+    var pos = 0
     
-    private var didSubmitCallback: (_ content:String?,_ isLz:Bool) -> Void = { _,_ in }
+    private var didSubmitCallback: (_ content:String?,_ isLz:Bool,_ pos:Int) -> Void = { _,_,_  in }
     
     private var didCloseCallback: () -> Void = { }
     
@@ -37,7 +38,7 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
         xibSetup()
     }
     
-    public func onSubmit(execute closure: @escaping (_ content:String?,_ isLz: Bool) -> Void) {
+    public func onSubmit(execute closure: @escaping (_ content:String?,_ isLz: Bool,_ pos:Int) -> Void) {
         didSubmitCallback = closure
     }
     
@@ -73,7 +74,7 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
         if Settings.enableTail {
             showTailCheckBox.select()
         }
-
+        
         showTailCheckBox.onSelect {
             print("I'm selected.")
             Settings.enableTail = true
@@ -95,7 +96,19 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
     
     @objc func submitClick(_ sender: UIButton)  {
         print("submitClick")
-        didSubmitCallback(inputBox.text,self.isLz)
+        if var message = inputBox.text, message.count > 0 {
+            if showTailCheckBox.isSelected,let tail = Settings.tailContent, tail.count > 0 {
+                message = message + "     "+tail
+            }
+            let len = 13 - message.count
+            if len > 0 {
+                for _ in 0..<len {
+                    message += " "
+                }
+            }
+            
+            didSubmitCallback(message,self.isLz,self.pos)
+        }
     }
     
     @objc func closeClick(_ sender: UIButton)  {
@@ -104,18 +117,18 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
         didCloseCallback()
     }
     
-    public func showInputBox(context:UIViewController, title:String? = nil,isLz:Bool) {
+    public func showInputBox(context:UIViewController, title:String? = nil,isLz:Bool,pos:Int = 0) {
         self.context = context
         self.isHidden = false
         inputBox.becomeFirstResponder()
         placeholderLabel.text = title
         self.isLz = isLz
+        self.pos = pos
     }
     
     public func hideInputBox(clear:Bool = false) {
         inputBox.resignFirstResponder()
         self.isHidden = true
-        
         if clear {
             inputBox.text = nil
         }
@@ -123,10 +136,12 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
     
     public func startLoading(text:String? = nil){
         print("replyView->loading...")
+        inputBox.isEditable = false
         loadingIndicate.startAnimating()
     }
     
     public func endLoading(){
+        inputBox.isEditable = true
         loadingIndicate.stopAnimating()
         print("replyView->end loading")
     }

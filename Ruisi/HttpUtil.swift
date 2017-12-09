@@ -9,10 +9,11 @@
 import Foundation
 
 public class HttpUtil {
-
-    public static func encodeUrl(url:String) -> String {
-        let escapedString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        return escapedString!
+    
+    public static func encodeUrl(url:Any) -> String? {
+        return String(describing: url).encodeURIComponent()
+        //let escapedString = .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        //return escapedString!
     }
     
     public static func decodeUrl(url:String) -> String {
@@ -60,21 +61,24 @@ public class HttpUtil {
         task.resume()
     }
     
-    public static func POST(url:String,params: String?,callback: @escaping (Bool, String) -> Void){
+    public static func POST(url:String, params: [String:Any]?,callback: @escaping (Bool, String) -> Void){
         let url  =  getUrl(url: url)
-        var request = URLRequest(url: URL(string: url)!)
+        
+        var ps = params
+        if let hash = App.formHash {
+            if ps != nil {
+                ps!["formhash"] = hash
+            }
+        }
+        
+        let components = URLComponents(string: url)
+        guard let u = components?.url else {callback(false,"请求链接不合法");  return }
+        
+        var request = URLRequest(url: u)
         request.httpMethod = "POST"
         
-        if let hash = App.formHash {
-            if let p = params {
-                request.httpBody = "\(p)&formhash=\(hash)".data(using: .utf8)
-            }else {
-                request.httpBody = "formhash=\(hash)".data(using: .utf8)
-            }
-        }else {
-            if let p = params {
-                request.httpBody = p.data(using: .utf8)
-            }
+        if let p = encodeParameters(ps) {
+            request.httpBody = p.data(using: .utf8)
         }
         
         print("start http post url:\(url)")
@@ -105,20 +109,35 @@ public class HttpUtil {
         task.resume()
     }
     
-    private static func encodeParameters(_ params: [String:String]?) -> String? {
+    private static func encodeParameters(_ params: [String:Any]?) -> String? {
         if let p = params{
             var pp: String = ""
             p.forEach({ key,value in
                 if pp.count > 0{
                     pp.append("&")
                 }
-                pp.append(encodeUrl(url: key))
+                
+                pp.append(key)
                 pp.append("=")
-                pp.append(encodeUrl(url: value))
+                if let v = encodeUrl(url: value) {
+                    pp.append(v)
+                }
             })
             
             return pp
         }else{
+            return nil
+        }
+    }
+    
+    private static func encodePostParameters(_ params: [String:Any]?) -> [URLQueryItem]? {
+        if let ps = params {
+            var items = [URLQueryItem]()
+            ps.forEach({ key,value in
+                items.append(URLQueryItem(name: key, value: String(describing: value) ))
+            })
+            return items
+        }else {
             return nil
         }
     }
@@ -129,5 +148,14 @@ public class HttpUtil {
         }
         
         return Urls.baseUrl + decodeUrl(url: url)
+    }
+}
+
+extension String {
+    func encodeURIComponent() -> String? {
+        let characterSet = NSMutableCharacterSet.alphanumeric()
+        characterSet.addCharacters(in: "-_.!~*'()")
+        
+        return self.addingPercentEncoding(withAllowedCharacters: characterSet as CharacterSet)
     }
 }

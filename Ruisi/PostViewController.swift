@@ -65,14 +65,10 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         
         // 隐藏回复框
         replyBoxView.hideInputBox()
-        replyBoxView.onSubmit { (content,isLz) in
-            if var message = content,message.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
-                let len = 13 - message.count
-                for _ in 0..<len {
-                    message += " "
-                }
+        replyBoxView.onSubmit { (content,isLz,pos) in
+            if let message = content,message.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
                 print("message is:||\(message)||len:\(message.count)")
-                self.doReply(islz: isLz, message: message)
+                self.doReply(islz: isLz, message: message, pos: pos)
             }
         }
         
@@ -110,6 +106,8 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     //刷新数据
     @objc func refreshData() {
         print("refresh click")
+        self.currentPage = 1
+        self.loadData()
     }
     
     
@@ -177,6 +175,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             cell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath)
             let index = cell.viewWithTag(6) as! UILabel
             index.text = data.index
+            let replyBtn =  cell.viewWithTag(7) as? UIButton
+            if data.replyUrl != nil {
+                replyBtn?.isHidden = false
+                replyBtn?.addTarget(self, action: #selector(replyCzClick(_:)), for: .touchUpInside)
+            }else {
+                replyBtn?.isHidden = true
+            }
         }
         
         let img = cell.viewWithTag(1) as! UIImageView
@@ -197,6 +202,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         content.attributedText = AtrributeConveter().convert(src: data.content)
         return cell
     }
+    
     
     func loadData() {
         // 所持请求的数据正在加载中/未加载
@@ -304,7 +310,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     // pid 都没有和咸鱼有什么区别
                     continue
                 }
-
+                
                 var have = false
                 if datas.count > 0 {
                     //过滤重复的
@@ -316,7 +322,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     }
                 }
                 if have { continue }
-               
+                
                 // ==data==
                 var author: String?
                 var uid: String?
@@ -456,13 +462,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (UIAlertAction) in
             self.dismiss(animated: true, completion: nil)
         }))
-
+        
         self.present(sheet, animated: true, completion: nil)
     }
-   
+    
     // 收藏
     public static func doStarPost(tid:Any,callback:@escaping (Bool,String)-> Void) {
-        HttpUtil.POST(url: Urls.addStarUrl(tid: tid), params: "favoritesubmit=true") { (ok, res) in
+        HttpUtil.POST(url: Urls.addStarUrl(tid: tid), params:["favoritesubmit":"true"]) { (ok, res) in
             if ok {
                 if res.contains("成功") || res.contains("您已收藏") {
                     callback(true,"收藏成功")
@@ -472,7 +478,14 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             callback(false,"网络不太通畅,请稍后重试")
         }
     }
-
+    
+    // 评论层主
+    @objc func replyCzClick(_ sender:UIButton) {
+        if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
+            let _ = datas[indexPath.row].replyUrl {
+            replyBoxView.showInputBox(context: self, title: "回复:\(datas[indexPath.row].index) \(datas[indexPath.row].author)", isLz: false,pos: indexPath.row)
+        }
+    }
     
     // 评论
     @IBAction func commentClick(_ sender: UIBarButtonItem) {
@@ -493,50 +506,83 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     }
     
     // do 回复楼主/层主
-    func doReply(islz:Bool, message:String) {
+    func doReply(islz:Bool, message:String, pos:Int) {
+        replyBoxView.startLoading()
         if islz {
-            replyBoxView.startLoading()
-            HttpUtil.POST(url: datas[0].replyUrl!, params: "message=\(message)&handlekey=fastpost&loc=1&inajax=1", callback: { (ok, res) in
-                var success = false
-                var reason:String
-                if ok {
-                    if res.contains("成功") || res.contains("层主") {
-                        success = true
-                        reason = "回复发表成功"
-                    }else if res.contains("您两次发表间隔"){
-                        reason = "您两次发表间隔太短了,请稍后重试"
-                    }else if res.contains("主题自动关闭") {
-                        reason = "此主题已关闭回复,无法回复"
-                    }else if res.contains("字符的限制"){
-                        reason = "抱歉，您的帖子小于 13 个字符的限制"
-                    } else {
-                        print(res)
-                        reason = "由于未知原因发表失败"
-                    }
-                }else {
-                    reason = "连接超时,请稍后重试"
-                }
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.replyBoxView.endLoading()
-                    if !success {
-                        self?.showAlert(title: "回复失败", message: reason)
-                    }else {
-                        self?.replyBoxView.hideInputBox(clear: true)
-                        let alert = UIAlertController(title: nil, message: reason, preferredStyle: .alert)
-                        self?.present(alert, animated: true)
-                        let duration: Double = 1.5
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration){
-                            alert.dismiss(animated: true)
+            HttpUtil.POST(url: datas[0].replyUrl!, params: ["message":message,"handlekey":"fastpost","loc":1,"inajax":1], callback: self.handleReplyResult)
+        }else {
+            guard let url = datas[pos].replyUrl else { replyBoxView.endLoading(); return }
+            //1.根据replyUrl获得相关参数
+            print("url:\(url)")
+            HttpUtil.GET(url:url, params: nil, callback: { (ok, res) in
+                //print(res)
+                if ok,let doc = try? HTML(html: res, encoding: .utf8) {
+                    //*[@id="postform"]
+                    print("=======")
+                    if let url = doc.xpath("//*[@id=\"postform\"]").first?["action"] {
+                        var parameters = ["message":message]
+                        //*[@id="formhash"]
+                        let inputs = doc.xpath("//*[@id=\"postform\"]/input")
+                        for input in inputs {
+                            parameters[input["name"]!] = input["value"]!
                         }
                         
-                        if self?.currentPage == 1 {
-                            print("first page refresh data")
-                            self?.refreshData()
-                        }
+                        //2. 正式评论层主
+                        print("postCzUrl:\(url)")
+                        print("parameters:\(parameters)")
+                        HttpUtil.POST(url: url, params: parameters, callback: self.handleReplyResult)
+                        return
                     }
                 }
+                
+                //处理未成功加载的楼层回复
+                DispatchQueue.main.async { [weak self] in
+                    self?.replyBoxView.endLoading()
+                    self?.showAlert(title: "回复失败", message: "回复失败,请稍后重试")
+                }
             })
+            
+        }
+    }
+    
+    func handleReplyResult(ok:Bool,res:String) {
+        var success = false
+        var reason:String
+        if ok {
+            if res.contains("成功") || res.contains("层主") {
+                success = true
+                reason = "回复发表成功"
+            }else if res.contains("您两次发表间隔"){
+                reason = "您两次发表间隔太短了,请稍后重试"
+            }else if res.contains("主题自动关闭") {
+                reason = "此主题已关闭回复,无法回复"
+            }else if res.contains("字符的限制"){
+                reason = "抱歉，您的帖子小于 13 个字符的限制"
+            } else {
+                print(res)
+                reason = "由于未知原因发表失败"
+            }
+        }else {
+            reason = "连接超时,请稍后重试"
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.replyBoxView.endLoading()
+            if !success {
+                self?.showAlert(title: "回复失败", message: reason)
+            }else {
+                self?.replyBoxView.hideInputBox(clear: true)
+                let alert = UIAlertController(title: nil, message: reason, preferredStyle: .alert)
+                self?.present(alert, animated: true)
+                let duration: Double = 1.5
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration){
+                    alert.dismiss(animated: true)
+                }
+                
+                if self?.currentPage == 1 {
+                    self?.refreshData()
+                }
+            }
         }
     }
     

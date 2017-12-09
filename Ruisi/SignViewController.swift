@@ -78,8 +78,8 @@ class SignViewController: UIViewController {
         }else {
             qmode = "3"
         }
-        let data = "qdxq=\(xinqin)&qdmode=\(qmode)&todaysay=\(say ?? "来自手机睿思IOS")&fastreplay=0"
-        HttpUtil.POST(url: Urls.signPostUrl, params: data) { ok, res in
+     
+        HttpUtil.POST(url: Urls.signPostUrl, params: ["qdxq":xinqin,"qdmode":qmode,"todaysay": say ?? "来自手机睿思IOS","fastreplay":0]) { ok, res in
             let message: String
             if ok, let s = res.range(of: "恭喜你签到成功"){
                 let end = res.range(of: "</div>", options: .literal, range: s.upperBound ..< res.endIndex)

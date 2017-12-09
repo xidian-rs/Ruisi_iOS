@@ -205,7 +205,7 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
             isLoading = true
             
             if text.count > 0 {
-                HttpUtil.POST(url: Urls.searchUrl, params: "searchsubmit=yes&srchtxt=\(text)") { (ok, res) in
+                HttpUtil.POST(url: Urls.searchUrl, params:["searchsubmit":"yes","srchtxt":text]) { (ok, res) in
                     if ok {
                         if let doc = try? HTML(html: res, encoding: .utf8) {
                             //page == 1

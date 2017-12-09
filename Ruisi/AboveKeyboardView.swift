@@ -20,7 +20,6 @@ class AboveKeyboardView: UIView {
     }
     
     override func layoutSubviews() {
-        print("layoutSubviews")
         if currentCenter == nil {
             currentCenter = self.center
         }

@@ -300,8 +300,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发表于:昨天12:35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnX-Mv-w8O" userLabel="时间">
-                                                    <rect key="frame" x="60" y="62.5" width="104" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="60" y="62.5" width="96.5" height="14.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -368,8 +368,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发表于:昨天12:35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQH-v6-olb" userLabel="时间">
-                                                    <rect key="frame" x="60" y="35" width="104" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="86" y="35" width="96.5" height="14.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -383,16 +383,23 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15#" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9R-fc-i4F" userLabel="楼层">
-                                                    <rect key="frame" x="337.5" y="35" width="22.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="60" y="35" width="21" height="14.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLf-qU-dl3">
+                                                    <rect key="frame" x="330" y="29" width="30" height="26"/>
+                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="14"/>
+                                                    <state key="normal" title="">
+                                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="A6u-2v-aZK" firstAttribute="leading" secondItem="eTc-SO-RoJ" secondAttribute="leadingMargin" id="1gp-Ll-Epg"/>
                                                 <constraint firstItem="A6u-2v-aZK" firstAttribute="top" secondItem="eTc-SO-RoJ" secondAttribute="topMargin" constant="3" id="1kL-76-KYZ"/>
-                                                <constraint firstItem="cQH-v6-olb" firstAttribute="leading" secondItem="ndl-OP-vYO" secondAttribute="leading" id="60n-Fj-3tR"/>
+                                                <constraint firstItem="PLf-qU-dl3" firstAttribute="trailing" secondItem="eTc-SO-RoJ" secondAttribute="trailingMargin" id="8Pt-3y-rMh"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Kk4-7c-K8a" secondAttribute="bottom" id="CU1-PC-EV3"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Kk4-7c-K8a" secondAttribute="trailing" id="DNk-jp-sX2"/>
                                                 <constraint firstItem="ndl-OP-vYO" firstAttribute="leading" secondItem="A6u-2v-aZK" secondAttribute="trailing" constant="5" id="I3O-Gk-Gck"/>
@@ -400,11 +407,13 @@
                                                 <constraint firstItem="cQH-v6-olb" firstAttribute="top" secondItem="ndl-OP-vYO" secondAttribute="bottom" constant="3" id="NZA-nF-uL7"/>
                                                 <constraint firstItem="A6u-2v-aZK" firstAttribute="width" secondItem="A6u-2v-aZK" secondAttribute="height" multiplier="1:1" id="P2i-UW-13T"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="Kk4-7c-K8a" secondAttribute="leading" id="P9b-eT-4Yc"/>
+                                                <constraint firstItem="PLf-qU-dl3" firstAttribute="baseline" secondItem="cQH-v6-olb" secondAttribute="baseline" id="Q1o-v3-S9T"/>
+                                                <constraint firstItem="K9R-fc-i4F" firstAttribute="leading" secondItem="ndl-OP-vYO" secondAttribute="leading" id="Wsr-K1-SI2"/>
                                                 <constraint firstItem="Kk4-7c-K8a" firstAttribute="top" secondItem="A6u-2v-aZK" secondAttribute="bottom" constant="4" id="biD-KB-JD3"/>
                                                 <constraint firstItem="ndl-OP-vYO" firstAttribute="top" secondItem="eTc-SO-RoJ" secondAttribute="topMargin" constant="5" id="hUa-om-OLM"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="K9R-fc-i4F" secondAttribute="trailing" id="nS6-YH-xsF"/>
                                                 <constraint firstItem="7G8-U9-tJT" firstAttribute="leading" secondItem="ndl-OP-vYO" secondAttribute="trailing" constant="3" id="ucO-gM-oaQ"/>
                                                 <constraint firstItem="K9R-fc-i4F" firstAttribute="baseline" secondItem="cQH-v6-olb" secondAttribute="baseline" id="wQY-C8-f1B"/>
+                                                <constraint firstItem="cQH-v6-olb" firstAttribute="leading" secondItem="K9R-fc-i4F" secondAttribute="trailing" constant="5" id="wmy-y5-SYE"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
