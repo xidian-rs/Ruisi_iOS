@@ -68,6 +68,7 @@
 		2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */; };
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
 		2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */; };
+		2FF147241FDD2866009F8903 /* ImageGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF147231FDD2866009F8903 /* ImageGetter.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 /* End PBXBuildFile section */
 
@@ -278,6 +279,7 @@
 		2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 		2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
+		2FF147231FDD2866009F8903 /* ImageGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGetter.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,6 +413,7 @@
 				2F46F7221F0786F700207B17 /* HtmlParser.swift */,
 				2F46F7231F0786F700207B17 /* HtmlParserDelegate.swift */,
 				2F46F7241F0786F700207B17 /* HtmlTag.swift */,
+				2FF147231FDD2866009F8903 /* ImageGetter.swift */,
 			);
 			name = html;
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				2FB16DF21FD7CE5800863BF9 /* ReplyBoxView.swift in Sources */,
 				2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
+				2FF147241FDD2866009F8903 /* ImageGetter.swift in Sources */,
 				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
 				2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,

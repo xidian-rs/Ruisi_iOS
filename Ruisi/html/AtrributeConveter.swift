@@ -30,7 +30,7 @@ class AtrributeConveter: HtmlParserDelegate {
     //NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
     
     let fontSize: CGFloat = 18
-    let baseURL = URL(string: "http://bbs.rs.xidian.me")
+    let baseURL = URL(string: Urls.baseUrl)
     let linkColor = UIColor.blue
     var nodes: [HtmlNode]
     
@@ -73,7 +73,7 @@ class AtrributeConveter: HtmlParserDelegate {
         case .BR:
             handleBlockTag()
         case .IMG:
-            handleImg(attr: node.attr)
+            handleImg(start: position, attr: node.attr)
         case .HR:
             break
         default:
@@ -191,25 +191,37 @@ class AtrributeConveter: HtmlParserDelegate {
     }
     
     //处理图片
-    func handleImg(attr: HtmlAttr?) {
+    func handleImg(start:Int, attr: HtmlAttr?) {
         if let src = attr?.src {
-            //static/image/smiley
-            let range = src.range(of: "static/image/smiley")
-            //表情
-            if range?.lowerBound ==  src.startIndex {
-                let name = "tb001"
-                let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "assets/smiley/tieba")!
-                let attach = NSTextAttachment()
-                attach.image = UIImage(contentsOfFile: path)
-                attach.bounds = CGRect(x: 0, y: -6, width: 28, height: 28)
-                let attrStringWithImage = NSAttributedString(attachment: attach)
-                attributedString.append(attrStringWithImage)
-                return
+            if src.starts(with: "static/image/smiley") {
+                ImageGetter.getSmiley(src: src, start: start, excute: { (image) in
+                    if let i = image {
+                        let attach = NSTextAttachment()
+                        attach.image = i
+                        attach.bounds = CGRect(x: 0, y: -6, width: 28, height: 28)
+                        let attrStringWithImage = NSAttributedString(attachment: attach)
+                        self.attributedString.append(attrStringWithImage)
+                    }
+                })
+            }else {
+                let img = NSAttributedString(string: " [图片] ")
+                attributedString.append(img)
             }
+//            //static/image/smiley
+//            let range = src.range(of: "static/image/smiley")
+//            //表情
+//            if range?.lowerBound ==  src.startIndex {
+//                let name = "tb001"
+//                let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "assets/smiley/tieba")!
+//                let attach = NSTextAttachment()
+//                attach.image = UIImage(contentsOfFile: path)
+//                attach.bounds = CGRect(x: 0, y: -6, width: 28, height: 28)
+//                let attrStringWithImage = NSAttributedString(attachment: attach)
+//                attributedString.append(attrStringWithImage)
+//                return
+//            }
         }
         
         //attributes: [NSLinkAttributeName:URL(string: attr?.src ?? "", relativeTo: baseURL) ?? baseURL as Any]
-        let img = NSAttributedString(string: " [图片] ")
-        attributedString.append(img)
     }
 }

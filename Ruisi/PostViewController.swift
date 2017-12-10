@@ -549,7 +549,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         var success = false
         var reason:String
         if ok {
-            if res.contains("成功") || res.contains("层主") {
+            if res.contains("成功") || res.contains("层主") || res.contains("class=\"postlist\"") {
                 success = true
                 reason = "回复发表成功"
             }else if res.contains("您两次发表间隔"){
