@@ -31,7 +31,7 @@ class ChooseForumViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
         //let jsonData = jsonString.data(encoding: .utf8)!
         let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))

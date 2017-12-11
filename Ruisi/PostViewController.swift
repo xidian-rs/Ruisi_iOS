@@ -62,6 +62,8 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             showBackAlert(message: "没有传入tid参数")
             return
         }
+        super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         
         // 隐藏回复框
         replyBoxView.hideInputBox()

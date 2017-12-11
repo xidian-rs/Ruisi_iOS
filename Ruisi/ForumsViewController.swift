@@ -28,6 +28,7 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         self.clearsSelectionOnViewWillAppear = true
         loginState = App.isLogin
         loadData(loginState: loginState)

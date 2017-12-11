@@ -20,7 +20,7 @@ class SettingViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
         tailContentTextVIew.text = Settings.tailContent

@@ -119,7 +119,6 @@ class SignViewController: UIViewController {
     func checkSignStatus() {
         setLoadingState(isLoading: true)
         HttpUtil.GET(url: Urls.signUrl, params: nil) { ok, res in
-            print(res)
             DispatchQueue.main.async { [weak self] in
                 self?.setLoadingState(isLoading: false)
                 if ok ,let doc = try? HTML(html: res, encoding: .utf8) {
@@ -166,6 +165,7 @@ class SignViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         chooseAlert = UIAlertController(title: "选择心情", message: nil, preferredStyle: .actionSheet)
         for v in items{
             let ac = UIAlertAction(title: v, style: .default, handler: handlePick)

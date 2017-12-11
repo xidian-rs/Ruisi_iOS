@@ -12,6 +12,7 @@ import Kanna
 class HotViewController: BaseTableViewController<ArticleListData> {
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }
     
     // 切换热帖0 和 新帖1

@@ -25,7 +25,7 @@ UITableViewDataSource,UINavigationControllerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         //获得导航栏控制权
         self.navigationController?.delegate = self
         

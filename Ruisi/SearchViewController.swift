@@ -45,7 +45,7 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         searchBar.delegate = self
         
         self.tableView.estimatedRowHeight = 60

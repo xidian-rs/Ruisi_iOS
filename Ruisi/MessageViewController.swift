@@ -16,7 +16,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         lastLoginState = App.isLogin
         if lastLoginState {
             self.refreshControl = refreshView
@@ -250,21 +250,6 @@ class MessageViewController: BaseTableViewController<MessageData> {
         //login
         let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
         self.present(dest!, animated: true, completion: nil)
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return !datas[indexPath.row].isRead
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

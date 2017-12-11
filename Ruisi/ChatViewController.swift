@@ -49,6 +49,7 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
         
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         tableView.delegate = self
         tableView.dataSource = self
         postingProgress.stopAnimating()

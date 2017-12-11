@@ -25,7 +25,7 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         let button1 = UIBarButtonItem(title: "反馈", style: .done, target: self, action: #selector(feedBackClick))
         self.navigationItem.rightBarButtonItem  = button1
         

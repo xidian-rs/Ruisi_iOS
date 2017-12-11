@@ -48,7 +48,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         tabview.delegate = self
         tabview.dataSource = self
         

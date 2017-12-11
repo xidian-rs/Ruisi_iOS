@@ -38,7 +38,7 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         isInSearchMode = false
         searchBar.delegate = self
     }
