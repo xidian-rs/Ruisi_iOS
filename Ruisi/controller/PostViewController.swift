@@ -150,17 +150,11 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     }
     
     // load more
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // UITableView only moves in one direction, y axis
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        
-        // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0 {
-            if !isLoading {
-                print("==load more==")
-                loadData()
-            }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElement = datas.count - 1
+        if !isLoading && indexPath.row == lastElement {
+            print("load more")
+            loadData()
         }
     }
     

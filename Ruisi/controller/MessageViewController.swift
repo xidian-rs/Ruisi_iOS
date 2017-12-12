@@ -47,6 +47,9 @@ class MessageViewController: BaseTableViewController<MessageData> {
         position = sender.selectedSegmentIndex
         currentPage = 1
         pageSume = Int.max
+        self.isLoading = false
+        self.datas = []
+        self.tableView.reloadData()
         
         if App.isLogin {
             loadData(position)

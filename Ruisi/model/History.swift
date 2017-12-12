@@ -12,7 +12,7 @@ import CoreData
 @objc(History)
 class History : NSManagedObject{
     @nonobjc public class func fetchRequest() -> NSFetchRequest<History> {
-        return NSFetchRequest<History>(entityName: "History");
+        return NSFetchRequest<History>(entityName: "History")
     }
     @NSManaged public var tid: String
     @NSManaged public var title: String

@@ -10,6 +10,7 @@ import UIKit
 import Kanna
 
 class HotViewController: BaseTableViewController<ArticleListData> {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
@@ -21,8 +22,11 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         position = sender.selectedSegmentIndex
         pageSume = Int.max
         currentPage = 1
-        loadData(position)
+        self.isLoading = false
+        self.datas = []
+        self.tableView.reloadData()
         //tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        loadData(position)
     }
     
     var isHotLoading = false

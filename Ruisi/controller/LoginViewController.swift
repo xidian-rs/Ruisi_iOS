@@ -45,20 +45,19 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
-        if username.count <= 0 {
+        if self.username.count <= 0 {
             alert(message: "用户名不能为空")
             return
         }
         
-        if password.count <= 0 {
+        if self.password.count <= 0 {
             alert(message: "密码不能为空")
             return
         }
         
         showLoadingView()
-        
-        let params = "username=\(self.username)&password=\(self.password)&fastloginfield=username&cookietime=2592000"
-        
+        let username = self.username
+        let password = self.password
         HttpUtil.GET(url: Urls.loginUrl, params: nil) { ok, res in
             if ok {
                 if res.contains("欢迎您回来"){
@@ -72,7 +71,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                     let end = substr.index(of: "\"")
                     let loginUrl = String(substr[..<end!])
                 
-                    HttpUtil.POST(url: loginUrl, params: ["username":self.username,"password":self.password], callback: { ok, res in
+                    HttpUtil.POST(url: loginUrl, params: ["username":username,"password":password,"fastloginfield":"username","cookietime":"2592000"], callback: { ok, res in
                         print("post ok")
                         if ok && res.contains("欢迎您回来"){
                             self.loginResult(isok: true,res: res)

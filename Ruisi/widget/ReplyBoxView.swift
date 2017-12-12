@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ReplyBoxView: /*AboveKeyboardView*/UIView {
+class ReplyBoxView: /*AboveKeyboardView*/UIView,FriendSelectDelegate {
+
     var contentView : UIView!
     var placeholderLabel: UILabel!
     var inputBox:UITextView!
@@ -59,6 +60,9 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
         
         let setTailBtn = contentView.viewWithTag(7) as! UIButton
         setTailBtn.addTarget(self, action: #selector(toSettingClick), for: .touchUpInside)
+        
+        let atBtn = contentView.viewWithTag(8) as! UIButton
+        atBtn.addTarget(self, action: #selector(toAtFriendClick), for: .touchUpInside)
         
         contentView.frame = bounds
         
@@ -152,4 +156,30 @@ class ReplyBoxView: /*AboveKeyboardView*/UIView {
         let view = nib.instantiate(withOwner: self, options: nil).first as! UIView
         return view
     }
+    
+    @objc func toAtFriendClick()  {
+        let dest = self.context?.storyboard?.instantiateViewController(withIdentifier: "chooseFriendViewNavigtion") as! UINavigationController
+        if  let vc = dest.topViewController as? ChooseFriendViewController {
+            vc.delegate =  self
+            self.context?.present(dest, animated: true, completion: nil)
+        }
+    }
+    
+    // 选择过后调用
+    func selectFriends(names: [String]) {
+        print(names)
+        var result:String = ""
+        names.forEach { (name) in
+            result += " @\(name)"
+        }
+        if names.count > 0 {
+            result += " "
+        }
+        
+        self.inputBox.insertText(result)
+    }
+}
+
+protocol FriendSelectDelegate {
+    func selectFriends(names:[String])
 }

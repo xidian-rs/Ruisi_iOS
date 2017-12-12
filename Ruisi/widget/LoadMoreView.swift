@@ -27,7 +27,7 @@ class LoadMoreView: UIView {
     
     func xibSetup() {
         contentView = loadViewFromNib()
-        contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        //contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         label = contentView.viewWithTag(2) as! UILabel
         label.text = "正在加载"
         indicate = contentView.viewWithTag(1) as! UIActivityIndicatorView
@@ -61,12 +61,12 @@ class LoadMoreView: UIView {
         if isLoading {
             if success {
                 if haveMore {
-                    label.text = "上拉加载更多"
+                    label.text = "加载中..."
                 }else {
-                    label.text = "暂无更多,上拉重新加载"
+                    label.text = "暂无更多"
                 }
             }else {
-                label.text = "加载失败,上拉重新加载"
+                label.text = "加载失败"
             }
             
             indicate.stopAnimating()

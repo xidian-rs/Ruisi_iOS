@@ -60,7 +60,7 @@ class BaseTableViewController<T>: UITableViewController {
                     f.endLoading(haveMore: currentPage < pageSume)
                 }
             }else {
-                //refreshView.beginRefreshing()
+                self.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
                 if currentPage > 1 { //上拉刷新
                     if let f = (tableView.tableFooterView as? LoadMoreView) {
                         f.startLoading()
@@ -74,9 +74,9 @@ class BaseTableViewController<T>: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        self.tableView.estimatedRowHeight = 60
-        self.tableView.rowHeight = UITableViewAutomaticDimension
         
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         if showFooter {
             showFooterPrivate = false
             showFooter = true
@@ -100,17 +100,14 @@ class BaseTableViewController<T>: UITableViewController {
     
     func loadData(_ pos: Int = 0) {
         // 所持请求的数据正在加载中/未加载
-        if isLoading {
-            return
-        }
-        self.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
+        if isLoading { return }
         isLoading = true
-        
         print("load data page:\(currentPage) sumPage:\(pageSume)")
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
-            //print(res)
             var subDatas:[T] = []
-            if ok && pos == self.position { //返回的数据是我们要的
+            if !ok {
+                self.emptyPlaceholderText = "加载失败,\(res)"
+            } else if pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
                     // load fromHash
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
@@ -162,7 +159,7 @@ class BaseTableViewController<T>: UITableViewController {
                 DispatchQueue.main.async {
                     self.refreshControl?.attributedTitle = attrStr
                     self.isLoading = false
-                    
+
                     if self.currentPage < self.pageSume {
                         self.currentPage += 1
                     }
@@ -209,20 +206,12 @@ class BaseTableViewController<T>: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // load more
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if showFooter {
-            // UITableView only moves in one direction, y axis
-            let currentOffset = scrollView.contentOffset.y
-            let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-            
-            // Change 10.0 to adjust the distance from bottom
-            if maximumOffset - currentOffset <= 10.0 {
-                if !isLoading {
-                    print("load more")
-                    loadData(position)
-                }
-            }
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElement = datas.count - 1
+        if !isLoading && indexPath.row == lastElement {
+            print("load more")
+            loadData()
         }
     }
+
 }

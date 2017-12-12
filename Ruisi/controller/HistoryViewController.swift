@@ -25,11 +25,9 @@ class HistoryViewController: UITableViewController {
         let app = UIApplication.shared.delegate as! AppDelegate
         let context = app.persistentContainer.viewContext
         
-        let entity = NSEntityDescription.entity(forEntityName: "History", in: context)
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "History")
         fetchRequest.fetchLimit = 100
         fetchRequest.fetchOffset = 0
-        fetchRequest.entity = entity
         
         // 排序 ascendingYes为递增排序，ascending为No递减排序
         let sort = NSSortDescriptor.init(key: "time", ascending: false)
@@ -39,10 +37,9 @@ class HistoryViewController: UITableViewController {
 //        fetchRequest.predicate = predicate
         
         do {
-            let fetchedObjects = try context.fetch(fetchRequest) as? [History]
-            if let results = fetchedObjects {
-                print("history size is \(results.count)")
-                historys = results
+            if let fetchedObjects = try context.fetch(fetchRequest) as? [History] {
+                print("history size is \(fetchedObjects.count)")
+                historys = fetchedObjects
                 tableView.reloadData()
             }
         } catch  {
