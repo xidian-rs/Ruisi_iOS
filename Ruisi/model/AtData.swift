@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+class AtData {
+    public var nickname:String
+    public var checked:Bool = false
+    
+    init(nickname:String) {
+        self.nickname = nickname
+    }
+}

@@ -269,13 +269,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是文章的标题" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2t-1V-Swa" userLabel="标题">
-                                                    <rect key="frame" x="15" y="14" width="345" height="24"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                    <rect key="frame" x="15" y="14" width="345" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Zsf-Js-DJI" userLabel="头像">
-                                                    <rect key="frame" x="15" y="44" width="40" height="40"/>
+                                                    <rect key="frame" x="15" y="41.5" width="40" height="40"/>
                                                     <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="Zsf-Js-DJI" secondAttribute="height" multiplier="1:1" id="CPF-1G-zPq"/>
@@ -288,25 +288,25 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="谁用了FREEDOM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-xg-bcZ" userLabel="作者">
-                                                    <rect key="frame" x="60" y="46" width="101.5" height="16"/>
+                                                    <rect key="frame" x="60" y="43.5" width="101.5" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="楼主" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKv-Hb-jDc" userLabel="楼主">
-                                                    <rect key="frame" x="164.5" y="47" width="25" height="14.5"/>
+                                                    <rect key="frame" x="164.5" y="44.5" width="25" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发表于:昨天12:35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnX-Mv-w8O" userLabel="时间">
-                                                    <rect key="frame" x="60" y="65" width="96.5" height="14.5"/>
+                                                    <rect key="frame" x="60" y="62.5" width="96.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-EE-aS1" userLabel="内容">
-                                                    <rect key="frame" x="15" y="87" width="345" height="119"/>
+                                                    <rect key="frame" x="15" y="84.5" width="345" height="121.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
@@ -662,8 +662,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="登陆" id="sS6-vW-DhV">
-                        <barButtonItem key="leftBarButtonItem" title="取消" id="U1O-fc-wmf">
-                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="U1O-fc-wmf">
                             <connections>
                                 <action selector="cencelClick:" destination="NUc-Li-a0X" id="uY5-X8-MFi"/>
                             </connections>
@@ -865,22 +864,25 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" verticalHuggingPriority="251" text="系统消息" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBD-JY-Cds">
-                                            <rect key="frame" x="60" y="12" width="66" height="13.5"/>
+                                            <rect key="frame" x="60" y="12" width="66" height="18"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="您发布的资源[软件][exe][Oracle][JDK][jdk-8u112-windows][英文][商业软件][win][x86&amp;64]在过去的24个小时里共有1人下载，收到3金币的奖励！睿思代表广大用户向伟大的发种人致敬" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hud-t6-ig6" userLabel="message content" customClass="ArrowLabel" customModule="Ruisi" customModuleProvider="target">
-                                            <rect key="frame" x="60" y="29.5" width="303" height="76.5"/>
+                                            <rect key="frame" x="60" y="34" width="303" height="72"/>
                                             <accessibility key="accessibilityConfiguration">
                                                 <accessibilityTraits key="traits" none="YES"/>
                                             </accessibility>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="oUP-BP-UsN"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昨天 23:35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NfJ-J1-cZP" userLabel="time label">
-                                            <rect key="frame" x="301.5" y="9" width="61.5" height="14.5"/>
+                                            <rect key="frame" x="301.5" y="13.5" width="61.5" height="14.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -1956,7 +1958,7 @@
                                         </constraints>
                                     </view>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入要发送的内容" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g86-NL-rP3">
-                                        <rect key="frame" x="30" y="7" width="260" height="30"/>
+                                        <rect key="frame" x="33" y="7" width="257" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -1978,7 +1980,7 @@
                                         </constraints>
                                     </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-Wm-gsD">
-                                        <rect key="frame" x="340" y="7.5" width="30" height="29"/>
+                                        <rect key="frame" x="340" y="6" width="30" height="32"/>
                                         <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                         <state key="normal" title=""/>
                                         <connections>
@@ -1986,7 +1988,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZJ-oO-Ajv">
-                                        <rect key="frame" x="8" y="14" width="17" height="17"/>
+                                        <rect key="frame" x="8" y="12.5" width="20" height="20"/>
                                         <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="17"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2171,7 +2173,56 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iPd-vj-cEI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1494" y="-511"/>
+            <point key="canvasLocation" x="2370" y="-1332"/>
+        </scene>
+        <!--选择@的人-->
+        <scene sceneID="XM5-r4-C4g">
+            <objects>
+                <tableViewController id="tnO-fG-XoI" customClass="ChooseFriendViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kBX-JE-2qM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="cell" textLabel="A07-aK-vl1" style="IBUITableViewCellStyleDefault" id="VqI-7T-qZe">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VqI-7T-qZe" id="HJa-HU-jr2">
+                                    <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A07-aK-vl1">
+                                            <rect key="frame" x="16" y="0.0" width="319" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="tnO-fG-XoI" id="aCV-bJ-z1g"/>
+                            <outlet property="delegate" destination="tnO-fG-XoI" id="3E2-XA-h1X"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="选择@的人" id="Ooh-tc-psJ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="wSI-Vh-qRZ">
+                            <connections>
+                                <action selector="cancleClick:" destination="tnO-fG-XoI" id="9ZU-1X-jU1"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Kag-7z-J2P">
+                            <connections>
+                                <action selector="doneClick:" destination="tnO-fG-XoI" id="fqg-Dg-VMO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zIG-Ul-8MR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2369" y="-595"/>
         </scene>
         <!--我的好友-->
         <scene sceneID="GZ8-FZ-PrB">
@@ -2393,6 +2444,24 @@
             </objects>
             <point key="canvasLocation" x="1494" y="-1331"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LcV-Kf-wEn">
+            <objects>
+                <navigationController storyboardIdentifier="chooseFriendViewNavigtion" automaticallyAdjustsScrollViewInsets="NO" id="Hsr-wl-M0u" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ANl-m7-lTO">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="tnO-fG-XoI" kind="relationship" relationship="rootViewController" id="lZh-FJ-F9u"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7O2-7x-vrw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1494" y="-595"/>
+        </scene>
     </scenes>
     <resources>
         <image name="back_top" width="21" height="21"/>
@@ -2408,8 +2477,8 @@
         <image name="placeholder" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="m6d-Jx-f8V"/>
-        <segue reference="YoA-98-yHC"/>
-        <segue reference="Lma-GQ-XAj"/>
+        <segue reference="5zA-VW-dPn"/>
+        <segue reference="ZDE-jO-YnL"/>
+        <segue reference="csF-Ug-UhR"/>
     </inferredMetricsTieBreakers>
 </document>

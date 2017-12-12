@@ -37,24 +37,22 @@ public class HttpUtil {
         let task = URLSession.shared.dataTask (with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
-                callback(false, String(describing: error))
+                callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
                 return
             }
             
             // check for http errors
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-                callback(false, "statusCode should be 200, but is \(httpStatus.statusCode)")
+                callback(false, "Http Status: \(httpStatus.statusCode)")
                 return
             }else{
-                
                 if let res = String(data: data, encoding: .utf8){
                     callback(true,res)
                     return
                 }
                 
-                callback(true,"response is empty")
+                callback(true,"服务端无返回")
                 return
             }
         }
@@ -68,6 +66,8 @@ public class HttpUtil {
         if let hash = App.formHash {
             if ps != nil {
                 ps!["formhash"] = hash
+            }else {
+                ps = ["formhash":hash]
             }
         }
         
@@ -85,23 +85,21 @@ public class HttpUtil {
         let task = URLSession.shared.dataTask (with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
-                callback(false, String(describing: error))
+                callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
                 return
             }
             
             // check for http errors
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(String(describing: response))")
-                callback(false, "statusCode should be 200, but is \(httpStatus.statusCode)")
+                callback(false, "Http Status: \(httpStatus.statusCode)")
                 return
             }else{
                 if let res = String(data: data, encoding: .utf8){
                     callback(true,res)
                     return
                 }
-                
-                callback(true,"response is empty")
+                callback(true,"服务端无返回")
                 return
             }
         }

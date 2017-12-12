@@ -156,4 +156,11 @@ public class Urls {
     public static func newPostUrl(fid:Int) -> String {
         return "\(baseUrl)forum.php?mod=post&action=newthread&fid=\(fid)&mobile=2"
     }
+    
+    // @列表
+    public static var AtListUrl:String {
+        get {
+            return "\(baseUrl)misc.php?mod=getatuser&inajax=1&mobile=2"
+        }
+    }
 }
