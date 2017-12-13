@@ -45,6 +45,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
+        usernameTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+        
         if self.username.count <= 0 {
             alert(message: "用户名不能为空")
             return

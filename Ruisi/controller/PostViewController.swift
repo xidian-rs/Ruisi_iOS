@@ -153,10 +153,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement {
-            print("load more")
+            if currentPage >= pageSum { return }
+            if currentPage < pageSum { currentPage += 1 }
+            print("load more next page is:\(currentPage) sum is:\(pageSum)")
             loadData()
         }
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data: PostData
@@ -202,16 +205,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     
     func loadData() {
         // 所持请求的数据正在加载中/未加载
-        if isLoading {
-            return
-        }
-        
+        if isLoading { return }
         refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
-        
         print("load data page:\(currentPage) sumPage:\(pageSum)")
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
             //print(res)
+            var str:String?
             var subDatas:[PostData] = []
             if ok { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
@@ -224,49 +224,40 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                     //load subdata
                     subDatas = self.parseData(doc: doc)
                 }
-            }
-            print("currentPage:\(self.currentPage) subCount:\(subDatas.count) count:\(self.datas.count)")
-            if subDatas.count == 0 { //没有加载到数据
-                self.pageSum = self.currentPage
-            } else if self.currentPage == 1 && self.datas.count == 0 { // 第一次换页清空
-                self.datas = subDatas
-                DispatchQueue.main.async{
-                    self.tableView.reloadData()
-                }
-            } else {
-                let count = self.datas.count
-                self.datas.append(contentsOf: subDatas)
-                DispatchQueue.main.async{
-                    self.tableView.beginUpdates()
-                    var indexs = [IndexPath]()
-                    for i in 0 ..< subDatas.count {
-                        indexs.append(IndexPath(row: count + i, section: 0))
-                    }
-                    self.tableView.insertRows(at: indexs, with: .automatic)
-                    self.tableView.endUpdates()
-                }
-            }
-            
-            var str: String
-            if subDatas.count > 0 {
                 let df =  DateFormatter()
                 df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
                 str = "Last update: "+df.string(from: Date())
-            }else{
+            }else {
                 str = "加载失败"
             }
             
-            let attrStr = NSAttributedString(string: str, attributes: [
-                NSAttributedStringKey.foregroundColor:UIColor.gray])
-            
-            DispatchQueue.main.async {
-                self.refreshView.attributedTitle = attrStr
-                self.isLoading = false
-                
-                if self.currentPage < self.pageSum {
-                    self.currentPage += 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
+                if subDatas.count > 0 {
+                    if self.currentPage == 1 {
+                        self.datas = subDatas
+                        self.tableView.reloadData()
+                    }else {
+                        var indexs = [IndexPath]()
+                        for i in 0..<subDatas.count {
+                            indexs.append(IndexPath(row: self.datas.count + i, section: 0))
+                        }
+                        self.datas.append(contentsOf: subDatas)
+                        print("here :\(subDatas.count)")
+                        self.tableView.beginUpdates()
+                        self.tableView.insertRows(at: indexs, with: .automatic)
+                        self.tableView.endUpdates()
+                    }
+                }else {
+                    //第一次没有加载到数据
+                    if self.currentPage == 1 {
+                        self.tableView.reloadData()
+                    }
                 }
-            }
+                
+                let attrStr = NSAttributedString(string: str ?? "", attributes: [NSAttributedStringKey.foregroundColor:UIColor.gray])
+                self.tableView.refreshControl?.attributedTitle = attrStr
+                self.isLoading = false
+            })
             
             print("finish http")
         }

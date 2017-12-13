@@ -42,10 +42,13 @@ class BaseTableViewController<T>: UITableViewController {
     }
     var datas  = [T]()
     var currentPage = 1
-    var pageSume = Int.max
+    var totalPage = Int.max
     var position = 0 //为了hotnew而准备的
     var emptyPlaceholderText = "加载中..."
     var refreshView: UIRefreshControl?
+    
+    //到达最后一页是否接着加载
+    var shouldLoadMoreOnLastPage = false
     
     private var loading = false
     open var isLoading: Bool{
@@ -57,7 +60,7 @@ class BaseTableViewController<T>: UITableViewController {
             if !loading {
                 self.refreshControl?.endRefreshing()
                 if let f = (tableView.tableFooterView as? LoadMoreView) {
-                    f.endLoading(haveMore: currentPage < pageSume)
+                    f.endLoading(haveMore: currentPage < totalPage)
                 }
             }else {
                 self.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
@@ -94,18 +97,17 @@ class BaseTableViewController<T>: UITableViewController {
     @objc func pullRefresh(){
         print("下拉刷新'")
         currentPage = 1
-        pageSume = Int.max
+        totalPage = Int.max
         loadData(position)
     }
     
     func loadData(_ pos: Int = 0) {
-        // 所持请求的数据正在加载中/未加载
-        if isLoading { return }
         isLoading = true
-        print("load data page:\(currentPage) sumPage:\(pageSume)")
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
             var subDatas:[T] = []
+            var str:String?
             if !ok {
+                str = "加载失败"
                 self.emptyPlaceholderText = "加载失败,\(res)"
             } else if pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
@@ -115,58 +117,42 @@ class BaseTableViewController<T>: UITableViewController {
                         print("formhash: \(hash)")
                         App.formHash = hash
                     }
-                    
-                    //load subdata
                     subDatas = self.parseData(pos: pos, doc: doc)
-                }
-            }
-            
-            
-            //load data ok
-            if pos == self.position {
-                // 第一次换页清空
-                if self.currentPage == 1 {
-                    self.datas = subDatas
-                    DispatchQueue.main.async{
-                        self.tableView.reloadData()
-                    }
-                } else {
-                    let count = self.datas.count
-                    self.datas.append(contentsOf: subDatas)
-                    DispatchQueue.main.async{
-                        self.tableView.beginUpdates()
-                        var indexs = [IndexPath]()
-                        for i in 0 ..< subDatas.count {
-                            indexs.append(IndexPath(row: count + i, section: 0))
-                        }
-                        self.tableView.insertRows(at: indexs, with: .automatic)
-                        self.tableView.endUpdates()
-                    }
-                }
-                
-                var str: String
-                if subDatas.count > 0 {
                     let df =  DateFormatter()
                     df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
                     str = "Last update: "+df.string(from: Date())
-                }else{
-                    str = "加载失败"
                 }
-                
-                let attrStr = NSAttributedString(string: str, attributes: [
-                    NSAttributedStringKey.foregroundColor:UIColor.gray])
-                
-                DispatchQueue.main.async {
-                    self.refreshControl?.attributedTitle = attrStr
-                    self.isLoading = false
-
-                    if self.currentPage < self.pageSume {
-                        self.currentPage += 1
-                    }
-                }
+            }else {
+                print("加载的数据不是我们想要的不做任何事")
             }
             
-            print("finish http")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                if subDatas.count > 0 {
+                    if self.currentPage == 1 {
+                        self.datas = subDatas
+                        self.tableView.reloadData()
+                    }else {
+                        var indexs = [IndexPath]()
+                        for i in 0..<subDatas.count {
+                            indexs.append(IndexPath(row: self.datas.count + i, section: 0))
+                        }
+                        self.datas.append(contentsOf: subDatas)
+                        print("here :\(subDatas.count)")
+                        self.tableView.beginUpdates()
+                        self.tableView.insertRows(at: indexs, with: .automatic)
+                        self.tableView.endUpdates()
+                    }
+                }else {
+                    //第一次没有加载到数据
+                    if self.currentPage == 1 {
+                        self.tableView.reloadData()
+                    }
+                }
+                
+                let attrStr = NSAttributedString(string: str ?? "", attributes: [NSAttributedStringKey.foregroundColor:UIColor.gray])
+                self.refreshControl?.attributedTitle = attrStr
+                self.isLoading = false
+            })
         }
     }
     
@@ -209,9 +195,15 @@ class BaseTableViewController<T>: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement {
-            print("load more")
-            loadData()
+            //到达最后一页是否继续加载
+            if currentPage >= totalPage && !shouldLoadMoreOnLastPage { return }
+            isLoading = true
+            if currentPage < totalPage {
+                currentPage += 1
+            }
+            print("load more next page is:\(currentPage) sum is:\(totalPage)")
+            loadData(position)
         }
     }
-
+    
 }

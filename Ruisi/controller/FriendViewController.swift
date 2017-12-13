@@ -40,6 +40,7 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         isInSearchMode = false
+        searchBar.showsScopeBar = false
         searchBar.delegate = self
     }
     
@@ -78,7 +79,7 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
             }
         }
         if !isInSearchMode && subDatas.count == 0 {
-            self.pageSume = self.currentPage
+            self.totalPage = self.currentPage
         }
         print("finish load data pos:\(pos) count:\(subDatas.count)")
         return subDatas

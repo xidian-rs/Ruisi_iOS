@@ -75,9 +75,9 @@ class AboveKeyboardView: UIView {
                 return
             }
             if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
-                let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber {
+                let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,let center = self.currentCenter{
                 animateHUDWith(duration: duration,curve: UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut,
-                               toLocation: self.currentCenter!)
+                               toLocation: center)
             }
         }
     }

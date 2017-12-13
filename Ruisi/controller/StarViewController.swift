@@ -21,9 +21,9 @@ class StarViewController: BaseTableViewController<StarData> {
         return Urls.getStarUrl(uid: App.uid) + "&page=\(page)"
     }
     
-    
     override func parseData(pos:Int, doc: HTMLDocument) -> [StarData]{
         var subDatas:[StarData] = []
+        loop1:
         for li in doc.xpath("/html/body/div[1]/ul/li") {
             let a = li.css("a").first
             var tid: Int?
@@ -34,13 +34,16 @@ class StarViewController: BaseTableViewController<StarData> {
                 continue
             }
             
+            for d in self.datas {
+                if d.tid == tid { break loop1 }
+            }
+            
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             let color =  Utils.getHtmlColor(from: a?["style"])
             let d = StarData(title: title ?? "未获取到标题", tid: tid!,titleColor: color)
             subDatas.append(d)
         }
-        
-        print("finish load data pos:\(pos) count:\(subDatas.count)")
+        if subDatas.count < 20 { self.totalPage = self.currentPage }
         return subDatas
     }
     

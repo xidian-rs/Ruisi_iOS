@@ -46,6 +46,7 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        searchBar.showsScopeBar = false
         searchBar.delegate = self
         
         self.tableView.estimatedRowHeight = 60
@@ -72,26 +73,28 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
                         print("formhash: \(hash)")
                         App.formHash = hash
                     }
-                    
                     //load subdata
                     subDatas = self.parseData(doc: doc)
                 }
             }
-            let count = self.datas.count
-            self.datas.append(contentsOf: subDatas)
-            DispatchQueue.main.async{
-                self.tableView.beginUpdates()
-                var indexs = [IndexPath]()
-                for i in 0 ..< subDatas.count {
-                    indexs.append(IndexPath(row: count + i, section: 0))
+        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                if self.datas.count == 0 && subDatas.count == 0 {
+                    self.tableView.reloadData()
+                }else {
+                    let count = self.datas.count
+                    self.datas.append(contentsOf: subDatas)
+                    
+                    self.tableView.beginUpdates()
+                    var indexs = [IndexPath]()
+                    for i in 0 ..< subDatas.count {
+                        indexs.append(IndexPath(row: count + i, section: 0))
+                    }
+                    self.tableView.insertRows(at: indexs, with: .automatic)
+                    self.tableView.endUpdates()
                 }
-                self.tableView.insertRows(at: indexs, with: .automatic)
-                self.tableView.endUpdates()
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds + 1 * NSEC_PER_SEC)){
                 self.isLoading = false
-            }
+            })
         }
     }
     
@@ -105,7 +108,6 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
                 nextPageUrl = doc.xpath("/html/body/div[1]/div/a[2]").first?["href"]
             }
         }
-        
         
         for result in resultsNodes {
             let tid = Utils.getNum(from: result.xpath("a").first?["href"] ?? "0")
@@ -138,14 +140,6 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
         return cell
     }
     
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .insert {
-//            // TODO 收藏
-//        }
-    }
- */
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -180,25 +174,18 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // load more
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        // UITableView only moves in one direction, y axis
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        
-        // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0 {
-            if !isLoading  && nextPageUrl != nil{
-                print("load more")
-                loadData(url: nextPageUrl!)
-            }
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElement = datas.count - 1
+        if !isLoading && indexPath.row == lastElement {
+            if nextPageUrl == nil { return }
+            loadData(url: nextPageUrl!)
         }
     }
-    
     
     // MARK: - Search
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
+            searchBar.resignFirstResponder()
             datas = []
             tableView.reloadData()
             nextPageUrl = nil

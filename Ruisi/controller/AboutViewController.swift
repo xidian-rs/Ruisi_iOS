@@ -12,38 +12,29 @@ import Kanna
 
 class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
     
-    @IBOutlet weak var aboutText: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var checkVersionLabel: UILabel!
+
     
-    let ss = "<b>西电睿思手机客户端</b><br />功能不断完善中，bug较多还请多多反馈......<br />" +
-        "bug反馈:<br />" +
-        "1.到 <a href=\"forum.php?mod=viewthread&tid=\(App.POST_ID)&mobile=2\">本帖</a> 回复<br />" +
-        "2.本站 <a href=\"home.php?mod=space&uid=252553&do=profile&mobile=2\">@谁用了FREEDOM</a><br />" +
-        "3.本站 <a href=\"home.php?mod=space&uid=261098&do=profile&mobile=2\">@wangfuyang</a><br />" +
-    "4.github提交 <a href=\"https://github.com/freedom10086/Ruisi/issues\">点击这儿<br /></a><br />";
+    @IBAction func replyClick(_ sender: Any) {
+        let destVc = self.storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+        destVc.tid = App.POST_ID
+        self.show(destVc, sender: self)
+    }
+    
+    @IBAction func issusClick(_ sender: Any) {
+        UIApplication.shared.open(URL(string: "https://github.com/freedom10086/Ruisi_Ios/issues")!)
+    }
+    
+    @IBAction func sourceCodeClick(_ sender: Any) {
+        UIApplication.shared.open(URL(string: "https://github.com/freedom10086/Ruisi_Ios")!)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         let button1 = UIBarButtonItem(title: "反馈", style: .done, target: self, action: #selector(feedBackClick))
         self.navigationItem.rightBarButtonItem  = button1
-        
-        aboutText.numberOfLines = 0
-        aboutText.lineBreakMode = .byWordWrapping
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            if let attributeStr = self.stringFromHtml(string: self.ss) {
-                DispatchQueue.main.async {
-                    self.aboutText.attributedText = attributeStr
-                }
-            }else{
-                DispatchQueue.main.async {
-                    self.title = self.ss
-                }
-            }
-            
-        }
         
         //CFBundleVersion
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -135,32 +126,4 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
             self?.dismiss(animated: true, completion: nil)
         }
     }
-    
-    
-    private func stringFromHtml(string: String) -> NSAttributedString? {
-        do {
-            let data = string.data(using: String.Encoding.unicode, allowLossyConversion: true)
-            if let d = data {
-                let str = try NSMutableAttributedString(data: d, options: [
-                    NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html],documentAttributes: nil)
-                str.addAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: CGFloat(18)) as Any], range: NSRange(location: 0, length: str.length))
-                return str
-            }
-        } catch {
-            print(error)
-        }
-        return nil
-    }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

@@ -18,15 +18,12 @@ class HotViewController: BaseTableViewController<ArticleListData> {
     
     // 切换热帖0 和 新帖1
     @IBAction func viewTypeChnage(_ sender: UISegmentedControl) {
-        print(sender.selectedSegmentIndex)
         position = sender.selectedSegmentIndex
-        pageSume = Int.max
-        currentPage = 1
         self.isLoading = false
         self.datas = []
+        self.emptyPlaceholderText = "加载中..."
         self.tableView.reloadData()
-        //tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        loadData(position)
+        pullRefresh()
     }
     
     var isHotLoading = false
@@ -46,11 +43,10 @@ class HotViewController: BaseTableViewController<ArticleListData> {
             }else{
                 isNewLoading = newValue
             }
-            
             super.isLoading = newValue
         }
     }
-
+    
     
     override func getUrl(page: Int) -> String {
         if position == 0 {
@@ -60,15 +56,9 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         }
     }
     
-    //
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         currentPage = Int(doc.xpath("/html/body/div[2]/strong").first?.text ?? "") ?? currentPage
-        pageSume = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "" ) ?? currentPage
-        
-        print("====")
-        print("page:\(currentPage) sum:\(pageSume)")
-        print("====")
-        
+        totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "" ) ?? currentPage
         var subDatas:[ArticleListData] = []
         for li in doc.css(".threadlist ul li") {
             let a = li.css("a").first

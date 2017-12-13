@@ -17,13 +17,13 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }
     
-    
     override func getUrl(page: Int) -> String {
         return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(page)"
     }
     
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
+        loop1:
         for li in doc.xpath("/html/body/div[1]/ul/li") {
             let a = li.css("a").first
             var tid: Int?
@@ -32,6 +32,10 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
             } else {
                 //没有tid和咸鱼有什么区别
                 continue
+            }
+            
+            for d in self.datas {
+                if d.tid == tid {break loop1}
             }
             
             let img = (li.css("img").first)?["src"]
@@ -48,7 +52,6 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
                 replyStr = "-"
             }
             
-            
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             let color =  Utils.getHtmlColor(from: a?["style"])
             
@@ -56,7 +59,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
             subDatas.append(d)
         }
         
-        print("finish load data pos:\(pos) count:\(subDatas.count)")
+        if subDatas.count < 20 { self.totalPage = self.currentPage }
         return subDatas
     }
     

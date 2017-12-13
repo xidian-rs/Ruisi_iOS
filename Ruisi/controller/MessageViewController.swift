@@ -22,6 +22,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
             self.refreshControl = refreshView
             loadData(position)
         } else {
+            self.emptyPlaceholderText = "需要登陆才能查看"
             self.refreshControl = nil
         }
     }
@@ -30,13 +31,13 @@ class MessageViewController: BaseTableViewController<MessageData> {
         super.viewWillAppear(animated)
         if lastLoginState != App.isLogin {
             lastLoginState = App.isLogin
-            datas.removeAll()
-            tableView.reloadData()
-            
             if lastLoginState { //未登陆转为登陆
                 self.refreshControl = refreshView
+                self.tableView.reloadData()
                 loadData(position)
             } else { //登陆转为未登陆
+                datas.removeAll()
+                tableView.reloadData()
                 self.refreshControl = nil
             }
         }
@@ -45,14 +46,16 @@ class MessageViewController: BaseTableViewController<MessageData> {
     // 切换回复0 和 PM1 AT2
     @IBAction func messageTypeChange(_ sender: UISegmentedControl) {
         position = sender.selectedSegmentIndex
-        currentPage = 1
-        pageSume = Int.max
         self.isLoading = false
-        self.datas = []
-        self.tableView.reloadData()
-        
         if App.isLogin {
-            loadData(position)
+            self.emptyPlaceholderText = "加载中..."
+            self.datas = []
+            self.tableView.reloadData()
+            pullRefresh()
+        }else {
+            self.datas.removeAll()
+            self.emptyPlaceholderText = "需要登陆才能查看"
+            self.tableView.reloadData()
         }
     }
     
@@ -98,12 +101,12 @@ class MessageViewController: BaseTableViewController<MessageData> {
         let nodes: XPathObject
         if pos == 0 || pos == 2 { // reply at
             currentPage = Int(doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/strong").first?.text ?? "") ?? currentPage
-            pageSume = Utils.getNum(from: (doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/label/span").first?.text) ?? "" ) ?? currentPage
+            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/label/span").first?.text) ?? "" ) ?? currentPage
             nodes = doc.xpath("//*[@id=\"ct\"]/div[1]/div/div[1]/div/dl") //.css(".nts .cl")
         } else {// pm
             currentPage = Int(doc.xpath("/html/body/div[2]/strong").first?.text ?? "") ?? currentPage
-            pageSume = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "" ) ?? currentPage
-            print("======\(currentPage)   \(pageSume)")
+            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "" ) ?? currentPage
+            print("======\(currentPage)   \(totalPage)")
             nodes = doc.xpath("/html/body/div[1]/ul/li") //.css(".pmbox ul li")
         }
         
@@ -185,45 +188,6 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
         
         return subDatas
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        if datas.count == 0 {//no data avaliable
-            if App.isLogin {
-                let label = UILabel(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-                label.text = "加载中..."
-                label.textColor = UIColor.black
-                label.numberOfLines = 0
-                label.textAlignment = .center
-                label.font = UIFont.systemFont(ofSize: 20)
-                label.textColor = UIColor.lightGray
-                label.sizeToFit()
-                tableView.backgroundView = label
-            }else {
-                let btn = UIButton(frame:CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-                btn.setTitleColor(UIColor.lightGray, for: .normal)
-                btn.setTitle("需要登陆,点我登陆", for: .normal)
-                btn.titleLabel?.textAlignment = .center
-                btn.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-                let rec = UITapGestureRecognizer(target: self, action: #selector(loginClick))
-                btn.addGestureRecognizer(rec)
-                tableView.backgroundView = btn
-            }
-            
-            tableView.separatorStyle = .none
-            tableView.tableFooterView?.isHidden = true
-            
-            return 0
-        } else {
-            tableView.backgroundView = nil
-            tableView.tableFooterView?.isHidden = false
-            tableView.separatorStyle = .singleLine
-            return 1
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return datas.count
     }
     
     

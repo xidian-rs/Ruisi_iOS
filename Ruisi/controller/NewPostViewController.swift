@@ -12,8 +12,6 @@ import Kanna
 class NewPostViewController: UIViewController,ForumSelectDelegate {
     
     func selectFid(fid: Int, name: String) {
-        print("fid \(fid) name \(name)")
-        
         if self.fid != fid {
             self.name = name
             self.fid = fid
@@ -121,6 +119,9 @@ class NewPostViewController: UIViewController,ForumSelectDelegate {
     
     @objc func postClick() {
         if !checkInput() { return }
+        self.titleInput.resignFirstResponder()
+        self.contentInput.resignFirstResponder()
+        
         self.present(progress, animated: true, completion: nil)
         
         var params  = ["topicsubmit":"yes","subject":titleInput.text!,"message":contentInput.text!]
