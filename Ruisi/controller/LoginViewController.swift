@@ -13,7 +13,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var remberSwitch: UISwitch!
+    @IBOutlet weak var questBtn: UIButton!
+    @IBOutlet weak var questInput: UITextField!
     
+    private var answerSelect = 0
+    
+    let quests = ["请选择(未设置选此)","母亲的名字","爷爷的名字","父亲出生的城市","您其中一位老师的名字","您个人计算机的型号","您最喜欢的餐馆名称","驾驶执照最后四位数字"]
     
     var username: String {
         return usernameTextField.text ?? ""
@@ -32,6 +37,27 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         }
     }
     
+    func selectQuest(action: UIAlertAction)  {
+        self.questBtn.setTitle(action.title, for: .normal)
+        for i in 0..<quests.count {
+            if quests[i] == action.title {
+                answerSelect = i
+                break
+            }
+        }
+        questInput.isHidden = (answerSelect == 0)
+    }
+    
+    @IBAction func questBtnClick(_ sender: Any) {
+        let sheet = UIAlertController(title: "安全提问", message: nil, preferredStyle: .actionSheet)
+        for item in quests {
+            let action = UIAlertAction(title: item, style: .default, handler: selectQuest)
+            sheet.addAction(action)
+        }
+        
+        sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler:nil))
+        self.present(sheet, animated: true, completion: nil)
+    }
     
     @IBAction func cencelClick(_ sender: Any) {
         // self.dismiss(animated: true, completion: nil)
@@ -47,6 +73,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     @IBAction func loginClick(_ sender: UIBarButtonItem) {
         usernameTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
+        if !questInput.isHidden { questInput.resignFirstResponder() }
         
         if self.username.count <= 0 {
             alert(message: "用户名不能为空")
@@ -61,6 +88,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         showLoadingView()
         let username = self.username
         let password = self.password
+        let answer = answerSelect == 0 ? "" : questInput.text ?? ""
+        
         HttpUtil.GET(url: Urls.loginUrl, params: nil) { ok, res in
             if ok {
                 if res.contains("欢迎您回来"){
@@ -73,8 +102,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                     let substr = String(res[start...])
                     let end = substr.index(of: "\"")
                     let loginUrl = String(substr[..<end!])
-                
-                    HttpUtil.POST(url: loginUrl, params: ["username":username,"password":password,"fastloginfield":"username","cookietime":"2592000"], callback: { ok, res in
+                    
+                    HttpUtil.POST(url: loginUrl, params: ["username":username,"password":password,"fastloginfield":"username","cookietime":"2592000","questionid":self.answerSelect,"answer":answer], callback: { ok, res in
                         print("post ok")
                         if ok && res.contains("欢迎您回来"){
                             self.loginResult(isok: true,res: res)
@@ -158,6 +187,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-
+    
     
 }

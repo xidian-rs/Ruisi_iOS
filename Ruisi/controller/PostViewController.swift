@@ -153,7 +153,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement {
-            if currentPage >= pageSum { return }
+            if currentPage >= pageSum { return } // TODO 最后一页是否还要继续刷新
             if currentPage < pageSum { currentPage += 1 }
             print("load more next page is:\(currentPage) sum is:\(pageSum)")
             loadData()
