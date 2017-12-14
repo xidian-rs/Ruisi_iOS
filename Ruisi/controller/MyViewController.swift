@@ -15,19 +15,22 @@ UITableViewDataSource,UINavigationControllerDelegate{
     @IBOutlet weak var avaterImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var usergradeLabel: UILabel!
+    @IBOutlet weak var headBgView: UIView!
     
     
-    var images = ["ic_refresh_48pt","ic_info_48pt","ic_share_48pt","ic_favorite_48pt","ic_settings_48pt"]
-    var titles = ["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
+    var images = ["ic_refresh_48pt","ic_color_lens_48pt","ic_info_48pt","ic_share_48pt",/*"ic_favorite_48pt",*/"ic_settings_48pt"]
+    var titles = ["签到中心","主题设置","关于本程序","分享手机睿思"/*,"到商店评分"*/,"设置"]
     
     // 创建的时候的登陆状态
     var isLogin: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        headBgView.backgroundColor = ThemeManager.currentPrimaryColor
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         //获得导航栏控制权
         self.navigationController?.delegate = self
+        
         
         myTableView.dataSource = self
         myTableView.delegate = self
@@ -141,10 +144,14 @@ UITableViewDataSource,UINavigationControllerDelegate{
             }
             break
         case 1:
+            //theme
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "themeViewController")
+            self.show(dest!, sender: self)
+        case 2:
             //about
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "aboutViewController")
             self.show(dest!, sender: self)
-        case 2:
+        case 3:
             //share
             let activityController = UIActivityViewController(activityItems: ["分享:手机睿思IOS版[\(Urls.getPostUrl(tid: App.POST_ID))]"], applicationActivities: nil)
             // should be the rect that the pop over should anchor to
@@ -154,11 +161,12 @@ UITableViewDataSource,UINavigationControllerDelegate{
             // present the controller
             present(activityController, animated: true, completion: nil)
             break
-        case 3:
-            //evaluate
-            let ac = UIAlertController(title: "到商店评分", message: "暂时不准备上架商店,无法评分(99美刀～～)", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-            present(ac, animated: true)
+//        case 4:
+            // TODO
+//            //evaluate
+//            let ac = UIAlertController(title: "到商店评分", message: "暂时不准备上架商店,无法评分(99美刀～～)", preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+//            present(ac, animated: true)
         case 4:
             //setting
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "settingViewController")

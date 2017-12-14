@@ -88,7 +88,8 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
             let head = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "head", for: indexPath)
             let label = head.viewWithTag(1) as! UILabel
             label.text = datas[indexPath.section].name
-            head.backgroundColor = UIColor(white: 0.95, alpha: 1)
+            label.textColor = ThemeManager.currentPrimaryColor
+            head.backgroundColor = UIColor(white: 0.96, alpha: 1)
             return head
         }
         
@@ -112,11 +113,6 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
     
     
     // MARK: UICollectionViewDelegate
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //print("select")
-    }
-    
     func showLoginAlert() {
         let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in

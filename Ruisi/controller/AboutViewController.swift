@@ -13,9 +13,7 @@ import Kanna
 class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
     
     @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var checkVersionLabel: UILabel!
 
-    
     @IBAction func replyClick(_ sender: Any) {
         let destVc = self.storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
         destVc.tid = App.POST_ID
@@ -44,40 +42,7 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
         }
         
         let versionCode = Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1
-        HttpUtil.GET(url: Urls.checkUpdate, params: nil) { ok, res in
-            var versionText: String
-            if ok {
-                if let doc = try? HTML(html: res, encoding: .utf8) {
-                    if let i = doc.title?.endIndex(of: "code"){
-                        if let version = Utils.getNum(from: (String(doc.title![i...]))) {
-                            print("server version \(version)")
-                            if versionCode < version {
-                                versionText = "已经有新的版本更新,服务器版本 V\(version)"
-                            } else {
-                                versionText = "当前已是最新版本"
-                            }
-                            
-                            DispatchQueue.main.async {
-                                [weak self] in
-                                self?.checkVersionLabel.text = versionText
-                            }
-                            
-                            return
-                        }
-                    }
-                }
-                
-                versionText = "从服务器获得版本号失败"
-            }else {
-                versionText = "检查更新失败"
-            }
-            
-            
-            DispatchQueue.main.async {
-                [weak self] in
-                self?.checkVersionLabel.text = versionText
-            }
-        }
+        print("current versionCode:\(versionCode)")
     }
     
     

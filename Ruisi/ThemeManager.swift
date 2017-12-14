@@ -1,0 +1,81 @@
+//
+//  ThemeManager.swift
+//  Ruisi
+//
+//  Created by yang on 2017/12/14.
+//  Copyright © 2017年 yang. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+class ThemeManager {
+    private static var themeBackUp:Theme?
+    
+    public static let colors = [
+        0xd12121, 0x1e1e1e, 0xf44836, 0xf2821e, 0x7bb736, 0x16c24b,
+        0x16a8c2, 0x2b86e3, 0x3f51b5, 0x9c27b0, 0xcc268f, 0x39c5bb]
+    
+    public static let names = [
+        "默认", "黑色", "橘红", "橘黄", "原谅", "翠绿",
+        "青色", "天蓝", "蓝色", "紫色", "紫红", "初音"]
+    
+    public static var themes:[Theme] {
+        get {
+            var ts = [Theme]()
+            for i in 0..<ThemeManager.colors.count {
+                ts.append(Theme(id: i, name: ThemeManager.names[i], titleColor: UIColor.white, primaryColor: ThemeManager.parseHexColor(ThemeManager.colors[i])))
+            }
+            return ts
+        }
+    }
+    
+    public static var currentTheme:Theme {
+        get {
+            if ThemeManager.themeBackUp == nil {
+                ThemeManager.themeBackUp = Theme(id:Settings.currentTheme, name:names[Settings.currentTheme], titleColor:UIColor.white,
+                                                 primaryColor:parseHexColor(colors[Settings.currentTheme]))
+            }
+            return ThemeManager.themeBackUp!
+        }
+    }
+    
+    public static var currentPrimaryColor:UIColor { return currentTheme.primaryColor }
+    public static var currentTitleColor:UIColor { return currentTheme.titleColor }
+    
+    public static var currentThemeId:Int {
+        get {
+            return currentTheme.id
+        }
+        set {
+            if Settings.currentTheme != newValue {
+                ThemeManager.themeBackUp = nil
+                Settings.currentTheme = newValue
+                NotificationCenter.default.post(name: .themeChanged, object: self)
+            }
+        }
+    }
+    
+    private static func parseHexColor(_ color:Int) -> UIColor {
+        return UIColor(red: CGFloat(((color & 0xff0000) >> 16)) / CGFloat(255),
+                       green: CGFloat(((color & 0x00ff00) >> 8)) / CGFloat(255), blue: CGFloat(color & 0x0000ff) / CGFloat(255), alpha: 1.0)
+    }
+}
+
+extension Notification.Name {
+    static let themeChanged = Notification.Name("ThemeChanged")
+}
+
+struct Theme {
+    var id:Int
+    var titleColor: UIColor
+    var primaryColor: UIColor
+    var name: String
+    
+    init(id:Int,name:String, titleColor:UIColor,primaryColor:UIColor) {
+        self.id = id
+        self.name = name
+        self.titleColor = titleColor
+        self.primaryColor = primaryColor
+    }
+}

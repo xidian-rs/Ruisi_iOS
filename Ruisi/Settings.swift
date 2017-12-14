@@ -22,6 +22,7 @@ public class Settings {
     private static let key_message_id_reply = "key_message_id_reply"
     private static let key_message_id_pm = "key_message_id_pm"
     private static let key_message_id_at = "key_message_id_at"
+    private static let key_theme_id = "key_theme_id"
     
     static func getMessageId(type: Int) -> Int{
         switch type {
@@ -90,6 +91,17 @@ public class Settings {
         
         set {
             UserDefaults.standard.set(newValue, forKey: key_show_zhiding)
+        }
+    }
+    
+    // 当前主题
+    public static var currentTheme: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: key_theme_id)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_theme_id)
         }
     }
     

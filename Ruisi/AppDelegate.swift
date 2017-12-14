@@ -16,17 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        let theme = ThemeManager.currentTheme
+        
         //状态栏颜色
         UIApplication.shared.statusBarStyle = .lightContent
         
         //设置导航栏颜色
-        let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        let textAttributes = [NSAttributedStringKey.foregroundColor:theme.titleColor]
         UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
-        UINavigationBar.appearance().tintColor = UIColor.white //按钮颜色
-        UINavigationBar.appearance().barTintColor = UIColor(red: 0.82, green: 0.13, blue: 0.13, alpha: 0.75) //背景色
+        UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
+        UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色
         
         //设置tabBar颜色
-        UITabBar.appearance().tintColor = UIColor(red: 0.82, green: 0.13, blue: 0.13, alpha: 0.75)
+        UITabBar.appearance().tintColor = theme.primaryColor
         
         //设置toolbar颜色
         UIToolbar.appearance().tintColor = UIColor.darkGray
