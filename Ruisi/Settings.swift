@@ -9,9 +9,6 @@
 import Foundation
 
 public class Settings {
-    //底部安全区域大小 for iphoneX
-    public static var safeAeraBottomInset: Float = 0
-    
     private static let key_avater = "key_avater"
     private static let key_username = "key_username"
     private static let key_password = "key_password"

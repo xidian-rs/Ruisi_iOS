@@ -18,6 +18,7 @@ class ThemeViewController: UIViewController,UICollectionViewDelegate,UICollectio
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
+        self.automaticallyAdjustsScrollViewInsets = false //修复collectionView头部空白
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneClick))
     }
     
@@ -61,7 +62,7 @@ class ThemeViewController: UIViewController,UICollectionViewDelegate,UICollectio
     
     // collectionView的上下左右间距
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
+        return UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
     }
     
     
@@ -105,14 +106,7 @@ class ThemeViewController: UIViewController,UICollectionViewDelegate,UICollectio
     }
     
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
 }

@@ -40,7 +40,6 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         isInSearchMode = false
-        searchBar.showsScopeBar = false
         searchBar.delegate = self
     }
     
@@ -227,6 +226,7 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
         print("search click")
         isInSearchMode = true
         if let text = searchBar.text,text.count > 0 {
+            searchBar.resignFirstResponder()
             doSearch(text: text.trimmingCharacters(in: CharacterSet.whitespaces))
         }
     }

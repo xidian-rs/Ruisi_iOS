@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReplyBoxView: /*AboveKeyboardView*/UIView,FriendSelectDelegate {
+class ReplyBoxView: AboveKeyboardView,FriendSelectDelegate {
 
     var contentView : UIView!
     var placeholderLabel: UILabel!

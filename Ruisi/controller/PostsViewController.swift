@@ -27,6 +27,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     // 子类重写此方法支持解析自己的数据
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
+        loop:
         for li in doc.css(".threadlist ul li") {
             let a = li.css("a").first
             var tid: Int?
@@ -36,7 +37,6 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 //没有tid和咸鱼有什么区别
                 continue
             }
-            
             var replysStr: String?
             var authorStr: String?
             let replys = li.css("span.num").first

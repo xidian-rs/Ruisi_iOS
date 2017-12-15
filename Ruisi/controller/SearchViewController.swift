@@ -46,7 +46,6 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        searchBar.showsScopeBar = false
         searchBar.delegate = self
         
         self.tableView.estimatedRowHeight = 60
@@ -60,8 +59,6 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
     
     
     func loadData(url:String) {
-        // 所持请求的数据正在加载中/未加载
-        if isLoading { return }
         isLoading = true
         HttpUtil.GET(url: url, params: nil) { ok, res in
             var subDatas:[KeyValueData<Int, String>] = []
@@ -103,10 +100,8 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
         let resultsNodes = doc.xpath("/html/body/div[1]/ul/li")
         
         nextPageUrl = nil
-        if let node = doc.xpath("/html/body/div[1]/div/a[2]").first {
-            if node.text!.contains("下一页") {
-                nextPageUrl = doc.xpath("/html/body/div[1]/div/a[2]").first?["href"]
-            }
+        if let n = doc.css("a.nxt").first {
+            nextPageUrl = n["href"]
         }
         
         for result in resultsNodes {
@@ -185,7 +180,7 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
     // MARK: - Search
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchBar.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
-            searchBar.resignFirstResponder()
+            self.searchBar.resignFirstResponder()
             datas = []
             tableView.reloadData()
             nextPageUrl = nil
@@ -195,7 +190,6 @@ class SearchViewController: UITableViewController,UISearchBarDelegate {
                 HttpUtil.POST(url: Urls.searchUrl, params:["searchsubmit":"yes","srchtxt":text]) { (ok, res) in
                     if ok {
                         if let doc = try? HTML(html: res, encoding: .utf8) {
-                            //page == 1
                             self.datas = self.parseData(doc: doc)
                             if self.datas.count > 0 {
                                 self.placeholderText = "请输入你要搜索的内容"

@@ -14,6 +14,7 @@ class MainViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        App.isLogin = Settings.username != nil
         checkNetwork()
         NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
     }
@@ -36,7 +37,7 @@ class MainViewController: UITabBarController {
         print("Wifi:", Network.reachability?.isReachableViaWiFi ?? "nil")
         print("====================")
         
-        App.isSchoolNet = Network.reachability?.isReachable ?? false
+        App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
         checkLogin()
     }
     

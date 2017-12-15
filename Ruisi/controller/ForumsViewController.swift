@@ -17,6 +17,14 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
     let jsonPath = "assets/forums"
     var loginState: Bool = false
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loginState = App.isLogin
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.clearsSelectionOnViewWillAppear = true
+        loadData(loginState: loginState)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -24,14 +32,6 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
             loginState = App.isLogin
             loadData(loginState: loginState)
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        self.clearsSelectionOnViewWillAppear = true
-        loginState = App.isLogin
-        loadData(loginState: loginState)
     }
 
     func loadData(loginState: Bool) {

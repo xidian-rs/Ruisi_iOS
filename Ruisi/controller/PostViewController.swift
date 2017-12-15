@@ -90,14 +90,6 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         loadData()
     }
     
-    override func viewSafeAreaInsetsDidChange() {
-        if #available(iOS 11.0, *) {
-            super.viewSafeAreaInsetsDidChange()
-            Settings.safeAeraBottomInset =  Float(view.safeAreaInsets.bottom)
-        }
-    }
-    
-    
     @objc func pullRefresh(){
         print("下拉刷新'")
         currentPage = 1

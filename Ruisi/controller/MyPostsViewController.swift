@@ -66,7 +66,6 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
         let d = datas[indexPath.row]

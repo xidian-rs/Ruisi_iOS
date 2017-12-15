@@ -63,11 +63,8 @@ class BaseTableViewController<T>: UITableViewController {
                     f.endLoading(haveMore: currentPage < totalPage)
                 }
             }else {
-                self.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
-                if currentPage > 1 { //上拉刷新
-                    if let f = (tableView.tableFooterView as? LoadMoreView) {
-                        f.startLoading()
-                    }
+                if let f = (tableView.tableFooterView as? LoadMoreView) {
+                    f.startLoading()
                 }
             }
         }
@@ -78,8 +75,9 @@ class BaseTableViewController<T>: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        // FIXME 自动行高会导致加载更多动画异常，暂时关闭自动行高
+        //self.tableView.estimatedRowHeight = 80
+        //self.tableView.rowHeight = UITableViewAutomaticDimension
         if showFooter {
             showFooterPrivate = false
             showFooter = true
@@ -126,7 +124,7 @@ class BaseTableViewController<T>: UITableViewController {
                 print("加载的数据不是我们想要的不做任何事")
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
                 if subDatas.count > 0 {
                     if self.currentPage == 1 {
                         self.datas = subDatas
@@ -155,8 +153,7 @@ class BaseTableViewController<T>: UITableViewController {
             })
         }
     }
-    
-    
+
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         if datas.count == 0 {//no data avaliable
@@ -195,12 +192,8 @@ class BaseTableViewController<T>: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement {
-            //到达最后一页是否继续加载
-            if currentPage >= totalPage && !shouldLoadMoreOnLastPage { return }
-            isLoading = true
-            if currentPage < totalPage {
-                currentPage += 1
-            }
+            if currentPage >= totalPage && !shouldLoadMoreOnLastPage { return } // TODO 最后一页是否还要继续刷新
+            if currentPage < totalPage { currentPage += 1 }
             print("load more next page is:\(currentPage) sum is:\(totalPage)")
             loadData(position)
         }

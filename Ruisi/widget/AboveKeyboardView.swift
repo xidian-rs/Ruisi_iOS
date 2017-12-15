@@ -58,11 +58,9 @@ class AboveKeyboardView: UIView {
                 UIView.beginAnimations(nil, context: nil)
                 UIView.setAnimationDuration(duration)
                 UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut)
-                self.center = CGPoint(x: self.center.x, y: point.y - self.frame.height/2 - keyboardHeight/2 + CGFloat(Settings.safeAeraBottomInset))
+                self.center = CGPoint(x: self.center.x, y: point.y - self.frame.height/2 - keyboardHeight/2)
                 UIView.commitAnimations()
-        
-                print("safe aera bottom:\(Settings.safeAeraBottomInset)")
-                print("move -> height:\(self.currentCenter!.y - (point.y - self.frame.height/2 - keyboardHeight/2) + CGFloat(Settings.safeAeraBottomInset))")
+                print("move -> height:\(self.currentCenter!.y - (point.y - self.frame.height/2 - keyboardHeight/2))")
             }
         }
     }

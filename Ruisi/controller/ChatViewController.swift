@@ -82,7 +82,7 @@ class ChatViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     override func viewSafeAreaInsetsDidChange() {
         if #available(iOS 11.0, *) {
             super.viewSafeAreaInsetsDidChange()
-            Settings.safeAeraBottomInset =  Float(view.safeAreaInsets.bottom)
+            print(view.safeAreaInsets.bottom)
         }
     }
     
