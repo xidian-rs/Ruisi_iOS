@@ -102,6 +102,7 @@ class BaseTableViewController<T>: UITableViewController {
     func loadData(_ pos: Int = 0) {
         isLoading = true
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
+            //print(res)
             var subDatas:[T] = []
             var str:String?
             if !ok {

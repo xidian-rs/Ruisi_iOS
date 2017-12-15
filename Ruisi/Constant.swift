@@ -54,7 +54,15 @@ public class Urls {
     }
     
     public static func getPostsUrl(fid: Int) -> String {
-        return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
+        if fid == 157 || fid == 561 || fid == 13 {
+            // TODO 这几个是图片版本暂时使用手机版替代
+            return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2"
+        }
+        
+        if App.isSchoolNet {
+            return "\(BASE_URL_EDU)forum.php?mod=forumdisplay&fid=\(fid)" //&page=1
+        }
+        return "\(BASE_URL_ME)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
     }
     
     //回复
