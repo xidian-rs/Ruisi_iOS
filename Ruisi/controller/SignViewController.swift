@@ -9,6 +9,7 @@
 import UIKit
 import Kanna
 
+// 签到页面
 class SignViewController: UIViewController {
     let items = ["开心", "难过", "郁闷", "无聊", "怒", "擦汗", "奋斗", "慵懒", "衰"]
     let itemsValue = ["kx","ng","ym","wl","nu","ch","fd","yl","shuai"]

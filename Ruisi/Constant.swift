@@ -54,15 +54,20 @@ public class Urls {
     }
     
     public static func getPostsUrl(fid: Int) -> String {
-        if fid == 157 || fid == 561 || fid == 13 {
-            // TODO 这几个是图片版本暂时使用手机版替代
-            return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2"
-        }
-        
         if App.isSchoolNet {
             return "\(BASE_URL_EDU)forum.php?mod=forumdisplay&fid=\(fid)" //&page=1
         }
         return "\(BASE_URL_ME)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
+    }
+    
+    public static func getPostsType(fid:Int,isSchoolNet:Bool) -> PostsType {
+        if !isSchoolNet { return .list }
+        if fid == 157 || fid == 561 || fid == 13 {
+            // 图片板块
+            return .imageGrid
+        }
+        
+        return .listWithImage //校园网样式
     }
     
     //回复

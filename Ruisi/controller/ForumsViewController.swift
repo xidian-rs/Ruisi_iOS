@@ -10,7 +10,7 @@ import UIKit
 
 
 // didload -> willappear
-class ForumsViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout{
+class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     let reuseIdentifier = "Cell"
     var datas:[Forums] = []
     let logoDir = "assets/forumlogo/"
@@ -33,7 +33,7 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
             loadData(loginState: loginState)
         }
     }
-
+    
     func loadData(loginState: Bool) {
         print("load forums login state:\(loginState)")
         let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
@@ -49,10 +49,10 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         
         collectionView?.reloadData()
     }
-
+    
     
     // MARK: UICollectionViewDataSource
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return datas.count
     }
@@ -80,7 +80,7 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
-
+    
     
     // section 头或者尾部
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -95,11 +95,11 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         
         return UICollectionReusableView(frame: CGRect.zero)
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return datas[section].getSize()
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         let imageView = cell.viewWithTag(1) as! UIImageView
@@ -109,6 +109,21 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         imageView.image = UIImage(contentsOfFile: path)
         label.text = datas[indexPath.section].forums![indexPath.row].name
         return cell
+    }
+    
+    var selectedIndexPath:IndexPath?
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let type =  Urls.getPostsType(fid: datas[indexPath.section].forums![indexPath.row].fid, isSchoolNet: App.isSchoolNet)
+        switch type {
+        case .imageGrid:
+            self.performSegue(withIdentifier: "forumToImagePosts", sender: self)
+        default:
+            self.performSegue(withIdentifier: "forumToNormalPosts", sender: self)
+        }
     }
     
     
@@ -133,17 +148,21 @@ class ForumsViewController: UICollectionViewController,UICollectionViewDelegateF
         return true
     }
     
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toPosts"{//版块帖子列表
+        if let index = selectedIndexPath {
+            let fid = datas[index.section].forums?[index.row].fid
+            let title = datas[index.section].forums?[index.row].name
+            
             if let dest = (segue.destination as? PostsViewController) {
-                if let index = collectionView?.indexPathsForSelectedItems?[0]{
-                    dest.title = datas[index.section].forums?[index.row].name
-                    dest.fid = datas[index.section].forums?[index.row].fid
-                }
+                dest.title = title
+                dest.fid = fid
+            }else if let dest = (segue.destination as? ImageGridPostsViewController) {
+                dest.title = title
+                dest.fid = fid
             }
         }
     }
-
+    
 }

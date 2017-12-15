@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 登陆页面
 class LoginViewController: UIViewController,UITextFieldDelegate {
     
     @IBOutlet weak var usernameTextField: UITextField!

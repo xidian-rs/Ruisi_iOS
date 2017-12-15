@@ -28,6 +28,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         return url
     }
     
+    
     // 子类重写此方法支持解析自己的数据
     override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
         var subDatas:[ArticleListData] = []
@@ -173,7 +174,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     
     @objc func newPostClick() {
         if !App.isLogin {
-            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
+            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能发帖", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
                 let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
                 self.present(dest!, animated: true, completion: nil)

@@ -24,8 +24,11 @@ public class ArticleListData {
     public var views:String?
     public var time:String?
     
+    //图片板块才有
+    public var image:String?
     
-    init(title:String,tid: Int,author:String = "未知",replys:String = "0",read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil,uid:Int? = nil,views:String? = nil,time: String? = nil) {
+    
+    init(title:String,tid: Int,author:String = "未知",replys:String = "0",read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil,uid:Int? = nil,views:String? = nil,time: String? = nil,image:String? = nil) {
         self.title = title
         self.tid = tid
         self.author = author
@@ -37,5 +40,7 @@ public class ArticleListData {
         self.uid = uid
         self.views = views
         self.time = time
+        
+        self.image = image
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+// 浏览历史
 class HistoryViewController: UITableViewController {
 
     var historys:[History] = []

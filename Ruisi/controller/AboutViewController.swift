@@ -10,6 +10,7 @@ import UIKit
 import MessageUI
 import Kanna
 
+// 关于页面
 class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
     
     @IBOutlet weak var versionLabel: UILabel!

@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 设置
 class SettingViewController: UITableViewController {
     
     @IBOutlet weak var versionLabel: UILabel!
