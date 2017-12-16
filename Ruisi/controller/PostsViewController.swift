@@ -113,9 +113,19 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         }
         
         print("page total:\(self.totalPage)")
+        //从浏览历史数据库读出是否已读
+        SQLiteDatabase.instance?.setReadHistory(datas: &subDatas)
         return subDatas
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        super.tableView(tableView, didSelectRowAt: indexPath)
+        
+        if(!datas[indexPath.row].isRead) { // 未读设置为已读
+            datas[indexPath.row].isRead = true
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: isSchoolNet ? "cell_edu" : "cell_me", for: indexPath)
@@ -127,8 +137,13 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         let d = datas[indexPath.row]
         
         titleLabel.text = d.title
-        if let color = d.titleColor {
+        
+        if d.isRead {
+            titleLabel.textColor = UIColor.darkGray
+        } else if let color = d.titleColor {
             titleLabel.textColor = color
+        } else {
+            titleLabel.textColor = UIColor.darkText
         }
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount

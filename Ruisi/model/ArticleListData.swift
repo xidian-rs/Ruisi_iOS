@@ -28,7 +28,9 @@ public class ArticleListData {
     public var image:String?
     
     
-    init(title:String,tid: Int,author:String = "未知",replys:String = "0",read:Bool = false,haveImage:Bool = false,titleColor:UIColor? = nil,uid:Int? = nil,views:String? = nil,time: String? = nil,image:String? = nil) {
+    init(title:String,tid: Int,author:String = "未知",replys:String = "0",
+         read:Bool = false, haveImage:Bool = false, titleColor: UIColor? = nil,
+         uid: Int? = nil, views: String? = nil,time: String? = nil, image: String? = nil) {
         self.title = title
         self.tid = tid
         self.author = author

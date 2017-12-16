@@ -9,14 +9,18 @@
 import Foundation
 import CoreData
 
-@objc(History)
-class History : NSManagedObject{
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<History> {
-        return NSFetchRequest<History>(entityName: "History")
+class History {
+    public var tid: Int
+    public var title: String
+    public var author: String
+    public var created: String
+    public var lastRead: String
+    
+    init(tid:Int,title:String?,author:String?,created:String?,lastRead:String) {
+        self.tid = tid
+        self.title = title ?? "未知标题"
+        self.author = author ?? "未知作者"
+        self.created = created ?? ""
+        self.lastRead = lastRead
     }
-    @NSManaged public var tid: String
-    @NSManaged public var title: String
-    @NSManaged public var author: String?
-    @NSManaged public var created: String?
-    @NSManaged public var time: Int64
 }

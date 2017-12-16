@@ -15,23 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // init theme
+        ThemeManager.initTheme()
         
-        let theme = ThemeManager.currentTheme
-        
-        //状态栏颜色
-        UIApplication.shared.statusBarStyle = .lightContent
-        
-        //设置导航栏颜色
-        let textAttributes = [NSAttributedStringKey.foregroundColor:theme.titleColor]
-        UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
-        UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
-        UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色
-        
-        //设置tabBar颜色
-        UITabBar.appearance().tintColor = theme.primaryColor
-        
-        //设置toolbar颜色
-        UIToolbar.appearance().tintColor = UIColor.darkGray
         
         //start network check
         do {
@@ -46,6 +32,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print(error)
         }
+        
+        // history check
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try SQLiteDatabase.instance?.createTables()
+                try SQLiteDatabase.instance?.clearOldHistory(max: 1000) //最多存1000条
+            }catch {
+                print(error)
+            }
+        }
+        
         return true
     }
     
@@ -70,54 +67,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        SQLiteDatabase.close()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
-    }
-
-    // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "Ruisi")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
     }
 
 }

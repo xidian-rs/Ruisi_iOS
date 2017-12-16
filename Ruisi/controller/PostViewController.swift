@@ -340,13 +340,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             }
         }
         
-        if !self.saveToHistory && subDatas.count > 0 && self.currentPage == 1{
-            DispatchQueue.main.async {
-                self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
-                self.saveToHistory = true
-            }
-        }
-        
+        self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
         return subDatas
     }
     
@@ -376,37 +370,10 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     
     // 保存到历史记录
     private func saveToHistory(tid:String,title:String,author:String?,created:String?){
-        let app = UIApplication.shared.delegate as! AppDelegate
-        let context = app.persistentContainer.viewContext
-        
-        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
-        fetchRequest.fetchLimit = 1
-        fetchRequest.fetchOffset = 0
-        let entity = NSEntityDescription.entity(forEntityName: "History", in: context)
-        fetchRequest.entity = entity
-        
-        let predicate = NSPredicate.init(format: "tid = '\(String(describing: tid))'", "")
-        fetchRequest.predicate = predicate
-        
-        let fetchedObjects = try? context.fetch(fetchRequest) as? [History]
-        if fetchedObjects != nil && fetchedObjects!!.count > 0 {
-            for one in fetchedObjects!! {
-                print("update history...")
-                one.title = title
-                one.author = author
-                one.created = created
-                one.time = Int64(Date().timeIntervalSince1970)
-                app.saveContext()
-            }
-        } else {
-            print("insert to history...")
-            let insert = NSEntityDescription.insertNewObject(forEntityName: "History", into:context) as! History
-            insert.tid = tid
-            insert.title = title
-            insert.author = author
-            insert.created = created
-            insert.time = Int64(Date().timeIntervalSince1970)
-            app.saveContext()
+        if self.saveToHistory { return }
+        self.saveToHistory = true
+        DispatchQueue.global(qos: .background).async {
+            SQLiteDatabase.instance?.addHistory(tid: Int(tid)!, title: title, author: author ?? "未知作者", created: created ?? "")
         }
     }
     

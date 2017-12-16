@@ -30,6 +30,26 @@ class ThemeManager {
         }
     }
     
+    public static func initTheme() {
+        let theme = ThemeManager.currentTheme
+        print("====================")
+        print("init theme:\(theme.name)")
+        //状态栏颜色
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        //设置导航栏颜色
+        let textAttributes = [NSAttributedStringKey.foregroundColor:theme.titleColor]
+        UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
+        UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
+        UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色
+        
+        //设置tabBar颜色
+        UITabBar.appearance().tintColor = theme.primaryColor
+        
+        //设置toolbar颜色
+        UIToolbar.appearance().tintColor = UIColor.darkGray
+    }
+    
     public static var currentTheme:Theme {
         get {
             if ThemeManager.themeBackUp == nil {
@@ -52,6 +72,7 @@ class ThemeManager {
                 ThemeManager.themeBackUp = nil
                 Settings.currentTheme = newValue
                 NotificationCenter.default.post(name: .themeChanged, object: self)
+                initTheme()
             }
         }
     }
