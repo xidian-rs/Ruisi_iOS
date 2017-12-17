@@ -17,6 +17,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     private var isSchoolNet = App.isSchoolNet
     
     override func viewDidLoad() {
+        self.autoRowHeight = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))

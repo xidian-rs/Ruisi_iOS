@@ -13,6 +13,7 @@ import Kanna
 class MyPostsViewController: BaseTableViewController<ArticleListData> {
     
     override func viewDidLoad() {
+        self.autoRowHeight = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }
@@ -73,6 +74,8 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
         titleLabel.text = d.title
         if let color = d.titleColor {
             titleLabel.textColor = color
+        }else {
+            titleLabel.textColor = UIColor.darkText
         }
         
         commentsLabel.text = d.replyCount

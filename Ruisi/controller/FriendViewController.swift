@@ -11,7 +11,6 @@ import Kanna
 
 // 我的好友页面
 class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDelegate {
-    
     private var datasCopy:[FriendData] = []
     private var searchMode = false
     private var isInSearchMode: Bool {
@@ -37,6 +36,7 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
     @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         isInSearchMode = false
@@ -97,6 +97,8 @@ class FriendViewController: BaseTableViewController<FriendData>,UISearchBarDeleg
         usernameView.text = datas[indexPath.row].username
         if let color = datas[indexPath.row].usernameColor {
             usernameView.textColor = color
+        }else {
+            usernameView.textColor = UIColor.darkText
         }
         descriptionView.text = datas[indexPath.row].description
         

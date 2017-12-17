@@ -20,6 +20,7 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
     
+    var autoRowHeight = true
     private var showFooterPrivate = true
     var showFooter:Bool {
         get {
@@ -75,9 +76,12 @@ class BaseTableViewController<T>: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         
-        // FIXME 自动行高会导致加载更多动画异常，暂时关闭自动行高
-        //self.tableView.estimatedRowHeight = 80
-        //self.tableView.rowHeight = UITableViewAutomaticDimension
+        if autoRowHeight {
+            // FIXME 自动行高会导致加载更多动画异常，暂时关闭自动行高
+            self.tableView.estimatedRowHeight = 80
+            self.tableView.rowHeight = UITableViewAutomaticDimension
+        }
+        
         if showFooter {
             showFooterPrivate = false
             showFooter = true

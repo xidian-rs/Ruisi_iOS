@@ -13,6 +13,7 @@ import Kanna
 class StarViewController: BaseTableViewController<StarData> {
     
     override func viewDidLoad() {
+        self.autoRowHeight = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }

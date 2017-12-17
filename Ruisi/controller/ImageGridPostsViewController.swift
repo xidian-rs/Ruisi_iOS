@@ -10,8 +10,7 @@ import UIKit
 import Kanna
 
 // 图片帖子列表板块
-class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,WaterFallLayoutDelegate {
-    
+class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, WaterFallLayoutDelegate {
     var fid: Int? // 由前一个页面传过来的值
     private var currentPage = 1
     private var totalPage = Int.max
@@ -49,7 +48,7 @@ class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,
     
     func loadData() {
         isLoading = true
-        HttpUtil.GET(url: Urls.getPostsUrl(fid: fid!), params: nil) { ok, res in
+        HttpUtil.GET(url: Urls.getPostsUrl(fid: fid!) + "&page=\(currentPage)", params: nil) { ok, res in
             //print(res)
             var subDatas:[ArticleListData] = []
             if !ok {
@@ -72,9 +71,7 @@ class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,
                         }
                         self.datas.append(contentsOf: subDatas)
                         print("here :\(subDatas.count)")
-                        //self.collectionView.beginUpdates()
                         self.collectionView.insertItems(at: indexs)
-                        //self.collectionView.endUpdates()
                     }
                 }else {
                     //第一次没有加载到数据
@@ -112,7 +109,7 @@ class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,
             let replys = li.xpath("div[2]/cite/a").first?.text
             let views = String(Utils.getNum(from: li.xpath("div[2]/cite").first?.text ?? "0") ?? 0)
             let image = li.xpath("div[1]/a/img").first?["src"]
-    
+            
             let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者",replys: replys ?? "0", read: false, haveImage: true,uid:uid, views:views,image:image)
             subDatas.append(d)
         }
@@ -183,7 +180,7 @@ class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,
         return cell
     }
     
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("did select \(indexPath.row)")
     }
@@ -197,7 +194,15 @@ class ImageGridPostsViewController: UIViewController,UICollectionViewDataSource,
         print("for item height :\(indexPath.row) \(itemWidth)")
     }
     
-    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let lastElement = datas.count - 1
+        if !isLoading && indexPath.row == lastElement && currentPage < totalPage {
+            if currentPage < totalPage { currentPage += 1 }
+            print("load more next page is:\(currentPage) sum is:\(totalPage)")
+            loadData()
+        }
+    }
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController, let cell = sender as? UICollectionViewCell {

@@ -12,7 +12,6 @@ import Kanna
 
 // 关于页面
 class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
-    
     @IBOutlet weak var versionLabel: UILabel!
 
     @IBAction func replyClick(_ sender: Any) {

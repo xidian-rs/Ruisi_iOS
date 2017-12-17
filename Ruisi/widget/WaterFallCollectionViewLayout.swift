@@ -32,15 +32,29 @@ class WaterFallCollectionViewLayout: UICollectionViewLayout {
     
     override func prepare() {
         super.prepare()
-        for i in 0..<columnCount {
-            maxHeightDic[i] = self.inset.top
-        }
         
-        let count =  self.collectionView?.numberOfItems(inSection: 0)
-        self.attributesArray.removeAll()
-        for i in 0..<count! {
-            let itemAttributes = layoutAttributesForItem(at: IndexPath(row: i, section: 0))
-            attributesArray.append(itemAttributes!)
+        let count1 = attributesArray.count
+        let count2 = self.collectionView?.numberOfItems(inSection: 0) ?? 0
+        
+        if count1 == 0 {
+            //reload or others
+            for i in 0..<columnCount {
+                maxHeightDic[i] = self.inset.top
+            }
+            
+            for i in 0..<count2 {
+                let itemAttributes = layoutAttributesForItem(at: IndexPath(row: i, section: 0))
+                attributesArray.append(itemAttributes!)
+            }
+        }else if count2 > count1 { //新增了数据
+            for i in 0..<(count2 - count1) {
+                let itemAttributes = layoutAttributesForItem(at: IndexPath(row: i+count1, section: 0))
+                attributesArray.append(itemAttributes!)
+            }
+        }else if count2 < count1 {
+            for _ in 0..<(count2 - count1) {
+                removeMaxItem()
+            }
         }
     }
     
@@ -48,19 +62,35 @@ class WaterFallCollectionViewLayout: UICollectionViewLayout {
     override var collectionViewContentSize: CGSize {
         var maxHeight:CGFloat = 0
         for i in 0..<self.columnCount {
-            if self.maxHeightDic[i]! > maxHeight {
-                maxHeight = self.maxHeightDic[i]!
+            if maxHeightDic[i]! > maxHeight {
+                maxHeight = maxHeightDic[i]!
             }
         }
-        
         return CGSize(width: self.collectionView!.frame.width,
                       height: maxHeight + self.inset.bottom)
     }
     
+    func removeMaxItem() {
+        let i  = attributesArray.count
+        if i <= 0 { return }
+        //找出最长的那一列
+        var maxIndex = 0
+        for i in 0..<self.columnCount {
+            if self.maxHeightDic[i]! > self.maxHeightDic[maxIndex]! {
+                maxIndex = i
+            }
+        }
+        
+        let itemHeight = attributesArray.removeLast().frame.height
+        self.maxHeightDic[maxIndex] = self.maxHeightDic[maxIndex]! - itemHeight - rowSpacing
+    }
 
     
     //根据indexPath获取item的attributes
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        if indexPath.row < attributesArray.count {
+            return attributesArray[indexPath.row]
+        }
         let attribute  = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         //获取collectionView的宽度
         let width:CGFloat = self.collectionView!.frame.width
@@ -77,7 +107,7 @@ class WaterFallCollectionViewLayout: UICollectionViewLayout {
         //找出最短的那一列
         var minIndex = 0
         for i in 0..<self.columnCount {
-            if self.maxHeightDic[i]! < self.maxHeightDic[minIndex]! {
+            if maxHeightDic[i]! < maxHeightDic[minIndex]! {
                 minIndex = i
             }
         }
@@ -90,7 +120,7 @@ class WaterFallCollectionViewLayout: UICollectionViewLayout {
         //设置attributes的frame
         attribute.frame = CGRect(x: itemX, y: itemY, width: itemWidth, height: itemHeight)
         //更新字典中的最大y值
-        self.maxHeightDic[minIndex] = self.maxHeightDic[minIndex]! + itemHeight + rowSpacing
+        maxHeightDic[minIndex] = maxHeightDic[minIndex]! + itemHeight + rowSpacing
         return attribute
     }
     

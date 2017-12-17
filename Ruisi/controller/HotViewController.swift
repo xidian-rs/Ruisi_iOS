@@ -12,6 +12,7 @@ import Kanna
 class HotViewController: BaseTableViewController<ArticleListData> {
     
     override func viewDidLoad() {
+        self.autoRowHeight = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }

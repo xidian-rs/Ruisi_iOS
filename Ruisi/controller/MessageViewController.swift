@@ -15,6 +15,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
     var lastLoginState = false
     
     override func viewDidLoad() {
+        self.autoRowHeight = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         lastLoginState = App.isLogin
