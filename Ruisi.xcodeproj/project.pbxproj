@@ -59,6 +59,7 @@
 		2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */; };
 		2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */; };
 		2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7C75B01EFE356F0067D499 /* SignViewController.swift */; };
+		2F8AB78F1FE6B39B00C3AFA8 /* UploadImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */; };
 		2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AD6951EA787EE002540AA /* LoginViewController.swift */; };
 		2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */; };
 		2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E41EA615A90058EDB4 /* MyViewController.swift */; };
@@ -277,6 +278,7 @@
 		2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		2F7C75B01EFE356F0067D499 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
+		2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageItem.swift; sourceTree = "<group>"; };
 		2F8AD6951EA787EE002540AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2F9086A41FC5B7FD008773AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */,
 				2F0233B21FDFF23F00373969 /* AtData.swift */,
 				2F37A0AC1FE4155600493A59 /* PostsType.swift */,
+				2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -688,6 +691,7 @@
 				2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */,
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
+				2F8AB78F1FE6B39B00C3AFA8 /* UploadImageItem.swift in Sources */,
 				2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */,
 				2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */,
 				2FEDBB631F1113A6006E645D /* PostData.swift in Sources */,

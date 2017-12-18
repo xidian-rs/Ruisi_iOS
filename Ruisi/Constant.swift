@@ -170,10 +170,28 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=post&action=newthread&fid=\(fid)&mobile=2"
     }
     
+    // 提交编辑url
+    public static var editSubmitUrl: String {
+        return "\(baseUrl)forum.php?mod=post&action=edit&extra=&editsubmit=yes&mobile=2"
+    }
+    
+    // 编辑帖子URL
+    public static func editPostUrl(tid:Int, pid:Int) -> String {
+        return "\(baseUrl)forum.php?mod=post&action=edit&tid=\(tid)&pid=\(pid)&mobile=2"
+    }
+    
     // @列表
     public static var AtListUrl:String {
-        get {
-            return "\(baseUrl)misc.php?mod=getatuser&inajax=1&mobile=2"
-        }
+        return "\(baseUrl)misc.php?mod=getatuser&inajax=1&mobile=2"
+    }
+    
+    // 上传图片
+    public static var uploadImageUrl: String {
+        return "\(baseUrl)misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2&mobile=2"
+    }
+    
+    // 删除上传的图片
+    public static func deleteUploadedUrl(aid: String) -> String {
+        return "\(baseUrl)forum.php?mod=ajax&action=deleteattach&inajax=yes&aids[]=\(aid)&mobile=2"
     }
 }

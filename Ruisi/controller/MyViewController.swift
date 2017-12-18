@@ -55,10 +55,12 @@ UITableViewDataSource,UINavigationControllerDelegate{
             usernameLabel.text = App.username
             usergradeLabel.text = App.grade
             
-            Settings.getAvater(uid: App.uid!) { data in
-                DispatchQueue.main.async { [weak self] in
-                    if let d = data {
-                        self?.avaterImage.image = UIImage(data: d)
+            if let uid = App.uid {
+                Settings.getAvater(uid: uid) { data in
+                    DispatchQueue.main.async { [weak self] in
+                        if let d = data {
+                            self?.avaterImage.image = UIImage(data: d)
+                        }
                     }
                 }
             }
@@ -75,7 +77,7 @@ UITableViewDataSource,UINavigationControllerDelegate{
             switch v {
             case avaterImage:
                 print("avater click")
-                if App.isLogin{
+                if App.isLogin && App.uid != nil {
                     self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
                 }else{
                     //login

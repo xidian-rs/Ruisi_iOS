@@ -12,6 +12,7 @@ import Kingfisher
 import Kanna
 
 // 帖子详情页
+// 判断帖子作者的逻辑目前有问题
 class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
@@ -180,9 +181,16 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         let lz = cell.viewWithTag(3) as! UILabel
         let time = cell.viewWithTag(4) as! UILabel
         let content = cell.viewWithTag(5) as! UITextView
+        let editBtn = cell.viewWithTag(8) as! UIButton
+        
+        if App.uid != nil && App.uid! == data.uid && data.pid > 0 {
+            editBtn.isHidden = false
+            editBtn.addTarget(self, action: #selector(editClick(_:)), for: .touchUpInside)
+        }else {
+            editBtn.isHidden = true
+        }
         
         lz.isHidden = datas[0].author != data.author
-        
         author.text = data.author
         time.text = data.time
         img.kf.setImage(with:  Urls.getAvaterUrl(uid: data.uid))
@@ -282,9 +290,9 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             
             //解析评论列表
             for comment in comments {
-                var pid: String?
+                var pid: Int?
                 if let spid = comment["id"]  { //pid23224562
-                    pid = String(spid [spid.range(of: "pid")!.upperBound...])
+                    pid = Int(String(spid [spid.range(of: "pid")!.upperBound...]))
                 } else {
                     // pid 都没有和咸鱼有什么区别
                     continue
@@ -304,13 +312,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                 
                 // ==data==
                 var author: String?
-                var uid: String?
+                var uid: Int?
                 var index: String?
                 var time: String?
                 
                 if let au = comment.xpath("div/ul/li[1]/b/a").first {
                     author = au.text
-                    uid = String(Utils.getNum(from: au["href"] ?? "0") ?? 0)
+                    uid = Utils.getNum(from: au["href"] ?? "0") ?? 0
                 }
                 
                 if let indexNode = comment.xpath("div/ul/li[1]/em").first {
@@ -327,9 +335,13 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                 let content = comment.xpath("div/div[1]").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines)
                 
                 let c = PostData(content: content ?? "获取内容失败", author: author ?? "未知作者",
-                                 uid: uid ?? "0", time: time ?? "未知时间",
-                                 pid: pid ?? "0", index: index ?? "#?",replyUrl: replyUrl)
+                                 uid: uid ?? 0, time: time ?? "未知时间",
+                                 pid: pid ?? 0, index: index ?? "#?",replyUrl: replyUrl)
                 subDatas.append(c)
+            }
+            
+            if subDatas.count > 0 {
+                self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
             }
         } else { //错误
             //有可能没有列表处理错误
@@ -340,7 +352,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             }
         }
         
-        self.saveToHistory(tid: String(self.tid!), title: self.contentTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
+        
         return subDatas
     }
     
@@ -391,14 +403,15 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                                       options: [:], completionHandler: nil)
         }))
         
-        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { (UIAlertAction) in
+
+        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { action in
             print("star click")
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
                 self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
             })
         }))
         
-        sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { (UIAlertAction) in
+        sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { action in
             print("share click")
             let shareVc =  UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
             shareVc.setValue(self.contentTitle, forKey: "subject")
@@ -428,8 +441,17 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     // 评论层主
     @objc func replyCzClick(_ sender:UIButton) {
         if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
-            let _ = datas[indexPath.row].replyUrl {
+            datas[indexPath.row].replyUrl != nil {
             replyBoxView.showInputBox(context: self, title: "回复:\(datas[indexPath.row].index) \(datas[indexPath.row].author)", isLz: false,pos: indexPath.row)
+        }
+    }
+    
+    // 编辑帖子
+    @objc func editClick(_ sender:UIButton) {
+        if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell) {
+            if datas[indexPath.row].pid > 0 {
+                self.performSegue(withIdentifier: "postToEditController", sender: indexPath)
+            }
         }
     }
     
@@ -541,10 +563,14 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         if let dest = segue.destination as? UserDetailViewController,
             let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
-            if let uid = Int(datas[index.row].uid) {
-                dest.uid = uid
+            if datas[index.row].uid > 0 {
+                dest.uid = datas[index.row].uid
                 dest.username = datas[index.row].author
             }
+        } else if let dest = segue.destination as? NewPostViewController,let index = sender as? IndexPath {
+            dest.isEditMode = true
+            dest.tid = self.tid
+            dest.pid = datas[index.row].pid
         }
     }
 }

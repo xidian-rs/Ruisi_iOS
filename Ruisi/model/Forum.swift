@@ -6,8 +6,7 @@
 //  Copyright © 2017年 yang. All rights reserved.
 //
 
-class Forums: Codable{
-    
+class Forums: Codable {
     var gid :Int
     var name:String
     var login:Bool
@@ -31,9 +30,7 @@ class Forums: Codable{
         self.forums = forums
     }
     
-    
-    class Forum: Codable{
-        
+    class Forum: Codable {
         var name :String
         var fid :Int
         var login :Bool

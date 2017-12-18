@@ -63,7 +63,6 @@ class ChooseForumViewController: UITableViewController {
         return forums[section].name
     }
     
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = forums[indexPath.section].forums![indexPath.row].name
@@ -78,12 +77,12 @@ class ChooseForumViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-    
-        if indexPath != currentSelectIndexPath {
-            let before = currentSelectIndexPath
-            currentSelectIndexPath = indexPath
-            tableView.reloadRows(at: [indexPath,before], with: .automatic)
-        }
+        let before = currentSelectIndexPath
+        currentSelectIndexPath = indexPath
+        tableView.reloadRows(at: [indexPath,before], with: .automatic)
+        
+        delegate.selectFid(fid: forums[currentSelectIndexPath.section].forums![currentSelectIndexPath.row].fid, name: forums[currentSelectIndexPath.section].forums![currentSelectIndexPath.row].name)
+        presentingViewController?.dismiss(animated: true)
     }
     
     
@@ -96,8 +95,6 @@ class ChooseForumViewController: UITableViewController {
         delegate.selectFid(fid: forums[currentSelectIndexPath.section].forums![currentSelectIndexPath.row].fid, name: forums[currentSelectIndexPath.section].forums![currentSelectIndexPath.row].name)
         presentingViewController?.dismiss(animated: true)
     }
-    
-    
     
     /*
      // MARK: - Navigation

@@ -34,9 +34,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>需要使用相机</string>
+	<string>上传照片附件</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>需要浏览相册</string>
+	<string>上传图片附件</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch</string>
 	<key>UIMainStoryboardFile</key>
