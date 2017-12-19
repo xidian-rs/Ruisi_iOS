@@ -429,14 +429,14 @@
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-EE-aS1" userLabel="内容">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-EE-aS1" userLabel="内容" customClass="HtmlTextView" customModule="Ruisi" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="84.5" width="345" height="121.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
 优研软院的话考试科目会不会和计算机不一样（本科计算机）
 还有有同学了解宋胜利导师嘛？？</string>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSa-XJ-gew">
@@ -506,13 +506,13 @@
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Kk4-7c-K8a" userLabel="内容">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Kk4-7c-K8a" userLabel="内容" customClass="HtmlTextView" customModule="Ruisi" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="58" width="345" height="96"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
 优研软院的话考试科目会不会和计算机不一样</string>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15#" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9R-fc-i4F" userLabel="楼层">
@@ -631,7 +631,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxu-p5-xxX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="607" y="-503"/>
+            <point key="canvasLocation" x="668" y="-438"/>
         </scene>
         <!--热帖新帖-->
         <scene sceneID="ppi-9d-c7N">
@@ -995,7 +995,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="REH-gd-ohd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1610" y="590"/>
+            <point key="canvasLocation" x="1185" y="593"/>
         </scene>
         <!--消息内容-->
         <scene sceneID="Sql-TL-n1R">
@@ -3004,7 +3004,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U1Y-Qc-Rhq"/>
-        <segue reference="TmY-Es-Rva"/>
+        <segue reference="m6d-Jx-f8V"/>
         <segue reference="YoA-98-yHC"/>
         <segue reference="OXw-Ga-2dQ"/>
     </inferredMetricsTieBreakers>

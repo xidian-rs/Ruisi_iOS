@@ -13,7 +13,7 @@ import Kanna
 
 // 帖子详情页
 // 判断帖子作者的逻辑目前有问题
-class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource {
+class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var replyBoxView: ReplyBoxView!
@@ -23,9 +23,10 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     var saveToHistory = false //是否保存到历史记录
     var contentTitle: String?
     
-    var currentPage: Int = 1
-    var pageSum: Int = 1
-    var refreshView: UIRefreshControl!
+    private var currentPage: Int = 1
+    private var pageSum: Int = 1
+    private var refreshView: UIRefreshControl!
+    private var albums = [AlbumData]()
     
     private var loading = false
     open var isLoading: Bool{
@@ -180,7 +181,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         let author = cell.viewWithTag(2) as! UILabel
         let lz = cell.viewWithTag(3) as! UILabel
         let time = cell.viewWithTag(4) as! UILabel
-        let content = cell.viewWithTag(5) as! UITextView
+        let content = cell.viewWithTag(5) as! HtmlTextView
         let editBtn = cell.viewWithTag(8) as! UIButton
         
         if App.uid != nil && App.uid! == data.uid && data.pid > 0 {
@@ -195,14 +196,12 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         time.text = data.time
         img.kf.setImage(with:  Urls.getAvaterUrl(uid: data.uid))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
-        content.delegate = self
-        content.isEditable = false
-        content.isScrollEnabled  = false
-        content.attributedText = AtrributeConveter().convert(src: data.content)
+        content.htmlViewDelegate = self.linkClick
+        content.text = data.content
         return cell
     }
     
-    
+
     func loadData() {
         // 所持请求的数据正在加载中/未加载
         if isLoading { return }
@@ -357,13 +356,6 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
     }
     
     
-    // textview 链接点击事件
-    // textView.delegate = self
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print(URL.absoluteString)
-        return false
-    }
-    
     private func showBackAlert(message: String) {
         let alert = UIAlertController(title: "无法打开帖子", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "关闭", style: .cancel, handler: { action in
@@ -403,7 +395,7 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
                                       options: [:], completionHandler: nil)
         }))
         
-
+        
         sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { action in
             print("star click")
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
@@ -558,14 +550,31 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
         refreshData()
     }
     
+
+    // html text里面的链接点击事件
+    func linkClick(type: LinkClickType) {
+        switch type {
+        case .viewUser(let uid):
+            self.performSegue(withIdentifier: "postToUserDetail", sender: uid)
+        case .viewAlbum(let (aid, url)) :
+            showAlbums(aid: aid, url: url)
+        default:
+            break
+        }
+    }
+    
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? UserDetailViewController,
-            let cell = sender as? UITableViewCell {
-            let index = tableView.indexPath(for: cell)!
-            if datas[index.row].uid > 0 {
-                dest.uid = datas[index.row].uid
-                dest.username = datas[index.row].author
+        if let dest = segue.destination as? UserDetailViewController {
+            if let cell = sender as? UITableViewCell {
+                let index = tableView.indexPath(for: cell)!
+                if datas[index.row].uid > 0 {
+                    dest.uid = datas[index.row].uid
+                    dest.username = datas[index.row].author
+                }
+            }else if let uid = sender as? Int {
+                dest.uid = uid
             }
         } else if let dest = segue.destination as? NewPostViewController,let index = sender as? IndexPath {
             dest.isEditMode = true
@@ -573,4 +582,95 @@ class PostViewController: UIViewController,UITextViewDelegate,UITableViewDelegat
             dest.pid = datas[index.row].pid
         }
     }
+    
+    private var isLoadingAlbums = false
+    private var isLoadedAlbums = false
+    private var currentFetch: ((UIImage?) -> Void)?
+    
+    
+    private func showAlbums(aid: Int, url: String) {
+        if self.albums.count > 0 {
+            self.showViewerController(aid: aid)
+            return
+        }
+        
+        if isLoadingAlbums || isLoadedAlbums { return }
+        isLoadingAlbums = true
+        
+        self.showViewerController(aid: nil)
+        HttpUtil.GET(url: url, params: nil, callback: { (ok, res) in
+            self.isLoadingAlbums = false
+            self.isLoadedAlbums = true
+            if ok, let doc = try? HTML(html: res, encoding: .utf8) {
+                self.albums.removeAll()
+                for li in  doc.css("ul.postalbum_c li") {
+                    if let src = li.css("img").first?["src"] ?? li.css("img").first?["zsrc"] {
+                        self.albums.append(AlbumData(aid: Utils.getNum(prefix: "aid=", from: src)!, src: Urls.baseUrl + src))
+                    }
+                }
+                
+                if self.albums.count <= 0 { return }
+                var index: Int = 0
+                for (k, v) in self.albums.enumerated() {
+                    if v.aid == aid {
+                        index = k
+                        break
+                    }
+                }
+                
+                if let compete = self.currentFetch {
+                    let task =  URLSession.shared.dataTask(with: URL(string: self.albums[index].src)! , completionHandler: { (data, response, error) in
+                        if let d = data {
+                            compete(UIImage(data: d))
+                        }
+                    })
+                    task.resume()
+                }
+            }
+        })
+    }
+    
+    private func showViewerController(aid: Int?) {
+        var index: Int = 0
+        for (k, v) in self.albums.enumerated() {
+            if v.aid == aid {
+                index = k
+                break
+            }
+        }
+        let galleryViewController = GalleryViewController(startIndex: index, itemsDataSource: self, displacedViewsDataSource: self)
+        self.present(galleryViewController, animated: false, completion: nil)
+    }
 }
+
+
+
+extension PostViewController: GalleryDisplacedViewsDataSource, GalleryItemsDataSource {
+    // 提供动画开始的view
+    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
+        //return index < items.count ? items[index].imageView : nil
+        return nil
+    }
+    
+    func provideGalleryItem(_ index: Int) -> FetchImageBlock {
+        return  { imageCompletion in
+            self.currentFetch = imageCompletion
+            if index <=  self.albums.count - 1 {
+                let url = self.albums[index].src
+                let task =  URLSession.shared.dataTask(with: URL(string: url)! , completionHandler: { (data, response, error) in
+                    if let d = data {
+                        imageCompletion(UIImage(data: d))
+                    }
+                })
+                task.resume()
+            }
+        }
+    }
+    
+    
+    func itemCount() -> Int {
+        return (albums.count == 0) ? 1 : albums.count
+    }
+}
+
+

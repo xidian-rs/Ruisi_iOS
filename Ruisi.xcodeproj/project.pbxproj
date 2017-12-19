@@ -41,12 +41,6 @@
 		2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885821FE2B33A000749F4 /* ThemeManager.swift */; };
 		2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */; };
 		2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE911F03A92300CC8C92 /* StarViewController.swift */; };
-		2F46F7251F0786F700207B17 /* AtrributeConveter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F71F1F0786F700207B17 /* AtrributeConveter.swift */; };
-		2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F7201F0786F700207B17 /* HtmlAttr.swift */; };
-		2F46F7271F0786F700207B17 /* HtmlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F7211F0786F700207B17 /* HtmlNode.swift */; };
-		2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F7221F0786F700207B17 /* HtmlParser.swift */; };
-		2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F7231F0786F700207B17 /* HtmlParserDelegate.swift */; };
-		2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46F7241F0786F700207B17 /* HtmlTag.swift */; };
 		2F4FDA0F1FCC4A9D00CD2A7D /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2E91881FC95F81002CA690 /* Kingfisher.framework */; };
 		2F4FDA101FCC4A9D00CD2A7D /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2E91881FC95F81002CA690 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2F4FDA141FCC4AA200CD2A7D /* Kanna.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4FD9FA1FCC4A2200CD2A7D /* Kanna.framework */; };
@@ -66,10 +60,33 @@
 		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
 		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
 		2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA780EC1EA8603800ACBEAF /* PostViewController.swift */; };
+		2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0AE1FE94F3A00AD7FDC /* HtmlTag.swift */; };
+		2FAFE0B81FE94F3B00AD7FDC /* HtmlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0AF1FE94F3A00AD7FDC /* HtmlNode.swift */; };
+		2FAFE0B91FE94F3B00AD7FDC /* HtmlAttr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */; };
+		2FAFE0BA1FE94F3B00AD7FDC /* AtrributeConveter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B11FE94F3A00AD7FDC /* AtrributeConveter.swift */; };
+		2FAFE0BB1FE94F3B00AD7FDC /* HtmlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B21FE94F3B00AD7FDC /* HtmlParser.swift */; };
+		2FAFE0BC1FE94F3B00AD7FDC /* HtmlTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B31FE94F3B00AD7FDC /* HtmlTextView.swift */; };
+		2FAFE0BD1FE94F3B00AD7FDC /* HtmlParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B41FE94F3B00AD7FDC /* HtmlParserDelegate.swift */; };
+		2FAFE0BE1FE94F3B00AD7FDC /* LinkClickType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */; };
+		2FAFE0BF1FE94F3B00AD7FDC /* ImageGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B61FE94F3B00AD7FDC /* ImageGetter.swift */; };
+		2FAFE0D01FE956F900AD7FDC /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */; };
+		2FAFE0D11FE956F900AD7FDC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C21FE956F800AD7FDC /* Extension.swift */; };
+		2FAFE0D21FE956F900AD7FDC /* GalleryItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */; };
+		2FAFE0D31FE956F900AD7FDC /* GalleryPagingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C41FE956F800AD7FDC /* GalleryPagingDataSource.swift */; };
+		2FAFE0D41FE956F900AD7FDC /* ItemBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C51FE956F800AD7FDC /* ItemBaseController.swift */; };
+		2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C61FE956F800AD7FDC /* ItemController.swift */; };
+		2FAFE0D61FE956F900AD7FDC /* GalleryDisplacedViewsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C71FE956F800AD7FDC /* GalleryDisplacedViewsDataSource.swift */; };
+		2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C81FE956F800AD7FDC /* ItemControllerDelegate.swift */; };
+		2FAFE0D81FE956F900AD7FDC /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C91FE956F800AD7FDC /* CounterView.swift */; };
+		2FAFE0D91FE956F900AD7FDC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CA1FE956F800AD7FDC /* GalleryViewController.swift */; };
+		2FAFE0DA1FE956F900AD7FDC /* GallerySwipeToDismissTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CB1FE956F800AD7FDC /* GallerySwipeToDismissTransition.swift */; };
+		2FAFE0DB1FE956F900AD7FDC /* ImageFadeInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CC1FE956F800AD7FDC /* ImageFadeInHandler.swift */; };
+		2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CD1FE956F900AD7FDC /* ImageViewController.swift */; };
+		2FAFE0DD1FE956F900AD7FDC /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CE1FE956F900AD7FDC /* BlurView.swift */; };
+		2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0CF1FE956F900AD7FDC /* UtilityFunctions.swift */; };
 		2FB16DF21FD7CE5800863BF9 /* ReplyBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB16DF01FD7CE5800863BF9 /* ReplyBoxView.swift */; };
 		2FB16E051FD7E83F00863BF9 /* ReplyBoxView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2FB16E041FD7E83F00863BF9 /* ReplyBoxView.xib */; };
 		2FB16E071FD817A800863BF9 /* LTHRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */; };
-		2FB3A7681FDFAE2E002FE2F5 /* ImageGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB3A75B1FDFAE2E002FE2F5 /* ImageGetter.swift */; };
 		2FB3A76F1FDFB07D002FE2F5 /* ChooseFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB3A76E1FDFB07D002FE2F5 /* ChooseFriendViewController.swift */; };
 		2FB627771FC980E3005D33F0 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB627761FC980E3005D33F0 /* History.swift */; };
 		2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD4ADC71EA7371400602516 /* MessageViewController.swift */; };
@@ -79,6 +96,7 @@
 		2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */; };
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
 		2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */; };
+		2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF5F9821FE95DF700C6535D /* AlbumData.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 /* End PBXBuildFile section */
 
@@ -263,12 +281,6 @@
 		2F3885821FE2B33A000749F4 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		2F42FE911F03A92300CC8C92 /* StarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarViewController.swift; sourceTree = "<group>"; };
-		2F46F71F1F0786F700207B17 /* AtrributeConveter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AtrributeConveter.swift; path = html/AtrributeConveter.swift; sourceTree = "<group>"; };
-		2F46F7201F0786F700207B17 /* HtmlAttr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HtmlAttr.swift; path = html/HtmlAttr.swift; sourceTree = "<group>"; };
-		2F46F7211F0786F700207B17 /* HtmlNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HtmlNode.swift; path = html/HtmlNode.swift; sourceTree = "<group>"; };
-		2F46F7221F0786F700207B17 /* HtmlParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HtmlParser.swift; path = html/HtmlParser.swift; sourceTree = "<group>"; };
-		2F46F7231F0786F700207B17 /* HtmlParserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HtmlParserDelegate.swift; path = html/HtmlParserDelegate.swift; sourceTree = "<group>"; };
-		2F46F7241F0786F700207B17 /* HtmlTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HtmlTag.swift; path = html/HtmlTag.swift; sourceTree = "<group>"; };
 		2F4FD9F41FCC4A2200CD2A7D /* Kanna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kanna.xcodeproj; path = ../Kanna/Kanna.xcodeproj; sourceTree = "<group>"; };
 		2F5DF0C41EFE750A00428EE1 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
@@ -287,10 +299,33 @@
 		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
 		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2FA780EC1EA8603800ACBEAF /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		2FAFE0AE1FE94F3A00AD7FDC /* HtmlTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTag.swift; sourceTree = "<group>"; };
+		2FAFE0AF1FE94F3A00AD7FDC /* HtmlNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlNode.swift; sourceTree = "<group>"; };
+		2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlAttr.swift; sourceTree = "<group>"; };
+		2FAFE0B11FE94F3A00AD7FDC /* AtrributeConveter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtrributeConveter.swift; sourceTree = "<group>"; };
+		2FAFE0B21FE94F3B00AD7FDC /* HtmlParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlParser.swift; sourceTree = "<group>"; };
+		2FAFE0B31FE94F3B00AD7FDC /* HtmlTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTextView.swift; sourceTree = "<group>"; };
+		2FAFE0B41FE94F3B00AD7FDC /* HtmlParserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlParserDelegate.swift; sourceTree = "<group>"; };
+		2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkClickType.swift; sourceTree = "<group>"; };
+		2FAFE0B61FE94F3B00AD7FDC /* ImageGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageGetter.swift; sourceTree = "<group>"; };
+		2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryConfiguration.swift; sourceTree = "<group>"; };
+		2FAFE0C21FE956F800AD7FDC /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDataSource.swift; sourceTree = "<group>"; };
+		2FAFE0C41FE956F800AD7FDC /* GalleryPagingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPagingDataSource.swift; sourceTree = "<group>"; };
+		2FAFE0C51FE956F800AD7FDC /* ItemBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemBaseController.swift; sourceTree = "<group>"; };
+		2FAFE0C61FE956F800AD7FDC /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
+		2FAFE0C71FE956F800AD7FDC /* GalleryDisplacedViewsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryDisplacedViewsDataSource.swift; sourceTree = "<group>"; };
+		2FAFE0C81FE956F800AD7FDC /* ItemControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemControllerDelegate.swift; sourceTree = "<group>"; };
+		2FAFE0C91FE956F800AD7FDC /* CounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
+		2FAFE0CA1FE956F800AD7FDC /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		2FAFE0CB1FE956F800AD7FDC /* GallerySwipeToDismissTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GallerySwipeToDismissTransition.swift; sourceTree = "<group>"; };
+		2FAFE0CC1FE956F800AD7FDC /* ImageFadeInHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFadeInHandler.swift; sourceTree = "<group>"; };
+		2FAFE0CD1FE956F900AD7FDC /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		2FAFE0CE1FE956F900AD7FDC /* BlurView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		2FAFE0CF1FE956F900AD7FDC /* UtilityFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		2FB16DF01FD7CE5800863BF9 /* ReplyBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBoxView.swift; sourceTree = "<group>"; };
 		2FB16E041FD7E83F00863BF9 /* ReplyBoxView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReplyBoxView.xib; sourceTree = "<group>"; };
 		2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTHRadioButton.swift; sourceTree = "<group>"; };
-		2FB3A75B1FDFAE2E002FE2F5 /* ImageGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageGetter.swift; path = html/ImageGetter.swift; sourceTree = "<group>"; };
 		2FB3A76E1FDFB07D002FE2F5 /* ChooseFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseFriendViewController.swift; sourceTree = "<group>"; };
 		2FB627761FC980E3005D33F0 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		2FD4ADC71EA7371400602516 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -300,6 +335,7 @@
 		2FEBEFB81FD0288A0037E7A4 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 		2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
+		2FF5F9821FE95DF700C6535D /* AlbumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumData.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -319,6 +355,8 @@
 		2F0233B41FE0032000373969 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				2FAFE0C01FE956D600AD7FDC /* imageViewer */,
+				2FAFE09B1FE94EE500AD7FDC /* htmlTextView */,
 				2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */,
 				2F35E9A91F00A48700CDD60D /* Widgets.swift */,
 				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
@@ -358,7 +396,6 @@
 				2FB3A76A1FDFAE8A002FE2F5 /* controller */,
 				2FB3A76B1FDFAEAE002FE2F5 /* model */,
 				2F0233B41FE0032000373969 /* widget */,
-				2F46F71E1F0786DA00207B17 /* html */,
 				2F63F2501FE4E811005FCD29 /* database */,
 				2FB3A76D1FDFAF18002FE2F5 /* res */,
 				2F16B74F1EA50A390068EE20 /* assets */,
@@ -398,20 +435,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2F46F71E1F0786DA00207B17 /* html */ = {
-			isa = PBXGroup;
-			children = (
-				2FB3A75B1FDFAE2E002FE2F5 /* ImageGetter.swift */,
-				2F46F71F1F0786F700207B17 /* AtrributeConveter.swift */,
-				2F46F7201F0786F700207B17 /* HtmlAttr.swift */,
-				2F46F7211F0786F700207B17 /* HtmlNode.swift */,
-				2F46F7221F0786F700207B17 /* HtmlParser.swift */,
-				2F46F7231F0786F700207B17 /* HtmlParserDelegate.swift */,
-				2F46F7241F0786F700207B17 /* HtmlTag.swift */,
-			);
-			name = html;
-			sourceTree = "<group>";
-		};
 		2F4FD9F51FCC4A2200CD2A7D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -435,6 +458,44 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2FAFE09B1FE94EE500AD7FDC /* htmlTextView */ = {
+			isa = PBXGroup;
+			children = (
+				2FAFE0B31FE94F3B00AD7FDC /* HtmlTextView.swift */,
+				2FAFE0B11FE94F3A00AD7FDC /* AtrributeConveter.swift */,
+				2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */,
+				2FAFE0AF1FE94F3A00AD7FDC /* HtmlNode.swift */,
+				2FAFE0B21FE94F3B00AD7FDC /* HtmlParser.swift */,
+				2FAFE0B41FE94F3B00AD7FDC /* HtmlParserDelegate.swift */,
+				2FAFE0AE1FE94F3A00AD7FDC /* HtmlTag.swift */,
+				2FAFE0B61FE94F3B00AD7FDC /* ImageGetter.swift */,
+				2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */,
+			);
+			path = htmlTextView;
+			sourceTree = "<group>";
+		};
+		2FAFE0C01FE956D600AD7FDC /* imageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				2FAFE0CE1FE956F900AD7FDC /* BlurView.swift */,
+				2FAFE0C91FE956F800AD7FDC /* CounterView.swift */,
+				2FAFE0C21FE956F800AD7FDC /* Extension.swift */,
+				2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */,
+				2FAFE0C71FE956F800AD7FDC /* GalleryDisplacedViewsDataSource.swift */,
+				2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */,
+				2FAFE0C41FE956F800AD7FDC /* GalleryPagingDataSource.swift */,
+				2FAFE0CB1FE956F800AD7FDC /* GallerySwipeToDismissTransition.swift */,
+				2FAFE0CA1FE956F800AD7FDC /* GalleryViewController.swift */,
+				2FAFE0CC1FE956F800AD7FDC /* ImageFadeInHandler.swift */,
+				2FAFE0CD1FE956F900AD7FDC /* ImageViewController.swift */,
+				2FAFE0C51FE956F800AD7FDC /* ItemBaseController.swift */,
+				2FAFE0C61FE956F800AD7FDC /* ItemController.swift */,
+				2FAFE0C81FE956F800AD7FDC /* ItemControllerDelegate.swift */,
+				2FAFE0CF1FE956F900AD7FDC /* UtilityFunctions.swift */,
+			);
+			path = imageViewer;
 			sourceTree = "<group>";
 		};
 		2FB3A76A1FDFAE8A002FE2F5 /* controller */ = {
@@ -483,6 +544,7 @@
 				2F0233B21FDFF23F00373969 /* AtData.swift */,
 				2F37A0AC1FE4155600493A59 /* PostsType.swift */,
 				2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */,
+				2FF5F9821FE95DF700C6535D /* AlbumData.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -690,58 +752,76 @@
 			files = (
 				2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */,
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
+				2FAFE0D81FE956F900AD7FDC /* CounterView.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
 				2F8AB78F1FE6B39B00C3AFA8 /* UploadImageItem.swift in Sources */,
 				2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */,
-				2F46F72A1F0786F700207B17 /* HtmlTag.swift in Sources */,
 				2FEDBB631F1113A6006E645D /* PostData.swift in Sources */,
+				2FAFE0BF1FE94F3B00AD7FDC /* ImageGetter.swift in Sources */,
 				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
 				2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
+				2FAFE0BC1FE94F3B00AD7FDC /* HtmlTextView.swift in Sources */,
+				2FAFE0D41FE956F900AD7FDC /* ItemBaseController.swift in Sources */,
+				2FAFE0B81FE94F3B00AD7FDC /* HtmlNode.swift in Sources */,
 				2F175AB91FCD36B800917895 /* StarData.swift in Sources */,
+				2FAFE0BA1FE94F3B00AD7FDC /* AtrributeConveter.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
+				2FAFE0D11FE956F900AD7FDC /* Extension.swift in Sources */,
+				2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
 				2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */,
+				2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */,
 				2F0233B31FDFF23F00373969 /* AtData.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
+				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
 				2F37A09F1FE404E400493A59 /* ImageGridPostsViewController.swift in Sources */,
 				2F24B9A11FCEE394001D287E /* extension.swift in Sources */,
 				2F24B9931FCE9213001D287E /* Reachability.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
 				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
+				2FAFE0D61FE956F900AD7FDC /* GalleryDisplacedViewsDataSource.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
-				2FB3A7681FDFAE2E002FE2F5 /* ImageGetter.swift in Sources */,
+				2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */,
+				2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */,
+				2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */,
 				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
 				2FB3A76F1FDFB07D002FE2F5 /* ChooseFriendViewController.swift in Sources */,
+				2FAFE0DD1FE956F900AD7FDC /* BlurView.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
-				2F46F7271F0786F700207B17 /* HtmlNode.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
-				2F46F7281F0786F700207B17 /* HtmlParser.swift in Sources */,
 				2F37A0AD1FE4155600493A59 /* PostsType.swift in Sources */,
 				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
-				2F46F7291F0786F700207B17 /* HtmlParserDelegate.swift in Sources */,
 				2FB16DF21FD7CE5800863BF9 /* ReplyBoxView.swift in Sources */,
 				2F175AA51FCD0ABB00917895 /* BaseTableViewController.swift in Sources */,
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
-				2F46F7261F0786F700207B17 /* HtmlAttr.swift in Sources */,
+				2FAFE0D01FE956F900AD7FDC /* GalleryConfiguration.swift in Sources */,
+				2FAFE0D31FE956F900AD7FDC /* GalleryPagingDataSource.swift in Sources */,
 				2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */,
+				2FAFE0BB1FE94F3B00AD7FDC /* HtmlParser.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
-				2F46F7251F0786F700207B17 /* AtrributeConveter.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
+				2FAFE0BD1FE94F3B00AD7FDC /* HtmlParserDelegate.swift in Sources */,
+				2FAFE0D21FE956F900AD7FDC /* GalleryItemsDataSource.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F37A08F1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift in Sources */,
 				2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */,
+				2FAFE0B91FE94F3B00AD7FDC /* HtmlAttr.swift in Sources */,
 				2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */,
 				2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */,
+				2FAFE0BE1FE94F3B00AD7FDC /* LinkClickType.swift in Sources */,
 				2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */,
 				2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */,
 				2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */,
 				2FD4ADCB1EA74D4200602516 /* ArrowLabel.swift in Sources */,
 				2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */,
 				2F63F2521FE4E857005FCD29 /* SQLiteError.swift in Sources */,
+				2FAFE0DA1FE956F900AD7FDC /* GallerySwipeToDismissTransition.swift in Sources */,
 				2FD4ADC81EA7371400602516 /* MessageViewController.swift in Sources */,
 				2FB16E071FD817A800863BF9 /* LTHRadioButton.swift in Sources */,
 				2F9771E51EA615A90058EDB4 /* MyViewController.swift in Sources */,
+				2FAFE0D91FE956F900AD7FDC /* GalleryViewController.swift in Sources */,
+				2FAFE0DB1FE956F900AD7FDC /* ImageFadeInHandler.swift in Sources */,
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2F3885731FE2A883000749F4 /* ThemeViewController.swift in Sources */,
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,

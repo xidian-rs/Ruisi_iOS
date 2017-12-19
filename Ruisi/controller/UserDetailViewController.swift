@@ -58,6 +58,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         
         avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: uid!, size: 1), placeholder: #imageLiteral(resourceName: "placeholder"))
         
+        
         usernameLabel.text = username
         levelView.text = "--"
         loadData(uid: uid!)
@@ -72,6 +73,10 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         } else {
             self.chatBtn.isHidden = true
         }
+    }
+    
+    func avatarClick() {
+        
     }
     
     func checkLogin() -> Bool {
@@ -183,6 +188,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                         if let u = doc.xpath("/html/body/div[1]/div[1]/h2").first?.text {
                             self.username = u
                             DispatchQueue.main.async {
+                                self.title = self.username
                                 self.usernameLabel.text = self.username
                             }
                         }

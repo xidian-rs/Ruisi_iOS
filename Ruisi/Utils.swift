@@ -30,6 +30,29 @@ public class Utils {
         return Int(String(digitals))
     }
     
+    public static func getNum(prefix: String, from str: String) -> Int? {
+        var digitals = [Character]()
+        if let start = str.range(of: prefix)?.upperBound {
+            for i in str[start...] {
+                if digitals.count > 0 {
+                    if i >= "0" && i <= "9" {
+                        digitals.append(i)
+                    }else {
+                        return Int(String(digitals))
+                    }
+                } else {
+                    if i >= "0" && i <= "9" {
+                        digitals.append(i)
+                    }
+                }
+            }
+            
+            return Int(String(digitals))
+        } else {
+            return nil
+        }
+    }
+    
     public static func getFormHash(from:String?) -> String? {
         if let s = from {
             let results = matchingStrings(regex: "formhash=(.{6,8})&?",from: s)

@@ -12,6 +12,7 @@ class HtmlNode {
     var type: HtmlTag = .UNKNOWN //type
     var name: String
     var start: Int = 0
+    var end: Int = 0
     var attr: HtmlAttr?
     
     init(type: HtmlTag,name: String, attr: HtmlAttr? = nil) {

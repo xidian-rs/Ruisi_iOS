@@ -185,6 +185,12 @@ public class Urls {
         return "\(baseUrl)misc.php?mod=getatuser&inajax=1&mobile=2"
     }
     
+    // 浏览帖子图片列表
+    public static func viewAlbumUrl(tid: Int, aid: Int?) -> String {
+        return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&from=album&mobile=2\((aid != nil) ? "&aid=\(aid!)" : "")"
+    }
+    
+    
     // 上传图片
     public static var uploadImageUrl: String {
         return "\(baseUrl)misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2&mobile=2"
