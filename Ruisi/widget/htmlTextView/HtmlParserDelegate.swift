@@ -9,14 +9,14 @@
 import Foundation
 
 protocol HtmlParserDelegate {
-    
+
     func start()
-    
+
     func startNode(node: HtmlNode)
-    
+
     func characters(text: String)
-    
-    func endNode(type: HtmlTag,name: String)
-    
+
+    func endNode(type: HtmlTag, name: String)
+
     func end()
 }

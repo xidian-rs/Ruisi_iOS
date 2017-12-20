@@ -11,7 +11,7 @@ import Foundation
 class AlbumData {
     var aid: Int
     var src: String
-    
+
     init(aid: Int, src: String) {
         self.aid = aid
         self.src = src

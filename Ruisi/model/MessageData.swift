@@ -9,6 +9,7 @@
 import Foundation
 
 class MessageData {
+
     var type: MessageType
     var title: String
     var tid: Int
@@ -17,9 +18,9 @@ class MessageData {
     var time: String
     var content: String
     var isRead: Bool
-    
-    init(type: MessageType,title: String,tid: Int,uid: Int?,author: String,
-         time: String,content: String = "",isRead: Bool = true) {
+
+    init(type: MessageType, title: String, tid: Int, uid: Int?, author: String,
+         time: String, content: String = "", isRead: Bool = true) {
         self.type = type
         self.title = title
         self.tid = tid
@@ -31,7 +32,7 @@ class MessageData {
     }
 }
 
-enum MessageType{
+enum MessageType {
     case Reply
     case Pm
     case At

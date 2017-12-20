@@ -7,36 +7,37 @@
 //
 
 class Forums: Codable {
-    var gid :Int
-    var name:String
-    var login:Bool
-    var forums:[Forum]?
-    
-    init(gid:Int,name:String,login:Bool) {
+
+    var gid: Int
+    var name: String
+    var login: Bool
+    var forums: [Forum]?
+
+    init(gid: Int, name: String, login: Bool) {
         self.gid = gid
         self.name = name
         self.login = login
     }
-    
+
     func getSize() -> Int {
-        if forums==nil{
+        if forums == nil {
             return 0
-        }else{
+        } else {
             return forums!.count
         }
     }
-    
-    func setForums(forums:[Forum]) {
+
+    func setForums(forums: [Forum]) {
         self.forums = forums
     }
-    
+
     class Forum: Codable {
-        var name :String
-        var fid :Int
-        var login :Bool
-        
-        
-        init(fid:Int,name:String,login:Bool) {
+        var name: String
+        var fid: Int
+        var login: Bool
+
+
+        init(fid: Int, name: String, login: Bool) {
             self.name = name
             self.fid = fid
             self.login = login

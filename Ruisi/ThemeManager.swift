@@ -9,18 +9,19 @@
 import Foundation
 import UIKit
 
+// 主题管理类
 class ThemeManager {
-    private static var themeBackUp:Theme?
-    
+    private static var themeBackUp: Theme?
+
     public static let colors = [
         0xd12121, 0x1e1e1e, 0xf44836, 0xf2821e, 0x7bb736, 0x16c24b,
         0x16a8c2, 0x2b86e3, 0x3f51b5, 0x9c27b0, 0xcc268f, 0x39c5bb]
-    
+
     public static let names = [
         "默认", "黑色", "橘红", "橘黄", "原谅", "翠绿",
         "青色", "天蓝", "蓝色", "紫色", "紫红", "初音"]
-    
-    public static var themes:[Theme] {
+
+    public static var themes: [Theme] {
         get {
             var ts = [Theme]()
             for i in 0..<ThemeManager.colors.count {
@@ -29,41 +30,45 @@ class ThemeManager {
             return ts
         }
     }
-    
+
     public static func initTheme() {
         let theme = ThemeManager.currentTheme
         print("====================")
         print("init theme:\(theme.name)")
         //状态栏颜色
         UIApplication.shared.statusBarStyle = .lightContent
-        
+
         //设置导航栏颜色
-        let textAttributes = [NSAttributedStringKey.foregroundColor:theme.titleColor]
+        let textAttributes = [NSAttributedStringKey.foregroundColor: theme.titleColor]
         UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
         UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
         UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色
-        
+
         //设置tabBar颜色
         UITabBar.appearance().tintColor = theme.primaryColor
-        
+
         //设置toolbar颜色
         UIToolbar.appearance().tintColor = UIColor.darkGray
     }
-    
-    public static var currentTheme:Theme {
+
+    public static var currentTheme: Theme {
         get {
             if ThemeManager.themeBackUp == nil {
-                ThemeManager.themeBackUp = Theme(id:Settings.currentTheme, name:names[Settings.currentTheme], titleColor:UIColor.white,
-                                                 primaryColor:parseHexColor(colors[Settings.currentTheme]))
+                ThemeManager.themeBackUp = Theme(id: Settings.currentTheme, name: names[Settings.currentTheme], titleColor: UIColor.white,
+                        primaryColor: parseHexColor(colors[Settings.currentTheme]))
             }
             return ThemeManager.themeBackUp!
         }
     }
-    
-    public static var currentPrimaryColor:UIColor { return currentTheme.primaryColor }
-    public static var currentTitleColor:UIColor { return currentTheme.titleColor }
-    
-    public static var currentThemeId:Int {
+
+    public static var currentPrimaryColor: UIColor {
+        return currentTheme.primaryColor
+    }
+    public static var currentTitleColor: UIColor {
+        return currentTheme.titleColor
+    }
+
+    public static var currentThemeId: Int {
         get {
             return currentTheme.id
         }
@@ -76,10 +81,10 @@ class ThemeManager {
             }
         }
     }
-    
-    private static func parseHexColor(_ color:Int) -> UIColor {
+
+    private static func parseHexColor(_ color: Int) -> UIColor {
         return UIColor(red: CGFloat(((color & 0xff0000) >> 16)) / CGFloat(255),
-                       green: CGFloat(((color & 0x00ff00) >> 8)) / CGFloat(255), blue: CGFloat(color & 0x0000ff) / CGFloat(255), alpha: 1.0)
+                green: CGFloat(((color & 0x00ff00) >> 8)) / CGFloat(255), blue: CGFloat(color & 0x0000ff) / CGFloat(255), alpha: 1.0)
     }
 }
 
@@ -88,12 +93,12 @@ extension Notification.Name {
 }
 
 struct Theme {
-    var id:Int
+    var id: Int
     var titleColor: UIColor
     var primaryColor: UIColor
     var name: String
-    
-    init(id:Int,name:String, titleColor:UIColor,primaryColor:UIColor) {
+
+    init(id: Int, name: String, titleColor: UIColor, primaryColor: UIColor) {
         self.id = id
         self.name = name
         self.titleColor = titleColor

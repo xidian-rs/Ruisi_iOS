@@ -11,33 +11,34 @@ import Kanna
 
 // 帖子列表
 class PostsViewController: BaseTableViewController<ArticleListData> {
-    
     var fid: Int? // 由前一个页面传过来的值
-    
+
     private var isSchoolNet = App.isSchoolNet
-    
+
     override func viewDidLoad() {
         self.autoRowHeight = true
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
     }
-    
+
     override func getUrl(page: Int) -> String {
-        let url =  Urls.getPostsUrl(fid: fid!) + "&page=\(page)"
+        let url = Urls.getPostsUrl(fid: fid!) + "&page=\(page)"
         isSchoolNet = !url.contains("mobile")
         return url
     }
-    
-    
+
+
     // 子类重写此方法支持解析自己的数据
-    override func parseData(pos:Int, doc: HTMLDocument) -> [ArticleListData]{
-        var subDatas:[ArticleListData] = []
+    override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {
+        var subDatas: [ArticleListData] = []
         if isSchoolNet {
             let showZhidin = (currentPage == 1) && Settings.showZhiding
             let nodes = doc.xpath("//*[@id=\"threadlisttableid\"]/tbody")
             for li in nodes {
-                if !showZhidin && li["id"]!.contains("stickthread") { continue }
+                if !showZhidin && li["id"]!.contains("stickthread") {
+                    continue
+                }
                 let a = li.xpath("tr/th/a[starts-with(@href,\"forum.php?mod=viewthread\")]").first
                 var tid: Int?
                 if let u = a?["href"] {
@@ -46,34 +47,34 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                     //没有tid和咸鱼有什么区别
                     continue
                 }
-                
+
                 let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
-                let color =  Utils.getHtmlColor(from: a?["style"])
-                
-                var author:String?
-                var uid:Int?
-                if let  authorNode = li.xpath("tr/td[2]/cite/a").first {
+                let color = Utils.getHtmlColor(from: a?["style"])
+
+                var author: String?
+                var uid: Int?
+                if let authorNode = li.xpath("tr/td[2]/cite/a").first {
                     author = authorNode.text!
                     uid = Utils.getNum(from: authorNode["href"]!)
                 }
-                
+
                 let replys = li.xpath("tr/td[3]/a").first?.text
                 let views = li.xpath("tr/td[3]/em").first?.text
                 let time = li.xpath("tr/td[2]/em/span").first?.text
                 let haveImage = li.xpath("tr/th/img").first?["src"]?.contains("image_s.gif") ?? false
-                
-                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者",replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color,uid:uid,views:views,time: time)
-                
+
+                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color, uid: uid, views: views, time: time)
+
                 subDatas.append(d)
             }
-            if let pg =  doc.xpath("//*[@id=\"fd_page_bottom\"]/div[@class=\"pg\"]").first,let sumNode = pg.xpath("label/span").first {
+            if let pg = doc.xpath("//*[@id=\"fd_page_bottom\"]/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
                 self.totalPage = Utils.getNum(from: sumNode.text!) ?? self.currentPage
-            }else {
+            } else {
                 self.totalPage = self.currentPage
             }
-        }else {
+        } else {
             let nodes = doc.css(".threadlist ul li")
-            for li in nodes{
+            for li in nodes {
                 let a = li.css("a").first
                 var tid: Int?
                 if let u = a?["href"] {
@@ -86,59 +87,59 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 var authorStr: String?
                 let replys = li.css("span.num").first
                 let author = li.css(".by").first
-                if let r =  replys {
+                if let r = replys {
                     replysStr = r.text
                     a?.removeChild(r)
                 }
-                if let au =  author {
+                if let au = author {
                     authorStr = au.text
                     a?.removeChild(au)
                 }
                 let img = (li.css("img").first)?["src"]
                 var haveImg = false
-                if let i =  img {
+                if let i = img {
                     haveImg = i.contains("icon_tu.png")
                 }
-                
+
                 let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
-                let color =  Utils.getHtmlColor(from: a?["style"])
-                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者",replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+                let color = Utils.getHtmlColor(from: a?["style"])
+                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者", replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
                 subDatas.append(d)
             }
-            
-            if let pg =  doc.xpath("/html/body/div[@class=\"pg\"]").first,let sumNode = pg.xpath("label/span").first {
+
+            if let pg = doc.xpath("/html/body/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
                 self.totalPage = Utils.getNum(from: sumNode.text!) ?? self.currentPage
-            }else {
+            } else {
                 self.totalPage = self.currentPage
             }
         }
-        
+
         print("page total:\(self.totalPage)")
         //从浏览历史数据库读出是否已读
         SQLiteDatabase.instance?.setReadHistory(datas: &subDatas)
         return subDatas
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         super.tableView(tableView, didSelectRowAt: indexPath)
-        
-        if(!datas[indexPath.row].isRead) { // 未读设置为已读
+
+        if (!datas[indexPath.row].isRead) { // 未读设置为已读
             datas[indexPath.row].isRead = true
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: isSchoolNet ? "cell_edu" : "cell_me", for: indexPath)
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let usernameLabel = cell.viewWithTag(2) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
         let haveImageLabel = cell.viewWithTag(4) as! UILabel
-        
+
         let d = datas[indexPath.row]
-        
+
         titleLabel.text = d.title
-        
+
         if d.isRead {
             titleLabel.textColor = UIColor.darkGray
         } else if let color = d.titleColor {
@@ -149,45 +150,45 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount
         haveImageLabel.isHidden = !d.haveImage
-        
+
         if isSchoolNet {
             let avater = cell.viewWithTag(6) as! UIImageView
             let timeLabel = cell.viewWithTag(5) as! UILabel
             let viewsLabel = cell.viewWithTag(7) as! UILabel
-            
+
             if let uid = d.uid {
-                avater.kf.setImage(with:  Urls.getAvaterUrl(uid: uid))
+                avater.kf.setImage(with: Urls.getAvaterUrl(uid: uid))
                 avater.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
-            }else {
-                avater.image = #imageLiteral(resourceName: "placeholder")
+            } else {
+                avater.image = #imageLiteral(resourceName:"placeholder")
             }
-            
+
             timeLabel.text = d.time
             viewsLabel.text = d.views ?? "0"
         }
         return cell
     }
-    
-    @objc func avatarClick(_ sender : UITapGestureRecognizer)  {
+
+    @objc func avatarClick(_ sender: UITapGestureRecognizer) {
         self.performSegue(withIdentifier: "postsToUserDetail", sender: sender.view?.superview?.superview)
     }
-    
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let starBtn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "收藏", handler:{action, indexpath in
+        let starBtn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "收藏", handler: { action, indexpath in
             self.doStarPost(tid: self.datas[indexPath.row].tid)
         })
         starBtn.backgroundColor = UIColor.orange
         return [starBtn]
     }
-    
-    func doStarPost(tid:Any) {
+
+    func doStarPost(tid: Any) {
         PostViewController.doStarPost(tid: tid, callback: { (ok, res) in
             // TODO 收藏逻辑
             print("star result \(ok) \(res)")
         })
     }
-    
-    
+
+
     @objc func newPostClick() {
         if !App.isLogin {
             let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能发帖", preferredStyle: .alert)
@@ -197,23 +198,23 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             }))
             alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
-        }else {
+        } else {
             self.performSegue(withIdentifier: "postToNewPostSegue", sender: self)
         }
     }
-    
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController,
-            let cell = sender as? UITableViewCell {
+           let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
             dest.title = datas[index.row].title
             dest.tid = datas[index.row].tid
-        }else if  let dest = segue.destination as? NewPostViewController {
+        } else if let dest = segue.destination as? NewPostViewController {
             dest.fid = self.fid
             dest.name = self.title
-        }else if let dest = segue.destination as? UserDetailViewController,
-            let cell = sender as? UITableViewCell {
+        } else if let dest = segue.destination as? UserDetailViewController,
+                  let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
             if let uid = datas[index.row].uid {
                 dest.uid = uid

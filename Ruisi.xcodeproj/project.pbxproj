@@ -12,6 +12,7 @@
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
 		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
 		2F0233B31FDFF23F00373969 /* AtData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0233B21FDFF23F00373969 /* AtData.swift */; };
+		2F0287561FEA45A3005C2D2A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0287491FEA45A3005C2D2A /* Extensions.swift */; };
 		2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */; };
 		2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */; };
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
@@ -24,12 +25,10 @@
 		2F175AB91FCD36B800917895 /* StarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AB81FCD36B800917895 /* StarData.swift */; };
 		2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC61FCD37EE00917895 /* FriendData.swift */; };
 		2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175AC81FCD499100917895 /* KeyValueData.swift */; };
-		2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */; };
 		2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
 		2F24B9931FCE9213001D287E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9921FCE9213001D287E /* Reachability.swift */; };
-		2F24B9A11FCEE394001D287E /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9A01FCEE394001D287E /* extension.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
 		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
@@ -39,6 +38,7 @@
 		2F3885731FE2A883000749F4 /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885721FE2A883000749F4 /* ThemeViewController.swift */; };
 		2F3885811FE2B022000749F4 /* ColorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885801FE2B022000749F4 /* ColorItemView.swift */; };
 		2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885821FE2B33A000749F4 /* ThemeManager.swift */; };
+		2F3B29531FEA450B00C34F13 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B29521FEA450A00C34F13 /* Extension.swift */; };
 		2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */; };
 		2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE911F03A92300CC8C92 /* StarViewController.swift */; };
 		2F4FDA0F1FCC4A9D00CD2A7D /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2E91881FC95F81002CA690 /* Kingfisher.framework */; };
@@ -70,7 +70,6 @@
 		2FAFE0BE1FE94F3B00AD7FDC /* LinkClickType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */; };
 		2FAFE0BF1FE94F3B00AD7FDC /* ImageGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B61FE94F3B00AD7FDC /* ImageGetter.swift */; };
 		2FAFE0D01FE956F900AD7FDC /* GalleryConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */; };
-		2FAFE0D11FE956F900AD7FDC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C21FE956F800AD7FDC /* Extension.swift */; };
 		2FAFE0D21FE956F900AD7FDC /* GalleryItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */; };
 		2FAFE0D31FE956F900AD7FDC /* GalleryPagingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C41FE956F800AD7FDC /* GalleryPagingDataSource.swift */; };
 		2FAFE0D41FE956F900AD7FDC /* ItemBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0C51FE956F800AD7FDC /* ItemBaseController.swift */; };
@@ -250,6 +249,7 @@
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
 		2F0233B21FDFF23F00373969 /* AtData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtData.swift; sourceTree = "<group>"; };
+		2F0287491FEA45A3005C2D2A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseForumViewController.swift; sourceTree = "<group>"; };
 		2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboveKeyboardView.swift; sourceTree = "<group>"; };
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,12 +263,10 @@
 		2F175AB81FCD36B800917895 /* StarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarData.swift; sourceTree = "<group>"; };
 		2F175AC61FCD37EE00917895 /* FriendData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendData.swift; sourceTree = "<group>"; };
 		2F175AC81FCD499100917895 /* KeyValueData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueData.swift; sourceTree = "<group>"; };
-		2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuisiUtil.swift; sourceTree = "<group>"; };
 		2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2F24B9921FCE9213001D287E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
-		2F24B9A01FCEE394001D287E /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
 		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
@@ -279,6 +277,7 @@
 		2F3885721FE2A883000749F4 /* ThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewController.swift; sourceTree = "<group>"; };
 		2F3885801FE2B022000749F4 /* ColorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorItemView.swift; sourceTree = "<group>"; };
 		2F3885821FE2B33A000749F4 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		2F3B29521FEA450A00C34F13 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		2F42FE911F03A92300CC8C92 /* StarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarViewController.swift; sourceTree = "<group>"; };
 		2F4FD9F41FCC4A2200CD2A7D /* Kanna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kanna.xcodeproj; path = ../Kanna/Kanna.xcodeproj; sourceTree = "<group>"; };
@@ -309,7 +308,6 @@
 		2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkClickType.swift; sourceTree = "<group>"; };
 		2FAFE0B61FE94F3B00AD7FDC /* ImageGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageGetter.swift; sourceTree = "<group>"; };
 		2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryConfiguration.swift; sourceTree = "<group>"; };
-		2FAFE0C21FE956F800AD7FDC /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryItemsDataSource.swift; sourceTree = "<group>"; };
 		2FAFE0C41FE956F800AD7FDC /* GalleryPagingDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryPagingDataSource.swift; sourceTree = "<group>"; };
 		2FAFE0C51FE956F800AD7FDC /* ItemBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemBaseController.swift; sourceTree = "<group>"; };
@@ -406,11 +404,10 @@
 				2F9772451EA65A3F0058EDB4 /* Constant.swift */,
 				2F5DF0C41EFE750A00428EE1 /* Settings.swift */,
 				2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */,
+				2F3B29521FEA450A00C34F13 /* Extension.swift */,
 				2F175F801F01FCCA00DDEED9 /* Utils.swift */,
 				2F9086A41FC5B7FD008773AA /* Info.plist */,
-				2F175ACA1FCD4E9200917895 /* RuisiUtil.swift */,
 				2F24B9921FCE9213001D287E /* Reachability.swift */,
-				2F24B9A01FCEE394001D287E /* extension.swift */,
 				2F3885821FE2B33A000749F4 /* ThemeManager.swift */,
 			);
 			path = Ruisi;
@@ -481,7 +478,7 @@
 			children = (
 				2FAFE0CE1FE956F900AD7FDC /* BlurView.swift */,
 				2FAFE0C91FE956F800AD7FDC /* CounterView.swift */,
-				2FAFE0C21FE956F800AD7FDC /* Extension.swift */,
+				2F0287491FEA45A3005C2D2A /* Extensions.swift */,
 				2FAFE0C11FE956F800AD7FDC /* GalleryConfiguration.swift */,
 				2FAFE0C71FE956F800AD7FDC /* GalleryDisplacedViewsDataSource.swift */,
 				2FAFE0C31FE956F800AD7FDC /* GalleryItemsDataSource.swift */,
@@ -503,7 +500,6 @@
 			children = (
 				2F01C2491EFFA46400102CF2 /* MainViewController.swift */,
 				2F175AA41FCD0ABB00917895 /* BaseTableViewController.swift */,
-				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
 				2F16B5F71EA504330068EE20 /* ForumsViewController.swift */,
 				2F9771E61EA648070058EDB4 /* HotViewController.swift */,
 				2FD4ADC71EA7371400602516 /* MessageViewController.swift */,
@@ -518,6 +514,7 @@
 				2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */,
 				2F42FE911F03A92300CC8C92 /* StarViewController.swift */,
 				2F7A9E621F03AF3900994123 /* FriendViewController.swift */,
+				2FEBEFB61FD0286E0037E7A4 /* ChatViewController.swift */,
 				2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */,
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
 				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
@@ -767,18 +764,16 @@
 				2F175AB91FCD36B800917895 /* StarData.swift in Sources */,
 				2FAFE0BA1FE94F3B00AD7FDC /* AtrributeConveter.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
-				2FAFE0D11FE956F900AD7FDC /* Extension.swift in Sources */,
 				2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
-				2F175ACB1FCD4E9200917895 /* RuisiUtil.swift in Sources */,
 				2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */,
 				2F0233B31FDFF23F00373969 /* AtData.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
 				2F37A09F1FE404E400493A59 /* ImageGridPostsViewController.swift in Sources */,
-				2F24B9A11FCEE394001D287E /* extension.swift in Sources */,
 				2F24B9931FCE9213001D287E /* Reachability.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
+				2F0287561FEA45A3005C2D2A /* Extensions.swift in Sources */,
 				2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */,
 				2FAFE0D61FE956F900AD7FDC /* GalleryDisplacedViewsDataSource.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
@@ -806,6 +801,7 @@
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F37A08F1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift in Sources */,
 				2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */,
+				2F3B29531FEA450B00C34F13 /* Extension.swift in Sources */,
 				2FAFE0B91FE94F3B00AD7FDC /* HtmlAttr.swift in Sources */,
 				2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */,
 				2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */,

@@ -10,11 +10,11 @@ import Foundation
 
 public enum LinkClickType {
     case viewPost(tid: Int, pid: Int?)
-    case viewAlbum(aid: Int,url: String)
+    case viewAlbum(aid: Int, url: String)
     case viewUser(uid: Int)
     case newPost(fid: Int?)
     case viewPosts(fid: Int)
-    case reply(tid: Int,pid: Int?)
+    case reply(tid: Int, pid: Int?)
     case attachment(url: String)
     case login()
     case others(url: String)

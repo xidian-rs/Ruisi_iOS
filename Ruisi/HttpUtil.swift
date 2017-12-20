@@ -9,104 +9,107 @@
 import Foundation
 
 public class HttpUtil {
-    
-    public static func encodeUrl(url:Any) -> String? {
-        return String(describing: url).encodeURIComponent()
+
+    public static func encodeUrl(url: Any) -> String? {
+        return encodeURIComponent(string: String(describing: url))
         //let escapedString = .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         //return escapedString!
     }
-    
-    public static func decodeUrl(url:String) -> String {
+
+    public static func decodeUrl(url: String) -> String {
         return url.replacingOccurrences(of: "&amp;", with: "&")
     }
-    
-    public static func GET(url:String, params: [String:String]?,callback: @escaping (Bool,String)-> Void){
-        var url  =  getUrl(url: url)
+
+    public static func GET(url: String, params: [String: String]?, callback: @escaping (Bool, String) -> Void) {
+        var url = getUrl(url: url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-        
-        if let p = encodeParameters(params){
+
+        if let p = encodeParameters(params) {
             if url.contains("?") {
                 url = url + "&" + p
-            }else{
+            } else {
                 url = url + "?" + p
             }
         }
-        
+
         print("start http get url:\(url)")
-        let task = URLSession.shared.dataTask (with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
                 return
             }
-            
+
             // check for http errors
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 callback(false, "Http Status: \(httpStatus.statusCode)")
                 return
-            }else{
-                if let res = String(data: data, encoding: .utf8){
-                    callback(true,res)
+            } else {
+                if let res = String(data: data, encoding: .utf8) {
+                    callback(true, res)
                     return
                 }
-                
-                callback(true,"服务端无返回")
+
+                callback(true, "服务端无返回")
                 return
             }
         }
         task.resume()
     }
-    
-    public static func POST(url:String, params: [String:Any]?,callback: @escaping (Bool, String) -> Void){
-        let url  =  getUrl(url: url)
-        
+
+    public static func POST(url: String, params: [String: Any]?, callback: @escaping (Bool, String) -> Void) {
+        let url = getUrl(url: url)
+
         var ps = params
         if let hash = App.formHash {
             if ps != nil {
                 ps!["formhash"] = hash
-            }else {
-                ps = ["formhash":hash]
+            } else {
+                ps = ["formhash": hash]
             }
         }
-        
+
         let components = URLComponents(string: url)
-        guard let u = components?.url else {callback(false,"请求链接不合法");  return }
-        
+        guard let u = components?.url else {
+            callback(false, "请求链接不合法");
+            return
+        }
+
         var request = URLRequest(url: u)
         request.httpMethod = "POST"
-        
+
         if let p = encodeParameters(ps) {
             request.httpBody = p.data(using: .utf8)
         }
-        
+
         print("start http post url:\(url)")
-        let task = URLSession.shared.dataTask (with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
                 return
             }
-            
+
             // check for http errors
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 callback(false, "Http Status: \(httpStatus.statusCode)")
                 return
-            }else{
-                if let res = String(data: data, encoding: .utf8){
-                    callback(true,res)
+            } else {
+                if let res = String(data: data, encoding: .utf8) {
+                    callback(true, res)
                     return
                 }
-                callback(true,"服务端无返回")
+                callback(true, "服务端无返回")
                 return
             }
         }
-        
+
         task.resume()
     }
-    
+
     private static let uploadImageErrors = [
         "-1": "内部服务器错误",
         "0": "上传成功",
@@ -123,39 +126,43 @@ public class HttpUtil {
         "11": "今日您已无法上传那么大的附件"
     ]
 
-    public static func UPLOAD_IMAGE(url:String, params: [String: NSObject]?,imageName: String, imageData: Data, callback: @escaping (Bool, String) -> Void){
+    // discuz 上传图片接口
+    public static func UPLOAD_IMAGE(url: String, params: [String: NSObject]?, imageName: String, imageData: Data, callback: @escaping (Bool, String) -> Void) {
         let components = URLComponents(string: url)
-        guard let u = components?.url else {callback(false,"请求链接不合法");  return }
-        
+        guard let u = components?.url else {
+            callback(false, "请求链接不合法");
+            return
+        }
+
         var request = URLRequest(url: u)
         request.httpMethod = "POST"
         let boundary = "------multipartformboundary\(Int(Date().timeIntervalSince1970 * 1000))"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
-        
+
         request.httpBody = createRequestBodyWith(parameters: params, imageName: imageName, imageData: imageData, boundary: boundary) as Data
         print("start http post url:\(url)")
-        let task = URLSession.shared.dataTask (with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             print("===========")
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
                 return
             }
-            
+
             // check for http errors
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 callback(false, "Http Status: \(httpStatus.statusCode)")
                 return
-            }else{
-                if let res = String(data: data, encoding: .utf8){
+            } else {
+                if let res = String(data: data, encoding: .utf8) {
                     var success: Bool = false
                     var errmsg: String = ""
                     if res == "" || !res.contains("|") {
                         errmsg = "上传失败，请稍后再试"
                     } else {
                         //DISCUZUPLOAD|1|0|931707|1|201712/17/190135adz38c3vodhw6zct.png|tb001.png|0
-                        let ress =  res.split(separator: "|")
+                        let ress = res.split(separator: "|")
                         if ress[0] == "DISCUZUPLOAD" && ress[2] == "0" {
                             success = true
                             errmsg = String(ress[3])
@@ -163,31 +170,31 @@ public class HttpUtil {
                             if ress[7] == "ban" {
                                 errmsg = "(附件类型被禁止)"
                             } else if ress[7] == "perday" {
-                                errmsg = "(不能超过 \(Int(String(ress[8])) ?? 0  / 1024) K)"
+                                errmsg = "(不能超过 \(Int(String(ress[8])) ?? 0 / 1024) K)"
                             } else {
-                                errmsg = "(不能超过 \(Int(String(ress[7])) ?? 0  / 1024) K)"
+                                errmsg = "(不能超过 \(Int(String(ress[7])) ?? 0 / 1024) K)"
                             }
-                            
+
                             if let e = uploadImageErrors[String(ress[2])] {
-                                errmsg =  e + errmsg
+                                errmsg = e + errmsg
                             } else {
                                 errmsg = "我也不知道是什么原因上传失败了"
                             }
                         }
                     }
-                    
-                    callback(success,errmsg)
+
+                    callback(success, errmsg)
                     return
                 }
-                callback(true,"服务端无返回")
+                callback(true, "服务端无返回")
                 return
             }
         }
-        
+
         task.resume()
     }
-    
-    private static func createRequestBodyWith(parameters:[String:NSObject]?, imageName: String, imageData: Data, boundary: String) -> NSData {
+
+    private static func createRequestBodyWith(parameters: [String: NSObject]?, imageName: String, imageData: Data, boundary: String) -> NSData {
         let body = NSMutableData()
         // 表单数据
         if let ps = parameters {
@@ -197,15 +204,15 @@ public class HttpUtil {
                 body.appendString(string: "\(value)\r\n")
             }
         }
-        
+
         // 图片数据
         let mimetype: String  //application/octet-stream
         if imageName.hasSuffix(".png") {
             mimetype = "image/png"
-        }else {
+        } else {
             mimetype = "image/jpg"
         }
-        
+
         //let imageData = /*UIImageJPEGRepresentation(imageData, 1)!*/ UIImagePNGRepresentation(image)!
         body.appendString(string: "--\(boundary)\r\n")
         body.appendString(string: "Content-Disposition: form-data; name=\"Filedata\"; filename=\"\(imageName)\"\r\n")
@@ -213,58 +220,57 @@ public class HttpUtil {
         body.append(imageData)
         body.appendString(string: "\r\n")
         body.appendString(string: "--\(boundary)--\r\n")
-        
+
         return body
     }
-    
-    private static func encodeParameters(_ params: [String:Any]?) -> String? {
-        if let p = params{
+
+    private static func encodeParameters(_ params: [String: Any]?) -> String? {
+        if let p = params {
             var pp: String = ""
-            p.forEach({ key,value in
-                if pp.count > 0{
+            p.forEach({ key, value in
+                if pp.count > 0 {
                     pp.append("&")
                 }
-                
+
                 pp.append(key)
                 pp.append("=")
                 if let v = encodeUrl(url: value) {
                     pp.append(v)
                 }
             })
-            
+
             return pp
-        }else{
+        } else {
             return nil
         }
     }
-    
-    private static func encodePostParameters(_ params: [String:Any]?) -> [URLQueryItem]? {
+
+    private static func encodePostParameters(_ params: [String: Any]?) -> [URLQueryItem]? {
         if let ps = params {
             var items = [URLQueryItem]()
-            ps.forEach({ key,value in
-                items.append(URLQueryItem(name: key, value: String(describing: value) ))
+            ps.forEach({ key, value in
+                items.append(URLQueryItem(name: key, value: String(describing: value)))
             })
             return items
-        }else {
+        } else {
             return nil
         }
     }
-    
-    private static func getUrl(url:String) -> String {
-        if url.index(of: "http://") != nil || url.index(of: "https://") != nil{
+
+    private static func getUrl(url: String) -> String {
+        if url.index(of: "http://") != nil || url.index(of: "https://") != nil {
             return decodeUrl(url: url)
         }
-        
+
         return Urls.baseUrl + decodeUrl(url: url)
     }
-}
 
-extension String {
-    func encodeURIComponent() -> String? {
+    // url编码
+    private static func encodeURIComponent(string: String) -> String? {
         let characterSet = NSMutableCharacterSet.alphanumeric()
         characterSet.addCharacters(in: "-_.!~*'()")
-        
-        return self.addingPercentEncoding(withAllowedCharacters: characterSet as CharacterSet)
+
+        return string.addingPercentEncoding(withAllowedCharacters: characterSet as CharacterSet)
     }
 }
 

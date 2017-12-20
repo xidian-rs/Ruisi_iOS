@@ -14,8 +14,8 @@ class HtmlNode {
     var start: Int = 0
     var end: Int = 0
     var attr: HtmlAttr?
-    
-    init(type: HtmlTag,name: String, attr: HtmlAttr? = nil) {
+
+    init(type: HtmlTag, name: String, attr: HtmlAttr? = nil) {
         self.type = type
         self.name = name
         self.attr = attr

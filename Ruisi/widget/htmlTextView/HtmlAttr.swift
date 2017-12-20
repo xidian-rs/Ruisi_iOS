@@ -57,7 +57,7 @@ class HtmlAttr {
         "palegreen": 0x98FB98,
         "paleturquoise": 0xAFEEEE,
         "plum": 0xDDA0DD]
-    
+
     var src: String? //img
     var href: String? //a
     var color: UIColor? //font
@@ -81,7 +81,7 @@ class HtmlAttr {
             attr.color = getTextColor(from: src)
             attr.bgColor = getBgColor(from: src)
             attr.size = getTextSize(from: src)
-        case .DIV : // div align="left"
+        case .DIV: // div align="left"
             attr.textAlign = getAlign(from: src)
         default:
             break
@@ -123,7 +123,7 @@ class HtmlAttr {
         }
         return nil
     }
-    
+
 
     //size="5"
     static func getTextSize(from: String) -> Int? {
@@ -134,12 +134,12 @@ class HtmlAttr {
         }
         return nil
     }
-    
+
     //style="background-color:DarkRed"
     static func getBgColor(from: String) -> UIColor? {
         if let s = from.range(of: "background-color:") {
-            if let end = from.range(of: "\"", range: s.upperBound ..< from.endIndex) {
-                let color = from[s.upperBound ..< end.lowerBound]
+            if let end = from.range(of: "\"", range: s.upperBound..<from.endIndex) {
+                let color = from[s.upperBound..<end.lowerBound]
                 print("bgcolor \(color)")
                 if color.first == "#" {
                     return Utils.getHtmlColor(from: String(color))
@@ -147,7 +147,7 @@ class HtmlAttr {
                     return Utils.parseColor(int: colors[color.lowercased()])
                 }
             }
-            
+
         }
         return nil
     }

@@ -16,13 +16,14 @@ public enum UploadState {
 }
 
 public struct UploadImageItem {
+
     public var aid: String?
     public var name: String?
     public var image: UIImage
     public var state: UploadState = .uploading(progress: 0)
     public var errmessage: String?
-    
-    init(aid: String? = nil,name: String?, image: UIImage, errmessage: String? = nil) {
+
+    init(aid: String? = nil, name: String?, image: UIImage, errmessage: String? = nil) {
         self.aid = aid
         self.name = name
         self.image = image

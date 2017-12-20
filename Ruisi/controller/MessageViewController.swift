@@ -9,15 +9,16 @@
 import UIKit
 import Kanna
 
-// 我的消息页面
+// 首页 - 消息
 class MessageViewController: BaseTableViewController<MessageData> {
     
-    var lastLoginState = false
+    private var lastLoginState = false
     
     override func viewDidLoad() {
+        
         self.autoRowHeight = true
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         lastLoginState = App.isLogin
         if lastLoginState {
             self.refreshControl = refreshView
@@ -53,7 +54,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
             self.datas = []
             self.tableView.reloadData()
             pullRefresh()
-        }else {
+        } else {
             self.datas.removeAll()
             self.emptyPlaceholderText = "需要登陆才能查看"
             self.tableView.reloadData()
@@ -63,11 +64,12 @@ class MessageViewController: BaseTableViewController<MessageData> {
     var isReplyLoading = false
     var isPmLoading = false
     var isAtLoading = false
+    
     override var isLoading: Bool {
         get {
             if position == 0 {
                 return isReplyLoading
-            }else if position == 1{
+            } else if position == 1 {
                 return isPmLoading
             } else {
                 return isAtLoading
@@ -77,9 +79,9 @@ class MessageViewController: BaseTableViewController<MessageData> {
         set {
             if position == 0 {
                 isReplyLoading = newValue
-            }else if position == 1{
+            } else if position == 1 {
                 isPmLoading = newValue
-            }else {
+            } else {
                 isAtLoading = newValue
             }
             
@@ -90,7 +92,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
     override func getUrl(page: Int) -> String {
         if position == 0 {
             return Urls.messageReply + "&page=\(currentPage)"
-        }else if position == 1{
+        } else if position == 1 {
             return Urls.messagePm + "&page=\(currentPage)"
         } else {
             return Urls.messageAt + "&page=\(currentPage)"
@@ -102,11 +104,11 @@ class MessageViewController: BaseTableViewController<MessageData> {
         let nodes: XPathObject
         if pos == 0 || pos == 2 { // reply at
             currentPage = Int(doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/strong").first?.text ?? "") ?? currentPage
-            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/label/span").first?.text) ?? "" ) ?? currentPage
+            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/label/span").first?.text) ?? "") ?? currentPage
             nodes = doc.xpath("//*[@id=\"ct\"]/div[1]/div/div[1]/div/dl") //.css(".nts .cl")
         } else {// pm
             currentPage = Int(doc.xpath("/html/body/div[2]/strong").first?.text ?? "") ?? currentPage
-            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "" ) ?? currentPage
+            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "") ?? currentPage
             print("======\(currentPage)   \(totalPage)")
             nodes = doc.xpath("/html/body/div[1]/ul/li") //.css(".pmbox ul li")
         }
@@ -120,12 +122,10 @@ class MessageViewController: BaseTableViewController<MessageData> {
         var content: String
         var isRead: Bool
         
-        let messageId = Settings.getMessageId(type: pos)
         for ele in nodes {
+            isRead = true
             if pos == 0 {//reply
                 type = .Reply
-                let id = Utils.getNum(from: ele["notice"] ?? "0") ?? 0
-                isRead =  (id <= messageId)
                 time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
                 let a = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first
                 if let aa = a {
@@ -143,11 +143,13 @@ class MessageViewController: BaseTableViewController<MessageData> {
                     tid = Utils.getNum(from: a?["href"] ?? "0") ?? 0
                     uid = nil
                 }
-            }else if pos == 1 { //pm
+                
+                isRead = (ele.css(".ntc_body").first?["style"]?.contains("font-weight:bold") ?? true) ? false : true
+            } else if pos == 1 { //pm
                 type = .Pm
                 if let _ = ele.css(".num").first {
                     isRead = false
-                }else {
+                } else {
                     isRead = true
                 }
                 title = ""
@@ -157,10 +159,8 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 uid = Utils.getNum(from: ele.css("img").first?["src"] ?? "0")
                 //在这里tid = tuid
                 tid = Utils.getNum(from: ele.css("a").first?["href"] ?? "0") ?? 0
-            }else { //at
+            } else { //at
                 type = .At
-                let id = Utils.getNum(from: ele["notice"] ?? "0") ?? 0
-                isRead =  (id <= messageId)
                 time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
                 
                 if let t = ele.xpath("dd[2]/a[2]").first {
@@ -180,58 +180,65 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 
                 title = ele.css(".ntc_body a[href^=forum.php?mod=redirect]").first?.text ?? "未知主题"
                 content = "在主题[\(title)]\n\(ele.css(".ntc_body .quote").first?.text ?? "未获取到内容")"
+                isRead = (ele.css(".ntc_body").first?["style"]?.contains("font-weight:bold") ?? true) ? false : true
             }
             
             
             let d = MessageData(type: type, title: title, tid: tid, uid: uid, author: author,
-                                time: time, content: content.trimmingCharacters(in: .whitespacesAndNewlines),isRead: isRead)
+                                time: time, content: content.trimmingCharacters(in: .whitespacesAndNewlines), isRead: isRead)
             subDatas.append(d)
         }
-        
         return subDatas
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let data  = datas[indexPath.row]
+        let data = datas[indexPath.row]
         let avaterView = cell.viewWithTag(1) as! UIImageView
         let authorLabel = cell.viewWithTag(2) as! UILabel
-        let timeLabel  = cell.viewWithTag(3) as! UILabel
+        let timeLabel = cell.viewWithTag(3) as! UILabel
         let messageContent = cell.viewWithTag(4) as! UILabel
+        let isReadLabel = cell.viewWithTag(5) as! UILabel
         
         avaterView.layer.cornerRadius = avaterView.frame.width / 2
         if let uid = data.uid {
-            avaterView.kf.setImage(with: Urls.getAvaterUrl(uid: uid), placeholder: #imageLiteral(resourceName: "placeholder"))
+            avaterView.kf.setImage(with: Urls.getAvaterUrl(uid: uid), placeholder: #imageLiteral(resourceName:"placeholder"))
             avaterView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
-        }else {
-            avaterView.image = #imageLiteral(resourceName: "systempm")
+        } else {
+            avaterView.image = #imageLiteral(resourceName:"systempm")
         }
         
         timeLabel.text = data.time
         authorLabel.text = data.author//[解析过后的]
         messageContent.text = data.content
+        isReadLabel.isHidden = data.isRead
+        
         return cell
     }
     
-    @objc func loginClick()  {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        super.tableView(tableView, didSelectRowAt: indexPath)
+        if !datas[indexPath.row].isRead {
+            datas[indexPath.row].isRead = true
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        if position == 1 { //pm
+            self.performSegue(withIdentifier: "chatListToChat", sender: indexPath)
+        } else {
+            self.performSegue(withIdentifier: "messageListToPostSegue", sender: indexPath)
+        }
+    }
+    
+    @objc func loginClick() {
         //login
         let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
         self.present(dest!, animated: true, completion: nil)
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        if position == 1 { //pm
-            self.performSegue(withIdentifier: "chatListToChat", sender: indexPath)
-        }else {
-            self.performSegue(withIdentifier: "messageListToPostSegue", sender: indexPath)
-        }
-    }
-    
-    @objc func avatarClick(_ sender : UITapGestureRecognizer)  {
-        if  let index = tableView.indexPath(for: sender.view?.superview?.superview as! UITableViewCell ) {
+    @objc func avatarClick(_ sender: UITapGestureRecognizer) {
+        if let index = tableView.indexPath(for: sender.view?.superview?.superview as! UITableViewCell) {
             if datas[index.row].uid != nil {
                 self.performSegue(withIdentifier: "messageToUserDetail", sender: index)
             }
@@ -251,7 +258,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 dest.uid = uid
                 dest.username = nil
             }
-        }else if let dest = segue.destination as? ChatViewController,
+        } else if let dest = segue.destination as? ChatViewController,
             let index = sender as? IndexPath {
             if let uid = datas[index.row].uid {
                 dest.uid = uid

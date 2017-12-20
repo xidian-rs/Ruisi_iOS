@@ -9,16 +9,17 @@
 import UIKit
 import Kanna
 
-class UserDetailViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    var uid:Int?
-    var username:String?
+// 用户详情页
+class UserDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    var uid: Int?
+    var username: String?
     var isFriend = false
-    
-    var datas = [KeyValueData<String,String>]()
-    
+
+    private var datas = [KeyValueData<String, String>]()
+
     @IBOutlet weak var chatBtn: UIButton!
     @IBOutlet weak var headerView: UIView!
-    
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var pointView: UILabel!
     @IBOutlet weak var levelProgressVIew: UIProgressView!
@@ -26,11 +27,11 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var levelView: UILabel!
     @IBOutlet weak var tabview: UITableView!
     @IBOutlet weak var loadingIndicate: UIActivityIndicatorView!
-    
+
     private var loading = true
     private var currentPoint: Int = 0 //当前积分
-    
-    var isLoading:Bool {
+
+    var isLoading: Bool {
         get {
             return loading
         }
@@ -38,49 +39,52 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
             loading = newValue
             if !loading {
                 loadingIndicate.stopAnimating()
-            }else {
+            } else {
                 loadingIndicate.startAnimating()
             }
             tabview.reloadData()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         tabview.delegate = self
         tabview.dataSource = self
-        
+
         if uid == nil {
             showBackAlert(message: "没有传入uid参数")
             return
         }
-        
-        avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: uid!, size: 1), placeholder: #imageLiteral(resourceName: "placeholder"))
-        
-        
+
+        avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: uid!, size: 1), placeholder: #imageLiteral(resourceName:"placeholder"))
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick)))
+
         usernameLabel.text = username
         levelView.text = "--"
         loadData(uid: uid!)
-        
+
         if App.uid != uid { //别人
             self.title = username
             if !isFriend {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
-            }else {
+            } else {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
             }
         } else {
             self.chatBtn.isHidden = true
         }
     }
-    
-    func avatarClick() {
-        
+
+    @objc func avatarClick() {
+        let viewer = GalleryViewController(startIndex: 0, itemsDataSource: self, displacedViewsDataSource: self)
+        self.present(viewer, animated: false, completion: nil)
     }
-    
+
     func checkLogin() -> Bool {
-        if App.isLogin { return true }
+        if App.isLogin {
+            return true
+        }
         let alert = UIAlertController(title: "需要登陆", message: "此功能需要登陆，你要去登陆吗", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (action) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
@@ -90,17 +94,19 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         present(alert, animated: true, completion: nil)
         return false
     }
-    
+
     @objc func addFriendBtnClick(_ sender: Any) {
-        if !checkLogin() { return }
+        if !checkLogin() {
+            return
+        }
         let alert = UIAlertController(title: "添加好友", message: "你要添加\(username ?? "")为好友吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "添加", style: .default, handler: { (action) in
-            self.doAddFriend(uid:self.uid!)
+            self.doAddFriend(uid: self.uid!)
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
+
     @objc func deleteFriendClick() {
         let alert = UIAlertController(title: "删除好友", message: "你要删除好友【\(String(username ?? ""))】?吗?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
@@ -109,11 +115,11 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
-    func doDeleteFriend(uid:Int) {
-        HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: ["friendsubmit":"true"]) { (ok, res) in
+
+    func doDeleteFriend(uid: Int) {
+        HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: ["friendsubmit": "true"]) { (ok, res) in
             print("post ok")
-            if ok && res.contains("操作成功"){
+            if ok && res.contains("操作成功") {
                 DispatchQueue.main.async { [weak self] in
                     self?.isFriend = false
                     self?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self?.addFriendBtnClick))
@@ -122,20 +128,20 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                 // TODO 失败
                 DispatchQueue.main.async { [weak self] in
                     ///html/body/div[1]/p[1]
-                    var reason:String?
+                    var reason: String?
                     if let doc = try? HTML(html: res, encoding: .utf8) {
                         reason = doc.xpath("//html/body/div[1]/p[1]").first?.text
                     }
                     let vc = UIAlertController(title: "操作失败", message: "删除好友失败:\(reason ?? res)", preferredStyle: .alert)
-                    vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil ))
+                    vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
                     self?.present(vc, animated: true)
                 }
             }
         }
     }
-    
-    
-    @objc func exitClick(){
+
+
+    @objc func exitClick() {
         let alert = UIAlertController(title: "提示", message: "你要退出登陆吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "退出", style: .destructive, handler: { (action) in
             self.doExit()
@@ -143,15 +149,15 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
-    func doAddFriend(uid:Int) {
-        HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: ["addsubmit":"true","handlekey":"friend_\(uid)","gid":1,"addsubmit_btn":"true"]) { (ok, res) in
+
+    func doAddFriend(uid: Int) {
+        HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: ["addsubmit": "true", "handlekey": "friend_\(uid)", "gid": 1, "addsubmit_btn": "true"]) { (ok, res) in
             var title: String
             var message: String
             if ok {
                 title = "提示"
                 if res.contains("好友请求已") {
-                    message =  "请求已发送成功，正在请等待对方验证"
+                    message = "请求已发送成功，正在请等待对方验证"
                 } else if res.contains("正在等待验证") {
                     message = "好友请求已经发送了，正在等待对方验证"
                 } else if res.contains("你们已成为好友") {
@@ -163,23 +169,23 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                 title = "操作失败"
                 if let doc = try? HTML(html: res, encoding: .utf8) {
                     message = doc.xpath("//html/body/div[1]/p[1]").first?.text ?? ""
-                }else {
+                } else {
                     message = "未知错误..."
                 }
             }
-            
+
             DispatchQueue.main.async {
                 let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil ))
+                vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
                 self.present(vc, animated: true)
             }
         }
     }
-    
+
     func doExit() {
         // TODO
     }
-    
+
     func loadData(uid: Int) {
         HttpUtil.GET(url: Urls.getUserDetailUrl(uid: uid), params: nil) { ok, res in
             if ok && uid == self.uid! { //返回的数据是我们要的
@@ -198,14 +204,14 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                         var value = node.xpath("span").first?.text ?? ""
                         node.removeChild(node.xpath("span").first!)
                         let key = node.text ?? ""
-                        
+
                         if key.contains("积分") {
                             self.currentPoint = Int(value) ?? 0
-                            let level = RuisiUtil.getLevel(point: self.currentPoint)
+                            let level = Utils.getLevel(point: self.currentPoint)
                             DispatchQueue.main.async {
-                                self.pointView.text = "积分: \(self.currentPoint) / \(RuisiUtil.getNextLevel(point: self.currentPoint))"
+                                self.pointView.text = "积分: \(self.currentPoint) / \(Utils.getNextLevel(point: self.currentPoint))"
                                 self.levelView.text = level
-                                self.levelProgressVIew.progress = RuisiUtil.getLevelProgress(self.currentPoint)
+                                self.levelProgressVIew.progress = Utils.getLevelProgress(self.currentPoint)
                             }
                             self.datas.append(KeyValueData(key: "等级", value: level.trimmingCharacters(in: CharacterSet.whitespaces)))
                         } else if key.contains("上传量") || key.contains("下载量") {
@@ -218,21 +224,21 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
                                 value = String(format: "%.2f GB", gb)
                             }
                         }
-                        
+
                         self.datas.append(KeyValueData(key: key, value: value))
                     }
                 }
             } else {
                 self.datas.append(KeyValueData(key: "加载失败", value: ""))
             }
-            
+
             DispatchQueue.main.async {
                 //self.refreshView.attributedTitle = attrStr
                 self.isLoading = false
             }
         }
     }
-    
+
     private func showBackAlert(message: String) {
         let alert = UIAlertController(title: "无法查看用户信息", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "关闭", style: .cancel, handler: { action in
@@ -241,7 +247,7 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
         alert.addAction(action)
         self.present(alert, animated: true)
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         if isLoading {
             tableView.separatorStyle = .none
@@ -251,34 +257,59 @@ class UserDetailViewController: UIViewController,UITableViewDelegate,UITableView
             return 1
         }
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
+
         let keyView = cell.viewWithTag(1) as! UILabel
         let valueView = cell.viewWithTag(2) as! UILabel
-        
+
         keyView.text = datas[indexPath.row].key
         valueView.text = datas[indexPath.row].value
-        
+
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     // MARK: - Navigation
-    
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? ChatViewController,let uid = self.uid {
+        if let dest = segue.destination as? ChatViewController, let uid = self.uid {
             dest.uid = uid
             dest.username = username
+        }
+    }
+}
+
+extension UserDetailViewController: GalleryItemsDataSource, GalleryDisplacedViewsDataSource {
+    func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
+        return avatarView
+    }
+
+    func itemCount() -> Int {
+        return 1
+    }
+
+    func provideGalleryItem(_ index: Int) -> FetchImageBlock {
+        return { [weak self] imageCompletion in
+            guard let uid = self?.uid else {
+                return
+            }
+            let url = Urls.getAvaterUrl(uid: uid, size: 2)
+            let task = URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if let d = data {
+                    imageCompletion(UIImage(data: d))
+                }
+            })
+            task.resume()
         }
     }
 }

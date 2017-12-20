@@ -10,13 +10,14 @@ import Foundation
 import CoreData
 
 class History {
+
     public var tid: Int
     public var title: String
     public var author: String
     public var created: String
     public var lastRead: String
-    
-    init(tid:Int,title:String?,author:String?,created:String?,lastRead:String) {
+
+    init(tid: Int, title: String?, author: String?, created: String?, lastRead: String) {
         self.tid = tid
         self.title = title ?? "未知标题"
         self.author = author ?? "未知作者"

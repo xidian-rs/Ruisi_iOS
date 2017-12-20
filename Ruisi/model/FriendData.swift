@@ -10,14 +10,15 @@ import Foundation
 import UIKit
 
 class FriendData {
-    var uid:Int
-    var username:String
-    var usernameColor:UIColor?
+
+    var uid: Int
+    var username: String
+    var usernameColor: UIColor?
     var description: String?
-    var isOnline:Bool
-    var isFriend:Bool
-    
-    init(uid:Int,username:String,description:String?,usernameColor:UIColor? = nil,online:Bool = false,isFriend:Bool = true) {
+    var isOnline: Bool
+    var isFriend: Bool
+
+    init(uid: Int, username: String, description: String?, usernameColor: UIColor? = nil, online: Bool = false, isFriend: Bool = true) {
         self.uid = uid
         self.username = username
         self.description = description

@@ -5,22 +5,23 @@
 //  Created by Roland Leth on 17.11.2016.
 //  Copyright © 2016 Roland Leth All rights reserved.
 //
+
 import UIKit
 
 /// A radio button with a fill animation.
 public class LTHRadioButton: UIView {
-    
+
     /// The view used for the rippling effect.
-    private let waveCircle   = UIView()
+    private let waveCircle = UIView()
     /// The view used for the filling.
-    private let circle       = UIView()
+    private let circle = UIView()
     /// The view used for the margin.
-    private let innerCircle  = UIView()
+    private let innerCircle = UIView()
     /// The color used for the selected state.
     public var selectedColor = UIColor(red: 0.29, green: 0.56, blue: 0.88, alpha: 1.0) {
         willSet {
             innerCircle.layer.borderColor = newValue.cgColor
-            waveCircle.layer.borderColor  = newValue.cgColor
+            waveCircle.layer.borderColor = newValue.cgColor
         }
     }
     /// The color used for the deselected state.
@@ -37,11 +38,13 @@ public class LTHRadioButton: UIView {
     /// - Settings this to `false` will also remove the `UITapGestureRecognizer` if it was previously added.
     public var useTapGestureRecognizer = true {
         willSet {
-            guard newValue else { return removeGestureRecognizer(tapGesture) }
+            guard newValue else {
+                return removeGestureRecognizer(tapGesture)
+            }
             addTapGesture()
         }
     }
-    
+
     /// The final width of the inner circle's border, used for filling.
     private var innerBorderWidth: CGFloat {
         return innerCircle.frame.width * 0.6
@@ -52,33 +55,35 @@ public class LTHRadioButton: UIView {
     private var innerIncreasedWidth: CGFloat {
         return innerCircle.frame.width * innerIncreaseDelta
     }
-    
+
     /// The tap gesture that will handle the `onSelect`/`onDeselect` callbacks.
     private lazy var tapGesture: UITapGestureRecognizer = {
         let tg = UITapGestureRecognizer()
-        
+
         tg.numberOfTapsRequired = 1
         tg.numberOfTouchesRequired = 1
         tg.addTarget(self, action: #selector(self.toggleState))
-        
+
         return tg
     }()
     /// The closure that will be called when the control is selected.
-    private var didSelect: () -> Void = { } {
+    private var didSelect: () -> Void = {
+    } {
         willSet {
             addTapGesture()
         }
     }
     /// The closure that will be called when the control is deselected.
-    private var didDeselect: () -> Void = { } {
+    private var didDeselect: () -> Void = {
+    } {
         willSet {
             addTapGesture()
         }
     }
-    
-    
+
+
     // MARK: - Callbacks
-    
+
     /// Sets a closure that will be called when the control is selected.
     ///
     /// - Important: Calling this will also add the required `UITapGestureRecognizer`, unless it was already added or `useTapGestureRecognizer` was set to `false`.
@@ -86,7 +91,7 @@ public class LTHRadioButton: UIView {
     public func onSelect(execute closure: @escaping () -> Void) {
         didSelect = closure
     }
-    
+
     /// Sets a closure that will be called when the control is deselected.
     ///
     /// - Important: Calling this will also add the required `UITapGestureRecognizer`, unless it was already added or `useTapGestureRecognizer` was set to `false`.
@@ -94,86 +99,86 @@ public class LTHRadioButton: UIView {
     public func onDeselect(execute closure: @escaping () -> Void) {
         didDeselect = closure
     }
-    
-    
+
+
     // MARK: - Select animations
-    
+
     /// Initializes and returns the animation for filling the inner circle.
     private func innerBorderIncrease() -> CABasicAnimation {
         let borderWidth = CABasicAnimation(keyPath: "borderWidth")
-        
-        borderWidth.duration       = 0.2
-        borderWidth.fromValue      = 0.0
-        borderWidth.toValue        = innerBorderWidth
+
+        borderWidth.duration = 0.2
+        borderWidth.fromValue = 0.0
+        borderWidth.toValue = innerBorderWidth
         borderWidth.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        borderWidth.fillMode       = kCAFillModeBackwards
-        borderWidth.beginTime      = CACurrentMediaTime()
-        
+        borderWidth.fillMode = kCAFillModeBackwards
+        borderWidth.beginTime = CACurrentMediaTime()
+
         return borderWidth
     }
-    
+
     /// Initializes and returns the animation group for increasing the inner circle,
     /// the first step in giving it an elastic effect.
     private func innerIncreaseGroup() -> CAAnimationGroup {
         let group = CAAnimationGroup()
-        
-        let bounds       = CABasicAnimation(keyPath: "bounds")
+
+        let bounds = CABasicAnimation(keyPath: "bounds")
         bounds.fromValue = NSValue(cgRect: innerCircle.frame)
-        bounds.toValue   = NSValue(cgRect: CGRect(
-            x: 0, y: 0,
-            width: innerIncreasedWidth, height: innerIncreasedWidth)
+        bounds.toValue = NSValue(cgRect: CGRect(
+                x: 0, y: 0,
+                width: innerIncreasedWidth, height: innerIncreasedWidth)
         )
-        
-        let cornerRadius       = CABasicAnimation(keyPath: "cornerRadius")
+
+        let cornerRadius = CABasicAnimation(keyPath: "cornerRadius")
         cornerRadius.fromValue = innerCircle.layer.cornerRadius
-        cornerRadius.toValue   = innerCircle.layer.cornerRadius * innerIncreaseDelta
-        
-        group.duration       = 0.1
-        group.animations     = [bounds, cornerRadius]
+        cornerRadius.toValue = innerCircle.layer.cornerRadius * innerIncreaseDelta
+
+        group.duration = 0.1
+        group.animations = [bounds, cornerRadius]
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        group.beginTime      = CACurrentMediaTime() + 0.23
-        
+        group.beginTime = CACurrentMediaTime() + 0.23
+
         return group
     }
-    
+
     /// Initializes and returns the animation group for decreasing the inner circle,
     /// the second step in giving it an elastic effect.
     private func innerDecreaseGroup() -> CAAnimationGroup {
         let group = CAAnimationGroup()
-        
+
         let bounds = CABasicAnimation(keyPath: "bounds")
-        bounds.toValue   = NSValue(cgRect: innerCircle.frame)
+        bounds.toValue = NSValue(cgRect: innerCircle.frame)
         bounds.fromValue = NSValue(cgRect: CGRect(
-            x: 0, y: 0,
-            width: innerIncreasedWidth, height: innerIncreasedWidth)
+                x: 0, y: 0,
+                width: innerIncreasedWidth, height: innerIncreasedWidth)
         )
-        
-        let cornerRadius       = CABasicAnimation(keyPath: "cornerRadius")
+
+        let cornerRadius = CABasicAnimation(keyPath: "cornerRadius")
         cornerRadius.fromValue = innerCircle.layer.cornerRadius * innerIncreaseDelta
-        cornerRadius.toValue   = innerCircle.layer.cornerRadius
-        
-        group.duration       = 0.15
-        group.animations     = [bounds, cornerRadius]
+        cornerRadius.toValue = innerCircle.layer.cornerRadius
+
+        group.duration = 0.15
+        group.animations = [bounds, cornerRadius]
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        group.beginTime      = CACurrentMediaTime() + 0.31
-        
+        group.beginTime = CACurrentMediaTime() + 0.31
+
         return group
     }
-    
+
     /// Initializes and returns the animation for coloring the outer circle.
     private func circleBorderColor() -> CABasicAnimation {
         let borderColor = CABasicAnimation(keyPath: "borderColor")
-        
-        borderColor.duration       = 0.15
-        borderColor.fromValue      = deselectedColor.cgColor
-        borderColor.toValue        = selectedColor.cgColor
+
+        borderColor.duration = 0.15
+        borderColor.fromValue = deselectedColor.cgColor
+        borderColor.toValue = selectedColor.cgColor
         borderColor.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        borderColor.fillMode       = kCAFillModeBackwards
-        borderColor.beginTime      = CACurrentMediaTime() + 0.28
-        
+        borderColor.fillMode = kCAFillModeBackwards
+        borderColor.beginTime = CACurrentMediaTime() + 0.28
+
         return borderColor
     }
-    
+
     /// Initializes and returns the animation group for increasing the wave circle,
     /// giving it a pulsing effect.
     private func waveIncreaseGroup() -> CAAnimationGroup {
@@ -181,168 +186,182 @@ public class LTHRadioButton: UIView {
         let delta = CGFloat(2.15)
         let width = waveCircle.frame.width * delta
         let group = CAAnimationGroup()
-        
-        let bounds       = CABasicAnimation(keyPath: "bounds")
+
+        let bounds = CABasicAnimation(keyPath: "bounds")
         bounds.fromValue = NSValue(cgRect: waveCircle.frame)
-        bounds.toValue   = NSValue(cgRect: CGRect(
-            x: 0, y: 0,
-            width: width, height: width)
+        bounds.toValue = NSValue(cgRect: CGRect(
+                x: 0, y: 0,
+                width: width, height: width)
         )
-        
-        let cornerRadius       = CABasicAnimation(keyPath: "cornerRadius")
+
+        let cornerRadius = CABasicAnimation(keyPath: "cornerRadius")
         cornerRadius.fromValue = waveCircle.layer.cornerRadius
-        cornerRadius.toValue   = waveCircle.layer.cornerRadius * delta
-        
-        group.duration       = 0.25
-        group.animations     = [bounds, cornerRadius]
+        cornerRadius.toValue = waveCircle.layer.cornerRadius * delta
+
+        group.duration = 0.25
+        group.animations = [bounds, cornerRadius]
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        group.beginTime      = CACurrentMediaTime() + start
-        
+        group.beginTime = CACurrentMediaTime() + start
+
         return group
     }
-    
+
     /// Initializes and returns the animation for fading out the wave circle.
     private func waveAlphaDecrease() -> CABasicAnimation {
         let opacity = CABasicAnimation(keyPath: "opacity")
-        
-        opacity.duration       = 0.31
-        opacity.fromValue      = 0.3
-        opacity.toValue        = 0
+
+        opacity.duration = 0.31
+        opacity.fromValue = 0.3
+        opacity.toValue = 0
         opacity.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        opacity.beginTime      = CACurrentMediaTime() + 0.26
-        
+        opacity.beginTime = CACurrentMediaTime() + 0.26
+
         return opacity
     }
-    
+
     /// Initializes and returns the animation for decreasing width of the wave circle,
     /// the final step in giving it a ripple effect.
     private func waveBorderDecrease() -> CABasicAnimation {
         let borderWidth = CABasicAnimation(keyPath: "borderWidth")
-        
-        borderWidth.duration       = 0.26
-        borderWidth.fromValue      = frame.width * 0.3
-        borderWidth.toValue        = 0
+
+        borderWidth.duration = 0.26
+        borderWidth.fromValue = frame.width * 0.3
+        borderWidth.toValue = 0
         borderWidth.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        borderWidth.beginTime      = CACurrentMediaTime() + 0.29
-        
+        borderWidth.beginTime = CACurrentMediaTime() + 0.29
+
         return borderWidth
     }
-    
-    
+
+
     // MARK: - Deselect animations
-    
+
     /// Initializes and returns the animation group for emptying the inner circle.
     private func innerDecreaseGroupReverse(duration: Double) -> CAAnimationGroup {
         let group = CAAnimationGroup()
-        
-        let borderWidth       = CABasicAnimation(keyPath: "borderWidth")
+
+        let borderWidth = CABasicAnimation(keyPath: "borderWidth")
         borderWidth.fromValue = innerBorderWidth
-        borderWidth.toValue   = 0.0
-        
-        let opacity       = CABasicAnimation(keyPath: "opacity")
+        borderWidth.toValue = 0.0
+
+        let opacity = CABasicAnimation(keyPath: "opacity")
         opacity.fromValue = 1.0
-        opacity.toValue   = 0.0
-        
-        group.duration       = duration
-        group.animations     = [borderWidth, opacity]
+        opacity.toValue = 0.0
+
+        group.duration = duration
+        group.animations = [borderWidth, opacity]
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        group.beginTime      = CACurrentMediaTime()
-        
+        group.beginTime = CACurrentMediaTime()
+
         return group
     }
-    
+
     /// Initializes and returns the animation group for decoloring the outer circle.
     private func circleBorderColorReverse(duration: Double) -> CABasicAnimation {
         let borderColor = CABasicAnimation(keyPath: "borderColor")
-        
-        borderColor.duration       = duration
-        borderColor.fromValue      = selectedColor.cgColor
-        borderColor.toValue        = deselectedColor.cgColor
+
+        borderColor.duration = duration
+        borderColor.fromValue = selectedColor.cgColor
+        borderColor.toValue = deselectedColor.cgColor
         borderColor.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        borderColor.beginTime      = CACurrentMediaTime()
-        
+        borderColor.beginTime = CACurrentMediaTime()
+
         return borderColor
     }
-    
-    
+
+
     // MARK: - Actions
-    
+
     /// Sets the selected state of the control.
     ///
     /// - Parameter animated: A `Boolean` value which determines whether the transition should be animated or not. Defaults to `true`.
     @objc(selectAnimated:)
     public func select(animated: Bool = true) {
-        guard !isSelected else { return }
+        guard !isSelected else {
+            return
+        }
         isSelected = true
-        
+
         innerCircle.layer.borderWidth = innerBorderWidth
-        circle.layer.borderColor      = selectedColor.cgColor
-        
+        circle.layer.borderColor = selectedColor.cgColor
+
         didSelect()
-        
-        guard animated else { return }
-        
+
+        guard animated else {
+            return
+        }
+
         innerCircle.layer.add(innerBorderIncrease(), forKey: "innerBorderWidth")
         innerCircle.layer.add(innerIncreaseGroup(), forKey: "innerIncreaseGroup")
         innerCircle.layer.add(innerDecreaseGroup(), forKey: "innerDecreaseGroup")
-        
+
         circle.layer.add(circleBorderColor(), forKey: "circleBorderColor")
-        
+
         waveCircle.layer.add(waveIncreaseGroup(), forKey: "innerDecreaseGroup")
         waveCircle.layer.add(waveAlphaDecrease(), forKey: "outerAlphaDecrease")
         waveCircle.layer.add(waveBorderDecrease(), forKey: "outerBorderDecrease")
     }
-    
+
     /// Sets the deselected state of the control.
     ///
     /// - Parameter animated: A `Boolean` value which determines whether the transition should be animated or not. Defaults to `true`.
     @objc(deselectAnimated:)
     public func deselect(animated: Bool = true) {
-        guard isSelected else { return }
+        guard isSelected else {
+            return
+        }
         isSelected = false
-        
+
         removeAnimations()
         setDeselectedEndValues()
         didDeselect()
-        
-        guard animated else { return }
-        
+
+        guard animated else {
+            return
+        }
+
         let duration = 0.2
         innerCircle.layer.add(innerDecreaseGroupReverse(duration: duration), forKey: "innerDecreaseGroupReverse")
         circle.layer.add(circleBorderColorReverse(duration: duration), forKey: "circleBorderColorReverse")
     }
-    
+
     /// Sets the end values for the deselected state.
     private func setDeselectedEndValues() {
         innerCircle.layer.borderWidth = 0
-        circle.layer.borderColor      = deselectedColor.cgColor
+        circle.layer.borderColor = deselectedColor.cgColor
     }
-    
+
     /// Removes all animations.
     private func removeAnimations() {
         waveCircle.layer.removeAllAnimations()
         circle.layer.removeAllAnimations()
         innerCircle.layer.removeAllAnimations()
     }
-    
+
     /// Toggles between selected and deselected states.
     @objc private func toggleState() {
-        guard isSelected else { return select() }
-        
+        guard isSelected else {
+            return select()
+        }
+
         deselect()
     }
-    
+
     /// Adds the `UITapGestureRecognizer`.
     private func addTapGesture() {
-        guard useTapGestureRecognizer else { return }
-        guard gestureRecognizers?.contains(tapGesture) != true else { return }
-        
+        guard useTapGestureRecognizer else {
+            return
+        }
+        guard gestureRecognizers?.contains(tapGesture) != true else {
+            return
+        }
+
         addGestureRecognizer(tapGesture)
     }
-    
-    
+
+
     // MARK: - Init
-    
+
     /// Initializes and returns a radio button with a diameter, a selected color and a deselected color.
     ///
     /// - Parameters:
@@ -354,13 +373,13 @@ public class LTHRadioButton: UIView {
         super.init(frame: CGRect(origin: .zero, size: size))
         commonInit(diameter: diameter, selectedColor: selectedColor, deselectedColor: deselectedColor)
     }
-    
+
     /// Called when a radio button is loaded from a xib. `selectedColor` and `deselectedColor` can be either added as *User Defined Runtime Attributes*, or set after initialization.
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit(diameter: frame.size.width, selectedColor: nil, deselectedColor: nil)
     }
-    
+
     /// Performs the initialization of the radio button.
     ///
     /// - Parameters:
@@ -371,35 +390,35 @@ public class LTHRadioButton: UIView {
         let innerCircleDiameter = diameter / 1.6
         let radius = diameter * 0.5
         let center = CGPoint(x: radius, y: radius)
-        
-        backgroundColor      = .clear
-        self.selectedColor   = selectedColor ?? self.selectedColor
+
+        backgroundColor = .clear
+        self.selectedColor = selectedColor ?? self.selectedColor
         self.deselectedColor = deselectedColor ?? self.deselectedColor
-        
+
         addSubview(circle)
-        circle.backgroundColor    = .clear
+        circle.backgroundColor = .clear
         circle.layer.cornerRadius = radius
-        circle.layer.borderColor  = self.deselectedColor.cgColor
-        circle.layer.borderWidth  = diameter * 0.1
-        circle.frame.size         = CGSize(width: diameter, height: diameter)
-        circle.center             = center
-        
+        circle.layer.borderColor = self.deselectedColor.cgColor
+        circle.layer.borderWidth = diameter * 0.1
+        circle.frame.size = CGSize(width: diameter, height: diameter)
+        circle.center = center
+
         addSubview(innerCircle)
-        innerCircle.backgroundColor    = .clear
+        innerCircle.backgroundColor = .clear
         innerCircle.layer.cornerRadius = innerCircleDiameter * 0.5
-        innerCircle.layer.borderColor  = self.selectedColor.cgColor
-        innerCircle.layer.borderWidth  = 0
-        innerCircle.frame.size         = CGSize(width: innerCircleDiameter, height: innerCircleDiameter)
-        innerCircle.center             = center
-        
+        innerCircle.layer.borderColor = self.selectedColor.cgColor
+        innerCircle.layer.borderWidth = 0
+        innerCircle.frame.size = CGSize(width: innerCircleDiameter, height: innerCircleDiameter)
+        innerCircle.center = center
+
         addSubview(waveCircle)
-        waveCircle.backgroundColor    = .clear
+        waveCircle.backgroundColor = .clear
         waveCircle.layer.cornerRadius = innerCircle.layer.cornerRadius
-        waveCircle.layer.borderColor  = self.selectedColor.cgColor
-        waveCircle.layer.borderWidth  = 0
-        waveCircle.alpha              = 0
-        waveCircle.frame.size         = innerCircle.frame.size
-        waveCircle.center             = center
+        waveCircle.layer.borderColor = self.selectedColor.cgColor
+        waveCircle.layer.borderWidth = 0
+        waveCircle.alpha = 0
+        waveCircle.frame.size = innerCircle.frame.size
+        waveCircle.center = center
     }
-    
+
 }

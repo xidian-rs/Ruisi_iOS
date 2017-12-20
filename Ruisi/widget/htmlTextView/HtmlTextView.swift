@@ -9,21 +9,17 @@
 import UIKit
 
 class HtmlTextView: UITextView, UITextViewDelegate {
-    public static let baseURL = URL(string: "http://rs.xidian.edu.cn/")
+    public static let baseURL = URL(string: Urls.baseUrl)
+
     var htmlViewDelegate: ((LinkClickType) -> Void)?
-    
-    override var text: String! {
+    var htmlText: String? {
         didSet {
-            attributedText = AtrributeConveter(font: font!, textColor: UIColor.darkText,
-                                               linkTextAttributes: linkTextAttributes).convert(src: text)
-        }
-    }
-    
-    override var font: UIFont? {
-        get {
-            return UIFont.systemFont(ofSize: 17.0)
-        } set {
-            
+            if let text = htmlText {
+                attributedText = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText,
+                        linkTextAttributes: linkTextAttributes).convert(src: text)
+            } else {
+                attributedText = nil
+            }
         }
     }
 
@@ -31,43 +27,43 @@ class HtmlTextView: UITextView, UITextViewDelegate {
         super.init(frame: frame, textContainer: textContainer)
         initialize()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
-    
+
     private func initialize() {
         isEditable = false
         textContainerInset = UIEdgeInsets.zero
-        textContainer.lineFragmentPadding = 0
-        layoutManager.usesFontLeading = false
-    
+        //textContainer.lineFragmentPadding = 0
+        //layoutManager.usesFontLeading = false
+
         textColor = UIColor.darkText
         isScrollEnabled = false
         delegate = self
-        
+
         //linkTextAttributes = []
     }
-    
-    
+
+
     // textview 链接点击事件
     // textView.delegate = self
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         // base http://rs.xidian.edu.cn/
         // asb  http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=862167&aid=871569&from=album&page=1&mobile=2
-        
+
         //http://www.baidu.com bas nil
-        print("url click",URL.absoluteString)
+        print("url click", URL.absoluteString)
         // 内部链接点击
         let url = URL.absoluteString
-        if url.hasPrefix("http://rs.xidian.edu.cn/") || url.hasPrefix("http://rsbbs.xidian.edu.cn/")  {
+        if url.hasPrefix("http://rs.xidian.edu.cn/") || url.hasPrefix("http://rsbbs.xidian.edu.cn/") {
             if url.contains("from=album") && url.contains("aid") { //点击了图片
                 if let aid = Utils.getNum(prefix: "aid=", from: url) {
-                    htmlViewDelegate?(.viewAlbum(aid: aid,url: url))
+                    htmlViewDelegate?(.viewAlbum(aid: aid, url: url))
                 }
             } else if url.contains("forum.php?mod=viewthread&tid=") || url.contains("forum.php?mod=redirect&goto=findpost") { // 帖子
-                if let tid =  Utils.getNum(prefix: "tid=", from: url) {
+                if let tid = Utils.getNum(prefix: "tid=", from: url) {
                     htmlViewDelegate?(.viewPost(tid: tid, pid: nil))
                 }
             } else if url.contains("home.php?mod=space&uid=") { // 用户
@@ -96,14 +92,14 @@ class HtmlTextView: UITextView, UITextViewDelegate {
         } else {
             return true
         }
-        
+
         return false
     }
-    
-    
+
+
     func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print("image click",textAttachment)
-        
+        print("image click", textAttachment)
+
         return false
     }
 
