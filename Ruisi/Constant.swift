@@ -86,6 +86,11 @@ public class Urls {
     public static func getChatDetailUrl(tuid: Int) -> String {
         return "\(baseUrl)home.php?mod=space&do=pm&subop=view&touid=\(tuid)&mobile=2"
     }
+    
+    // 发送聊天
+    public static func postChatUrl(tuid: Int) -> String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=pm&op=send&pmid=\(tuid)&daterange=0&pmsubmit=yes&mobile=2"
+    }
 
     //at
     public static var messageAt: String {

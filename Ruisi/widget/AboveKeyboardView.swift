@@ -47,9 +47,11 @@ class AboveKeyboardView: UIView {
         guard let userInfo = notification.userInfo else {
             return
         }
+        
         if let keyboardHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height, keyboardHeight > 0 {
             self.keyboardHeight = keyboardHeight
         }
+        
         let point = userInfo["UIKeyboardCenterEndUserInfoKey"] as! CGPoint
         if !self.isHidden {
             if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
@@ -74,17 +76,13 @@ class AboveKeyboardView: UIView {
             }
             if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
                let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber, let center = self.currentCenter {
-                animateHUDWith(duration: duration, curve: UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut,
-                        toLocation: center)
+                
+                UIView.beginAnimations(nil, context: nil)
+                UIView.setAnimationDuration(TimeInterval(duration))
+                UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut)
+                self.center = center
+                UIView.commitAnimations()
             }
         }
-    }
-
-    private func animateHUDWith(duration: Double, curve: UIViewAnimationCurve, toLocation location: CGPoint) {
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationDuration(TimeInterval(duration))
-        UIView.setAnimationCurve(curve)
-        self.center = location
-        UIView.commitAnimations()
     }
 }

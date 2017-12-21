@@ -28,6 +28,16 @@
 		2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
+		2F1C30FD1FEBDCD900498C96 /* SmileyToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */; };
+		2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30F61FEBDCD800498C96 /* ImageAttachment.swift */; };
+		2F1C30FF1FEBDCD900498C96 /* SmileyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F1C30F71FEBDCD900498C96 /* SmileyView.xib */; };
+		2F1C31001FEBDCD900498C96 /* SmileyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30F81FEBDCD900498C96 /* SmileyManager.swift */; };
+		2F1C31011FEBDCD900498C96 /* SmileyCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30F91FEBDCD900498C96 /* SmileyCollectionLayout.swift */; };
+		2F1C31021FEBDCD900498C96 /* RitchTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30FA1FEBDCD900498C96 /* RitchTextView.swift */; };
+		2F1C31031FEBDCD900498C96 /* SmileyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30FB1FEBDCD900498C96 /* SmileyView.swift */; };
+		2F1C31041FEBDCD900498C96 /* SmileyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30FC1FEBDCD900498C96 /* SmileyCell.swift */; };
+		2F1C31081FEBDFC600498C96 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C31071FEBDFC600498C96 /* ToolbarView.swift */; };
+		2F1C310A1FEBDFD500498C96 /* ToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F1C31091FEBDFD500498C96 /* ToolbarView.xib */; };
 		2F24B9931FCE9213001D287E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9921FCE9213001D287E /* Reachability.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
@@ -266,6 +276,16 @@
 		2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyToolbar.swift; sourceTree = "<group>"; };
+		2F1C30F61FEBDCD800498C96 /* ImageAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAttachment.swift; sourceTree = "<group>"; };
+		2F1C30F71FEBDCD900498C96 /* SmileyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SmileyView.xib; sourceTree = "<group>"; };
+		2F1C30F81FEBDCD900498C96 /* SmileyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyManager.swift; sourceTree = "<group>"; };
+		2F1C30F91FEBDCD900498C96 /* SmileyCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyCollectionLayout.swift; sourceTree = "<group>"; };
+		2F1C30FA1FEBDCD900498C96 /* RitchTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RitchTextView.swift; sourceTree = "<group>"; };
+		2F1C30FB1FEBDCD900498C96 /* SmileyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyView.swift; sourceTree = "<group>"; };
+		2F1C30FC1FEBDCD900498C96 /* SmileyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyCell.swift; sourceTree = "<group>"; };
+		2F1C31071FEBDFC600498C96 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		2F1C31091FEBDFD500498C96 /* ToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToolbarView.xib; sourceTree = "<group>"; };
 		2F24B9921FCE9213001D287E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
 		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
@@ -353,6 +373,7 @@
 		2F0233B41FE0032000373969 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				2FC86DBA1FEBD08D00C6E988 /* replyView */,
 				2FAFE0C01FE956D600AD7FDC /* imageViewer */,
 				2FAFE09B1FE94EE500AD7FDC /* htmlTextView */,
 				2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */,
@@ -554,6 +575,23 @@
 			name = res;
 			sourceTree = "<group>";
 		};
+		2FC86DBA1FEBD08D00C6E988 /* replyView */ = {
+			isa = PBXGroup;
+			children = (
+				2F1C30F61FEBDCD800498C96 /* ImageAttachment.swift */,
+				2F1C30FA1FEBDCD900498C96 /* RitchTextView.swift */,
+				2F1C30FC1FEBDCD900498C96 /* SmileyCell.swift */,
+				2F1C30F91FEBDCD900498C96 /* SmileyCollectionLayout.swift */,
+				2F1C30F81FEBDCD900498C96 /* SmileyManager.swift */,
+				2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */,
+				2F1C30FB1FEBDCD900498C96 /* SmileyView.swift */,
+				2F1C30F71FEBDCD900498C96 /* SmileyView.xib */,
+				2F1C31071FEBDFC600498C96 /* ToolbarView.swift */,
+				2F1C31091FEBDFD500498C96 /* ToolbarView.xib */,
+			);
+			path = replyView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -731,8 +769,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */,
+				2F1C30FF1FEBDCD900498C96 /* SmileyView.xib in Resources */,
 				2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */,
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
+				2F1C310A1FEBDFD500498C96 /* ToolbarView.xib in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
 				2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */,
 				2FB16E051FD7E83F00863BF9 /* ReplyBoxView.xib in Resources */,
@@ -756,6 +796,7 @@
 				2FEDBB631F1113A6006E645D /* PostData.swift in Sources */,
 				2FAFE0BF1FE94F3B00AD7FDC /* ImageGetter.swift in Sources */,
 				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
+				2F1C31031FEBDCD900498C96 /* SmileyView.swift in Sources */,
 				2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2FAFE0BC1FE94F3B00AD7FDC /* HtmlTextView.swift in Sources */,
@@ -765,11 +806,13 @@
 				2FAFE0BA1FE94F3B00AD7FDC /* AtrributeConveter.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
 				2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */,
+				2F1C31021FEBDCD900498C96 /* RitchTextView.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
 				2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */,
 				2F0233B31FDFF23F00373969 /* AtData.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
+				2F1C31011FEBDCD900498C96 /* SmileyCollectionLayout.swift in Sources */,
 				2F37A09F1FE404E400493A59 /* ImageGridPostsViewController.swift in Sources */,
 				2F24B9931FCE9213001D287E /* Reachability.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,
@@ -778,12 +821,14 @@
 				2FAFE0D61FE956F900AD7FDC /* GalleryDisplacedViewsDataSource.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */,
+				2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */,
 				2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */,
 				2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */,
 				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
 				2FB3A76F1FDFB07D002FE2F5 /* ChooseFriendViewController.swift in Sources */,
 				2FAFE0DD1FE956F900AD7FDC /* BlurView.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
+				2F1C31001FEBDCD900498C96 /* SmileyManager.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
 				2F37A0AD1FE4155600493A59 /* PostsType.swift in Sources */,
 				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
@@ -796,12 +841,14 @@
 				2FAFE0BB1FE94F3B00AD7FDC /* HtmlParser.swift in Sources */,
 				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
+				2F1C30FD1FEBDCD900498C96 /* SmileyToolbar.swift in Sources */,
 				2FAFE0BD1FE94F3B00AD7FDC /* HtmlParserDelegate.swift in Sources */,
 				2FAFE0D21FE956F900AD7FDC /* GalleryItemsDataSource.swift in Sources */,
 				2F16B66C1EA504DD0068EE20 /* Forum.swift in Sources */,
 				2F37A08F1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift in Sources */,
 				2FEBEFB91FD0288A0037E7A4 /* ChatData.swift in Sources */,
 				2F3B29531FEA450B00C34F13 /* Extension.swift in Sources */,
+				2F1C31041FEBDCD900498C96 /* SmileyCell.swift in Sources */,
 				2FAFE0B91FE94F3B00AD7FDC /* HtmlAttr.swift in Sources */,
 				2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */,
 				2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */,
@@ -823,6 +870,7 @@
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
 				2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */,
+				2F1C31081FEBDFC600498C96 /* ToolbarView.swift in Sources */,
 				2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */,
 				2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */,
 				2F3885811FE2B022000749F4 /* ColorItemView.swift in Sources */,

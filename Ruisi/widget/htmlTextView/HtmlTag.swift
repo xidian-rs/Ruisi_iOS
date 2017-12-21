@@ -40,30 +40,30 @@ enum HtmlTag: Int {
     case Q//引用
     case CODE//代码
     case TD // ?? 应该不算 他是inline-block
-    
+
     /**
      * 块标签
      */
     case HEADER = 50
     case FOOTER
     case DIV
-    
+
     case P
     case UL
     case OL
     case LI
-    
+
     case H1
     case H2
     case H3
     case H4
     case H5
     case H6
-    
+
     case PRE
     case BLOCKQUOTE
     case HR
-    
+
     case TABLE
     case CAPTION
     case THEAD
@@ -71,12 +71,12 @@ enum HtmlTag: Int {
     case TBODY
     case TR
     case TH
-    
+
     case VEDIO //src
     case AUDIO //src
-    
+
     func isBlock() -> Bool {
         return self.rawValue >= 50
     }
-    
+
 }

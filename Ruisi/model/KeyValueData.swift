@@ -8,11 +8,12 @@
 
 import Foundation
 
-class KeyValueData<K,V> {
+class KeyValueData<K, V> {
+
     var key: K
     var value: V
-    
-    init(key:K, value:V) {
+
+    init(key: K, value: V) {
         self.key = key
         self.value = value
     }

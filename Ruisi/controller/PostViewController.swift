@@ -16,7 +16,8 @@ import Kanna
 class PostViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var replyBoxView: ReplyBoxView!
+    //回复框view
+    lazy var replyBoxView: ReplyBoxView = ReplyBoxView.replyView()
 
     var datas = [PostData]()
     var tid: Int? // 由前一个页面传过来的值
@@ -68,6 +69,7 @@ class PostViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
+        
         // 隐藏回复框
         replyBoxView.hideInputBox()
         replyBoxView.onSubmit { (content, isLz, pos) in
@@ -556,10 +558,6 @@ class PostViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
         }
-    }
-
-    @IBAction func refreshClick(_ sender: UIBarButtonItem) {
-        refreshData()
     }
 
 

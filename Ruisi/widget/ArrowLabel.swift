@@ -34,7 +34,6 @@ class ArrowLabel: UILabel {
         let bgPath = UIBezierPath(roundedRect: rect.offsetBy(dx: 0, dy: 6), cornerRadius: 3)
         bgPath.fill()
         super.draw(rect)
-
     }
 
     override func drawText(in rect: CGRect) {

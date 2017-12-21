@@ -259,7 +259,7 @@ class AttributeConverter: HtmlParserDelegate {
                 }) {
                     let attach = NSTextAttachment()
                     attach.image = image
-                    attach.bounds = CGRect(x: 0, y: -2, width: self.font.pointSize + 3, height: self.font.pointSize + 3)
+                    attach.bounds = CGRect(x: 0, y: -2, width: self.font.lineHeight, height: self.font.lineHeight)
                     let attrStringWithImage = NSAttributedString(attachment: attach)
                     self.attributedString.insert(attrStringWithImage, at: start)
                 }

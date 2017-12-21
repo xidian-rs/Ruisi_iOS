@@ -11,7 +11,8 @@ import MessageUI
 import Kanna
 
 // 关于页面
-class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
+class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate {
+
     @IBOutlet weak var versionLabel: UILabel!
 
     @IBAction func replyClick(_ sender: Any) {
@@ -19,74 +20,74 @@ class AboutViewController: UIViewController,MFMailComposeViewControllerDelegate{
         destVc.tid = App.POST_ID
         self.show(destVc, sender: self)
     }
-    
-    @IBAction func issusClick(_ sender: Any) {
+
+    @IBAction func issueClick(_ sender: Any) {
         UIApplication.shared.open(URL(string: "https://github.com/freedom10086/Ruisi_Ios/issues")!)
     }
-    
+
     @IBAction func sourceCodeClick(_ sender: Any) {
         UIApplication.shared.open(URL(string: "https://github.com/freedom10086/Ruisi_Ios")!)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         let button1 = UIBarButtonItem(title: "反馈", style: .done, target: self, action: #selector(feedBackClick))
-        self.navigationItem.rightBarButtonItem  = button1
-        
+        self.navigationItem.rightBarButtonItem = button1
+
         //CFBundleVersion
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             versionLabel.text = "当前版本 version: \(version)"
-        }else {
+        } else {
             versionLabel.text = "获取版本号出错"
         }
-        
+
         let versionCode = Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1
         print("current versionCode:\(versionCode)")
     }
-    
-    
-    private func mailComposeController(controller:MFMailComposeViewController, didFinishWithResult result:MFMailComposeResult, error:Error) {
+
+
+    private func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: Error) {
         switch result {
         case .sent:
             print("Mail sent")
             alert(title: "反馈成功", message: "感谢你的反馈,开发者会看到你的邮件", bdy: "好")
-            
-        default :
+
+        default:
             print("Mail sent failure: \(error.localizedDescription)")
         }
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func feedBackClick() {
         print("feed back")
-        
+
         let emailTitle = "Feedback"
         let messageBody = "Feature request or bug report?"
         let toRecipents = ["friend@stackoverflow.com"]
-        
+
         if MFMailComposeViewController.canSendMail() {
             let mc: MFMailComposeViewController = MFMailComposeViewController()
             mc.mailComposeDelegate = self
             mc.setSubject(emailTitle)
             mc.setMessageBody(messageBody, isHTML: false)
             mc.setToRecipients(toRecipents)
-            
+
             self.present(mc, animated: true, completion: nil)
         } else {
-            alert(title: "无法反馈", message: "没有可用的邮件客户端", bdy:"好的")
+            alert(title: "无法反馈", message: "没有可用的邮件客户端", bdy: "好的")
         }
     }
-    
-    
-    func alert(title: String?, message: String?, bdy:String) {
+
+
+    func alert(title: String?, message: String?, bdy: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: bdy, style: .cancel, handler: nil)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
-        
+
         let delayTime = DispatchTime.now().uptimeNanoseconds + 2 * NSEC_PER_SEC
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds:delayTime)) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: delayTime)) {
             [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }

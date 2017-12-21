@@ -9,6 +9,7 @@
 import Foundation
 
 class HtmlParser {
+
     private let MAX_TAG_LEN = 16
     private let MAX_ATTR_LEN = 256
     private var src: String
@@ -144,7 +145,7 @@ class HtmlParser {
                 skip()
                 break
             }
-                
+
             if readItem == " " || readItem == "\n" {
                 skip()
                 break
@@ -153,7 +154,7 @@ class HtmlParser {
             }
             read()
         }
-        
+
         let name = String(buf)
         let type = getTagTpye()
         buf.removeAll()
@@ -191,7 +192,7 @@ class HtmlParser {
     //&nbsp; ' '
     func parseText() {
         buf.removeAll()
-        
+
         while readItem != nil && readItem != "<" && readItem != ">" {
             if preLevel > 0 && buf.count > 0 {//pre 标签 原封不动push
                 buf.append(readItem!)
@@ -422,7 +423,7 @@ class HtmlParser {
             readItem = nil
             return end()
         }
-        
+
         //we want \r\n
         if readItem == "\r" {
             read()
@@ -439,7 +440,7 @@ class HtmlParser {
 
     //skip to next > or EOF
     func skip() {
-        if let r =  src.range(of: ">", range: currentPos ..< src.endIndex) {
+        if let r = src.range(of: ">", range: currentPos..<src.endIndex) {
             currentPos = r.upperBound
         } else {
             readItem = nil

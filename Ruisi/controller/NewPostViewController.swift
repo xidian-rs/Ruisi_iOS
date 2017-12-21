@@ -14,30 +14,34 @@ import Kanna
 // 1. attachnew[931707] attachnew[931707]可多个可以没值//提交在表单
 // 2. [attachimg]931707[/attachimg]在内容
 class NewPostViewController: UIViewController,
-        UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
-        UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     @IBOutlet weak var forumStackView: UIStackView!
-    @IBOutlet weak var titleStackView: UIStackView!
     @IBOutlet weak var imageCollectionHeight: NSLayoutConstraint!
+    @IBOutlet weak var selectedBtn: UIButton!
+    @IBOutlet weak var subSeletedBtn: UIButton!
+    @IBOutlet weak var titleInput: UITextField!
+    @IBOutlet weak var contentInput: RitchTextView!
     @IBOutlet weak var imagesCollection: UICollectionView! {
         didSet {
             imagesCollection.dataSource = self
             imagesCollection.delegate = self
         }
     }
-
+    
     var fid: Int?
     var typeId: String?
     var name: String?
-
+    
     var isEditMode = false
     var tid: Int? //编辑模式需要
     var pid: Int? //编辑模式需要
-
+    
     private var editFormDatas = [String: String]()
     private var typeIds = [KeyValueData<String, String>]()
     private var progress: UIAlertController!
+    private var uploadImages = [UploadImageItem]()
 
     private var uploadHash: String? {
         didSet {
@@ -46,13 +50,7 @@ class NewPostViewController: UIViewController,
             }
         }
     }
-    private var uploadImages = [UploadImageItem]()
-
-    @IBOutlet weak var selectedBtn: UIButton!
-    @IBOutlet weak var subSeletedBtn: UIButton!
-    @IBOutlet weak var titleInput: UITextField!
-    @IBOutlet weak var contentInput: UITextView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = isEditMode ? "编辑帖子" : "发帖"
@@ -60,15 +58,17 @@ class NewPostViewController: UIViewController,
             forumStackView.isHidden = true
             selectedBtn.isHidden = true
         }
-
+        
         let color = UIColor(white: 0.97, alpha: 1.0)
         contentInput.layer.borderColor = color.cgColor
         contentInput.layer.borderWidth = 1.0
         contentInput.layer.cornerRadius = 2.0
-
+        contentInput.showToolbar = true
+        contentInput.context = self
+        
         subSeletedBtn.isHidden = true
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(postClick))]
-
+        
         progress = UIAlertController(title: isEditMode ? "提交中" : "发帖中", message: "请稍后...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 13, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
@@ -77,7 +77,7 @@ class NewPostViewController: UIViewController,
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         uploadHash = nil
-
+        
         if isEditMode {
             loadEditContent()
         } else if let f = fid {
@@ -85,18 +85,24 @@ class NewPostViewController: UIViewController,
             fidChange(fid: f)
         }
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        titleInput.resignFirstResponder()
+        contentInput.resignFirstResponder()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 60, height: 80)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return uploadImages.count + 1
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: (indexPath.row == uploadImages.count) ? "addCell" : "imageCell", for: indexPath)
-
+        
         if indexPath.row < uploadImages.count {
             let imageBg = cell.viewWithTag(1) as! UIImageView
             let delBtn = cell.viewWithTag(2) as! UIButton
@@ -118,30 +124,30 @@ class NewPostViewController: UIViewController,
                 delBtn.isHidden = false
                 failedBtn.isHidden = false
             }
-
+            
             failedBtn.addTarget(self, action: #selector(uploadFailedBtnClick), for: .touchUpInside)
             delBtn.addTarget(self, action: #selector(deleteUploadBtnClick), for: .touchUpInside)
         } else {
             let addBtn = cell.viewWithTag(1) as! UIButton
             addBtn.addTarget(self, action: #selector(addUploadClick), for: .touchUpInside)
         }
-
+        
         cell.contentView.layer.cornerRadius = 2.0
         cell.contentView.layer.borderWidth = 1.0
         cell.contentView.layer.borderColor = UIColor(white: 0.97, alpha: 1.0).cgColor
         cell.contentView.layer.masksToBounds = true
-
+        
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-
+        
         if indexPath.row == uploadImages.count {
             addUploadClick()
         }
     }
-
+    
     @objc func uploadFailedBtnClick(sender: UIButton) {
         if let item = sender.superview?.superview as? UICollectionViewCell, let index = imagesCollection.indexPath(for: item) {
             let alert = UIAlertController(title: "此图片上传失败", message: "请选择要执行的操作", preferredStyle: .alert)
@@ -156,7 +162,7 @@ class NewPostViewController: UIViewController,
             self.present(alert, animated: true, completion: nil)
         }
     }
-
+    
     @objc func deleteUploadBtnClick(sender: UIButton) {
         if let item = sender.superview?.superview as? UICollectionViewCell, let index = imagesCollection.indexPath(for: item) {
             let alert = UIAlertController(title: "删除图片附件?", message: nil, preferredStyle: .alert)
@@ -165,7 +171,7 @@ class NewPostViewController: UIViewController,
                 HttpUtil.GET(url: Urls.deleteUploadedUrl(aid: self.uploadImages[index.item].aid!), params: nil, callback: { (ok, res) in
                     print("delete result :\(res)")
                 })
-
+                
                 self.uploadImages.remove(at: index.item)
                 self.imagesCollection.deleteItems(at: [index])
             }))
@@ -173,7 +179,7 @@ class NewPostViewController: UIViewController,
             self.present(alert, animated: true, completion: nil)
         }
     }
-
+    
     @objc func addUploadClick() {
         let handler: ((UIAlertAction) -> Void) = { alert in
             let picker = UIImagePickerController()
@@ -185,14 +191,14 @@ class NewPostViewController: UIViewController,
             }
             self.present(picker, animated: true, completion: nil)
         }
-
+        
         let alert = UIAlertController(title: "请选择图片来源", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "相册", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "拍照", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         //print(info)
@@ -204,7 +210,7 @@ class NewPostViewController: UIViewController,
         }
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
     func checkInput() -> Bool {
         var reason: String?
         if !isEditMode {
@@ -212,21 +218,22 @@ class NewPostViewController: UIViewController,
                 reason = "你还没有选择分区"
             }
         }
+        
         if titleInput.text == nil || titleInput.text?.count == 0 {
             reason = "标题不能为空"
         } else if contentInput.text == nil || contentInput.text.count == 0 {
             reason = "内容不能为空"
         }
-
+        
         if reason != nil {
             let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-
+        
         return reason == nil
     }
-
+    
     func uploadImage(position: Int, image: UIImage) {
         uploadImages[position].state = .uploading(progress: 0)
         imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
@@ -234,7 +241,7 @@ class NewPostViewController: UIViewController,
             "uid": String(App.uid!) as NSObject,
             "hash": self.uploadHash! as NSObject
         ]
-
+        
         let quality: CGFloat
         if image.size.width < 512 && image.size.height < 512 {
             quality = 1
@@ -243,7 +250,7 @@ class NewPostViewController: UIViewController,
         } else {
             quality = 0.84
         }
-
+        
         //UIImagePNGRepresentation(image)
         if let imageData = UIImageJPEGRepresentation(image, quality) {
             print("image data length:\((imageData as NSData).length)")
@@ -260,7 +267,7 @@ class NewPostViewController: UIViewController,
                     } else {
                         self?.uploadImages[position].state = .failed
                         self?.uploadImages[position].errmessage = res
-
+                        
                         let alert = UIAlertController(title: "上传图片附件出错", message: res, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
                         self?.present(alert, animated: true, completion: nil)
@@ -278,12 +285,12 @@ class NewPostViewController: UIViewController,
             }
         }
     }
-
+    
     func fidChange(fid: Int) {
         typeIds = []
         typeId = nil
         subSeletedBtn.isHidden = true
-
+        
         HttpUtil.GET(url: Urls.newPostUrl(fid: fid), params: nil) { [weak self] (ok, res) in
             if ok {
                 if let index = res.endIndex(of: "uploadformdata:") {
@@ -306,7 +313,7 @@ class NewPostViewController: UIViewController,
                         }
                     }
                 }
-
+                
                 DispatchQueue.main.async {
                     if self?.typeIds.count ?? 0 > 0 {
                         self?.typeId = self?.typeIds[0].key
@@ -317,7 +324,7 @@ class NewPostViewController: UIViewController,
             }
         }
     }
-
+    
     // 加编辑帖子的内容
     func loadEditContent() {
         HttpUtil.GET(url: Urls.editPostUrl(tid: tid!, pid: pid!), params: nil) { [weak self] (ok, res) in
@@ -329,11 +336,11 @@ class NewPostViewController: UIViewController,
                         self?.editFormDatas[input["name"]!] = v
                     }
                 }
-
+                
                 if let content = node.xpath("//*[@id=\"needmessage\"]").first {
                     self?.editFormDatas["message"] = content.text ?? ""
                 }
-
+                
                 if self?.editFormDatas["subject"] != nil && self?.editFormDatas["message"] != nil {
                     success = true
                     if let index = res.endIndex(of: "uploadformdata:") {
@@ -348,12 +355,12 @@ class NewPostViewController: UIViewController,
                     }
                 }
             }
-
+            
             DispatchQueue.main.async {
                 if success {
                     if let title = self?.editFormDatas["subject"] {
                         if title == "" {
-                            self?.titleStackView.isHidden = true
+                            self?.titleInput.isHidden = true
                         } else {
                             self?.titleInput.text = self?.editFormDatas["subject"]
                         }
@@ -369,7 +376,7 @@ class NewPostViewController: UIViewController,
             }
         }
     }
-
+    
     @IBAction func chooseSubForumClick(_ sender: UIButton) {
         let sheet = UIAlertController(title: "请选择主题分类", message: nil, preferredStyle: .actionSheet)
         for a in typeIds {
@@ -380,14 +387,14 @@ class NewPostViewController: UIViewController,
         }
         self.present(sheet, animated: true, completion: nil)
     }
-
+    
     @objc func postClick() {
         if !checkInput() {
             return
         }
         self.titleInput.resignFirstResponder()
         self.contentInput.resignFirstResponder()
-
+        
         var reason: String?
         for item in uploadImages {
             switch item.state {
@@ -398,7 +405,7 @@ class NewPostViewController: UIViewController,
             default: break
             }
         }
-
+        
         if reason != nil {
             let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "继续发帖", style: .default) { action in
@@ -410,11 +417,11 @@ class NewPostViewController: UIViewController,
             doPost()
         }
     }
-
+    
     // 开始post没有任何检查 所有的检查之前已经合法
     func doPost() {
         self.present(progress, animated: true, completion: nil)
-
+        
         var params: [String: Any]
         if !isEditMode { //发帖
             params = ["topicsubmit": "yes", "subject": titleInput.text!, "message": contentInput.text!]
@@ -426,14 +433,14 @@ class NewPostViewController: UIViewController,
             params["subject"] = titleInput.text!
             params["message"] = contentInput.text!
         }
-
+        
         // 添加附件列表
         uploadImages.forEach { (item) in
             if let aid = item.aid {
                 params["attachnew[\(aid)]"] = ""
             }
         }
-
+        
         HttpUtil.POST(url: isEditMode ? Urls.editSubmitUrl : Urls.newPostUrl(fid: self.fid!), params: params) { [weak self] (ok, res) in
             //print(res)
             var success = false
@@ -451,7 +458,7 @@ class NewPostViewController: UIViewController,
                 success = false
                 message = "网络不太通畅,请稍后重试"
             }
-
+            
             DispatchQueue.main.async { [weak self] in
                 self?.progress.dismiss(animated: true) {
                     let alert = UIAlertController(title: success ? "\(str)成功!" : "错误", message: message, preferredStyle: .alert)
@@ -461,13 +468,13 @@ class NewPostViewController: UIViewController,
                             self?.navigationController?.popViewController(animated: true)
                         })
                     }
-
+                    
                     self?.present(alert, animated: true, completion: nil)
                 }
             }
         }
     }
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UINavigationController, let target = dest.topViewController as? ChooseForumViewController {
