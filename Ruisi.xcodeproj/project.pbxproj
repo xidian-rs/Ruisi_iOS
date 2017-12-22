@@ -38,6 +38,8 @@
 		2F1C31041FEBDCD900498C96 /* SmileyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30FC1FEBDCD900498C96 /* SmileyCell.swift */; };
 		2F1C31081FEBDFC600498C96 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C31071FEBDFC600498C96 /* ToolbarView.swift */; };
 		2F1C310A1FEBDFD500498C96 /* ToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F1C31091FEBDFD500498C96 /* ToolbarView.xib */; };
+		2F1C310E1FEBF6A200498C96 /* SimpleReplyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F1C310D1FEBF6A200498C96 /* SimpleReplyView.xib */; };
+		2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C310F1FEBF6AF00498C96 /* SimpleReplyView.swift */; };
 		2F24B9931FCE9213001D287E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F24B9921FCE9213001D287E /* Reachability.swift */; };
 		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
@@ -49,6 +51,7 @@
 		2F3885811FE2B022000749F4 /* ColorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885801FE2B022000749F4 /* ColorItemView.swift */; };
 		2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885821FE2B33A000749F4 /* ThemeManager.swift */; };
 		2F3B29531FEA450B00C34F13 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B29521FEA450A00C34F13 /* Extension.swift */; };
+		2F3DDA9D1FED41600082C670 /* HtmlLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DDA9C1FED41600082C670 /* HtmlLabel.swift */; };
 		2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */; };
 		2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE911F03A92300CC8C92 /* StarViewController.swift */; };
 		2F4FDA0F1FCC4A9D00CD2A7D /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2E91881FC95F81002CA690 /* Kingfisher.framework */; };
@@ -286,6 +289,8 @@
 		2F1C30FC1FEBDCD900498C96 /* SmileyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyCell.swift; sourceTree = "<group>"; };
 		2F1C31071FEBDFC600498C96 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		2F1C31091FEBDFD500498C96 /* ToolbarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ToolbarView.xib; sourceTree = "<group>"; };
+		2F1C310D1FEBF6A200498C96 /* SimpleReplyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimpleReplyView.xib; sourceTree = "<group>"; };
+		2F1C310F1FEBF6AF00498C96 /* SimpleReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleReplyView.swift; sourceTree = "<group>"; };
 		2F24B9921FCE9213001D287E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
 		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
@@ -298,6 +303,7 @@
 		2F3885801FE2B022000749F4 /* ColorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorItemView.swift; sourceTree = "<group>"; };
 		2F3885821FE2B33A000749F4 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		2F3B29521FEA450A00C34F13 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2F3DDA9C1FED41600082C670 /* HtmlLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlLabel.swift; sourceTree = "<group>"; };
 		2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		2F42FE911F03A92300CC8C92 /* StarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarViewController.swift; sourceTree = "<group>"; };
 		2F4FD9F41FCC4A2200CD2A7D /* Kanna.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kanna.xcodeproj; path = ../Kanna/Kanna.xcodeproj; sourceTree = "<group>"; };
@@ -481,6 +487,7 @@
 		2FAFE09B1FE94EE500AD7FDC /* htmlTextView */ = {
 			isa = PBXGroup;
 			children = (
+				2F3DDA9C1FED41600082C670 /* HtmlLabel.swift */,
 				2FAFE0B31FE94F3B00AD7FDC /* HtmlTextView.swift */,
 				2FAFE0B11FE94F3A00AD7FDC /* AtrributeConveter.swift */,
 				2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */,
@@ -588,6 +595,8 @@
 				2F1C30F71FEBDCD900498C96 /* SmileyView.xib */,
 				2F1C31071FEBDFC600498C96 /* ToolbarView.swift */,
 				2F1C31091FEBDFD500498C96 /* ToolbarView.xib */,
+				2F1C310D1FEBF6A200498C96 /* SimpleReplyView.xib */,
+				2F1C310F1FEBF6AF00498C96 /* SimpleReplyView.swift */,
 			);
 			path = replyView;
 			sourceTree = "<group>";
@@ -771,6 +780,7 @@
 				2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */,
 				2F1C30FF1FEBDCD900498C96 /* SmileyView.xib in Resources */,
 				2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */,
+				2F1C310E1FEBF6A200498C96 /* SimpleReplyView.xib in Resources */,
 				2F16B7501EA50A390068EE20 /* assets in Resources */,
 				2F1C310A1FEBDFD500498C96 /* ToolbarView.xib in Resources */,
 				2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */,
@@ -868,10 +878,12 @@
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2F3885731FE2A883000749F4 /* ThemeViewController.swift in Sources */,
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
+				2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
 				2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */,
 				2F1C31081FEBDFC600498C96 /* ToolbarView.swift in Sources */,
 				2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */,
+				2F3DDA9D1FED41600082C670 /* HtmlLabel.swift in Sources */,
 				2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */,
 				2F3885811FE2B022000749F4 /* ColorItemView.swift in Sources */,
 			);

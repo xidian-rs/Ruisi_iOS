@@ -130,5 +130,8 @@ class RitchTextView: UITextView {
         
         //重新设置光标的位置
         selectedRange = NSRange(location: range.location + 1, length: 0)
+        
+        //手冻执行代理
+        delegate?.textViewDidChange?(self)
     }
 }

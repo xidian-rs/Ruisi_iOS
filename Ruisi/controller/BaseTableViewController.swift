@@ -34,7 +34,7 @@ class BaseTableViewController<T>: UITableViewController {
                     if (tableView.tableFooterView as? LoadMoreView) != nil {
                         tableView.tableFooterView?.isHidden = false
                     } else {
-                        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
+                        tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
                     }
                 } else { //隐藏footer
                     tableView.tableFooterView?.isHidden = true

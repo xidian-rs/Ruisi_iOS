@@ -10,12 +10,21 @@ import UIKit
 
 // 软键盘能够顶起的view iPhoneX 适配
 class AboveKeyboardView: UIView {
+    
+    //外部接口用于关闭键盘处理
+    public var shouldHandleKeyBoard = true
+    
     private var keyboardIsVisible = false
     private var keyboardHeight: CGFloat = 0.0
     private var currentCenter: CGPoint?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        registerForKeyboardNotifications()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         registerForKeyboardNotifications()
     }
 
@@ -43,6 +52,7 @@ class AboveKeyboardView: UIView {
     // MARK: Triggered Functions
 
     @objc private func keyboardWillShow(notification: NSNotification) {
+        if !shouldHandleKeyBoard { return }
         keyboardIsVisible = true
         guard let userInfo = notification.userInfo else {
             return
@@ -52,6 +62,7 @@ class AboveKeyboardView: UIView {
             self.keyboardHeight = keyboardHeight
         }
         
+    
         let point = userInfo["UIKeyboardCenterEndUserInfoKey"] as! CGPoint
         if !self.isHidden {
             if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
@@ -67,7 +78,9 @@ class AboveKeyboardView: UIView {
         }
     }
 
-    @objc private func keyboardWillBeHidden(notification: NSNotification) {
+    @objc func keyboardWillBeHidden(notification: NSNotification) {
+        if !shouldHandleKeyBoard { return }
+        
         self.keyboardHeight = 0
         keyboardIsVisible = false
         if !self.isHidden {

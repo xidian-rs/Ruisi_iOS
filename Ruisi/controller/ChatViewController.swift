@@ -13,9 +13,7 @@ import Kanna
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var inputTextField: UITextField!
-    @IBOutlet weak var postingProgress: UIActivityIndicatorView!
-    @IBOutlet weak var postBtn: UIButton!
+    @IBOutlet weak var replyView: SimpleReplyView!
     
     var uid: Int?
     var username: String?
@@ -49,17 +47,23 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         super.viewDidLoad()
-        inputTextField.delegate = self
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        tableView.separatorStyle = .none;
         tableView.delegate = self
         tableView.dataSource = self
-        postingProgress.stopAnimating()
+        
+        replyView.isSending = false
+        replyView.shouldHandleKeyBoard = false
+        replyView.onSubmitClick { [weak self] (text,_) in
+            self?.doSubmit(text: text)
+        }
         
         if ((presentingViewController as? UserDetailViewController) != nil) {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "关闭", style: .plain, target: self, action: #selector(closeClick))
         }
         
-        self.tableView.estimatedRowHeight = 60
+        self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.title = username
@@ -82,50 +86,46 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    @IBAction func submitClick(_ sender: UIButton) {
-        if let text = inputTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
-            text.count > 0 {
-            inputTextField.resignFirstResponder()
-            postingProgress.startAnimating()
-            postBtn.isEnabled = false
-            let url = replyUrl ?? Urls.postChatUrl(tuid: uid!)
-            HttpUtil.POST(url: url, params: ["touid": uid!, "message": text], callback: { [weak self] (ok, res) in
-                //print(res)
-                var success = false
-                var reason: String?
-                if ok {
-                    if res.contains("操作成功") {
-                        success = true
-                        self?.datas.append(ChatData(uid: App.uid!, uname: App.username ?? "我", message: text, time: "刚刚"))
-                    } else if res.contains("两次发送短消息太快") {
-                        reason = "两次发送短消息太快，请稍候再发送"
-                    } else {
-                        reason = "我也不知道是什么原因发送失败"
-                    }
+    private func doSubmit(text: String) {
+        replyView.isSending = true
+        
+        let url = replyUrl ?? Urls.postChatUrl(tuid: uid!)
+        HttpUtil.POST(url: url, params: ["touid": uid!, "message": text], callback: { [weak self] (ok, res) in
+            //print(res)
+            var success = false
+            var reason: String?
+            if ok {
+                if res.contains("操作成功") {
+                    success = true
+                    self?.datas.append(ChatData(uid: App.uid!, uname: App.username ?? "我", message: text, time: "刚刚"))
+                } else if res.contains("两次发送短消息太快") {
+                    reason = "两次发送短消息太快，请稍候再发送"
                 } else {
-                    reason = "无法连接到睿思服务器,请检查网络连接"
-                    //network error
+                    reason = "我也不知道是什么原因发送失败"
+                }
+            } else {
+                reason = "无法连接到睿思服务器,请检查网络连接"
+                //network error
+            }
+            
+            DispatchQueue.main.async {
+                if success {
+                    self?.tableView.beginUpdates()
+                    self?.tableView.insertRows(at: [IndexPath.init(row: (self?.datas.count ?? 1) - 1, section: 0)], with: .automatic)
+                    self?.tableView.endUpdates()
+                    self?.replyView.clearText(hide: false)
+                } else {
+                    let alert = UIAlertController(title: "错误", message: reason, preferredStyle: .alert)
+                    let action = UIAlertAction(title: "好", style: .cancel, handler: nil)
+                    alert.addAction(action)
+                    self?.present(alert, animated: true)
                 }
                 
-                DispatchQueue.main.async {
-                    if success {
-                        self?.tableView.beginUpdates()
-                        self?.tableView.insertRows(at: [IndexPath.init(row: (self?.datas.count ?? 1) - 1, section: 0)], with: .automatic)
-                        self?.tableView.endUpdates()
-                        self?.inputTextField.text = nil
-                    } else {
-                        let alert = UIAlertController(title: "错误", message: reason, preferredStyle: .alert)
-                        let action = UIAlertAction(title: "好", style: .cancel, handler: nil)
-                        alert.addAction(action)
-                        self?.present(alert, animated: true)
-                    }
-                    
-                    self?.postingProgress.stopAnimating()
-                    self?.postBtn.isEnabled = true
-                }
-            })
-        }
+                self?.replyView.isSending = false
+            }
+        })
     }
+    
     
     @objc func pullRefresh() {
         loadData()
@@ -196,7 +196,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 username = App.username ?? "我"
             }
             
-            let content = m.css(".dialog_t").first?.text ?? "" //TODO innerHtml
+            let content = m.css(".dialog_t").first?.innerHTML ?? ""
             let time = m.css(".date").first?.text ?? ""
             
             subDatas.append(ChatData(uid: uid, uname: username, message: content, time: time))
@@ -232,9 +232,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let contentLabel = cell.viewWithTag(2) as! UILabel
         let timeLabel = cell.viewWithTag(3) as! UILabel
         
+        print(data.message)
+        
         avatar.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName:"placeholder"))
         timeLabel.text = data.time
-        contentLabel.text = data.message
+        contentLabel.attributedText = AttributeConverter(font: contentLabel.font, textColor: contentLabel.textColor).convert(src: data.message)
         return cell
     }
     
@@ -250,11 +252,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             label.sizeToFit()
             
             tableView.backgroundView = label;
-            tableView.separatorStyle = .none;
             return 0
         } else {
             tableView.backgroundView = nil
-            tableView.separatorStyle = .singleLine
             return 1
         }
     }
@@ -280,24 +280,5 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @objc func closeClick() {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
-}
-
-extension ChatViewController: UITextFieldDelegate {
-    // 处理软键盘
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }
