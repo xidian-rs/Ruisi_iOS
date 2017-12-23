@@ -12,6 +12,9 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var smileyToolbar: SmileyToolbar!
     @IBOutlet weak var smileyCollection: UICollectionView!
+    @IBOutlet weak var smileyPageControl: UIPageControl!
+    
+    public let pageSize = 20
     
     // 表情点击回调
     public var smileyClick: ((_ item: SmileyItem?) -> ())?
@@ -25,6 +28,11 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        smileyPageControl.currentPageIndicatorTintColor = UIColor(white: 0.90, alpha: 1.0)
+        smileyPageControl.pageIndicatorTintColor = UIColor(white: 0.97, alpha: 1.0)
+        smileyPageControl.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
+        switchTab(section: 0, item: 0)
+        
         smileyCollection.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
         smileyCollection.register(SmileyCell.self, forCellWithReuseIdentifier: "cell")
         smileyToolbar.itemSelected = { [weak self] (btn,pos) in
@@ -34,7 +42,7 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return SmileyManager.shared.smileys[section].pageCount(size: 20)
+        return SmileyManager.shared.smileys[section].pageCount(size: pageSize)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -47,6 +55,29 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
         let smileys = SmileyManager.shared.smileys[indexPath.section].getSmileys(page: indexPath.item, pageSize: cell.pageSize)
         cell.setSmileys(smileys: smileys)
         return cell
+    }
+    
+    
+    // 切换tab
+    func switchTab(section: Int, item: Int) {
+        smileyPageControl.numberOfPages = SmileyManager.shared.smileys[section].pageCount(size: pageSize)
+        smileyPageControl.currentPage = item
+        //print("section: \(section), item: \(item)")
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let page =  Int((scrollView.contentOffset.x + bounds.width * 0.5) / bounds.width)
+        let index = SmileyManager.shared.indexPathFor(page: page, pageSize: pageSize)
+        smileyToolbar.selectItem(at: index.section)
+    }
+    
+    var lastPage = 0
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let page =  Int((scrollView.contentOffset.x + bounds.width * 0.5) / bounds.width)
+        if page == lastPage { return }
+        lastPage = page
+        let index = SmileyManager.shared.indexPathFor(page: page, pageSize: pageSize)
+        switchTab(section: index.section, item: index.item)
     }
 }
 

@@ -13,7 +13,7 @@ import UIKit
 class SmileyManager {
     private static var privateManager: SmileyManager?
     
-    public static var shared:SmileyManager {
+    public static var shared: SmileyManager {
         if privateManager == nil {
             privateManager = SmileyManager()
             
@@ -22,6 +22,28 @@ class SmileyManager {
     }
     
     public  var  smileys: [SmileyGroup]
+    
+    public func pageCount(size: Int) -> Int {
+        return smileys.reduce(0, {$0 + $1.pageCount(size: size)})
+    }
+    
+    // 根据scrollview当前的页数返回处于那个组的哪一页
+    public func indexPathFor(page: Int, pageSize: Int) -> IndexPath {
+        var pageBack = page
+        var section = 0
+        var item = 0
+        for (k,v) in smileys.enumerated() {
+            if pageBack <= v.pageCount(size: pageSize) - 1 {
+                section = k
+                item = pageBack
+                break
+            }else {
+                pageBack -= v.pageCount(size: pageSize)
+            }
+        }
+        
+        return IndexPath(item: item, section: section)
+    }
     
     private init() {
         // 读文件

@@ -36,7 +36,7 @@ class SmileyCell: UICollectionViewCell {
     
     func setupUi() {
         let leftMargin: CGFloat = 8
-        let bottomMargin: CGFloat = 16
+        let bottomMargin: CGFloat = 0
         
         let w = (bounds.width - 2 * leftMargin) / CGFloat(columnCount)
         let h = (bounds.height - bottomMargin) / CGFloat(rowCount)
