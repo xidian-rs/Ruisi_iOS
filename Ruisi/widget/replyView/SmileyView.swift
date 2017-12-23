@@ -57,7 +57,6 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
     
-    
     // 切换tab
     func switchTab(section: Int, item: Int) {
         smileyPageControl.numberOfPages = SmileyManager.shared.smileys[section].pageCount(size: pageSize)

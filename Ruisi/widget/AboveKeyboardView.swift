@@ -13,9 +13,10 @@ class AboveKeyboardView: UIView {
     
     //外部接口用于关闭键盘处理
     public var shouldHandleKeyBoard = true
+    public static var keyboardHeight: CGFloat = 0.0
     
     private var keyboardIsVisible = false
-    private var keyboardHeight: CGFloat = 0.0
+    //备份当前的center以便键盘隐藏还原
     private var currentCenter: CGPoint?
 
     required init?(coder aDecoder: NSCoder) {
@@ -50,52 +51,59 @@ class AboveKeyboardView: UIView {
     }
 
     // MARK: Triggered Functions
+    /*
+     AnyHashable("UIKeyboardCenterBeginUserInfoKey"): NSPoint: {187.5, 775},
+     AnyHashable("UIKeyboardIsLocalUserInfoKey"): 1,
+     AnyHashable("UIKeyboardCenterEndUserInfoKey"): NSPoint: {187.5, 538},
+     AnyHashable("UIKeyboardBoundsUserInfoKey"): NSRect: {{0, 0}, {375, 258}},
+     AnyHashable("UIKeyboardFrameEndUserInfoKey"): NSRect: {{0, 409}, {375, 258}},
+     AnyHashable("UIKeyboardAnimationCurveUserInfoKey"): 7,
+     AnyHashable("UIKeyboardFrameBeginUserInfoKey"): NSRect: {{0, 667}, {375, 216}},
+     AnyHashable("UIKeyboardAnimationDurationUserInfoKey"): 0.25
+    */
 
     @objc private func keyboardWillShow(notification: NSNotification) {
+        print("will show")
         if !shouldHandleKeyBoard { return }
         keyboardIsVisible = true
-        guard let userInfo = notification.userInfo else {
+        guard let info = notification.userInfo, let rect = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
         }
         
-        if let keyboardHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height, keyboardHeight > 0 {
-            self.keyboardHeight = keyboardHeight
-        }
+        let curveValue = ((info[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue) ?? 7
+        let duration = (info[UIKeyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
         
-    
-        let point = userInfo["UIKeyboardCenterEndUserInfoKey"] as! CGPoint
-        if !self.isHidden {
-            if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
-               let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber {
-
-                UIView.beginAnimations(nil, context: nil)
-                UIView.setAnimationDuration(duration)
-                UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut)
-                self.center = CGPoint(x: self.center.x, y: point.y - self.frame.height / 2 - keyboardHeight / 2)
-                UIView.commitAnimations()
-                print("move -> height:\(self.currentCenter!.y - (point.y - self.frame.height / 2 - keyboardHeight / 2))")
-            }
-        }
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(duration)
+        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curveValue) ?? UIViewAnimationCurve.easeInOut)
+        
+        let keyboardHeight = rect.height
+        AboveKeyboardView.keyboardHeight = keyboardHeight
+        print("keyboardHeight :\(keyboardHeight) keyboardTop:\(rect.origin.y)")
+        
+        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight)
+        UIView.commitAnimations()
     }
 
     @objc func keyboardWillBeHidden(notification: NSNotification) {
+        print("will hide")
         if !shouldHandleKeyBoard { return }
-        
-        self.keyboardHeight = 0
         keyboardIsVisible = false
-        if !self.isHidden {
-            guard let userInfo = notification.userInfo else {
-                return
-            }
-            if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double,
-               let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber, let center = self.currentCenter {
-                
-                UIView.beginAnimations(nil, context: nil)
-                UIView.setAnimationDuration(TimeInterval(duration))
-                UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve.intValue) ?? UIViewAnimationCurve.easeInOut)
-                self.center = center
-                UIView.commitAnimations()
-            }
+        guard let info = notification.userInfo, let rect = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
         }
+        
+        let curveValue = ((info[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue) ?? 7
+        let duration = (info[UIKeyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
+        
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(duration)
+        UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curveValue) ?? UIViewAnimationCurve.easeInOut)
+        
+        let keyboardHeight = rect.height
+        print("keyboardHeight :\(keyboardHeight) keyboardTop:\(rect.origin.y)")
+        
+        self.center = self.currentCenter!
+        UIView.commitAnimations()
     }
 }

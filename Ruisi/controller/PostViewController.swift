@@ -491,7 +491,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - 评论相关
 extension PostViewController {
-    // 评论楼主
+    // 评论楼主 TODO
     @IBAction func commentClick(_ sender: UIBarButtonItem) {
         if checkLogin(message: "你需要登陆才回帖") {
             
@@ -506,7 +506,20 @@ extension PostViewController {
     @objc func replyCzClick(_ sender: UIButton) {
         if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
             let url =  datas[indexPath.row].replyUrl {
+            
             replyView.showReplyBox(clear: true, placeholder: "回复:\(datas[indexPath.row].index) \(datas[indexPath.row].author)", userinfo: ["url": url])
+            
+            let y1 = tableView.cellForRow(at: indexPath)!.frame.maxY - tableView.contentOffset.y
+            let y2 = view.bounds.height - AboveKeyboardView.keyboardHeight - replyView.frame.height
+            
+            //print("y1:\(y1)  \(view.bounds.height - 253)")
+            if y1 > y2 {
+                UIView.beginAnimations(nil, context: nil)
+                UIView.setAnimationDuration(0.25)
+                UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: 7)!)
+                tableView.contentOffset = CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + (y1 - y2))
+                UIView.commitAnimations()
+            }
         }
     }
     

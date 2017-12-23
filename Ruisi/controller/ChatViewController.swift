@@ -55,6 +55,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         replyView.isSending = false
         replyView.shouldHandleKeyBoard = false
+        replyView.placeholder = "发送私信"
         replyView.onSubmitClick { [weak self] (text,_) in
             self?.doSubmit(text: text)
         }

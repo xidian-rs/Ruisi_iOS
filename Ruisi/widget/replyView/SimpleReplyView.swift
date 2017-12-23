@@ -17,11 +17,9 @@ class SimpleReplyView: AboveKeyboardView {
     @IBOutlet weak var contentView: RitchTextView!
     
     private var userinfo: [AnyHashable : Any]?
-    
-    public var defaultPlaceholder: String?
-    private var placeholder: String? {
+    public var placeholder: String? {
         didSet{
-            // TODO
+            contentView.placeholder = placeholder
         }
     }
     
@@ -90,7 +88,7 @@ class SimpleReplyView: AboveKeyboardView {
     public func showReplyBox(clear: Bool, placeholder: String? = nil, userinfo: [AnyHashable : Any]? = nil) {
         self.userinfo = userinfo
         self.placeholder = placeholder
-        self.contentView.resignFirstResponder()
+        self.contentView.becomeFirstResponder()
         if clear {
             clearText(hide: false)
         }

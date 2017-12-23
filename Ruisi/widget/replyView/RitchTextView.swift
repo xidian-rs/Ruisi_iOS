@@ -12,6 +12,8 @@ class RitchTextView: UITextView {
     
     lazy var smileyView: SmileyView = SmileyView.smileyView()
     lazy var toolbarView: ToolbarView = ToolbarView.toolbarView()
+    lazy var placeholderBiew: UILabel = UILabel()
+    
     public weak var context: UIViewController?
     
     public var showToolbar: Bool = false {
@@ -25,15 +27,41 @@ class RitchTextView: UITextView {
         }
     }
     
+    public var placeholder: String? {
+        didSet {
+            placeholderBiew.text = placeholder
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         print("RitchTextView")
+        setUpPlaceholder()
         setUpToolbarView()
+    }
+    
+    private func setUpPlaceholder() {
+        placeholderBiew.font = font
+        placeholderBiew.textColor = UIColor.lightGray
+        placeholderBiew.sizeToFit()
+        placeholderBiew.frame = CGRect(x: 5, y: 8, width: 100, height: 15)
+        
+        addSubview(placeholderBiew)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textChnage), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+    }
+    
+    @objc func textChnage(_ notification: Notification) {
+        placeholderBiew.isHidden = hasText
     }
     
     private func setUpToolbarView() {
         if !showToolbar { return }
-        
+
         toolbarView.onAtClick {[weak self] (btn) in
             let dest = self?.context?.storyboard?.instantiateViewController(withIdentifier: "chooseFriendViewNavigtion") as! UINavigationController
             if let vc = dest.topViewController as? ChooseFriendViewController {

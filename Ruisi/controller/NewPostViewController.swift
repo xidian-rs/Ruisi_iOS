@@ -65,6 +65,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         contentInput.layer.cornerRadius = 2.0
         contentInput.showToolbar = true
         contentInput.context = self
+        contentInput.placeholder = "帖子内容"
         
         subSeletedBtn.isHidden = true
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(postClick))]
