@@ -61,10 +61,12 @@ class SignViewController: UIViewController {
 
 
     @IBAction func chooseClick(_ sender: UIButton) {
+        self.inputText.resignFirstResponder()
         present(chooseAlert, animated: true, completion: nil)
     }
 
     @IBAction func signBtnClick(_ sender: UIButton) {
+        self.inputText.resignFirstResponder()
         showLoadingView()
 
         let xinqin = itemsValue[currentSelect]

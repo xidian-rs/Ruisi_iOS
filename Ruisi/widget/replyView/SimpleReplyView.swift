@@ -81,7 +81,9 @@ class SimpleReplyView: AboveKeyboardView {
     }
     
     @IBAction func smileyBtnClick(_ sender: UIButton) {
-        contentView.toggleEmojiInput()
+        if contentView.isEditable {
+            contentView.toggleEmojiInput()
+        }
     }
     
     // 主动显示回复框 并获取焦点 userinfo 用来传递数据 clear是否清除

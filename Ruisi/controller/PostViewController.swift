@@ -28,6 +28,7 @@ class PostViewController: UIViewController {
     private var refreshView: UIRefreshControl!
     private var albums = [AlbumData]()
     private var lastLoad: UInt64 = 0
+    private var replyLzUrl: String? //回复楼主的地址
     
     private var loading = false
     open var isLoading: Bool {
@@ -49,15 +50,6 @@ class PostViewController: UIViewController {
         }
     }
     
-    func getUrl(page: Int) -> String {
-        if self.currentPage > self.pageSum {
-            self.currentPage = self.pageSum
-            return Urls.getPostUrl(tid: tid!) + "&page=\(pageSum)"
-        } else {
-            return Urls.getPostUrl(tid: tid!) + "&page=\(page)"
-        }
-    }
-    
     // close
     // self.navigationController?.popViewController(animated: true)
     override func viewDidLoad() {
@@ -67,15 +59,8 @@ class PostViewController: UIViewController {
         }
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         
-        //回复框回调
-        replyView.onSubmitClick { (content, userinfo) in
-            if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
-                print("message is:||\(content)||len:\(content.count)")
-                self.doReply(content: content, userinfo: userinfo)
-            }
-        }
-
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
@@ -83,44 +68,44 @@ class PostViewController: UIViewController {
         // Initialize the refresh control.
         refreshView = UIRefreshControl()
         Widgets.setRefreshControl(refreshView)
-        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
+        refreshView.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.refreshControl = refreshView
         refreshView.beginRefreshing()
-
+        
         self.postTitle = self.title
         self.title = "帖子正文"
         
+        //回复框回调
+        self.replyView.placeholder = "发表评论"
+        self.replyView.contentView.isEditable = false
+        replyView.onSubmitClick { (content, userinfo) in
+            if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
+                print("message is:||\(content)||len:\(content.count)")
+                self.doReply(content: content, userinfo: userinfo)
+            }
+        }
+        
         loadData()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.hidesBarsOnSwipe = true
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnSwipe = false
-    }
-
-    @objc func pullRefresh() {
-        print("下拉刷新'")
-        currentPage = 1
-        pageSum = Int.max
-        loadData()
     }
     
     //刷新数据
     @objc func refreshData() {
         print("refresh click")
-        self.currentPage = 1
-        self.loadData()
+        currentPage = 1
+        pageSum = Int.max
+        loadData()
     }
     
-    
-    @IBAction func backToTopClick(_ sender: Any) {
-        tableView.setContentOffset(CGPoint.zero, animated: true)
-    }
     
     func loadData() {
         // 所持请求的数据正在加载中/未加载
@@ -129,9 +114,10 @@ class PostViewController: UIViewController {
         }
         refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
+        let url =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
         print("load data page:\(currentPage) sumPage:\(pageSum)")
-        HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
-            //print(res)
+        HttpUtil.GET(url: url, params: nil) { [weak self] ok, res in
+            guard let this = self else { return }
             var str: String?
             var subDatas: [PostData] = []
             if ok { //返回的数据是我们要的
@@ -143,7 +129,7 @@ class PostViewController: UIViewController {
                     }
                     
                     //load subdata
-                    subDatas = self.parseData(doc: doc)
+                    subDatas = this.parseData(doc: doc)
                 }
                 let df = DateFormatter()
                 df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
@@ -152,11 +138,9 @@ class PostViewController: UIViewController {
                 str = "加载失败"
             }
             
+            //人为加长加载的时间
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-                //人为加长加载的时间
-                guard let this = self else {
-                    return
-                }
+                guard let this = self else { return }
                 if subDatas.count > 0 {
                     if this.currentPage == 1 {
                         this.datas = subDatas
@@ -181,6 +165,13 @@ class PostViewController: UIViewController {
                 let attrStr = NSAttributedString(string: str ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray])
                 this.tableView.refreshControl?.attributedTitle = attrStr
                 this.isLoading = false
+                if self?.replyLzUrl == nil { //不支持回复
+                    self?.replyView.placeholder = "本帖不支持回复(已关闭,没有权限\(App.isLogin ? "" : ",未登陆"))"
+                    self?.replyView.contentView.isEditable = false
+                } else {
+                    self?.replyView.placeholder = "发表评论"
+                    self?.replyView.contentView.isEditable = true
+                }
             }
         }
     }
@@ -194,12 +185,6 @@ class PostViewController: UIViewController {
         
         let comments = doc.xpath("/html/body/div[1]/div[@class=\"plc cl\"]")
         if comments.count > 0 {
-            //获得回复楼主的url
-            var replyUrl: String?
-            if self.datas.count == 0 {
-                replyUrl = doc.xpath("//*[@id=\"fastpostform\"]").first?["action"]
-            }
-            
             //获取总页数 和当前页数
             if let pg = doc.css(".pg").first {
                 // var page = Utils.getNum(from: pg.css("strong").first?.text ?? "1")
@@ -209,7 +194,8 @@ class PostViewController: UIViewController {
                 }
             }
             print("page:\(currentPage) sum:\(pageSum)")
-            
+            //获得回复楼主的url 为nil不显示评论框
+            replyLzUrl = (doc.innerHTML?.contains("您暂时没有权限发表") ?? false) ? nil : doc.xpath("//*[@id=\"fastpostform\"]").first?["action"]
             //解析评论列表
             for comment in comments {
                 var pid: Int?
@@ -252,15 +238,11 @@ class PostViewController: UIViewController {
                     time = timeNode.text?.replacingOccurrences(of: "收藏", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
                 }
                 //层主url
-                if self.datas.count > 0 || subDatas.count > 0 {
-                    replyUrl = comment.xpath("div/div[2]/input").first?["href"]
-                }
-                
+                let replyCzUrl = comment.xpath("div/div[2]/input").first?["href"]
                 let content = comment.xpath("div/div[1]").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines)
-                
                 let c = PostData(content: content ?? "获取内容失败", author: author ?? "未知作者",
                                  uid: uid ?? 0, time: time ?? "未知时间",
-                                 pid: pid ?? 0, index: index ?? "#?", replyUrl: replyUrl)
+                                 pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
                 subDatas.append(c)
             }
             
@@ -275,8 +257,6 @@ class PostViewController: UIViewController {
                 self.showBackAlert(title: "无法查看帖子", message: errorText ?? "帖子不存在")
             }
         }
-        
-        
         return subDatas
     }
     
@@ -299,32 +279,24 @@ class PostViewController: UIViewController {
     
     
     //显示更多按钮
-    @IBAction func shareBtnClick(_ sender: UIBarButtonItem) {
+    @objc func moreClick(_ sender: UIBarButtonItem) {
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default, handler: { action in
-            UIApplication.shared.open(URL(string: self.getUrl(page: self.currentPage))!,
-                                      options: [:], completionHandler: nil)
-        }))
-        
-        
-        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default, handler: { action in
+        sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default) { action in
+            UIApplication.shared.open(URL(string: Urls.getPostUrl(tid: self.tid!) + "&page=\(self.currentPage)")!)
+        })
+        sheet.addAction(UIAlertAction(title: "收藏文章", style: .default) { action in
             print("star click")
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
                 self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
             })
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "分享文章", style: .default, handler: { action in
+        })
+        sheet.addAction(UIAlertAction(title: "分享文章", style: .default) { action in
             print("share click")
             let shareVc = UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
             shareVc.setValue(self.postTitle, forKey: "subject")
             self.present(shareVc, animated: true, completion: nil)
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (UIAlertAction) in
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
+        })
+        sheet.addAction(UIAlertAction(title: "关闭", style: .cancel, handler: nil))
         self.present(sheet, animated: true, completion: nil)
     }
     
@@ -514,11 +486,7 @@ extension PostViewController {
             
             //print("y1:\(y1)  \(view.bounds.height - 253)")
             if y1 > y2 {
-                UIView.beginAnimations(nil, context: nil)
-                UIView.setAnimationDuration(0.25)
-                UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: 7)!)
-                tableView.contentOffset = CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + (y1 - y2))
-                UIView.commitAnimations()
+                tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + (y1 - y2)), animated: true)
             }
         }
     }

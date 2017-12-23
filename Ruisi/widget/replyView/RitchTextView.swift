@@ -51,6 +51,11 @@ class RitchTextView: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(textChnage), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        placeholderBiew.frame = CGRect(x: 5, y: 8, width: frame.width - 10, height: 15)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
     }
