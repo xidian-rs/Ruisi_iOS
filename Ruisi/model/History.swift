@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreData
+import UIKit
 
 class History {
 
@@ -16,6 +16,8 @@ class History {
     public var author: String
     public var created: String
     public var lastRead: String
+    
+    public var rowHeight: CGFloat?
 
     init(tid: Int, title: String?, author: String?, created: String?, lastRead: String) {
         self.tid = tid

@@ -19,6 +19,38 @@ extension String {
     }
 }
 
+extension UILabel {
+    func textHeight(for width: CGFloat) -> CGFloat {
+        guard let text = text else {
+            return 0
+        }
+        return text.height(for: width, font: font)
+    }
+    
+    func attributedTextHeight(for width: CGFloat) -> CGFloat {
+        guard let attributedText = attributedText else {
+            return 0
+        }
+        return attributedText.height(for: width)
+    }
+}
+
+extension String {
+    func height(for width: CGFloat, font: UIFont) -> CGFloat {
+        let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let actualSize = self.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font: font], context: nil)
+        return actualSize.height
+    }
+}
+
+extension NSAttributedString {
+    func height(for width: CGFloat) -> CGFloat {
+        let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let actualSize = boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], context: nil)
+        return actualSize.height
+    }
+}
+
 extension UIImage {
     func scaleToWidth(width: CGFloat) -> UIImage {
         if self.size.width <= width {

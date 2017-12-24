@@ -11,7 +11,6 @@ import Kanna
 
 // 我的好友页面
 class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDelegate {
-
     private var datasCopy: [FriendData] = []
     private var searchMode = false
     private var isInSearchMode: Bool {

@@ -7,18 +7,21 @@
 //
 
 import Foundation
+import UIKit
 
 class PostData {
 
-    var content: String
+    var content: NSAttributedString
     var author: String
     var uid: Int
     var time: String
     var pid: Int
     var index: String //楼层
     var replyUrl: String?
+    
+    public var rowHeight: CGFloat = 0
 
-    init(content: String, author: String, uid: Int, time: String,
+    init(content: NSAttributedString, author: String, uid: Int, time: String,
          pid: Int, index: String, replyUrl: String? = nil) {
         self.content = content
         self.author = author

@@ -15,8 +15,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
     private var lastLoginState = false
     
     override func viewDidLoad() {
-        
-        self.autoRowHeight = true
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         lastLoginState = App.isLogin
@@ -186,6 +185,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
             
             let d = MessageData(type: type, title: title, tid: tid, uid: uid, author: author,
                                 time: time, content: content.trimmingCharacters(in: .whitespacesAndNewlines), isRead: isRead)
+            d.rowHeight = caculateRowheight(width: self.tableViewWidth, content: d.content)
             subDatas.append(d)
         }
         return subDatas
@@ -215,6 +215,19 @@ class MessageViewController: BaseTableViewController<MessageData> {
         isReadLabel.isHidden = data.isRead
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高 content 最多4行最高72
+    private func caculateRowheight(width: CGFloat, content: String) -> CGFloat {
+        let contentHeight = min(content.height(for: width - 30 - 36 - 8, font: UIFont.systemFont(ofSize: 15)), 72)
+        // 上间距(12) + 标题(19.5) + 间距(5) + 正文(计算) + 下间距(10)
+        // 12 是arrawLabel的内边距
+        return 12 + 19.5 + 5 + contentHeight + 12 + 10
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

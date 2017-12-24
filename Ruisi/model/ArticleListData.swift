@@ -21,6 +21,7 @@ public class ArticleListData {
     public var titleColor: UIColor? //文章颜色
 
     //校园网才有的
+    public var isSchoolNet: Bool = false
     public var uid: Int?
     public var views: String?
     public var time: String?
@@ -28,10 +29,13 @@ public class ArticleListData {
     //图片板块才有
     public var image: String?
 
+    //缓存的行高
+    public var rowHeight: CGFloat = 0
 
-    init(title: String, tid: Int, author: String = "未知", replys: String = "0",
+    init(isSchoolNet: Bool = false, title: String, tid: Int, author: String = "未知", replys: String = "0",
          read: Bool = false, haveImage: Bool = false, titleColor: UIColor? = nil,
          uid: Int? = nil, views: String? = nil, time: String? = nil, image: String? = nil) {
+        self.isSchoolNet = isSchoolNet
         self.title = title
         self.tid = tid
         self.author = author

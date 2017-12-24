@@ -21,7 +21,10 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
 
-    var autoRowHeight = true
+    
+    public var autoRowHeight = true
+    public var tableViewWidth: CGFloat = 0
+    
     private var showFooterPrivate = true
     var showFooter: Bool {
         get {
@@ -75,6 +78,8 @@ class BaseTableViewController<T>: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableViewWidth = self.tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         if autoRowHeight {
@@ -194,7 +199,7 @@ class BaseTableViewController<T>: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement {

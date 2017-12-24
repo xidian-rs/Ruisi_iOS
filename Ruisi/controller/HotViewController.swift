@@ -13,7 +13,7 @@ import Kanna
 class HotViewController: BaseTableViewController<ArticleListData> {
 
     override func viewDidLoad() {
-        self.autoRowHeight = true
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
@@ -93,6 +93,7 @@ class HotViewController: BaseTableViewController<ArticleListData> {
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             let color = Utils.getHtmlColor(from: a?["style"])
             let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者", replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+            d.rowHeight = caculateRowheight(isSchoolNet: false, width: self.tableViewWidth, title: d.title)
             subDatas.append(d)
         }
         return subDatas
@@ -116,6 +117,18 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         haveImageLabel.isHidden = !d.haveImage
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高
+    private func caculateRowheight(isSchoolNet: Bool, width: CGFloat, title: String) -> CGFloat {
+        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        // 上间距(12) + 正文(计算) + 间距(8) + 昵称(14.5) + 下间距(10)
+        return 12 + titleHeight + 8 + 14.5 + 10
     }
 
     // MARK: - Navigation

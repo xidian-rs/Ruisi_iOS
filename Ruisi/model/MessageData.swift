@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MessageData {
 
@@ -18,6 +19,8 @@ class MessageData {
     var time: String
     var content: String
     var isRead: Bool
+    
+    var rowHeight: CGFloat = 0
 
     init(type: MessageType, title: String, tid: Int, uid: Int?, author: String,
          time: String, content: String = "", isRead: Bool = true) {

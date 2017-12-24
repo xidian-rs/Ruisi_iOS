@@ -29,6 +29,7 @@ class PostViewController: UIViewController {
     private var albums = [AlbumData]()
     private var lastLoad: UInt64 = 0
     private var replyLzUrl: String? //回复楼主的地址
+    private var tableViewWidth: CGFloat = 0
     
     private var loading = false
     open var isLoading: Bool {
@@ -57,12 +58,11 @@ class PostViewController: UIViewController {
             showBackAlert(title: "无法查看帖子", message: "没有传入tid参数")
             return
         }
+        
         super.viewDidLoad()
+        tableViewWidth = tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
-        
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
         
         // Initialize the refresh control.
@@ -239,10 +239,14 @@ class PostViewController: UIViewController {
                 }
                 //层主url
                 let replyCzUrl = comment.xpath("div/div[2]/input").first?["href"]
-                let content = comment.xpath("div/div[1]").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines)
-                let c = PostData(content: content ?? "获取内容失败", author: author ?? "未知作者",
+                let content = comment.xpath("div/div[1]").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "获取内容失败"
+                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText).convert(src: content)
+                let c = PostData(content: attrContent, author: author ?? "未知作者",
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
+                //计算行高
+                let title = (datas.count == 0 && subDatas.count == 0) ? (postTitle ?? self.title ?? "未知标题") : nil
+                c.rowHeight = caculateRowheight(width: self.tableViewWidth,  title: title, content: attrContent)
                 subDatas.append(c)
             }
             
@@ -402,7 +406,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             data = datas[0]
             cell = tableView.dequeueReusableCell(withIdentifier: "content", for: indexPath)
             let title = cell.viewWithTag(6) as! UILabel
-            title.text = postTitle ?? self.title
+            title.text = postTitle ?? self.title ?? "未知标题"
         } else {
             data = datas[indexPath.row]
             cell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath)
@@ -436,10 +440,8 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         time.text = data.time
         img.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
-        content.htmlText =  data.content
+        content.attributedText =  data.content
         //TODO content.htmlViewDelegate = self.linkClick
-        
-        
         return cell
     }
     
@@ -458,6 +460,23 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             }
             loadData()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高
+    private func caculateRowheight(width: CGFloat, title: String?, content: NSAttributedString) -> CGFloat {
+        var height: CGFloat = 0
+        if let title = title {
+            height += title.height(for: self.tableViewWidth - 30, font: UIFont.systemFont(ofSize: 18, weight: .medium))
+            height += 6
+        }
+        
+        let contentHeight = content.height(for: self.tableViewWidth - 30)
+        return 12 + height + 36 + 6 + contentHeight + 10
     }
 }
 

@@ -11,7 +11,7 @@ import UIKit
 class ArrowLabel: UILabel {
 
     @IBInspectable var topInset: CGFloat = 9.0
-    @IBInspectable var bottomInset: CGFloat = 4.0
+    @IBInspectable var bottomInset: CGFloat = 3.0
     @IBInspectable var leftInset: CGFloat = 5.0
     @IBInspectable var rightInset: CGFloat = 5.0
 

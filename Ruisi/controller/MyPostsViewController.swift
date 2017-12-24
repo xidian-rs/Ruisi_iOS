@@ -13,7 +13,7 @@ import Kanna
 class MyPostsViewController: BaseTableViewController<ArticleListData> {
 
     override func viewDidLoad() {
-        self.autoRowHeight = true
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
@@ -59,6 +59,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
             let color = Utils.getHtmlColor(from: a?["style"])
 
             let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, replys: replyStr, haveImage: haveImg, titleColor: color)
+            d.rowHeight = caculateRowheight(width: self.tableViewWidth, title: d.title)
             subDatas.append(d)
         }
 
@@ -84,6 +85,18 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
 
         commentsLabel.text = d.replyCount
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高
+    private func caculateRowheight(width: CGFloat, title: String) -> CGFloat {
+        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        // 上间距(12) + 正文(计算) + 间距(5) + 昵称(14.5) + 下间距(10)
+        return 12 + titleHeight + 5 + 14.5 + 10
     }
 
     // MARK: - Navigation

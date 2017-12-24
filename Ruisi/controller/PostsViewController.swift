@@ -16,7 +16,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     private var isSchoolNet = App.isSchoolNet
 
     override func viewDidLoad() {
-        self.autoRowHeight = true
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
@@ -27,7 +27,6 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         isSchoolNet = !url.contains("mobile")
         return url
     }
-
 
     // 子类重写此方法支持解析自己的数据
     override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {
@@ -63,8 +62,8 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 let time = li.xpath("tr/td[2]/em/span").first?.text
                 let haveImage = li.xpath("tr/th/img").first?["src"]?.contains("image_s.gif") ?? false
 
-                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color, uid: uid, views: views, time: time)
-
+                let d = ArticleListData(isSchoolNet: true, title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color, uid: uid, views: views, time: time)
+                d.rowHeight = caculateRowheight(isSchoolNet: true, width: self.tableViewWidth, title: d.title)
                 subDatas.append(d)
             }
             if let pg = doc.xpath("//*[@id=\"fd_page_bottom\"]/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
@@ -104,6 +103,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
                 let color = Utils.getHtmlColor(from: a?["style"])
                 let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者", replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+                d.rowHeight = caculateRowheight(isSchoolNet: false, width: self.tableViewWidth, title: d.title)
                 subDatas.append(d)
             }
 
@@ -130,16 +130,13 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: isSchoolNet ? "cell_edu" : "cell_me", for: indexPath)
+        let d = datas[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: d.isSchoolNet ? "cell_edu" : "cell_me", for: indexPath)
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let usernameLabel = cell.viewWithTag(2) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
         let haveImageLabel = cell.viewWithTag(4) as! UILabel
-
-        let d = datas[indexPath.row]
-
         titleLabel.text = d.title
-
         if d.isRead {
             titleLabel.textColor = UIColor.darkGray
         } else if let color = d.titleColor {
@@ -151,7 +148,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         commentsLabel.text = d.replyCount
         haveImageLabel.isHidden = !d.haveImage
 
-        if isSchoolNet {
+        if d.isSchoolNet {
             let avater = cell.viewWithTag(6) as! UIImageView
             let timeLabel = cell.viewWithTag(5) as! UILabel
             let viewsLabel = cell.viewWithTag(7) as! UILabel
@@ -167,6 +164,21 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             viewsLabel.text = d.views ?? "0"
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高
+    private func caculateRowheight(isSchoolNet: Bool, width: CGFloat, title: String) -> CGFloat {
+        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        if isSchoolNet { // 上间距(12) + 正文(计算) + 间距(8) + 头像(36) + 下间距(10)
+            return 12 + titleHeight + 8 + 36 + 10
+        } else { // 上间距(12) + 正文(计算) + 间距(8) + 昵称(14.5) + 下间距(10)
+            return 12 + titleHeight + 8 + 14.5 + 10
+        }
     }
 
     @objc func avatarClick(_ sender: UITapGestureRecognizer) {

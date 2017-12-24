@@ -13,7 +13,7 @@ import Kanna
 class StarViewController: BaseTableViewController<StarData> {
 
     override func viewDidLoad() {
-        self.autoRowHeight = true
+        self.autoRowHeight = false
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
@@ -43,6 +43,7 @@ class StarViewController: BaseTableViewController<StarData> {
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             let color = Utils.getHtmlColor(from: a?["style"])
             let d = StarData(title: title ?? "未获取到标题", tid: tid!, titleColor: color)
+            d.rowHeight = caculateRowheight(width: self.tableViewWidth, title: d.title)
             subDatas.append(d)
         }
         if subDatas.count < 20 {
@@ -69,6 +70,18 @@ class StarViewController: BaseTableViewController<StarData> {
         if editingStyle == .delete {
             showDeleteStarAlert(indexPath: indexPath)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = datas[indexPath.row]
+        return d.rowHeight
+    }
+    
+    // 计算行高
+    private func caculateRowheight(width: CGFloat, title: String) -> CGFloat {
+        let titleHeight = title.height(for: width - 32, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        // 上间距(12) + 正文(计算) + 下间距(16)
+        return 16 + titleHeight + 16
     }
 
     func showDeleteStarAlert(indexPath: IndexPath) {

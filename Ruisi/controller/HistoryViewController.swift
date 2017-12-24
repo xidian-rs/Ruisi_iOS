@@ -17,10 +17,8 @@ class HistoryViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.tableView.estimatedRowHeight = 70
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(delBtnClick))
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -104,7 +102,21 @@ class HistoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
+    
+    
+    // 计算行高
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let d = historys[indexPath.row]
+        if let height = d.rowHeight {
+            return height
+        }
+        
+        let titleHeight = d.title.height(for: tableView.frame.width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        // 上间距(12) + 标题(计算) + 间距(8) + 昵称(14.5) + 下间距(10)
+        d.rowHeight =  12 + titleHeight + 8 + 14.5 + 10
+        return d.rowHeight!
+    }
+    
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

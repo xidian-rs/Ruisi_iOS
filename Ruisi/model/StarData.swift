@@ -14,6 +14,8 @@ class StarData {
     public var title: String
     public var tid: Int
     public var titleColor: UIColor? //文章颜色
+    
+    public var rowHeight: CGFloat = 0
 
     init(title: String, tid: Int, titleColor: UIColor? = nil) {
         self.title = title
