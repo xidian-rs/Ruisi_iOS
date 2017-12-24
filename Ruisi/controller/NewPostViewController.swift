@@ -42,7 +42,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var typeIds = [KeyValueData<String, String>]()
     private var progress: UIAlertController!
     private var uploadImages = [UploadImageItem]()
-
+    
     private var uploadHash: String? {
         didSet {
             DispatchQueue.main.async {
@@ -110,7 +110,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             let loadingIndicate = cell.viewWithTag(3) as! UIActivityIndicatorView
             let failedBtn = cell.viewWithTag(4) as! UIButton
             let d = uploadImages[indexPath.row]
-            imageBg.image = d.image
+            imageBg.image = UIImage(data: d.imageData)
             switch d.state {
             case .uploading(_):
                 loadingIndicate.startAnimating()
@@ -157,7 +157,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 self.imagesCollection.deleteItems(at: [index])
             }))
             alert.addAction(UIAlertAction(title: "重新上传", style: .default, handler: { (action) in
-                self.uploadImage(position: index.item, image: self.uploadImages[index.row].image)
+                self.uploadImage(position: index.item, imageData: self.uploadImages[index.row].imageData)
             }))
             alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -201,16 +201,23 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // 相册选择回掉
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        //print(info)
-        if let imageData = image {
-            uploadImages.append(UploadImageItem(name: "1.png", image: imageData))
+        picker.dismiss(animated: true, completion: nil)
+        
+        if let imageData = image?.scaleToSizeAndWidth(width: 1080, maxSize: 1024) {
+            // 最大图片宽度1080像素
+            // rs 限制最大1M的附件
+            uploadImages.append(UploadImageItem(name: "1.png", imageData: imageData))
             let indexPath = IndexPath(item: uploadImages.count - 1, section: 0)
             self.imagesCollection.insertItems(at: [indexPath])
-            uploadImage(position: indexPath.row, image: imageData)
+            uploadImage(position: indexPath.row, imageData: imageData)
+        } else {
+            let alert = UIAlertController(title: "无法解析的图片,请换一张试试", message: "请选择适合的图片", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
         }
-        picker.dismiss(animated: true, completion: nil)
     }
     
     func checkInput() -> Bool {
@@ -236,7 +243,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         return reason == nil
     }
     
-    func uploadImage(position: Int, image: UIImage) {
+    func uploadImage(position: Int, imageData: Data) {
         uploadImages[position].state = .uploading(progress: 0)
         imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
         let formData: [String: NSObject] = [
@@ -244,38 +251,26 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             "hash": self.uploadHash! as NSObject
         ]
         
-        // 最大图片宽度1080像素
-        // rs 限制最大1M的附件
-        if let imageData = image.scaleToSizeAndWidth(width: 1080, maxSize: 1024) {
-            print("image data length:\((imageData as NSData).length)")
-            HttpUtil.UPLOAD_IMAGE(url: Urls.uploadImageUrl, params: formData, imageName: "upload_\(position).jpg", imageData: imageData) { [weak self] (ok, res) in
-                print("upload result:\(res) \(ok)")
-                if self?.uploadImages.count ?? 0 - 1 < position || self?.uploadImages[position].image != image {
-                    return
-                }
-                DispatchQueue.main.async {
-                    if ok {
-                        self?.uploadImages[position].aid = res
-                        self?.uploadImages[position].state = .success
-                        self?.uploadImages[position].errmessage = nil
-                    } else {
-                        self?.uploadImages[position].state = .failed
-                        self?.uploadImages[position].errmessage = res
-                        
-                        let alert = UIAlertController(title: "上传图片附件出错", message: res, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-                        self?.present(alert, animated: true, completion: nil)
-                    }
-                    self?.imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
-                }
+        print("image data length:\((imageData as NSData).length)")
+        HttpUtil.UPLOAD_IMAGE(url: Urls.uploadImageUrl, params: formData, imageName: "upload_\(position).jpg", imageData: imageData) { [weak self] (ok, res) in
+            print("upload result:\(res) \(ok)")
+            if self?.uploadImages.count ?? 0 - 1 < position || self?.uploadImages[position].imageData != imageData {
+                return
             }
-        } else {
-            let alert = UIAlertController(title: "图片格式错误", message: "请选择适合的图片", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
-            uploadImages[position].state = .failed
-            uploadImages[position].errmessage = "无法解析的图片"
-            self.present(alert, animated: true) {
-                self.imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
+            DispatchQueue.main.async {
+                if ok {
+                    self?.uploadImages[position].aid = res
+                    self?.uploadImages[position].state = .success
+                    self?.uploadImages[position].errmessage = nil
+                } else {
+                    self?.uploadImages[position].state = .failed
+                    self?.uploadImages[position].errmessage = res
+                    
+                    let alert = UIAlertController(title: "上传图片附件出错", message: res, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+                    self?.present(alert, animated: true, completion: nil)
+                }
+                self?.imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
             }
         }
     }

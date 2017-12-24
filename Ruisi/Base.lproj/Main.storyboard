@@ -2456,18 +2456,19 @@
                                                 <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X57-fx-2Ni">
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
                                                 </imageView>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFI-sI-MeV">
-                                                    <rect key="frame" x="15" y="21" width="30" height="38"/>
-                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="25"/>
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFI-sI-MeV">
+                                                    <rect key="frame" x="27" y="0.0" width="30" height="27"/>
+                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="15"/>
                                                     <state key="normal" title="">
-                                                        <color key="titleColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                 </button>
                                                 <activityIndicatorView hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="5av-de-2z5">
                                                     <rect key="frame" x="20" y="30" width="20" height="20"/>
                                                 </activityIndicatorView>
                                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Xu-uD-9VC">
-                                                    <rect key="frame" x="3" y="3" width="30" height="27"/>
+                                                    <rect key="frame" x="3" y="0.0" width="30" height="27"/>
                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="15"/>
                                                     <state key="normal" title="">
                                                         <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2477,14 +2478,14 @@
                                         </view>
                                         <constraints>
                                             <constraint firstItem="5av-de-2z5" firstAttribute="centerX" secondItem="A4r-iT-MRC" secondAttribute="centerX" id="219-yF-A0I"/>
-                                            <constraint firstItem="HFI-sI-MeV" firstAttribute="centerY" secondItem="A4r-iT-MRC" secondAttribute="centerY" id="2j7-LU-wuY"/>
                                             <constraint firstItem="8Xu-uD-9VC" firstAttribute="leading" secondItem="A4r-iT-MRC" secondAttribute="leading" constant="3" id="786-XN-QrT"/>
+                                            <constraint firstItem="HFI-sI-MeV" firstAttribute="top" secondItem="A4r-iT-MRC" secondAttribute="top" id="8I9-su-Hbd"/>
                                             <constraint firstAttribute="bottom" secondItem="X57-fx-2Ni" secondAttribute="bottom" id="ABL-lj-uw1"/>
                                             <constraint firstItem="5av-de-2z5" firstAttribute="centerY" secondItem="A4r-iT-MRC" secondAttribute="centerY" id="Pc4-yF-iBk"/>
                                             <constraint firstAttribute="trailing" secondItem="X57-fx-2Ni" secondAttribute="trailing" id="WTl-sw-4KV"/>
+                                            <constraint firstAttribute="trailing" secondItem="HFI-sI-MeV" secondAttribute="trailing" constant="3" id="YLS-G4-kEC"/>
                                             <constraint firstItem="X57-fx-2Ni" firstAttribute="leading" secondItem="A4r-iT-MRC" secondAttribute="leading" id="auF-s1-QGM"/>
-                                            <constraint firstItem="HFI-sI-MeV" firstAttribute="centerX" secondItem="A4r-iT-MRC" secondAttribute="centerX" id="ayE-Y7-A2k"/>
-                                            <constraint firstItem="8Xu-uD-9VC" firstAttribute="top" secondItem="A4r-iT-MRC" secondAttribute="top" constant="3" id="cBz-AV-cTV"/>
+                                            <constraint firstItem="8Xu-uD-9VC" firstAttribute="top" secondItem="A4r-iT-MRC" secondAttribute="top" id="cBz-AV-cTV"/>
                                             <constraint firstItem="X57-fx-2Ni" firstAttribute="top" secondItem="A4r-iT-MRC" secondAttribute="top" id="ryN-a7-fe1"/>
                                         </constraints>
                                         <size key="customSize" width="60" height="80"/>

@@ -139,7 +139,6 @@ class HistoryViewController: UITableViewController {
             let index = tableView.indexPath(for: cell)!
             dest.title = historys[index.row].title
             dest.tid = Int(historys[index.row].tid)
-            dest.saveToHistory = true
         }
     }
 }

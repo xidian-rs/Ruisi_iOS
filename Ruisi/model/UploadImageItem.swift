@@ -19,14 +19,14 @@ public struct UploadImageItem {
 
     public var aid: String?
     public var name: String?
-    public var image: UIImage
+    public var imageData: Data
     public var state: UploadState = .uploading(progress: 0)
     public var errmessage: String?
 
-    init(aid: String? = nil, name: String?, image: UIImage, errmessage: String? = nil) {
+    init(aid: String? = nil, name: String?, imageData: Data, errmessage: String? = nil) {
         self.aid = aid
         self.name = name
-        self.image = image
+        self.imageData = imageData
         self.errmessage = errmessage
     }
 }

@@ -40,6 +40,8 @@ enum HtmlTag: Int {
     case Q//引用
     case CODE//代码
     case TD // ?? 应该不算 他是inline-block
+    case UL //这2个不算 因为里面的li算
+    case OL
 
     /**
      * 块标签
@@ -49,8 +51,6 @@ enum HtmlTag: Int {
     case DIV
 
     case P
-    case UL
-    case OL
     case LI
 
     case H1

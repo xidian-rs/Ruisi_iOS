@@ -328,18 +328,6 @@ class PostViewController: UIViewController {
     }
     
     
-    // html text里面的链接点击事件
-    func linkClick(type: LinkClickType) {
-        switch type {
-        case .viewUser(let uid):
-            self.performSegue(withIdentifier: "postToUserDetail", sender: uid)
-        case .viewAlbum(let (aid, url)):
-            showAlbums(aid: aid, url: url)
-        default:
-            break
-        }
-    }
-    
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -357,6 +345,18 @@ class PostViewController: UIViewController {
             dest.isEditMode = true
             dest.tid = self.tid
             dest.pid = datas[index.row].pid
+        }
+    }
+    
+    // html text里面的链接点击事件
+    func linkClick(type: LinkClickType) {
+        switch type {
+        case .viewUser(let uid):
+            self.performSegue(withIdentifier: "postToUserDetail", sender: uid)
+        case .viewAlbum(let (aid, url)):
+            showAlbums(aid: aid, url: url)
+        default:
+            break
         }
     }
     
@@ -440,8 +440,10 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         time.text = data.time
         img.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
+        
         content.attributedText =  data.content
-        //TODO content.htmlViewDelegate = self.linkClick
+        content.linkClickDelegate = self.linkClick
+
         return cell
     }
     
@@ -488,7 +490,7 @@ extension PostViewController {
             
         } else if datas.count == 0 || datas[0].replyUrl == nil {
             showAlert(title: "提示", message: "本帖不支持回复")
-        }else {
+        } else {
             replyView.showReplyBox(clear: false, placeholder: "回复:楼主 \(datas[0].author)", userinfo: ["isLz": true])
         }
     }

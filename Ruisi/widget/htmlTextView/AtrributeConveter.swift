@@ -86,6 +86,9 @@ class AttributeConverter: HtmlParserDelegate {
             break
         default:
             node.start = position
+            if node.type == .LI {
+                attributedString.append(NSAttributedString(string: " · "))
+            }
             nodes.append(node)
         }
     }
@@ -122,6 +125,18 @@ class AttributeConverter: HtmlParserDelegate {
     }
     
     func end() {
+        // 移除内容结尾的\n
+        while attributedString.length > 0 {
+            let len = attributedString.length
+            let lastCharRange = NSRange.init(location: len - 1, length: 1)
+            let lastChar = attributedString.attributedSubstring(from: lastCharRange).string
+            if lastChar == "\n" {
+                attributedString.deleteCharacters(in: lastCharRange)
+                continue
+            }
+            break
+        }
+        
         //print("===end of html===")
         while let endNode = nodes.popLast() {
             var startNode: HtmlNode? = nil
@@ -138,7 +153,7 @@ class AttributeConverter: HtmlParserDelegate {
             }
             
             var start = endNode.start
-            let end = endNode.end
+            let end = min(endNode.end, position)
             let attr = startNode!.attr
             
             switch (endNode.type) {
