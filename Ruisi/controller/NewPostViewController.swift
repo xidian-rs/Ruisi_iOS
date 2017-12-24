@@ -168,10 +168,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         if let item = sender.superview?.superview as? UICollectionViewCell, let index = imagesCollection.indexPath(for: item) {
             let alert = UIAlertController(title: "删除图片附件?", message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
-                print("do delete")
-                HttpUtil.GET(url: Urls.deleteUploadedUrl(aid: self.uploadImages[index.item].aid!), params: nil, callback: { (ok, res) in
-                    print("delete result :\(res)")
-                })
+                if let aid = self.uploadImages[index.item].aid { //上传正常图片需要通知服务器删除
+                    HttpUtil.GET(url: Urls.deleteUploadedUrl(aid: aid), params: nil, callback: { (ok, res) in
+                        print("delete result :\(res)")
+                    })
+                }
                 
                 self.uploadImages.remove(at: index.item)
                 self.imagesCollection.deleteItems(at: [index])
@@ -243,17 +244,9 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             "hash": self.uploadHash! as NSObject
         ]
         
-        let quality: CGFloat
-        if image.size.width < 512 && image.size.height < 512 {
-            quality = 1
-        } else if image.size.width < 1024 && image.size.height < 1024 {
-            quality = 0.92
-        } else {
-            quality = 0.84
-        }
-        
-        //UIImagePNGRepresentation(image)
-        if let imageData = UIImageJPEGRepresentation(image, quality) {
+        // 最大图片宽度1080像素
+        // rs 限制最大1M的附件
+        if let imageData = image.scaleToSizeAndWidth(width: 1080, maxSize: 1024) {
             print("image data length:\((imageData as NSData).length)")
             HttpUtil.UPLOAD_IMAGE(url: Urls.uploadImageUrl, params: formData, imageName: "upload_\(position).jpg", imageData: imageData) { [weak self] (ok, res) in
                 print("upload result:\(res) \(ok)")

@@ -639,14 +639,19 @@ extension PostViewController: GalleryItemsDataSource {
     func provideGalleryItem(_ index: Int) -> FetchImageBlock {
         return { imageCompletion in
             self.currentFetch = imageCompletion
-            if index <= self.albums.count - 1 {
-                let url = self.albums[index].src
-                let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { (data, response, error) in
-                    if let d = data {
-                        imageCompletion(UIImage(data: d))
+            if index <= self.albums.count - 1,let url = URL(string: self.albums[index].src) {
+                //let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { (data, response, error) in
+                //    if let d = data {
+                //        imageCompletion(UIImage(data: d))
+                //    }
+                //})
+                //task.resume()
+                ImageDownloader.default.downloadImage(with: url, options: [], progressBlock: nil) {
+                    (image, error, url, data) in
+                    if let i = image {
+                        imageCompletion(i)
                     }
-                })
-                task.resume()
+                }
             }
         }
     }

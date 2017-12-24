@@ -19,6 +19,43 @@ extension String {
     }
 }
 
+extension UIImage {
+    func scaleToWidth(width: CGFloat) -> UIImage {
+        if self.size.width <= width {
+            return self
+        }
+        
+        let alpha = false
+        let height = self.size.height / (self.size.width / width)
+        let size = CGSize(width: width, height: height)
+        UIGraphicsBeginImageContextWithOptions(size, alpha, 0.0)
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        self.draw(in: rect)
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    //调整大小
+    func scaleToSizeAndWidth(width: CGFloat, maxSize: Int) -> Data? {
+        let image = self.scaleToWidth(width: width) //原始缩放过后的image
+        guard var imageData = UIImageJPEGRepresentation(image, 1.0) else {
+            return nil
+        }
+        
+        var sizeKb = (imageData as NSData).length / 1024
+        var resizeRate: CGFloat = 0.9
+        
+        while sizeKb > maxSize && resizeRate > 0.1 {
+            imageData = UIImageJPEGRepresentation(image, resizeRate)!
+            sizeKb = (imageData as NSData).length / 1024
+            resizeRate -= 0.1
+        }
+        
+        return imageData
+    }
+}
+
 extension UIViewController {
     // 检测是否登陆 如果登录 返回true 如果没有登陆显示弹窗
     func checkLogin(message: String?) -> Bool {
