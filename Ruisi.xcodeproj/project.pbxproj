@@ -44,7 +44,6 @@
 		2F2670491FEFAADC00AB291D /* SearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670481FEFAADC00AB291D /* SearchData.swift */; };
 		2F2670571FEFE78100AB291D /* LinkClickHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670561FEFE78100AB291D /* LinkClickHandler.swift */; };
 		2F2670591FEFE93400AB291D /* UrlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670581FEFE93400AB291D /* UrlItem.swift */; };
-		2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9A91F00A48700CDD60D /* Widgets.swift */; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
 		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
 		2F37A08F1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37A08E1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift */; };
@@ -69,6 +68,10 @@
 		2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */; };
 		2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */; };
 		2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7C75B01EFE356F0067D499 /* SignViewController.swift */; };
+		2F848A8B1FF0CE4E0089177B /* RSRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F848A8A1FF0CE4E0089177B /* RSRefreshControl.swift */; };
+		2F848A9C1FF0E0830089177B /* RSRefreshState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F848A9B1FF0E0830089177B /* RSRefreshState.swift */; };
+		2F848A9E1FF140930089177B /* PostToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F848A9D1FF140930089177B /* PostToolbarView.xib */; };
+		2F848AA01FF140B30089177B /* PostToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F848A9F1FF140B30089177B /* PostToolbarView.swift */; };
 		2F8AB78F1FE6B39B00C3AFA8 /* UploadImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */; };
 		2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AD6951EA787EE002540AA /* LoginViewController.swift */; };
 		2F8CDA4F1EFD782D006FE6EC /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */; };
@@ -299,7 +302,6 @@
 		2F2670561FEFE78100AB291D /* LinkClickHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkClickHandler.swift; sourceTree = "<group>"; };
 		2F2670581FEFE93400AB291D /* UrlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlItem.swift; sourceTree = "<group>"; };
 		2F2E91781FC95F81002CA690 /* Kingfisher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kingfisher.xcodeproj; path = ../Kingfisher/Kingfisher.xcodeproj; sourceTree = "<group>"; };
-		2F35E9A91F00A48700CDD60D /* Widgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
 		2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
 		2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreView.xib; sourceTree = "<group>"; };
 		2F37A08E1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterFallCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -321,6 +323,10 @@
 		2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		2F7C75B01EFE356F0067D499 /* SignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
+		2F848A8A1FF0CE4E0089177B /* RSRefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSRefreshControl.swift; sourceTree = "<group>"; };
+		2F848A9B1FF0E0830089177B /* RSRefreshState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSRefreshState.swift; sourceTree = "<group>"; };
+		2F848A9D1FF140930089177B /* PostToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostToolbarView.xib; sourceTree = "<group>"; };
+		2F848A9F1FF140B30089177B /* PostToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostToolbarView.swift; sourceTree = "<group>"; };
 		2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageItem.swift; sourceTree = "<group>"; };
 		2F8AD6951EA787EE002540AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
@@ -385,11 +391,11 @@
 		2F0233B41FE0032000373969 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				2F848A9A1FF0D6E10089177B /* refreshControl */,
 				2FC86DBA1FEBD08D00C6E988 /* replyView */,
 				2FAFE0C01FE956D600AD7FDC /* imageViewer */,
 				2FAFE09B1FE94EE500AD7FDC /* htmlTextView */,
 				2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */,
-				2F35E9A91F00A48700CDD60D /* Widgets.swift */,
 				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
 				2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */,
 				2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */,
@@ -481,6 +487,15 @@
 				2F63F2511FE4E857005FCD29 /* SQLiteError.swift */,
 			);
 			path = database;
+			sourceTree = "<group>";
+		};
+		2F848A9A1FF0D6E10089177B /* refreshControl */ = {
+			isa = PBXGroup;
+			children = (
+				2F848A8A1FF0CE4E0089177B /* RSRefreshControl.swift */,
+				2F848A9B1FF0E0830089177B /* RSRefreshState.swift */,
+			);
+			path = refreshControl;
 			sourceTree = "<group>";
 		};
 		2F97723A1EA651AA0058EDB4 /* Frameworks */ = {
@@ -602,6 +617,8 @@
 				2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */,
 				2F1C30FB1FEBDCD900498C96 /* SmileyView.swift */,
 				2F1C30F71FEBDCD900498C96 /* SmileyView.xib */,
+				2F848A9F1FF140B30089177B /* PostToolbarView.swift */,
+				2F848A9D1FF140930089177B /* PostToolbarView.xib */,
 				2F1C31071FEBDFC600498C96 /* ToolbarView.swift */,
 				2F1C31091FEBDFD500498C96 /* ToolbarView.xib */,
 				2F1C310D1FEBF6A200498C96 /* SimpleReplyView.xib */,
@@ -787,6 +804,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */,
+				2F848A9E1FF140930089177B /* PostToolbarView.xib in Resources */,
 				2F1C30FF1FEBDCD900498C96 /* SmileyView.xib in Resources */,
 				2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */,
 				2F1C310E1FEBF6A200498C96 /* SimpleReplyView.xib in Resources */,
@@ -824,11 +842,13 @@
 				2F175AB91FCD36B800917895 /* StarData.swift in Sources */,
 				2FAFE0BA1FE94F3B00AD7FDC /* AtrributeConveter.swift in Sources */,
 				2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */,
+				2F848A8B1FF0CE4E0089177B /* RSRefreshControl.swift in Sources */,
 				2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */,
 				2F1C31021FEBDCD900498C96 /* RitchTextView.swift in Sources */,
 				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
 				2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */,
 				2F0233B31FDFF23F00373969 /* AtData.swift in Sources */,
+				2F848AA01FF140B30089177B /* PostToolbarView.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
 				2F1C31011FEBDCD900498C96 /* SmileyCollectionLayout.swift in Sources */,
@@ -842,6 +862,7 @@
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */,
 				2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */,
+				2F848A9C1FF0E0830089177B /* RSRefreshState.swift in Sources */,
 				2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */,
 				2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */,
 				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
@@ -860,7 +881,6 @@
 				2FAFE0D31FE956F900AD7FDC /* GalleryPagingDataSource.swift in Sources */,
 				2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */,
 				2FAFE0BB1FE94F3B00AD7FDC /* HtmlParser.swift in Sources */,
-				2F35E9AA1F00A48700CDD60D /* Widgets.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F1C30FD1FEBDCD900498C96 /* SmileyToolbar.swift in Sources */,
 				2FAFE0BD1FE94F3B00AD7FDC /* HtmlParserDelegate.swift in Sources */,

@@ -14,6 +14,8 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
 
     override func viewDidLoad() {
         self.autoRowHeight = false
+        self.showRefreshControl = true
+        
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }

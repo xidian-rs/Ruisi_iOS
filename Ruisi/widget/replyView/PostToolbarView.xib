@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="AFm-1y-HE4" customClass="PostToolbarView" customModule="Ruisi" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNY-nO-TcE">
+                    <rect key="frame" x="300" y="10" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="Cye-9b-0Gv"/>
+                        <constraint firstAttribute="height" constant="24" id="qPY-yJ-JK8"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="at"/>
+                    <connections>
+                        <action selector="atClick:" destination="AFm-1y-HE4" eventType="touchUpInside" id="O6Z-us-5VM"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rYR-XT-MqJ">
+                    <rect key="frame" x="339" y="10" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="NNu-DC-YYa"/>
+                        <constraint firstAttribute="width" constant="24" id="zgg-9c-pYm"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="hidekeyboard"/>
+                    <connections>
+                        <action selector="keyboardClick:" destination="AFm-1y-HE4" eventType="touchUpInside" id="p9b-Ux-MHx"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xk-di-nXy">
+                    <rect key="frame" x="12" y="12.5" width="39.5" height="19.5"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTe-iM-2mX">
+                    <rect key="frame" x="261" y="7" width="31" height="30"/>
+                    <state key="normal" title="取消">
+                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="clickCancel:" destination="AFm-1y-HE4" eventType="touchUpInside" id="JBw-Sl-rdj"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="iNY-nO-TcE" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="3gJ-3i-Fj9"/>
+                <constraint firstItem="rYR-XT-MqJ" firstAttribute="leading" secondItem="iNY-nO-TcE" secondAttribute="trailing" constant="15" id="51L-lx-aye"/>
+                <constraint firstItem="iNY-nO-TcE" firstAttribute="leading" secondItem="bTe-iM-2mX" secondAttribute="trailing" constant="8" id="7YQ-Vl-FSO"/>
+                <constraint firstItem="cfz-gC-yE4" firstAttribute="trailing" secondItem="rYR-XT-MqJ" secondAttribute="trailing" constant="12" id="W2p-t7-Od4"/>
+                <constraint firstItem="bTe-iM-2mX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9xk-di-nXy" secondAttribute="trailing" constant="12" id="WH4-S9-pNU"/>
+                <constraint firstItem="9xk-di-nXy" firstAttribute="leading" secondItem="cfz-gC-yE4" secondAttribute="leading" constant="12" id="aTs-jh-Tdt"/>
+                <constraint firstItem="rYR-XT-MqJ" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="bHi-dq-Tcs"/>
+                <constraint firstItem="bTe-iM-2mX" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="ddu-ME-CEB"/>
+                <constraint firstItem="9xk-di-nXy" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="rBD-g9-xxl"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="cfz-gC-yE4"/>
+            <connections>
+                <outlet property="atBtn" destination="iNY-nO-TcE" id="aRt-Rg-A83"/>
+                <outlet property="cancelBtn" destination="bTe-iM-2mX" id="XqW-DF-BoE"/>
+                <outlet property="hideKeyBoardBtn" destination="rYR-XT-MqJ" id="gKY-xu-Cdq"/>
+                <outlet property="titleLabel" destination="9xk-di-nXy" id="CBZ-rY-KhJ"/>
+            </connections>
+            <point key="canvasLocation" x="9" y="-108"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="at" width="64" height="64"/>
+        <image name="hidekeyboard" width="64" height="64"/>
+    </resources>
+</document>

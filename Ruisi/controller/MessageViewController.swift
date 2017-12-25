@@ -13,18 +13,16 @@ import Kanna
 class MessageViewController: BaseTableViewController<MessageData> {
     
     private var lastLoginState = false
+    private var emptyPlaceholderText: String?
     
     override func viewDidLoad() {
         self.autoRowHeight = false
+        lastLoginState = App.isLogin
+        showRefreshControl = lastLoginState
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        lastLoginState = App.isLogin
-        if lastLoginState {
-            self.refreshControl = refreshView
-            loadData(position)
-        } else {
+        if !lastLoginState { // 非登陆状态
             self.emptyPlaceholderText = "需要登陆才能查看"
-            self.refreshControl = nil
         }
     }
     
@@ -32,14 +30,13 @@ class MessageViewController: BaseTableViewController<MessageData> {
         super.viewWillAppear(animated)
         if lastLoginState != App.isLogin {
             lastLoginState = App.isLogin
+            showRefreshControl = lastLoginState
             if lastLoginState { //未登陆转为登陆
-                self.refreshControl = refreshView
-                self.tableView.reloadData()
+                rsRefreshControl?.beginRefreshing()
                 loadData(position)
             } else { //登陆转为未登陆
                 datas.removeAll()
                 tableView.reloadData()
-                self.refreshControl = nil
             }
         }
     }
@@ -49,10 +46,11 @@ class MessageViewController: BaseTableViewController<MessageData> {
         position = sender.selectedSegmentIndex
         self.isLoading = false
         if App.isLogin {
-            self.emptyPlaceholderText = "加载中..."
+            self.emptyPlaceholderText = nil
             self.datas = []
             self.tableView.reloadData()
-            pullRefresh()
+            self.rsRefreshControl?.beginRefreshing()
+            reloadData()
         } else {
             self.datas.removeAll()
             self.emptyPlaceholderText = "需要登陆才能查看"
@@ -215,6 +213,30 @@ class MessageViewController: BaseTableViewController<MessageData> {
         isReadLabel.isHidden = data.isRead
         
         return cell
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        _ = super.numberOfSections(in: tableView)
+        if datas.count == 0 {//no data avaliable
+            if let title = emptyPlaceholderText {
+                let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+                label.text = title
+                label.textColor = UIColor.darkGray
+                label.numberOfLines = 0
+                label.textAlignment = .center
+                label.font = UIFont.systemFont(ofSize: 20)
+                label.textColor = UIColor.lightGray
+                label.sizeToFit()
+                
+                tableView.backgroundView = label
+                tableView.separatorStyle = .none
+            }
+            return 0
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+            return 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

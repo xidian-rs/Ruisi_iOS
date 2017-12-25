@@ -21,7 +21,6 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
 
-    
     public var autoRowHeight = true
     public var tableViewWidth: CGFloat = 0
     
@@ -49,8 +48,21 @@ class BaseTableViewController<T>: UITableViewController {
     var currentPage = 1
     var totalPage = Int.max
     var position = 0 //为了hotnew而准备的
-    var emptyPlaceholderText = "加载中..."
-    var refreshView: UIRefreshControl?
+    var rsRefreshControl: RSRefreshControl?
+    
+    public var showRefreshControl = false {
+        didSet {
+            if showRefreshControl && rsRefreshControl == nil {
+                print("add refresh control")
+                rsRefreshControl = RSRefreshControl()
+                rsRefreshControl?.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+                self.tableView.addSubview(rsRefreshControl!)
+            } else if !showRefreshControl && rsRefreshControl != nil{
+                rsRefreshControl?.removeFromSuperview()
+                rsRefreshControl = nil
+            }
+        }
+    }
 
     //到达最后一页是否接着加载
     var shouldLoadMoreOnLastPage = false
@@ -63,7 +75,6 @@ class BaseTableViewController<T>: UITableViewController {
         set {
             loading = newValue
             if !loading {
-                self.refreshControl?.endRefreshing()
                 if let f = (tableView.tableFooterView as? LoadMoreView) {
                     f.endLoading(haveMore: currentPage < totalPage)
                 }
@@ -92,20 +103,18 @@ class BaseTableViewController<T>: UITableViewController {
             showFooterPrivate = false
             showFooter = true
         }
-
-        // Initialize the refresh control.
-        refreshView = UIRefreshControl()
-        Widgets.setRefreshControl(refreshView!)
-        refreshView?.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
-        self.refreshControl = refreshView
-        refreshView?.beginRefreshing()
+        
+        if showRefreshControl {
+            rsRefreshControl?.beginRefreshing()
+        }
         loadData()
     }
 
-    @objc func pullRefresh() {
+    @objc func reloadData() {
         print("下拉刷新'")
         currentPage = 1
         totalPage = Int.max
+        
         loadData(position)
     }
 
@@ -114,11 +123,7 @@ class BaseTableViewController<T>: UITableViewController {
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
             //print(res)
             var subDatas: [T] = []
-            var str: String?
-            if !ok {
-                str = "加载失败"
-                self.emptyPlaceholderText = "加载失败,\(res)"
-            } else if pos == self.position { //返回的数据是我们要的
+            if ok && pos == self.position { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
                     // load fromHash
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
@@ -127,9 +132,6 @@ class BaseTableViewController<T>: UITableViewController {
                         App.formHash = hash
                     }
                     subDatas = self.parseData(pos: pos, doc: doc)
-                    let df = DateFormatter()
-                    df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
-                    str = "Last update: " + df.string(from: Date())
                 }
             } else {
                 print("加载的数据不是我们想要的不做任何事")
@@ -157,9 +159,8 @@ class BaseTableViewController<T>: UITableViewController {
                         self.tableView.reloadData()
                     }
                 }
-
-                let attrStr = NSAttributedString(string: str ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray])
-                self.refreshControl?.attributedTitle = attrStr
+                
+                self.rsRefreshControl?.endRefreshing(message: ok ? "刷新成功...":"刷新失败...")
                 self.isLoading = false
             })
         }
@@ -167,26 +168,13 @@ class BaseTableViewController<T>: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if datas.count == 0 {//no data avaliable
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = emptyPlaceholderText
-            label.textColor = UIColor.black
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
-            label.sizeToFit()
-
-            tableView.backgroundView = label;
-            tableView.separatorStyle = .none;
+        if datas.count == 0 {
             tableView.tableFooterView?.isHidden = true
             return 0
         } else {
-            tableView.backgroundView = nil
             if showFooter {
                 tableView.tableFooterView?.isHidden = false
             }
-            tableView.separatorStyle = .singleLine
             return 1
         }
     }

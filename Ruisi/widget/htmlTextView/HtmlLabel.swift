@@ -10,10 +10,13 @@ import UIKit
 
 class HtmlLabel: UILabel {
     
-    var linkClickDelegate: ((LinkClickType) -> Void)?
-    
+    // 链接点击回调
+    public var linkClickDelegate: ((LinkClickType) -> Void)?
+    // 存储所有的链接
     private var urlRanges : [UrlItem]?
+    // 存储当前点击的链接
     private var clickItem:  UrlItem?
+    
     private lazy var textStorage = NSTextStorage()
     private lazy var layoutManager = NSLayoutManager()
     // text显示的区域
@@ -81,17 +84,17 @@ class HtmlLabel: UILabel {
         
         /*
          // 主动提取链接
-        let urlPattern = "[a-zA-Z]*://[a-zA-Z0-9/\\.]*"
-        if let regx = try? NSRegularExpression(pattern: urlPattern, options: []) {
-            let matchs =  regx.matches(in: textStorage.string, options: [], range: NSRange(location: 0, length: textStorage.length))
-            
-            for m in matchs {
-                print((textStorage.string as NSString).substring(with: m.range(at: 0)))
-                //range m.range(at: 0)
-                // str (textStorage.string as NSString).substring(with: m.range(at: 0))
-            }
-        }
-        */
+         let urlPattern = "[a-zA-Z]*://[a-zA-Z0-9/\\.]*"
+         if let regx = try? NSRegularExpression(pattern: urlPattern, options: []) {
+         let matchs =  regx.matches(in: textStorage.string, options: [], range: NSRange(location: 0, length: textStorage.length))
+         
+         for m in matchs {
+         print((textStorage.string as NSString).substring(with: m.range(at: 0)))
+         //range m.range(at: 0)
+         // str (textStorage.string as NSString).substring(with: m.range(at: 0))
+         }
+         }
+         */
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

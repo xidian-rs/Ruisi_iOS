@@ -18,6 +18,8 @@ class AboveKeyboardView: UIView {
     private var keyboardIsVisible = false
     //备份当前的center以便键盘隐藏还原
     private var currentCenter: CGPoint?
+    // iPhoneX 适配
+    public var saveAeraBottom: CGFloat = 0
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,6 +34,13 @@ class AboveKeyboardView: UIView {
     override func layoutSubviews() {
         if currentCenter == nil {
             currentCenter = self.center
+        }
+        
+        if #available(iOS 11.0, *) {
+            saveAeraBottom = safeAreaInsets.bottom
+            print("safe aera bottom:\(safeAreaInsets.bottom)")
+        } else {
+            // Fallback on earlier versions
         }
     }
 
@@ -81,7 +90,7 @@ class AboveKeyboardView: UIView {
         AboveKeyboardView.keyboardHeight = keyboardHeight
         print("keyboardHeight :\(keyboardHeight) keyboardTop:\(rect.origin.y)")
         
-        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight)
+        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight + saveAeraBottom)
         UIView.commitAnimations()
     }
 

@@ -17,15 +17,16 @@ class PostViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var replyView: SimpleReplyView! ////回复框view
+    @IBOutlet weak var postTitleLabel: UILabel! // 文章标题
+    private var postTitle: String?
+    private lazy var rsRefreshControl = RSRefreshControl()
     
     var datas = [PostData]()
     var tid: Int? // 由前一个页面传过来的值
     var saveToHistory = false //是否保存到历史记录
-    var postTitle: String? // 文章标题
     
     private var currentPage: Int = 1
     private var pageSum: Int = 1
-    private var refreshView: UIRefreshControl!
     private var albums = [AlbumData]()
     private var lastLoad: UInt64 = 0
     private var replyLzUrl: String? //回复楼主的地址
@@ -39,7 +40,6 @@ class PostViewController: UIViewController {
         set {
             loading = newValue
             if !loading {
-                refreshView.endRefreshing()
                 if let f = (tableView.tableFooterView as? LoadMoreView) {
                     f.endLoading(haveMore: currentPage < pageSum)
                 }
@@ -65,19 +65,13 @@ class PostViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
         
-        // Initialize the refresh control.
-        refreshView = UIRefreshControl()
-        Widgets.setRefreshControl(refreshView)
-        refreshView.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        tableView.refreshControl = refreshView
-        refreshView.beginRefreshing()
-        
-        self.postTitle = self.title
+        self.postTitleLabel.text = self.title
         self.title = "帖子正文"
         
         //回复框回调
-        self.replyView.placeholder = "发表评论"
         self.replyView.contentView.isEditable = false
+        self.replyView.placeholder = "回复内容"
+        
         replyView.onSubmitClick { (content, userinfo) in
             if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
                 print("message is:||\(content)||len:\(content.count)")
@@ -85,6 +79,33 @@ class PostViewController: UIViewController {
             }
         }
         
+        //@ 功能
+        replyView.onAtClick { (textView, haveAt) in
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "chooseFriendViewNavigtion") as! UINavigationController
+            if let vc = dest.topViewController as? ChooseFriendViewController {
+                vc.delegate = { names in // 选择过后调用
+                    var result: String = ""
+                    names.forEach { (name) in
+                        result += " @\(name)"
+                    }
+                    if names.count > 0 {
+                        result += " "
+                    }
+                    
+                    if haveAt {
+                        result = result.trimmingCharacters(in: CharacterSet(charactersIn: "@"))
+                    }
+                    
+                    textView.insertText(result)
+                    textView.resignFirstResponder()
+                }
+                self.present(dest, animated: true, completion: nil)
+            }
+        }
+        
+        tableView.addSubview(rsRefreshControl)
+        rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        rsRefreshControl.beginRefreshing()
         loadData()
     }
     
@@ -99,10 +120,10 @@ class PostViewController: UIViewController {
     }
     
     //刷新数据
-    @objc func refreshData() {
+    @objc func reloadData() {
         print("refresh click")
         currentPage = 1
-        pageSum = Int.max
+        
         loadData()
     }
     
@@ -112,13 +133,11 @@ class PostViewController: UIViewController {
         if isLoading {
             return
         }
-        refreshView.attributedTitle = NSAttributedString(string: "正在加载")
         isLoading = true
         let url =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
         print("load data page:\(currentPage) sumPage:\(pageSum)")
         HttpUtil.GET(url: url, params: nil) { [weak self] ok, res in
             guard let this = self else { return }
-            var str: String?
             var subDatas: [PostData] = []
             if ok { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
@@ -131,11 +150,6 @@ class PostViewController: UIViewController {
                     //load subdata
                     subDatas = this.parseData(doc: doc)
                 }
-                let df = DateFormatter()
-                df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
-                str = "Last update: " + df.string(from: Date())
-            } else {
-                str = "加载失败"
             }
             
             //人为加长加载的时间
@@ -162,16 +176,19 @@ class PostViewController: UIViewController {
                     }
                 }
                 
-                let attrStr = NSAttributedString(string: str ?? "", attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray])
-                this.tableView.refreshControl?.attributedTitle = attrStr
-                this.isLoading = false
-                if self?.replyLzUrl == nil { //不支持回复
-                    self?.replyView.placeholder = "本帖不支持回复(已关闭,没有权限\(App.isLogin ? "" : ",未登陆"))"
-                    self?.replyView.contentView.isEditable = false
+                if this.replyLzUrl == nil { //不支持回复
+                    this.replyView.placeholder = "本帖不支持回复(已关闭,没有权限\(App.isLogin ? "" : ",未登陆"))"
+                    this.replyView.showToolBar = false
+                    this.replyView.contentView.isEditable = false
                 } else {
-                    self?.replyView.placeholder = "发表评论"
-                    self?.replyView.contentView.isEditable = true
+                    this.replyView.showToolBar = true
+                    this.replyView.defaultPlaceholder = "回复楼主:\(this.datas[0].author)"
+                    this.replyView.toolbarPlaceholder = "回复楼主:\(this.datas[0].author)"
+                    this.replyView.contentView.isEditable = true
                 }
+                
+                this.isLoading = false
+                this.rsRefreshControl.endRefreshing(message: ok ? "加载成功": "加载失败")
             }
         }
     }
@@ -245,8 +262,7 @@ class PostViewController: UIViewController {
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
                 //计算行高
-                let title = (datas.count == 0 && subDatas.count == 0) ? (postTitle ?? self.title ?? "未知标题") : nil
-                c.rowHeight = caculateRowheight(width: self.tableViewWidth,  title: title, content: attrContent)
+                c.rowHeight = caculateRowheight(width: self.tableViewWidth, content: attrContent)
                 subDatas.append(c)
             }
             
@@ -328,7 +344,6 @@ class PostViewController: UIViewController {
     }
     
     
-    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UserDetailViewController {
@@ -377,24 +392,11 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if datas.count == 0 {//no data avaliable
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = "加载中..."
-            label.textColor = UIColor.black
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
-            label.sizeToFit()
-            
-            tableView.backgroundView = label;
-            tableView.separatorStyle = .none;
+        if datas.count == 0 {
             tableView.tableFooterView?.isHidden = true
             return 0
         } else {
-            tableView.backgroundView = nil
             tableView.tableFooterView?.isHidden = false
-            tableView.separatorStyle = .singleLine
             return 1
         }
     }
@@ -402,23 +404,17 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data: PostData
         let cell: UITableViewCell
-        if indexPath.row == 0 {
-            data = datas[0]
-            cell = tableView.dequeueReusableCell(withIdentifier: "content", for: indexPath)
-            let title = cell.viewWithTag(6) as! UILabel
-            title.text = postTitle ?? self.title ?? "未知标题"
+        
+        data = datas[indexPath.row]
+        cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let index = cell.viewWithTag(6) as! UILabel
+        index.text = data.index
+        let replyBtn = cell.viewWithTag(7) as? UIButton
+        if data.replyUrl != nil {
+            replyBtn?.isHidden = false
+            replyBtn?.addTarget(self, action: #selector(replyCzClick(_:)), for: .touchUpInside)
         } else {
-            data = datas[indexPath.row]
-            cell = tableView.dequeueReusableCell(withIdentifier: "comment", for: indexPath)
-            let index = cell.viewWithTag(6) as! UILabel
-            index.text = data.index
-            let replyBtn = cell.viewWithTag(7) as? UIButton
-            if data.replyUrl != nil {
-                replyBtn?.isHidden = false
-                replyBtn?.addTarget(self, action: #selector(replyCzClick(_:)), for: .touchUpInside)
-            } else {
-                replyBtn?.isHidden = true
-            }
+            replyBtn?.isHidden = true
         }
         
         let img = cell.viewWithTag(1) as! UIImageView
@@ -443,7 +439,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         
         content.attributedText =  data.content
         content.linkClickDelegate = self.linkClick
-
+        
         return cell
     }
     
@@ -470,31 +466,14 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     // 计算行高
-    private func caculateRowheight(width: CGFloat, title: String?, content: NSAttributedString) -> CGFloat {
-        var height: CGFloat = 0
-        if let title = title {
-            height += title.height(for: self.tableViewWidth - 30, font: UIFont.systemFont(ofSize: 18, weight: .medium))
-            height += 6
-        }
-        
+    private func caculateRowheight(width: CGFloat, content: NSAttributedString) -> CGFloat {
         let contentHeight = content.height(for: self.tableViewWidth - 30)
-        return 12 + height + 36 + 6 + contentHeight + 10
+        return 12 + 36 + 6 + contentHeight + 10
     }
 }
 
 // MARK: - 评论相关
 extension PostViewController {
-    // 评论楼主 TODO
-    @IBAction func commentClick(_ sender: UIBarButtonItem) {
-        if checkLogin(message: "你需要登陆才回帖") {
-            
-        } else if datas.count == 0 || datas[0].replyUrl == nil {
-            showAlert(title: "提示", message: "本帖不支持回复")
-        } else {
-            replyView.showReplyBox(clear: false, placeholder: "回复:楼主 \(datas[0].author)", userinfo: ["isLz": true])
-        }
-    }
-    
     // 评论层主
     @objc func replyCzClick(_ sender: UIButton) {
         if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
@@ -503,7 +482,7 @@ extension PostViewController {
             replyView.showReplyBox(clear: true, placeholder: "回复:\(datas[indexPath.row].index) \(datas[indexPath.row].author)", userinfo: ["url": url])
             
             let y1 = tableView.cellForRow(at: indexPath)!.frame.maxY - tableView.contentOffset.y
-            let y2 = view.bounds.height - AboveKeyboardView.keyboardHeight - replyView.frame.height
+            let y2 = view.bounds.height - AboveKeyboardView.keyboardHeight - replyView.frame.height //(44--toolbarView)
             
             //print("y1:\(y1)  \(view.bounds.height - 253)")
             if y1 > y2 {
@@ -512,15 +491,12 @@ extension PostViewController {
         }
     }
     
-    // do 回复楼主/层主
+    // do 回复楼主/层主 userinfo==nil 回复楼主
     private func doReply(content: String, userinfo: [AnyHashable : Any]?) {
         replyView.isSending = true
-        if (userinfo?["isLz"]) != nil {
-            HttpUtil.POST(url: datas[0].replyUrl!, params: ["message": content, "handlekey": "fastpost", "loc": 1, "inajax": 1], callback: self.handleReplyResult)
-        } else {
-            let url = userinfo!["url"]! as! String
+        if let info  = userinfo { // 回复层主
+            let url = info["url"]! as! String
             //1.根据replyUrl获得相关参数
-            print("url:\(url)")
             HttpUtil.GET(url: url, params: nil, callback: { (ok, res) in
                 //print(res)
                 if ok, let doc = try? HTML(html: res, encoding: .utf8) {
@@ -549,7 +525,8 @@ extension PostViewController {
                     self?.showAlert(title: "回复失败", message: "回复失败,请稍后重试")
                 }
             })
-            
+        } else { // 回复楼主
+            HttpUtil.POST(url: self.replyLzUrl!, params: ["message": content, "handlekey": "fastpost", "loc": 1, "inajax": 1], callback: self.handleReplyResult)
         }
     }
     
@@ -589,7 +566,7 @@ extension PostViewController {
                 }
                 
                 if self?.currentPage == 1 {
-                    self?.refreshData()
+                    self?.loadData()
                 }
             }
         }

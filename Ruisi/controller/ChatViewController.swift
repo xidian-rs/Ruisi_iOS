@@ -10,10 +10,12 @@ import UIKit
 import Kanna
 
 // 聊天
+// TODO 手动行高
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var replyView: SimpleReplyView!
+    private lazy var rsRefreshControl =  RSRefreshControl()
     
     var uid: Int?
     var username: String?
@@ -26,19 +28,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var replyUrl: String?
     
     private var loading = false
-    open var isLoading: Bool {
-        get {
-            return loading
-        }
-        
-        set {
-            loading = newValue
-            if !loading {
-                self.tableView.refreshControl?.endRefreshing()
-            }
-        }
-    }
-    
     
     override func viewDidLoad() {
         if uid == nil {
@@ -64,27 +53,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "关闭", style: .plain, target: self, action: #selector(closeClick))
         }
         
-        self.tableView.estimatedRowHeight = 100
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         self.title = username
         self.pageSum = 1
         
-        // Initialize the refresh control.
-        let refreshView = UIRefreshControl()
-        Widgets.setRefreshControl(refreshView)
-        refreshView.addTarget(self, action: #selector(pullRefresh), for: .valueChanged)
-        self.tableView.refreshControl = refreshView
-        refreshView.beginRefreshing()
+        tableView.addSubview(rsRefreshControl)
+        rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        rsRefreshControl.beginRefreshing()
         loadData()
-    }
-    
-    //down  up 
-    override func viewSafeAreaInsetsDidChange() {
-        if #available(iOS 11.0, *) {
-            super.viewSafeAreaInsetsDidChange()
-            print(view.safeAreaInsets.bottom)
-        }
     }
     
     private func doSubmit(text: String) {
@@ -128,18 +106,19 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    @objc func pullRefresh() {
+    @objc func reloadData() {
+        currentPage = 1
+        pageSum = Int.max
+        
         loadData()
     }
     
     func loadData() {
         // 所持请求的数据正在加载中/未加载
-        if isLoading {
+        if loading {
             return
         }
-        self.tableView.refreshControl?.attributedTitle = NSAttributedString(string: "正在加载")
-        isLoading = true
-        
+        loading = true
         print("load data page:\(currentPage) sumPage:\(pageSum)")
         HttpUtil.GET(url: Urls.getChatDetailUrl(tuid: uid!), params: nil) { ok, res in
             var subDatas: [ChatData] = []
@@ -154,37 +133,22 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 subDatas = self.parseData(doc: doc)
             }
             
-            self.datas = subDatas
             DispatchQueue.main.async {
+                self.datas = subDatas
                 self.tableView.reloadData()
-            }
-            
-            var str: String
-            if subDatas.count > 0 {
-                let df = DateFormatter()
-                df.setLocalizedDateFormatFromTemplate("MMM d, h:mm a")
-                str = "Last update: " + df.string(from: Date())
-            } else {
-                str = "加载失败"
-            }
-            
-            let attrStr = NSAttributedString(string: str, attributes: [
-                NSAttributedStringKey.foregroundColor: UIColor.gray])
-            
-            DispatchQueue.main.async {
-                self.tableView.refreshControl?.attributedTitle = attrStr
-                self.isLoading = false
-                
+
                 if self.currentPage < self.pageSum {
                     self.currentPage += 1
                 }
+                
+                self.rsRefreshControl.endRefreshing(message: ok ? "加载成功": "加载失败")
+                self.loading = false
             }
         }
     }
     
     func parseData(doc: HTMLDocument) -> [ChatData] {
         let msgs = doc.css(".msgbox .cl")
-        print("msg count:\(msgs.count)")
         var subDatas = [ChatData]()
         for m in msgs {
             let uid: Int
@@ -203,7 +167,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             subDatas.append(ChatData(uid: uid, uname: username, message: content, time: time))
         }
         
-        print("data count:\(subDatas.count)")
         if subDatas.count == 0 {
             loadSuccess = false
             pageSum = currentPage
@@ -232,9 +195,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let avatar = cell.viewWithTag(1) as! UIImageView
         let contentLabel = cell.viewWithTag(2) as! UILabel
         let timeLabel = cell.viewWithTag(3) as! UILabel
-        
-        print(data.message)
-        
+    
         avatar.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName:"placeholder"))
         timeLabel.text = data.time
         contentLabel.attributedText = AttributeConverter(font: contentLabel.font, textColor: contentLabel.textColor).convert(src: data.message)
@@ -242,22 +203,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if datas.count == 0 {//no data avaliable
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-            label.text = "加载中..."
-            label.textColor = UIColor.black
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
-            label.sizeToFit()
-            
-            tableView.backgroundView = label;
-            return 0
-        } else {
-            tableView.backgroundView = nil
-            return 1
-        }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

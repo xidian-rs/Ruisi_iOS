@@ -13,6 +13,8 @@ import Kanna
 class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDelegate {
     private var datasCopy: [FriendData] = []
     private var searchMode = false
+    private var emptyPlaceholderText: String?
+    
     private var isInSearchMode: Bool {
         set {
             if newValue != searchMode {
@@ -24,7 +26,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
                 } else { //exit searchMode
                     datas = datasCopy
                     showFooter = true
-                    emptyPlaceholderText = "加载中..."
+                    emptyPlaceholderText = nil
                 }
                 tableView.reloadData()
             }
@@ -37,12 +39,12 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
 
     override func viewDidLoad() {
         self.autoRowHeight = false
+        
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         isInSearchMode = false
         searchBar.delegate = self
     }
-
 
     override func getUrl(page: Int) -> String {
         return Urls.friendsUrl + "&page=\(page)"
@@ -133,6 +135,30 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         if editingStyle == .delete {
             showDeleteFriendAlert(indexPath: indexPath)
             //tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        _ = super.numberOfSections(in: tableView)
+        
+        if datas.count == 0 {//no data avaliable
+            if let title = emptyPlaceholderText {
+                let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+                label.text = title
+                label.textColor = UIColor.darkGray
+                label.numberOfLines = 0
+                label.textAlignment = .center
+                label.font = UIFont.systemFont(ofSize: 20)
+                label.textColor = UIColor.lightGray
+                label.sizeToFit()
+                tableView.backgroundView = label
+                tableView.separatorStyle = .none
+            }
+            return 0
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+            return 1
         }
     }
 

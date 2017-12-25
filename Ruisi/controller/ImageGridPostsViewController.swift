@@ -10,15 +10,15 @@ import UIKit
 import Kanna
 
 // 图片帖子列表板块
-class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, WaterFallLayoutDelegate {
+class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     var fid: Int? // 由前一个页面传过来的值
     private var currentPage = 1
     private var totalPage = Int.max
     private var isLoading = false
-    private var emptyPlaceholderText = "加载中..."
     private var datas = [ArticleListData]()
     @IBOutlet weak var collectionView: UICollectionView!
+    private lazy var rsRefreshControl =  RSRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,23 +26,25 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         collectionView.delegate = self
         let layout = WaterFallCollectionViewLayout()
         layout.delegate = self
-        self.automaticallyAdjustsScrollViewInsets = false //修复collectionView头部空白
+        //self.automaticallyAdjustsScrollViewInsets = false //修复collectionView头部空白
         collectionView.collectionViewLayout = layout
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
-
+        
+        collectionView.addSubview(rsRefreshControl)
+        rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        rsRefreshControl.beginRefreshing()
+        loadData()
+    }
+    
+    @objc func reloadData() {
+        print("下拉刷新'")
+        currentPage = 1
+        totalPage = Int.max
         loadData()
     }
 
     @objc func newPostClick() {
-        if !App.isLogin {
-            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能发帖", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
-                let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
-                self.present(dest!, animated: true, completion: nil)
-            }))
-            alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
+        if checkLogin(message: "你需要登陆才能发帖") {
             self.performSegue(withIdentifier: "imagePostsToNewPost", sender: self)
         }
     }
@@ -52,12 +54,8 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         HttpUtil.GET(url: Urls.getPostsUrl(fid: fid!) + "&page=\(currentPage)", params: nil) { ok, res in
             //print(res)
             var subDatas: [ArticleListData] = []
-            if !ok {
-                self.emptyPlaceholderText = "加载失败,\(res)"
-            } else {
-                if let doc = try? HTML(html: res, encoding: .utf8) {
-                    subDatas = self.parseData(doc: doc)
-                }
+            if ok, let doc = try? HTML(html: res, encoding: .utf8) {
+                subDatas = self.parseData(doc: doc)
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
@@ -77,10 +75,11 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
                 } else {
                     //第一次没有加载到数据
                     if self.currentPage == 1 {
-                        self.emptyPlaceholderText = "没有加载到数据"
                         self.collectionView.reloadData()
                     }
                 }
+                
+                self.rsRefreshControl.endRefreshing(message: ok ? "加载成功": "加载失败")
                 self.isLoading = false
             })
         }
@@ -125,22 +124,6 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
 
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if datas.count == 0 {//no data avaliable
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height))
-            label.text = emptyPlaceholderText
-            label.textColor = UIColor.black
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
-            label.sizeToFit()
-
-            collectionView.backgroundView = label;
-            //collectionView.tableFooterView?.isHidden = true
-        } else {
-            collectionView.backgroundView = nil
-        }
-
         return 1
     }
 
@@ -186,14 +169,6 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         print("did select \(indexPath.row)")
     }
 
-    func itemHeightFor(indexPath: IndexPath, itemWidth: CGFloat) -> CGFloat {
-        if datas[indexPath.row].image != nil {
-            return itemWidth + CGFloat(arc4random_uniform(UInt32(itemWidth))) + 30
-        } else {
-            return itemWidth
-        }
-    }
-
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement && currentPage < totalPage {
@@ -216,6 +191,14 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
             dest.name = self.title
         }
     }
+}
 
-
+extension ImageGridPostsViewController: WaterFallLayoutDelegate {
+    func itemHeightFor(indexPath: IndexPath, itemWidth: CGFloat) -> CGFloat {
+        if datas[indexPath.row].image != nil {
+            return itemWidth + CGFloat(arc4random_uniform(UInt32(itemWidth))) + 30
+        } else {
+            return itemWidth
+        }
+    }
 }

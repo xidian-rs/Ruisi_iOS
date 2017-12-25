@@ -14,6 +14,7 @@ class HotViewController: BaseTableViewController<ArticleListData> {
 
     override func viewDidLoad() {
         self.autoRowHeight = false
+        self.showRefreshControl = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
@@ -23,9 +24,9 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         position = sender.selectedSegmentIndex
         self.isLoading = false
         self.datas = []
-        self.emptyPlaceholderText = "加载中..."
         self.tableView.reloadData()
-        pullRefresh()
+        self.rsRefreshControl?.beginRefreshing()
+        reloadData()
     }
 
     var isHotLoading = false

@@ -16,7 +16,21 @@ class SimpleReplyView: AboveKeyboardView {
     @IBOutlet weak var progressView: UIActivityIndicatorView!
     @IBOutlet weak var contentView: RitchTextView!
     
+    lazy var toolbarView = PostToolbarView.toolbarView()
+    
     private var userinfo: [AnyHashable : Any]?
+    
+    // 默认的占位符 点击取消后设置此
+    public var defaultPlaceholder: String?
+    public var toolbarPlaceholder: String? {
+        didSet{
+            if showToolBar {
+                toolbarView.title = toolbarPlaceholder
+            }
+        }
+    }
+    
+    // 占位符
     public var placeholder: String? {
         didSet{
             contentView.placeholder = placeholder
@@ -36,6 +50,30 @@ class SimpleReplyView: AboveKeyboardView {
         
         get {
             return progressView.isAnimating
+        }
+    }
+    
+    public var showToolBar = false {
+        didSet {
+            if showToolBar {
+                contentView.inputAccessoryView = toolbarView
+                
+                toolbarView.onAtClick(execute: { [weak self] (btn) in
+                    self?.didClickAt?(self!.contentView, false)
+                })
+                
+                toolbarView.onCancelClick(execute: { [weak self] (btn) in
+                    self?.userinfo = nil // nil表示回复lz
+                    self?.toolbarView.title = self?.defaultPlaceholder
+                    self?.contentView.resignFirstResponder()
+                })
+                
+                toolbarView.onHideKeyboardClick(execute: { [weak self] (btn) in
+                    self?.contentView.resignFirstResponder()
+                })
+            } else {
+                contentView.inputAccessoryView = nil
+            }
         }
     }
     
@@ -63,8 +101,17 @@ class SimpleReplyView: AboveKeyboardView {
         
         progressView.hidesWhenStopped = true
         contentView.delegate = self
+        contentView.showsHorizontalScrollIndicator = false
+        contentView.showsVerticalScrollIndicator = false
         
         setUpTextView()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        saveAeraBottom = UIScreen.main.bounds.maxY - frame.maxY
+        print("saveAeraBottom:\(saveAeraBottom)")
     }
     
     
@@ -89,20 +136,17 @@ class SimpleReplyView: AboveKeyboardView {
     // 主动显示回复框 并获取焦点 userinfo 用来传递数据 clear是否清除
     public func showReplyBox(clear: Bool, placeholder: String? = nil, userinfo: [AnyHashable : Any]? = nil) {
         self.userinfo = userinfo
-        self.placeholder = placeholder
+        self.toolbarPlaceholder = placeholder
         self.contentView.becomeFirstResponder()
         if clear {
             clearText(hide: false)
         }
     }
     
-
-    @objc override func keyboardWillBeHidden(notification: NSNotification) {
-        super.keyboardWillBeHidden(notification: notification)
-        
-        if contentView.text.count == 0 {
-            //TODO 设置默认的placeholder
-        }
+    private var didClickAt: ((_ textView: UITextView, _ haveAt: Bool) -> Void)?
+    
+    public func onAtClick(execute closure: @escaping (_ textView: UITextView, _ haveAt: Bool) -> Void) {
+        didClickAt = closure
     }
 }
 
@@ -116,6 +160,14 @@ extension SimpleReplyView: UITextViewDelegate {
             sendBtn.isEnabled = false
             sendBtn.backgroundColor = UIColor(white: 0.70, alpha: 1.0)
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "@" {
+            didClickAt?(textView, true)
+        }
+        
+        return true
     }
     
     func hidekeyboard() {

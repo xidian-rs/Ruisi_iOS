@@ -384,92 +384,28 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vsc-Tu-tc0">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="IxF-u6-f9u" userLabel="标题">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是文章的标题" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcD-O0-Mug">
+                                            <rect key="frame" x="15" y="12" width="345" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="mcD-O0-Mug" secondAttribute="trailing" constant="15" id="3yh-fN-MeK"/>
+                                        <constraint firstItem="mcD-O0-Mug" firstAttribute="leading" secondItem="IxF-u6-f9u" secondAttribute="leading" constant="15" id="Txd-gk-hCQ"/>
+                                        <constraint firstAttribute="bottom" secondItem="mcD-O0-Mug" secondAttribute="bottom" constant="8" id="XzE-BV-uAk"/>
+                                        <constraint firstItem="mcD-O0-Mug" firstAttribute="top" secondItem="IxF-u6-f9u" secondAttribute="top" constant="12" id="szC-KG-n9L"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="content" rowHeight="160" id="Ywx-K5-Loi" userLabel="内容">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="160"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ywx-K5-Loi" id="cH5-8X-7zA">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="159.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这是文章的标题" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2t-1V-Swa" userLabel="标题">
-                                                    <rect key="frame" x="15" y="12" width="345" height="21.5"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Zsf-Js-DJI" userLabel="头像">
-                                                    <rect key="frame" x="15" y="39.5" width="36" height="36"/>
-                                                    <gestureRecognizers/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="Zsf-Js-DJI" secondAttribute="height" multiplier="1:1" id="CPF-1G-zPq"/>
-                                                        <constraint firstAttribute="width" constant="36" id="epg-Yy-j58"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="20"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="谁用了FREEDOM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-xg-bcZ" userLabel="作者">
-                                                    <rect key="frame" x="56" y="41.5" width="101.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="楼主" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKv-Hb-jDc" userLabel="楼主">
-                                                    <rect key="frame" x="160.5" y="42.5" width="25" height="14.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发表于:昨天12:35" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnX-Mv-w8O" userLabel="时间">
-                                                    <rect key="frame" x="56" y="60.5" width="96.5" height="14.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSa-XJ-gew">
-                                                    <rect key="frame" x="330" y="49" width="30" height="26"/>
-                                                    <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="14"/>
-                                                    <state key="normal" title="">
-                                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                </button>
-                                                <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TbG-Cw-BtZ" customClass="HtmlLabel" customModule="Ruisi" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="92" width="345" height="57.5"/>
-                                                    <string key="text">有几个疑问 希望知情同学解答下~
-咱们学校软件学院研究生咋样（专硕）
-优研软院的话考试科目会不会和计算机不一样</string>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OKv-Hb-jDc" secondAttribute="trailing" constant="40" id="78n-la-QXv"/>
-                                                <constraint firstItem="YSa-XJ-gew" firstAttribute="bottom" secondItem="QnX-Mv-w8O" secondAttribute="bottom" id="7ui-63-2tg"/>
-                                                <constraint firstItem="OKv-Hb-jDc" firstAttribute="baseline" secondItem="tgS-xg-bcZ" secondAttribute="baseline" id="GW8-Vy-Sri"/>
-                                                <constraint firstAttribute="trailing" secondItem="TbG-Cw-BtZ" secondAttribute="trailing" constant="15" id="IzW-Kd-VRU"/>
-                                                <constraint firstItem="YSa-XJ-gew" firstAttribute="trailing" secondItem="cH5-8X-7zA" secondAttribute="trailingMargin" id="JQ5-zi-H3b"/>
-                                                <constraint firstItem="Zsf-Js-DJI" firstAttribute="leading" secondItem="A2t-1V-Swa" secondAttribute="leading" id="JkI-UG-4XX"/>
-                                                <constraint firstItem="A2t-1V-Swa" firstAttribute="leading" secondItem="cH5-8X-7zA" secondAttribute="leading" constant="15" id="KY8-wg-GTA"/>
-                                                <constraint firstItem="OKv-Hb-jDc" firstAttribute="leading" secondItem="tgS-xg-bcZ" secondAttribute="trailing" constant="3" id="Ld8-xU-B4a"/>
-                                                <constraint firstItem="QnX-Mv-w8O" firstAttribute="leading" secondItem="tgS-xg-bcZ" secondAttribute="leading" id="M0f-nY-rAU"/>
-                                                <constraint firstItem="Zsf-Js-DJI" firstAttribute="top" secondItem="A2t-1V-Swa" secondAttribute="bottom" constant="6" id="QgG-C2-MTl"/>
-                                                <constraint firstAttribute="trailing" secondItem="A2t-1V-Swa" secondAttribute="trailing" constant="15" id="Yjv-KG-l5H"/>
-                                                <constraint firstItem="QnX-Mv-w8O" firstAttribute="top" secondItem="tgS-xg-bcZ" secondAttribute="bottom" constant="3" id="eON-Q4-iVm"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QnX-Mv-w8O" secondAttribute="trailing" constant="40" id="kpy-1t-1WC"/>
-                                                <constraint firstItem="TbG-Cw-BtZ" firstAttribute="leading" secondItem="cH5-8X-7zA" secondAttribute="leading" constant="15" id="nIJ-eP-SfQ"/>
-                                                <constraint firstItem="tgS-xg-bcZ" firstAttribute="leading" secondItem="Zsf-Js-DJI" secondAttribute="trailing" constant="5" id="oHd-6E-E7Q"/>
-                                                <constraint firstItem="tgS-xg-bcZ" firstAttribute="top" secondItem="A2t-1V-Swa" secondAttribute="bottom" constant="8" id="u8b-OV-hfm"/>
-                                                <constraint firstItem="A2t-1V-Swa" firstAttribute="top" secondItem="cH5-8X-7zA" secondAttribute="top" constant="12" id="uWy-ai-Pyg"/>
-                                                <constraint firstAttribute="bottom" secondItem="TbG-Cw-BtZ" secondAttribute="bottom" constant="10" id="wEW-wU-UTm"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment" rowHeight="137" id="XYs-Ba-IMd" userLabel="评论">
-                                        <rect key="frame" x="0.0" y="188" width="375" height="137"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="137" id="XYs-Ba-IMd" userLabel="评论">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="137"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XYs-Ba-IMd" id="eTc-SO-RoJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="136.5"/>
@@ -513,14 +449,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLf-qU-dl3">
-                                                    <rect key="frame" x="330" y="22.5" width="30" height="26"/>
+                                                    <rect key="frame" x="330" y="19.5" width="30" height="29"/>
                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="14"/>
                                                     <state key="normal" title="">
                                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Krw-dF-v2Q">
-                                                    <rect key="frame" x="292" y="23" width="30" height="26"/>
+                                                    <rect key="frame" x="292" y="20" width="30" height="29"/>
                                                     <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="14"/>
                                                     <state key="normal" title="">
                                                         <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -588,6 +524,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="postTitleLabel" destination="mcD-O0-Mug" id="0aD-pY-wMK"/>
                         <outlet property="replyView" destination="4gj-lI-ohB" id="gK6-84-CvQ"/>
                         <outlet property="tableView" destination="Vsc-Tu-tc0" id="eLQ-XL-U6G"/>
                         <segue destination="MBf-zb-Kcw" kind="show" identifier="postToUserDetail" id="YoA-98-yHC"/>
@@ -809,7 +746,7 @@
         <!--用户详情-->
         <scene sceneID="tNL-WA-dcV">
             <objects>
-                <viewController storyboardIdentifier="userDetailView" title="我" hidesBottomBarWhenPushed="YES" id="MBf-zb-Kcw" userLabel="用户详情" customClass="UserDetailViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="userDetailView" title="我" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="MBf-zb-Kcw" userLabel="用户详情" customClass="UserDetailViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vZ8-bK-Gn5"/>
                         <viewControllerLayoutGuide type="bottom" id="JRF-21-sGV"/>
@@ -1105,7 +1042,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-MG-kwy">
-                                <rect key="frame" x="105.5" y="164" width="52" height="33"/>
+                                <rect key="frame" x="105.5" y="163.5" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去回复">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1141,7 +1078,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUh-qB-3Md">
-                                <rect key="frame" x="184" y="190" width="52" height="33"/>
+                                <rect key="frame" x="184" y="189.5" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去提交"/>
                                 <connections>
@@ -1195,7 +1132,7 @@
         <!--主题设置-->
         <scene sceneID="maF-Ch-974">
             <objects>
-                <viewController storyboardIdentifier="themeViewController" title="主题设置" hidesBottomBarWhenPushed="YES" id="0mk-6R-XQi" customClass="ThemeViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="themeViewController" title="主题设置" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="0mk-6R-XQi" customClass="ThemeViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f3i-TI-i3w"/>
                         <viewControllerLayoutGuide type="bottom" id="txa-hZ-bRt"/>
@@ -2139,7 +2076,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fe2-3o-wtr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="leftCell" rowHeight="120" id="cLM-OR-wLr">
@@ -2245,9 +2182,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="2cg-6O-k25" secondAttribute="bottom" id="Fvm-H1-YHO"/>
+                            <constraint firstItem="x0e-eY-G5V" firstAttribute="top" secondItem="2cg-6O-k25" secondAttribute="bottom" id="3CA-iW-b8k"/>
                             <constraint firstItem="2cg-6O-k25" firstAttribute="leading" secondItem="ah1-Tu-d5q" secondAttribute="leading" id="KSu-c1-xsK"/>
-                            <constraint firstItem="Fe2-3o-wtr" firstAttribute="top" secondItem="4Qd-A7-VFA" secondAttribute="bottom" id="OCN-PN-deG"/>
+                            <constraint firstItem="Fe2-3o-wtr" firstAttribute="top" secondItem="ah1-Tu-d5q" secondAttribute="top" id="OCN-PN-deG"/>
                             <constraint firstAttribute="trailing" secondItem="2cg-6O-k25" secondAttribute="trailing" id="Qrn-6A-P5q"/>
                             <constraint firstItem="Fe2-3o-wtr" firstAttribute="leading" secondItem="ah1-Tu-d5q" secondAttribute="leading" id="jZU-fd-PUQ"/>
                             <constraint firstItem="2cg-6O-k25" firstAttribute="top" secondItem="Fe2-3o-wtr" secondAttribute="bottom" id="jdz-fP-HRe"/>
@@ -2263,10 +2200,10 @@
             </objects>
             <point key="canvasLocation" x="1093.5999999999999" y="1700.5997001499252"/>
         </scene>
-        <!--帖子列表-->
+        <!--帖子列表 图片-->
         <scene sceneID="kpx-3f-e78">
             <objects>
-                <viewController storyboardIdentifier="ImageGridPostsViewController" title="帖子列表" hidesBottomBarWhenPushed="YES" id="ttD-4N-Sna" customClass="ImageGridPostsViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImageGridPostsViewController" title="帖子列表 图片" hidesBottomBarWhenPushed="YES" id="ttD-4N-Sna" customClass="ImageGridPostsViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4Kh-hS-4ID"/>
                         <viewControllerLayoutGuide type="bottom" id="Sh5-PC-8Fx"/>
@@ -2276,7 +2213,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHM-2k-4c1">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fEq-ti-iCr">
                                     <size key="itemSize" width="171" height="206"/>
@@ -2363,8 +2300,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UHM-2k-4c1" firstAttribute="top" secondItem="4Kh-hS-4ID" secondAttribute="bottom" id="Lae-bf-XCl"/>
-                            <constraint firstItem="Sh5-PC-8Fx" firstAttribute="top" secondItem="UHM-2k-4c1" secondAttribute="bottom" id="Lg9-dG-Et8"/>
+                            <constraint firstItem="UHM-2k-4c1" firstAttribute="top" secondItem="qjR-17-Y94" secondAttribute="top" id="Lae-bf-XCl"/>
+                            <constraint firstAttribute="bottom" secondItem="UHM-2k-4c1" secondAttribute="bottom" id="Lg9-dG-Et8"/>
                             <constraint firstAttribute="trailing" secondItem="UHM-2k-4c1" secondAttribute="trailing" id="iBf-rl-oTD"/>
                             <constraint firstItem="UHM-2k-4c1" firstAttribute="leading" secondItem="qjR-17-Y94" secondAttribute="leading" id="upb-md-eRs"/>
                         </constraints>
@@ -2377,7 +2314,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kz9-am-bYK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-559" y="-1978"/>
+            <point key="canvasLocation" x="-410" y="-2016"/>
         </scene>
         <!--发帖-->
         <scene sceneID="fS5-tZ-fDe">
@@ -2909,8 +2846,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U1Y-Qc-Rhq"/>
-        <segue reference="5zA-VW-dPn"/>
+        <segue reference="gtb-Ty-3Uw"/>
         <segue reference="YoA-98-yHC"/>
-        <segue reference="S3C-ym-kht"/>
+        <segue reference="YlS-1A-enY"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -17,7 +17,6 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.automaticallyAdjustsScrollViewInsets = false //修复collectionView头部空白
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneClick))
     }
 
