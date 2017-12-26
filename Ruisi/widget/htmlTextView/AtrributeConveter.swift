@@ -30,10 +30,9 @@ class AttributeConverter: HtmlParserDelegate {
     //NSAttachmentAttributeName          设置文本附件,取值为NSTextAttachment对象,常用于文字图片混排
     //NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
     
-    
-    private var linkTextAttributes: [String: Any]?
     private var font: UIFont!
     private var textColor: UIColor!
+    private var linkTextClor = UIColor(red: 0, green: CGFloat(122) / 255, blue: 1.0, alpha: 1.0)
     
     // html标签栈
     private var nodes: [HtmlNode]
@@ -45,10 +44,11 @@ class AttributeConverter: HtmlParserDelegate {
         }
     }
     
-    init(font: UIFont, textColor: UIColor, linkTextAttributes: [String: Any]? = nil) {
+    //UIColor(red: 0, green: CGFloat(122) / 255, blue: 1.0, alpha: 1.0)
+    
+    init(font: UIFont, textColor: UIColor) {
         self.font = font
         self.textColor = textColor
-        self.linkTextAttributes = linkTextAttributes
         attributedString = NSMutableAttributedString()
         nodes = [HtmlNode]()
     }
@@ -183,7 +183,7 @@ class AttributeConverter: HtmlParserDelegate {
                                 start += 1
                             }
                         }
-                        addAttrs([NSAttributedStringKey.link: u], start: start, end: end)
+                        addAttrs([NSAttributedStringKey.link: u,NSAttributedStringKey.foregroundColor: linkTextClor], start: start, end: end)
                     }
                 }
                 break

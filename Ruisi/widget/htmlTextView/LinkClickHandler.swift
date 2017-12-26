@@ -46,6 +46,8 @@ class LinkClickHandler {
             } else {
                 delegate(.others(url: url))
             }
+        } else {
+            delegate(.others(url: url))
         }
     }
 }

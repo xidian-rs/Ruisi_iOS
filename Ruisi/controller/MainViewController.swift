@@ -24,7 +24,7 @@ class MainViewController: UITabBarController {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 
     }
-
+    
 
     // 检查网络类型
     func checkNetwork() {

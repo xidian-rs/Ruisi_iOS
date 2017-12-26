@@ -15,16 +15,15 @@ import Kanna
 // 判断帖子作者的逻辑目前有问题
 class PostViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var replyView: SimpleReplyView! ////回复框view
-    @IBOutlet weak var postTitleLabel: UILabel! // 文章标题
-    private var postTitle: String?
-    private lazy var rsRefreshControl = RSRefreshControl()
-    
-    var datas = [PostData]()
     var tid: Int? // 由前一个页面传过来的值
+    var pid: Int? // TODO
     var saveToHistory = false //是否保存到历史记录
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var replyView: SimpleReplyView! ////回复框view
+    
+    private lazy var rsRefreshControl = RSRefreshControl()
+    private var datas = [PostData]()
     private var currentPage: Int = 1
     private var pageSum: Int = 1
     private var albums = [AlbumData]()
@@ -65,12 +64,14 @@ class PostViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
         
-        self.postTitleLabel.text = self.title
+        setUpHeaderView(title: title)
         self.title = "帖子正文"
         
         //回复框回调
         self.replyView.contentView.isEditable = false
         self.replyView.placeholder = "回复内容"
+        self.replyView.enableTail = true
+        self.replyView.minTextLen = 13
         
         replyView.onSubmitClick { (content, userinfo) in
             if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
@@ -109,6 +110,7 @@ class PostViewController: UIViewController {
         loadData()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.hidesBarsOnSwipe = true
@@ -123,7 +125,6 @@ class PostViewController: UIViewController {
     @objc func reloadData() {
         print("refresh click")
         currentPage = 1
-        
         loadData()
     }
     
@@ -138,6 +139,7 @@ class PostViewController: UIViewController {
         print("load data page:\(currentPage) sumPage:\(pageSum)")
         HttpUtil.GET(url: url, params: nil) { [weak self] ok, res in
             guard let this = self else { return }
+            var title: String?
             var subDatas: [PostData] = []
             if ok { //返回的数据是我们要的
                 if let doc = try? HTML(html: res, encoding: .utf8) {
@@ -147,43 +149,39 @@ class PostViewController: UIViewController {
                         App.formHash = hash
                     }
                     
+                    // load title
+                    if let t = doc.title, let index = t.range(of: "-")?.lowerBound {
+                        title = String(t[..<index])
+                    }
+                    
                     //load subdata
-                    subDatas = this.parseData(doc: doc)
+                    subDatas = this.parseData(doc: doc, title: title)
                 }
             }
             
             //人为加长加载的时间
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let this = self else { return }
-                if subDatas.count > 0 {
-                    if this.currentPage == 1 {
-                        this.datas = subDatas
-                        this.tableView.reloadData()
-                    } else {
-                        var indexs = [IndexPath]()
-                        for i in 0..<subDatas.count {
-                            indexs.append(IndexPath(row: this.datas.count + i, section: 0))
-                        }
-                        this.datas.append(contentsOf: subDatas)
-                        this.tableView.beginUpdates()
-                        this.tableView.insertRows(at: indexs, with: .automatic)
-                        this.tableView.endUpdates()
-                    }
+                this.setUpHeaderView(title: title)
+                if this.currentPage == 1 {
+                    this.datas = subDatas
+                    this.tableView.reloadData()
                 } else {
-                    //第一次没有加载到数据
-                    if this.currentPage == 1 {
-                        this.tableView.reloadData()
+                    var indexs = [IndexPath]()
+                    for i in 0..<subDatas.count {
+                        indexs.append(IndexPath(row: this.datas.count + i, section: 0))
                     }
+                    this.datas.append(contentsOf: subDatas)
+                    this.tableView.beginUpdates()
+                    this.tableView.insertRows(at: indexs, with: .automatic)
+                    this.tableView.endUpdates()
                 }
                 
                 if this.replyLzUrl == nil { //不支持回复
                     this.replyView.placeholder = "本帖不支持回复(已关闭,没有权限\(App.isLogin ? "" : ",未登陆"))"
-                    this.replyView.showToolBar = false
                     this.replyView.contentView.isEditable = false
                 } else {
-                    this.replyView.showToolBar = true
-                    this.replyView.defaultPlaceholder = "回复楼主:\(this.datas[0].author)"
-                    this.replyView.toolbarPlaceholder = "回复楼主:\(this.datas[0].author)"
+                    this.replyView.placeholder = "回复楼主:\(this.datas[0].author)"
                     this.replyView.contentView.isEditable = true
                 }
                 
@@ -193,13 +191,11 @@ class PostViewController: UIViewController {
         }
     }
     
+    // 风扇策略比较保守，温度很低就开始转了，其余还行
+    
     // 子类重写此方法支持解析自己的数据
-    func parseData(doc: HTMLDocument) -> [PostData] {
+    func parseData(doc: HTMLDocument,title: String?) -> [PostData] {
         var subDatas: [PostData] = []
-        if self.postTitle == nil, let t = doc.title {
-            self.postTitle = String(t[..<t.index(of: " - ")!])
-        }
-        
         let comments = doc.xpath("/html/body/div[1]/div[@class=\"plc cl\"]")
         if comments.count > 0 {
             //获取总页数 和当前页数
@@ -224,7 +220,8 @@ class PostViewController: UIViewController {
                 }
                 
                 var have = false
-                if datas.count > 0 {
+                //第一页是全更新不过滤
+                if self.currentPage > 1 && datas.count > 0 {
                     //过滤重复的
                     for i in (0..<datas.count).reversed() {
                         if datas[i].pid == pid {
@@ -267,7 +264,7 @@ class PostViewController: UIViewController {
             }
             
             if subDatas.count > 0 {
-                self.saveToHistory(tid: String(self.tid!), title: self.postTitle ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
+                self.saveToHistory(tid: String(self.tid!), title: title ?? "未知标题", author: subDatas[0].author, created: subDatas[0].time)
             }
         } else { //错误
             //有可能没有列表处理错误
@@ -288,8 +285,33 @@ class PostViewController: UIViewController {
         }
         self.saveToHistory = true
         DispatchQueue.global(qos: .background).async {
-            SQLiteDatabase.instance?.addHistory(tid: Int(tid)!, title: self.postTitle ?? "未知标题帖子", author: author ?? "未知作者", created: created ?? "")
+            SQLiteDatabase.instance?.addHistory(tid: Int(tid)!, title: title, author: author ?? "未知作者", created: created ?? "")
         }
+    }
+    
+    
+    // 设置headerView 显示标题
+    private var isSetHeaderView = false
+    func setUpHeaderView(title: String?) {
+        if isSetHeaderView { return }
+        let label = UILabel()
+        label.textColor = UIColor.darkText
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        if let t = title {
+            isSetHeaderView = true
+            label.text = t
+        } else {
+            label.text = "未知帖子标题"
+        }
+        
+        let height = label.textHeight(for: tableView.bounds.width - 30)
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: height + 20))
+        label.frame = CGRect(x: 15, y: 12, width: tableView.bounds.width - 30, height: height + 8)
+        headerView.addSubview(label)
+        
+        tableView.tableHeaderView = headerView
+        
     }
     
     
@@ -313,7 +335,7 @@ class PostViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default) { action in
             print("share click")
             let shareVc = UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
-            shareVc.setValue(self.postTitle, forKey: "subject")
+            shareVc.setValue(self.title, forKey: "subject")
             self.present(shareVc, animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "关闭", style: .cancel, handler: nil))
@@ -363,13 +385,34 @@ class PostViewController: UIViewController {
         }
     }
     
-    // html text里面的链接点击事件
+    // MARK: html text里面的链接点击事件
     func linkClick(type: LinkClickType) {
         switch type {
         case .viewUser(let uid):
             self.performSegue(withIdentifier: "postToUserDetail", sender: uid)
         case .viewAlbum(let (aid, url)):
             showAlbums(aid: aid, url: url)
+        case .viewPost(let (tid, pid)):
+            if pid == self.pid { // 点击了跳转到本帖的url
+                for i in 0..<datas.count {
+                    if datas[i].pid == pid {
+                        self.tableView.scrollToRow(at: IndexPath.init(row: i, section: 0), at: .top, animated: true)
+                        break
+                    }
+                }
+            } else { // 点击了跳转到别的帖子的url打开新的页面
+                let vc = PostViewController()
+                vc.tid = tid
+                vc.pid = pid
+                self.show(vc, sender: true)
+            }
+        case .login():
+            let vc = LoginViewController()
+            self.present(vc, animated: true)
+        case .others(let url), .attachment(let url):
+            if let u = URL(string: url) {
+                self.loadWebView(title: nil, url: u)
+            }
         default:
             break
         }
@@ -474,7 +517,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - 评论相关
 extension PostViewController {
-    // 评论层主
+    // 评论层主 // TODO 新的页面。。。。
     @objc func replyCzClick(_ sender: UIButton) {
         if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
             let url =  datas[indexPath.row].replyUrl {

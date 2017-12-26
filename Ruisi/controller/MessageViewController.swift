@@ -96,6 +96,24 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
+    override func loadData(_ pos: Int) {
+        super.loadData(pos)
+        updateUnreads()
+    }
+    
+    // 设置badge
+    func updateUnreads()  {
+        let unreadCount =  self.datas.reduce(0) { $0 + ($1.isRead ? 0 : 1) }
+        if let tabBarVc = self.tabBarController {
+            if unreadCount > 0 {
+                tabBarVc.tabBar.selectedItem?.badgeValue = unreadCount < 9 ? String(unreadCount) : "9+"
+            } else {
+                tabBarVc.tabBar.selectedItem?.badgeValue = nil
+            }
+        }
+    }
+
+    
     override func parseData(pos: Int, doc: HTMLDocument) -> [MessageData] {
         var subDatas = [MessageData]()
         let nodes: XPathObject
@@ -257,6 +275,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
         if !datas[indexPath.row].isRead {
             datas[indexPath.row].isRead = true
             tableView.reloadRows(at: [indexPath], with: .automatic)
+            updateUnreads()
         }
         
         if position == 1 { //pm
@@ -280,7 +299,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
-    
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController,

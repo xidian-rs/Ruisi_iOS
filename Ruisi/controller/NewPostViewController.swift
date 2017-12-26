@@ -35,6 +35,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var name: String?
     
     var isEditMode = false
+    
     var tid: Int? //编辑模式需要
     var pid: Int? //编辑模式需要
     
@@ -228,7 +229,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
         }
         
-        if titleInput.text == nil || titleInput.text?.count == 0 {
+        if !titleInput.isHidden && (titleInput.text == nil || titleInput.text?.count == 0) {
             reason = "标题不能为空"
         } else if contentInput.text == nil || contentInput.text.count == 0 {
             reason = "内容不能为空"

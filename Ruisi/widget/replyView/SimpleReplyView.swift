@@ -16,19 +16,7 @@ class SimpleReplyView: AboveKeyboardView {
     @IBOutlet weak var progressView: UIActivityIndicatorView!
     @IBOutlet weak var contentView: RitchTextView!
     
-    lazy var toolbarView = PostToolbarView.toolbarView()
-    
     private var userinfo: [AnyHashable : Any]?
-    
-    // 默认的占位符 点击取消后设置此
-    public var defaultPlaceholder: String?
-    public var toolbarPlaceholder: String? {
-        didSet{
-            if showToolBar {
-                toolbarView.title = toolbarPlaceholder
-            }
-        }
-    }
     
     // 占位符
     public var placeholder: String? {
@@ -53,29 +41,14 @@ class SimpleReplyView: AboveKeyboardView {
         }
     }
     
-    public var showToolBar = false {
-        didSet {
-            if showToolBar {
-                contentView.inputAccessoryView = toolbarView
-                
-                toolbarView.onAtClick(execute: { [weak self] (btn) in
-                    self?.didClickAt?(self!.contentView, false)
-                })
-                
-                toolbarView.onCancelClick(execute: { [weak self] (btn) in
-                    self?.userinfo = nil // nil表示回复lz
-                    self?.toolbarView.title = self?.defaultPlaceholder
-                    self?.contentView.resignFirstResponder()
-                })
-                
-                toolbarView.onHideKeyboardClick(execute: { [weak self] (btn) in
-                    self?.contentView.resignFirstResponder()
-                })
-            } else {
-                contentView.inputAccessoryView = nil
-            }
-        }
-    }
+    // 是否可以显示小尾巴
+    // 要显示尾巴需要允许+用户在设置中开启
+    public var enableTail = false
+    
+    // 小的字数限制
+    // 默认不满足字数限制补空格
+    public var minTextLen = 1
+    
     
     class func simpleReplyView(frame: CGRect) -> SimpleReplyView {
         let nib = UINib(nibName: "SimpleReplyView", bundle: nil)
@@ -121,8 +94,20 @@ class SimpleReplyView: AboveKeyboardView {
     
     private var submitClick: ((_ text: String,_ userinfo: [AnyHashable : Any]?)->())?
     
+    
     @IBAction func sendBtnClick(_ sender: UIButton) {
-        if let text = contentView.result {
+        if var text = contentView.result {
+            if enableTail, Settings.enableTail, let tail = Settings.tailContent, tail.count > 0 {
+                text = text + "     " + tail
+            }
+            
+            let len = minTextLen - text.count
+            if len > 0 {
+                for _ in 0..<len {
+                    text += " "
+                }
+            }
+            
             submitClick?(text, userinfo)
         }
     }
@@ -136,7 +121,6 @@ class SimpleReplyView: AboveKeyboardView {
     // 主动显示回复框 并获取焦点 userinfo 用来传递数据 clear是否清除
     public func showReplyBox(clear: Bool, placeholder: String? = nil, userinfo: [AnyHashable : Any]? = nil) {
         self.userinfo = userinfo
-        self.toolbarPlaceholder = placeholder
         self.contentView.becomeFirstResponder()
         if clear {
             clearText(hide: false)

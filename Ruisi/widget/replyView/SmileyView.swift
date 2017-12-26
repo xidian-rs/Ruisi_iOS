@@ -22,6 +22,7 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     class func smileyView() -> SmileyView {
         let nib = UINib(nibName: "SmileyView", bundle: nil)
         let v = nib.instantiate(withOwner: self, options: nil).first as! SmileyView
+        v.frame = CGRect(x: 0, y: 0, width: v.frame.width, height: AboveKeyboardView.KEYBOARD_HEIGHT)
         return v
     }
     

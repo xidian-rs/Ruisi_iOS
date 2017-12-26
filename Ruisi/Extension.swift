@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 extension String {
     func index(of string: String, options: CompareOptions = .literal) -> Index? {
@@ -120,5 +121,18 @@ extension UIViewController {
         let action = UIAlertAction(title: "好", style: .cancel)
         alert.addAction(action)
         self.present(alert, animated: true)
+    }
+    
+    func loadWebView(title: String?, url: URL) {
+        
+        let vc = UIViewController()
+        let webview = WKWebView(frame: view.frame)
+        
+        webview.load(URLRequest(url: url))
+        
+        vc.view.addSubview(webview)
+        vc.title = title ?? "网页"
+        
+        self.show(vc, sender: self)
     }
 }

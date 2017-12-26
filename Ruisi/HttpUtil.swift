@@ -7,8 +7,19 @@
 //
 
 import Foundation
+import UIKit
 
 public class HttpUtil {
+    
+    //当前正在执行的网络请求数目用于控制小菊花
+    private static var  workingSize = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = workingSize > 0
+            }
+        }
+    }
+    
 
     public static func encodeUrl(url: Any) -> String? {
         return encodeURIComponent(string: String(describing: url))
@@ -35,6 +46,7 @@ public class HttpUtil {
 
         print("start http get url:\(url)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            HttpUtil.workingSize -= 1
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
@@ -56,6 +68,8 @@ public class HttpUtil {
                 return
             }
         }
+        
+        HttpUtil.workingSize += 1
         task.resume()
     }
 
@@ -86,6 +100,7 @@ public class HttpUtil {
 
         print("start http post url:\(url)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            HttpUtil.workingSize -= 1
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
@@ -107,6 +122,7 @@ public class HttpUtil {
             }
         }
 
+        HttpUtil.workingSize += 1
         task.resume()
     }
 
@@ -142,6 +158,7 @@ public class HttpUtil {
         request.httpBody = createRequestBodyWith(parameters: params, imageName: imageName, imageData: imageData, boundary: boundary) as Data
         print("start http post url:\(url)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            HttpUtil.workingSize -= 1
             print("===========")
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
@@ -191,6 +208,7 @@ public class HttpUtil {
             }
         }
 
+        HttpUtil.workingSize += 1
         task.resume()
     }
 

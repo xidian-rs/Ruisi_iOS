@@ -33,6 +33,12 @@ class RitchTextView: UITextView {
         }
     }
     
+    override var text: String! {
+        didSet {
+            textChnage()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         print("RitchTextView")
@@ -60,7 +66,7 @@ class RitchTextView: UITextView {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
     }
     
-    @objc func textChnage(_ notification: Notification) {
+    @objc func textChnage(_ notification: Notification? = nil) {
         placeholderBiew.isHidden = hasText
     }
     
@@ -150,6 +156,9 @@ class RitchTextView: UITextView {
         //添加font属性防止字体变小
         attrStr.addAttributes([NSAttributedStringKey.attachment : attach,NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 15)],range: NSRange(location: 0, length: 1))
         insertImageText(imageText: attrStr)
+        
+        //手冻执行代理
+        delegate?.textViewDidChange?(self)
     }
     
     
