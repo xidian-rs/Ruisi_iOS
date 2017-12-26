@@ -36,7 +36,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         }
     }
     @IBOutlet weak var searchBar: UISearchBar!
-
+    
     override func viewDidLoad() {
         self.autoRowHeight = false
         
@@ -45,12 +45,12 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         isInSearchMode = false
         searchBar.delegate = self
     }
-
+    
     override func getUrl(page: Int) -> String {
         return Urls.friendsUrl + "&page=\(page)"
     }
-
-
+    
+    
     override func parseData(pos: Int, doc: HTMLDocument) -> [FriendData] {
         var subDatas: [FriendData] = []
         //print(doc.body?.text)
@@ -60,7 +60,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         } else {
             nodes = doc.xpath("//*[@id=\"friend_ul\"]/ul/li")
         }
-
+        
         for li in nodes {
             if let n = li.xpath("h4/a").first {
                 let uname = n.text
@@ -74,7 +74,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
                 } else {
                     isFriend = true
                 }
-
+                
                 let d = FriendData(uid: uid!, username: uname ?? "未获取用户名", description: description, usernameColor: unameColor, online: isOnline, isFriend: isFriend)
                 subDatas.append(d)
             }
@@ -85,11 +85,11 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         print("finish load data pos:\(pos) count:\(subDatas.count)")
         return subDatas
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
         let avatarView = cell.viewWithTag(1) as! UIImageView
         let usernameView = cell.viewWithTag(2) as! UILabel
         let descriptionView = cell.viewWithTag(3) as! UILabel
@@ -103,16 +103,16 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             usernameView.textColor = UIColor.darkText
         }
         descriptionView.text = datas[indexPath.row].description
-
+        
         addBtn.isHidden = datas[indexPath.row].isFriend
         if !addBtn.isHidden {
             addBtn.addTarget(self, action: #selector(addFriendClick), for: .touchUpInside)
         }
-
+        
         return cell
     }
-
-
+    
+    
     @objc func addFriendClick(_ sender: UIButton!) {
         if let cell = sender.superview?.superview as? UITableViewCell, let index = tableView.indexPath(for: cell) {
             let user = datas[index.row]
@@ -125,12 +125,12 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             present(alert, animated: true, completion: nil)
         }
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             showDeleteFriendAlert(indexPath: indexPath)
@@ -161,7 +161,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             return 1
         }
     }
-
+    
     func showDeleteFriendAlert(indexPath: IndexPath) {
         let username = datas[indexPath.row].username
         let uid = datas[indexPath.row].uid
@@ -173,7 +173,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
     func doDeleteFriend(indexPath: IndexPath, uid: Int) {
         HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: ["friendsubmit": "true"]) { (ok, res) in
             print("post ok")
@@ -197,7 +197,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             }
         }
     }
-
+    
     func doAddFriend(indexPath: IndexPath, uid: Int) {
         HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: ["addsubmit": "true", "handlekey": "friend_\(uid)", "note": "", "gid": 1, "addsubmit_btn": "true"]) { (ok, res) in
             var title: String
@@ -221,7 +221,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
                     message = "未知错误..."
                 }
             }
-
+            
             DispatchQueue.main.async {
                 let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
@@ -229,14 +229,14 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             }
         }
     }
-
+    
     @objc func avatarClick(_ sender: UITapGestureRecognizer) {
         if let index = tableView.indexPath(for: sender.view?.superview?.superview as! UITableViewCell) {
             self.performSegue(withIdentifier: "friendToUserDetail", sender: index)
         }
     }
-
-
+    
+    
     // MARK: - UISearchBar Delegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("text change:\(searchText)")
@@ -249,7 +249,7 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             tableView.reloadData()
         }
     }
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("search click")
         isInSearchMode = true
@@ -258,18 +258,18 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             doSearch(text: text.trimmingCharacters(in: CharacterSet.whitespaces))
         }
     }
-
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("cancel click")
         isInSearchMode = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
     }
-
+    
     func doSearch(text: String) {
         let label = tableView.backgroundView as? UILabel
         label?.text = "搜索中..."
-
+        
         HttpUtil.GET(url: Urls.searchFriendUrl(username: text), params: nil) { (ok, res) in
             if ok, let doc = try? HTML(html: res, encoding: .utf8) {
                 let ds = self.parseData(pos: 0, doc: doc)
@@ -286,21 +286,21 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             }
         }
     }
-
+    
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? ChatViewController,
-           let cell = sender as? UITableViewCell {
+            let cell = sender as? UITableViewCell {
             let index = tableView.indexPath(for: cell)!
             dest.uid = datas[index.row].uid
             dest.username = datas[index.row].username
         } else if let dest = segue.destination as? UserDetailViewController,
-                  let index = sender as? IndexPath {
+            let index = sender as? IndexPath {
             dest.uid = datas[index.row].uid
             dest.username = datas[index.row].username
             dest.isFriend = datas[index.row].isFriend
         }
     }
-
+    
 }

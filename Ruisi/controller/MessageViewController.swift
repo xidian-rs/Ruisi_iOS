@@ -112,7 +112,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
             }
         }
     }
-
+    
     
     override func parseData(pos: Int, doc: HTMLDocument) -> [MessageData] {
         var subDatas = [MessageData]()
@@ -124,7 +124,6 @@ class MessageViewController: BaseTableViewController<MessageData> {
         } else {// pm
             currentPage = Int(doc.xpath("/html/body/div[2]/strong").first?.text ?? "") ?? currentPage
             totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "") ?? currentPage
-            print("======\(currentPage)   \(totalPage)")
             nodes = doc.xpath("/html/body/div[1]/ul/li") //.css(".pmbox ul li")
         }
         
@@ -299,7 +298,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController,

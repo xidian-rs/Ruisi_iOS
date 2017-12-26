@@ -139,7 +139,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             DispatchQueue.main.async {
                 self.datas = subDatas
                 self.tableView.reloadData()
-
+                
                 if self.currentPage < self.pageSum {
                     self.currentPage += 1
                 }
@@ -198,7 +198,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let avatar = cell.viewWithTag(1) as! UIImageView
         let contentLabel = cell.viewWithTag(2) as! UILabel
         let timeLabel = cell.viewWithTag(3) as! UILabel
-    
+        
         avatar.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName:"placeholder"))
         timeLabel.text = data.time
         contentLabel.attributedText = AttributeConverter(font: contentLabel.font, textColor: contentLabel.textColor).convert(src: data.message)

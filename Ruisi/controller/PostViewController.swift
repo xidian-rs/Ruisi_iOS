@@ -382,8 +382,10 @@ class PostViewController: UIViewController {
     
     // 返回到本vc
     @IBAction func backToPostVc(segue: UIStoryboardSegue) {
-        print("back")
-        print(segue.source)
+        // TODO 回复层主页面返回判断回复状态
+        if let vc = segue.source as? ReplyCzViewController {
+            print("reply cz :\(vc.isSuccess)")
+        }
     }
     
     // MARK: html text里面的链接点击事件

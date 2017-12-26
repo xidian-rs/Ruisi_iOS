@@ -11,7 +11,7 @@ import Kanna
 
 // 签到页面
 class SignViewController: UIViewController {
-
+    
     let items = ["开心", "难过", "郁闷", "无聊", "怒", "擦汗", "奋斗", "慵懒", "衰"]
     let itemsValue = ["kx", "ng", "ym", "wl", "nu", "ch", "fd", "yl", "shuai"]
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
@@ -23,14 +23,14 @@ class SignViewController: UIViewController {
     @IBOutlet weak var labelStatus: UILabel!
     @IBOutlet weak var labelTotal: UILabel!
     @IBOutlet weak var labelTotal2: UILabel!
-
+    
     var isSigned: Bool = false {
         didSet {
             haveSignImg.isHidden = !isSigned
             labelStatus.isHidden = !isSigned
             labelTotal.isHidden = !isSigned
             labelTotal2.isHidden = !isSigned
-
+            
             labelSmiley.isHidden = isSigned
             btnSmiley.isHidden = isSigned
             inputText.isHidden = isSigned
@@ -39,11 +39,11 @@ class SignViewController: UIViewController {
     }
     var chooseAlert: UIAlertController!
     var currentSelect = 0
-
+    
     @IBAction func confirmClick(_ sender: UITextField) {
         inputText.resignFirstResponder()
     }
-
+    
     func setLoadingState(isLoading: Bool) {
         loadingView.isHidden = !isLoading
         if isLoading {
@@ -51,34 +51,34 @@ class SignViewController: UIViewController {
             labelStatus.isHidden = true
             labelTotal.isHidden = true
             labelTotal2.isHidden = true
-
+            
             labelSmiley.isHidden = true
             btnSmiley.isHidden = true
             inputText.isHidden = true
             btnSign.isHidden = true
         }
     }
-
-
+    
+    
     @IBAction func chooseClick(_ sender: UIButton) {
         self.inputText.resignFirstResponder()
         present(chooseAlert, animated: true, completion: nil)
     }
-
+    
     @IBAction func signBtnClick(_ sender: UIButton) {
         self.inputText.resignFirstResponder()
         showLoadingView()
-
+        
         let xinqin = itemsValue[currentSelect]
         let say = inputText.text
-
+        
         let qmode: String
         if say == nil {
             qmode = "1"
         } else {
             qmode = "3"
         }
-
+        
         HttpUtil.POST(url: Urls.signPostUrl, params: ["qdxq": xinqin, "qdmode": qmode, "todaysay": say ?? "来自手机睿思IOS", "fastreplay": 0]) { ok, res in
             let message: String
             if ok, let s = res.range(of: "恭喜你签到成功") {
@@ -87,7 +87,7 @@ class SignViewController: UIViewController {
             } else {
                 message = "签到失败 " + res
             }
-
+            
             DispatchQueue.main.async { [weak self] in
                 self?.dismiss(animated: true, completion: {
                     let vc = UIAlertController(title: "签到结果", message: message, preferredStyle: .alert)
@@ -96,12 +96,12 @@ class SignViewController: UIViewController {
                     }))
                     self?.present(vc, animated: true)
                 })
-
+                
                 self?.checkSignStatus()
             }
         }
     }
-
+    
     // 处理选择心情
     func handlePick(action: UIAlertAction) {
         let title = action.title
@@ -114,7 +114,7 @@ class SignViewController: UIViewController {
             }
         }
     }
-
+    
     // 检查是否签到
     func checkSignStatus() {
         setLoadingState(isLoading: true)
@@ -147,10 +147,10 @@ class SignViewController: UIViewController {
             }
         }
     }
-
-
+    
+    
     var loadingAlert: UIAlertController?
-
+    
     func showLoadingView() {
         if loadingAlert == nil {
             loadingAlert = UIAlertController(title: "签到中", message: "请稍后...", preferredStyle: .alert)
@@ -162,8 +162,8 @@ class SignViewController: UIViewController {
         }
         present(loadingAlert!, animated: true)
     }
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -172,17 +172,17 @@ class SignViewController: UIViewController {
             let ac = UIAlertAction(title: v, style: .default, handler: handlePick)
             chooseAlert.addAction(ac)
         }
-
+        
         chooseAlert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         //btnSmiley.titleLabel?.text = items[currentSelect]
-
+        
         btnSmiley.setTitle(items[currentSelect], for: .normal)
         btnSmiley.setTitle(items[currentSelect], for: .focused)
-
+        
         let date = Date()
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
-
+        
         if !(7 <= hour && hour < 23) {
             labelStatus.isHidden = false
             labelStatus.text = "不在签到时间 无法签到"

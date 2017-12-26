@@ -10,12 +10,12 @@ import UIKit
 
 // 首页 - 板块列表
 class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+    
     private var datas: [Forums] = []
     let logoDir = "assets/forumlogo/"
     let jsonPath = "assets/forums"
     var loginState: Bool = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loginState = App.isLogin
@@ -23,17 +23,17 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         self.clearsSelectionOnViewWillAppear = true
         loadData(loginState: loginState)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         if App.isLogin != loginState { //第一次
             loginState = App.isLogin
             loadData(loginState: loginState)
         }
     }
     
-
+    
     func loadData(loginState: Bool) {
         print("load forums login state:\(loginState)")
         let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
@@ -46,7 +46,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             })
             return loginState || !f.login
         })
-
+        
         collectionView?.reloadData()
     }
     
@@ -60,39 +60,39 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             self.present(dest!, animated: true, completion: nil)
         }
     }
-
-
+    
+    
     // MARK: UICollectionViewDataSource
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return datas.count
     }
-
+    
     // MARK: UICollectionViewDelegateFlowLayout
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellSize = (collectionView.frame.width - 90) / 4.0
         return CGSize(width: cellSize, height: cellSize + 16)
     }
-
+    
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 8, left: 16, bottom: 12, right: 16)
     }
-
-
+    
+    
     // 单元的行间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
-
-
+    
+    
     // 每个小单元的列间距
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
-
-
+    
+    
     // section 头或者尾部
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
@@ -103,14 +103,14 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             head.backgroundColor = UIColor(white: 0.96, alpha: 1)
             return head
         }
-
+        
         return UICollectionReusableView(frame: CGRect.zero)
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return datas[section].getSize()
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         let imageView = cell.viewWithTag(1) as! UIImageView
@@ -121,13 +121,13 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         label.text = datas[indexPath.section].forums![indexPath.row].name
         return cell
     }
-
+    
     var selectedIndexPath: IndexPath?
-
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedIndexPath = indexPath
         collectionView.deselectItem(at: indexPath, animated: true)
-
+        
         let type = Urls.getPostsType(fid: datas[indexPath.section].forums![indexPath.row].fid, isSchoolNet: App.isSchoolNet)
         switch type {
         case .imageGrid:
@@ -136,8 +136,8 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             self.performSegue(withIdentifier: "forumToNormalPosts", sender: self)
         }
     }
-
-
+    
+    
     // MARK: UICollectionViewDelegate
     func showLoginAlert() {
         let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
@@ -148,7 +148,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "formToSearchSegue" {
             if !App.isLogin {
@@ -158,14 +158,14 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         }
         return true
     }
-
-
+    
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let index = selectedIndexPath {
             let fid = datas[index.section].forums?[index.row].fid
             let title = datas[index.section].forums?[index.row].name
-
+            
             if let dest = (segue.destination as? PostsViewController) {
                 dest.title = title
                 dest.fid = fid
@@ -175,5 +175,5 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             }
         }
     }
-
+    
 }

@@ -11,13 +11,13 @@ import Kanna
 
 // 用户详情页
 class UserDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
     var uid: Int?
     var username: String?
     var isFriend = false
-
+    
     private var datas = [KeyValueData<String, String>]()
-
+    
     @IBOutlet weak var chatBtn: UIButton!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -27,10 +27,10 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var levelView: UILabel!
     @IBOutlet weak var tabview: UITableView!
     @IBOutlet weak var loadingIndicate: UIActivityIndicatorView!
-
+    
     private var loading = true
     private var currentPoint: Int = 0 //当前积分
-
+    
     var isLoading: Bool {
         get {
             return loading
@@ -45,25 +45,25 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             tabview.reloadData()
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         tabview.delegate = self
         tabview.dataSource = self
-
+        
         if uid == nil {
             showBackAlert(message: "没有传入uid参数")
             return
         }
-
+        
         avatarView.kf.setImage(with: Urls.getAvaterUrl(uid: uid!, size: 1), placeholder: #imageLiteral(resourceName:"placeholder"))
         avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick)))
-
+        
         usernameLabel.text = username
         levelView.text = "--"
         loadData(uid: uid!)
-
+        
         if App.uid != uid { //别人
             self.title = username
             if !isFriend {
@@ -75,12 +75,12 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             self.chatBtn.isHidden = true
         }
     }
-
+    
     @objc func avatarClick() {
         let viewer = GalleryViewController(startIndex: 0, itemsDataSource: self, displacedViewsDataSource: self)
         self.present(viewer, animated: false, completion: nil)
     }
-
+    
     func checkLogin() -> Bool {
         if App.isLogin {
             return true
@@ -94,7 +94,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         present(alert, animated: true, completion: nil)
         return false
     }
-
+    
     @objc func addFriendBtnClick(_ sender: Any) {
         if !checkLogin() {
             return
@@ -106,7 +106,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
     @objc func deleteFriendClick() {
         let alert = UIAlertController(title: "删除好友", message: "你要删除好友【\(String(username ?? ""))】?吗?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (action) in
@@ -115,7 +115,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
     func doDeleteFriend(uid: Int) {
         HttpUtil.POST(url: Urls.deleteFriendUrl(uid: uid), params: ["friendsubmit": "true"]) { (ok, res) in
             print("post ok")
@@ -139,8 +139,8 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
     }
-
-
+    
+    
     @objc func exitClick() {
         let alert = UIAlertController(title: "提示", message: "你要退出登陆吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "退出", style: .destructive, handler: { (action) in
@@ -149,7 +149,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
     func doAddFriend(uid: Int) {
         HttpUtil.POST(url: Urls.addFriendUrl(uid: uid), params: ["addsubmit": "true", "handlekey": "friend_\(uid)", "gid": 1, "addsubmit_btn": "true"]) { (ok, res) in
             var title: String
@@ -173,7 +173,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                     message = "未知错误..."
                 }
             }
-
+            
             DispatchQueue.main.async {
                 let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
@@ -181,11 +181,11 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
     }
-
+    
     func doExit() {
         // TODO
     }
-
+    
     func loadData(uid: Int) {
         HttpUtil.GET(url: Urls.getUserDetailUrl(uid: uid), params: nil) { ok, res in
             if ok && uid == self.uid! { //返回的数据是我们要的
@@ -204,7 +204,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                         var value = node.xpath("span").first?.text ?? ""
                         node.removeChild(node.xpath("span").first!)
                         let key = node.text ?? ""
-
+                        
                         if key.contains("积分") {
                             self.currentPoint = Int(value) ?? 0
                             let level = Utils.getLevel(point: self.currentPoint)
@@ -224,21 +224,21 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                                 value = String(format: "%.2f GB", gb)
                             }
                         }
-
+                        
                         self.datas.append(KeyValueData(key: key, value: value))
                     }
                 }
             } else {
                 self.datas.append(KeyValueData(key: "加载失败", value: ""))
             }
-
+            
             DispatchQueue.main.async {
                 //self.refreshView.attributedTitle = attrStr
                 self.isLoading = false
             }
         }
     }
-
+    
     private func showBackAlert(message: String) {
         let alert = UIAlertController(title: "无法查看用户信息", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "关闭", style: .cancel, handler: { action in
@@ -247,7 +247,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         alert.addAction(action)
         self.present(alert, animated: true)
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         if isLoading {
             tableView.separatorStyle = .none
@@ -257,29 +257,29 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             return 1
         }
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
         let keyView = cell.viewWithTag(1) as! UILabel
         let valueView = cell.viewWithTag(2) as! UILabel
-
+        
         keyView.text = datas[indexPath.row].key
         valueView.text = datas[indexPath.row].value
-
+        
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? ChatViewController, let uid = self.uid {
@@ -293,11 +293,11 @@ extension UserDetailViewController: GalleryItemsDataSource, GalleryDisplacedView
     func provideDisplacementItem(atIndex index: Int) -> DisplaceableView? {
         return avatarView
     }
-
+    
     func itemCount() -> Int {
         return 1
     }
-
+    
     func provideGalleryItem(_ index: Int) -> FetchImageBlock {
         return { [weak self] imageCompletion in
             guard let uid = self?.uid else {

@@ -11,7 +11,7 @@ import Kanna
 
 // 图片帖子列表板块
 class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
     var fid: Int? // 由前一个页面传过来的值
     private var currentPage = 1
     private var totalPage = Int.max
@@ -19,7 +19,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
     private var datas = [ArticleListData]()
     @IBOutlet weak var collectionView: UICollectionView!
     private lazy var rsRefreshControl =  RSRefreshControl()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
@@ -42,13 +42,13 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         totalPage = Int.max
         loadData()
     }
-
+    
     @objc func newPostClick() {
         if checkLogin(message: "你需要登陆才能发帖") {
             self.performSegue(withIdentifier: "imagePostsToNewPost", sender: self)
         }
     }
-
+    
     func loadData() {
         isLoading = true
         HttpUtil.GET(url: Urls.getPostsUrl(fid: fid!) + "&page=\(currentPage)", params: nil) { ok, res in
@@ -57,7 +57,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
             if ok, let doc = try? HTML(html: res, encoding: .utf8) {
                 subDatas = self.parseData(doc: doc)
             }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
                 if subDatas.count > 0 {
                     if self.currentPage == 1 {
@@ -84,7 +84,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
             })
         }
     }
-
+    
     func parseData(doc: HTMLDocument) -> [ArticleListData] {
         var subDatas: [ArticleListData] = []
         let nodes = doc.xpath("//*[@id=\"waterfall\"]/li")
@@ -97,7 +97,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
                 //没有tid和咸鱼有什么区别
                 continue
             }
-
+            
             let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
             var author: String?
             var uid: Int?
@@ -105,11 +105,11 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
                 author = authorNode.text!
                 uid = Utils.getNum(from: authorNode["href"]!)
             }
-
+            
             let replys = li.xpath("div[2]/cite/a").first?.text
             let views = String(Utils.getNum(from: li.xpath("div[2]/cite").first?.text ?? "0") ?? 0)
             let image = li.xpath("div[1]/a/img").first?["src"]
-
+            
             let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: true, uid: uid, views: views, image: image)
             subDatas.append(d)
         }
@@ -121,54 +121,54 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         print("page total:\(self.totalPage)")
         return subDatas
     }
-
-
+    
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return datas.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         cell.contentView.layer.cornerRadius = 3.0
         cell.contentView.layer.borderWidth = 1.0
         cell.contentView.layer.borderColor = UIColor.clear.cgColor
         cell.contentView.layer.masksToBounds = true
-
+        
         cell.layer.shadowColor = UIColor.lightGray.cgColor
         cell.layer.shadowOffset = CGSize(width: 0, height: 1.0)
         cell.layer.shadowRadius = 3.0
         cell.layer.shadowOpacity = 0.5
         cell.layer.masksToBounds = false
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
-
+        
         let d = datas[indexPath.row]
         let image = cell.viewWithTag(1) as! UIImageView
         let title = cell.viewWithTag(2) as! UILabel
         let author = cell.viewWithTag(3) as! UILabel
         let likes = cell.viewWithTag(4) as! UILabel
-
+        
         if let imageUrl = d.image {
             image.kf.setImage(with: URL(string: Urls.baseUrl + imageUrl), placeholder: #imageLiteral(resourceName:"placeholder"))
         } else {
             image.image = #imageLiteral(resourceName:"placeholder")
         }
-
+        
         title.text = d.title
         author.text = d.author
         likes.text = d.views
-
+        
         return cell
     }
-
-
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("did select \(indexPath.row)")
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let lastElement = datas.count - 1
         if !isLoading && indexPath.row == lastElement && currentPage < totalPage {
@@ -179,7 +179,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
             loadData()
         }
     }
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PostViewController, let cell = sender as? UICollectionViewCell {

@@ -12,15 +12,15 @@ import Kanna
 
 // 带下拉刷新 带占位符 带上拉加载更多的基类
 class BaseTableViewController<T>: UITableViewController {
-
+    
     func getUrl(page: Int) -> String {
         fatalError("要实现")
     }
-
+    
     func parseData(pos: Int, doc: HTMLDocument) -> [T] {
         fatalError("要实现")
     }
-
+    
     public var autoRowHeight = true
     public var tableViewWidth: CGFloat = 0
     
@@ -63,10 +63,10 @@ class BaseTableViewController<T>: UITableViewController {
             }
         }
     }
-
+    
     //到达最后一页是否接着加载
     var shouldLoadMoreOnLastPage = false
-
+    
     private var loading = false
     open var isLoading: Bool {
         get {
@@ -85,20 +85,20 @@ class BaseTableViewController<T>: UITableViewController {
             }
         }
     }
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableViewWidth = self.tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
+        
         if autoRowHeight {
             // FIXME 自动行高会导致加载更多动画异常，暂时关闭自动行高
             self.tableView.estimatedRowHeight = 80
             self.tableView.rowHeight = UITableViewAutomaticDimension
         }
-
+        
         if showFooter {
             showFooterPrivate = false
             showFooter = true
@@ -109,7 +109,7 @@ class BaseTableViewController<T>: UITableViewController {
         }
         loadData()
     }
-
+    
     @objc func reloadData() {
         print("下拉刷新'")
         currentPage = 1
@@ -117,7 +117,7 @@ class BaseTableViewController<T>: UITableViewController {
         
         loadData(position)
     }
-
+    
     func loadData(_ pos: Int = 0) {
         isLoading = true
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
@@ -136,7 +136,7 @@ class BaseTableViewController<T>: UITableViewController {
             } else {
                 print("加载的数据不是我们想要的不做任何事")
             }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
                 if subDatas.count > 0 {
                     if self.currentPage == 1 {
@@ -165,7 +165,7 @@ class BaseTableViewController<T>: UITableViewController {
             })
         }
     }
-
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         if datas.count == 0 {
@@ -178,12 +178,12 @@ class BaseTableViewController<T>: UITableViewController {
             return 1
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datas.count
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -201,5 +201,5 @@ class BaseTableViewController<T>: UITableViewController {
             loadData(position)
         }
     }
-
+    
 }

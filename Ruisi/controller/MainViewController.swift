@@ -19,13 +19,13 @@ class MainViewController: UITabBarController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
     }
-
+    
     //selectedIndex 之前选择的位置
     // 切换tab
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-
+        
     }
-
+    
     // 检查网络类型
     func checkNetwork() {
         guard let status = Network.reachability?.status else {
@@ -38,15 +38,15 @@ class MainViewController: UITabBarController {
         print("Reachable:", Network.reachability?.isReachable ?? "nil")
         print("Wifi:", Network.reachability?.isReachableViaWiFi ?? "nil")
         print("====================")
-
+        
         App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
         checkLogin()
     }
-
+    
     @objc func networkChange(_ notification: Notification) {
         checkNetwork()
     }
-
+    
     //判断是否登陆
     func checkLogin() {
         HttpUtil.GET(url: Urls.loginUrl, params: nil) { (ok, res) in
@@ -56,7 +56,7 @@ class MainViewController: UITabBarController {
                 let messageNode = doc.xpath("/html/body/div[1]/p[1]").first
                 let userNode = doc.xpath("/html/body/div[3]/div/a[1]").first
                 let exitNode = doc.xpath("/html/body/div[3]/div/a[2]").first
-
+                
                 if messageNode != nil && userNode != nil && messageNode!.innerHTML!.contains("欢迎您回来") {
                     App.isLogin = true
                     App.uid = Utils.getNum(from: userNode!["href"] ?? "0")
@@ -68,7 +68,7 @@ class MainViewController: UITabBarController {
             } else {
                 print("unknown login state")
             }
-
+            
             if let forumVc = self.childViewControllers[0].childViewControllers[0] as? ForumsViewController, forumVc.loginState != App.isLogin {
                 DispatchQueue.main.async {
                     forumVc.loginState = App.isLogin
