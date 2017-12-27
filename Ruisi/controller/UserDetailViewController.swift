@@ -72,6 +72,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
             }
         } else {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登陆", style: .plain, target: self, action: #selector(exitClick))
             self.chatBtn.isHidden = true
         }
     }
@@ -183,7 +184,20 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func doExit() {
-        // TODO
+        //URLSession.shared.remove
+        let cookieStore = HTTPCookieStorage.shared
+        for cookie in cookieStore.cookies ?? [] {
+            cookieStore.deleteCookie(cookie)
+        }
+        
+        Settings.username = nil
+        Settings.password = nil
+        
+        App.isLogin = false
+        App.username = nil
+        App.uid = nil
+        
+        navigationController?.popViewController(animated: true)
     }
     
     func loadData(uid: Int) {
