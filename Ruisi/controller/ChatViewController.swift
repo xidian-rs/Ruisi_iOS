@@ -48,7 +48,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.replyView.enableTail = false
         self.replyView.minTextLen = 8
         
-        replyView.onSubmitClick { [weak self] (text,_) in
+        replyView.onSubmitClick { [weak self] text in
             self?.doSubmit(text: text)
         }
         

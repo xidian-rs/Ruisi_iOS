@@ -16,6 +16,7 @@ class MainViewController: UITabBarController {
         super.viewDidLoad()
         App.isLogin = Settings.username != nil
         checkNetwork()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
     }
 
@@ -24,7 +25,6 @@ class MainViewController: UITabBarController {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 
     }
-    
 
     // 检查网络类型
     func checkNetwork() {

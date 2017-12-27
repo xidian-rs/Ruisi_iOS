@@ -15,9 +15,7 @@ class SimpleReplyView: AboveKeyboardView {
     @IBOutlet weak var smileyBtn: UIButton!
     @IBOutlet weak var progressView: UIActivityIndicatorView!
     @IBOutlet weak var contentView: RitchTextView!
-    
-    private var userinfo: [AnyHashable : Any]?
-    
+
     // 占位符
     public var placeholder: String? {
         didSet{
@@ -88,11 +86,11 @@ class SimpleReplyView: AboveKeyboardView {
     }
     
     
-    public func onSubmitClick(execute closure: @escaping (_ text: String,_ userinfo: [AnyHashable : Any]?) -> Void) {
+    public func onSubmitClick(execute closure: @escaping (_ text: String) -> Void) {
         submitClick = closure
     }
     
-    private var submitClick: ((_ text: String,_ userinfo: [AnyHashable : Any]?)->())?
+    private var submitClick: ((_ text: String)->())?
     
     
     @IBAction func sendBtnClick(_ sender: UIButton) {
@@ -108,7 +106,7 @@ class SimpleReplyView: AboveKeyboardView {
                 }
             }
             
-            submitClick?(text, userinfo)
+            submitClick?(text)
         }
     }
     
@@ -119,8 +117,7 @@ class SimpleReplyView: AboveKeyboardView {
     }
     
     // 主动显示回复框 并获取焦点 userinfo 用来传递数据 clear是否清除
-    public func showReplyBox(clear: Bool, placeholder: String? = nil, userinfo: [AnyHashable : Any]? = nil) {
-        self.userinfo = userinfo
+    public func showReplyBox(clear: Bool, placeholder: String? = nil) {
         self.contentView.becomeFirstResponder()
         if clear {
             clearText(hide: false)

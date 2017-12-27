@@ -51,6 +51,7 @@
 		2F3885811FE2B022000749F4 /* ColorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885801FE2B022000749F4 /* ColorItemView.swift */; };
 		2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3885821FE2B33A000749F4 /* ThemeManager.swift */; };
 		2F3B29531FEA450B00C34F13 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B29521FEA450A00C34F13 /* Extension.swift */; };
+		2F3C7BA71FF3B2E800CC2CB3 /* ReplyCzViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */; };
 		2F3DDA9D1FED41600082C670 /* HtmlLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3DDA9C1FED41600082C670 /* HtmlLabel.swift */; };
 		2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */; };
 		2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42FE911F03A92300CC8C92 /* StarViewController.swift */; };
@@ -306,6 +307,7 @@
 		2F3885801FE2B022000749F4 /* ColorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorItemView.swift; sourceTree = "<group>"; };
 		2F3885821FE2B33A000749F4 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		2F3B29521FEA450A00C34F13 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCzViewController.swift; sourceTree = "<group>"; };
 		2F3DDA9C1FED41600082C670 /* HtmlLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlLabel.swift; sourceTree = "<group>"; };
 		2F42FE8F1F03A31900CC8C92 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		2F42FE911F03A92300CC8C92 /* StarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarViewController.swift; sourceTree = "<group>"; };
@@ -562,10 +564,11 @@
 				2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */,
 				2F7A9E661F03AFB300994123 /* UserDetailViewController.swift */,
 				2F00B9091FCF04E600A6D136 /* SearchViewController.swift */,
-				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
 				2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */,
 				2FB3A76E1FDFB07D002FE2F5 /* ChooseFriendViewController.swift */,
 				2F3885721FE2A883000749F4 /* ThemeViewController.swift */,
+				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
+				2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -815,6 +818,7 @@
 			files = (
 				2F42FE901F03A31900CC8C92 /* HistoryViewController.swift in Sources */,
 				2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */,
+				2F3C7BA71FF3B2E800CC2CB3 /* ReplyCzViewController.swift in Sources */,
 				2FAFE0D81FE956F900AD7FDC /* CounterView.swift in Sources */,
 				2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */,
 				2F8AB78F1FE6B39B00C3AFA8 /* UploadImageItem.swift in Sources */,

@@ -12,7 +12,7 @@ class RitchTextView: UITextView {
     
     lazy var smileyView: SmileyView = SmileyView.smileyView()
     lazy var toolbarView: ToolbarView = ToolbarView.toolbarView()
-    lazy var placeholderBiew: UILabel = UILabel()
+    lazy var placeholderLabel: UILabel = UILabel()
     
     public weak var context: UIViewController?
     
@@ -29,7 +29,7 @@ class RitchTextView: UITextView {
     
     public var placeholder: String? {
         didSet {
-            placeholderBiew.text = placeholder
+            placeholderLabel.text = placeholder
         }
     }
     
@@ -47,19 +47,19 @@ class RitchTextView: UITextView {
     }
     
     private func setUpPlaceholder() {
-        placeholderBiew.font = font
-        placeholderBiew.textColor = UIColor.lightGray
-        placeholderBiew.sizeToFit()
-        placeholderBiew.frame = CGRect(x: 5, y: 8, width: 100, height: 15)
+        placeholderLabel.font = font
+        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.sizeToFit()
+        placeholderLabel.frame = CGRect(x: 5, y: 8, width: 100, height: 15)
         
-        addSubview(placeholderBiew)
+        addSubview(placeholderLabel)
         
         NotificationCenter.default.addObserver(self, selector: #selector(textChnage), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        placeholderBiew.frame = CGRect(x: 5, y: 8, width: frame.width - 10, height: 15)
+        placeholderLabel.frame = CGRect(x: 5, y: 8, width: frame.width - 10, height: 15)
     }
     
     deinit {
@@ -67,7 +67,7 @@ class RitchTextView: UITextView {
     }
     
     @objc func textChnage(_ notification: Notification? = nil) {
-        placeholderBiew.isHidden = hasText
+        placeholderLabel.isHidden = hasText || (self.result?.count ?? 0) > 0
     }
     
     private func setUpToolbarView() {
@@ -97,6 +97,7 @@ class RitchTextView: UITextView {
         }
         
         toolbarView.onHideKeyboardClick {[weak self] (btn) in
+            self?.inputView = nil
             self?.resignFirstResponder()
         }
     }
@@ -159,6 +160,7 @@ class RitchTextView: UITextView {
         
         //手冻执行代理
         delegate?.textViewDidChange?(self)
+        self.textChnage()
     }
     
     
@@ -175,5 +177,6 @@ class RitchTextView: UITextView {
         
         //手冻执行代理
         delegate?.textViewDidChange?(self)
+        self.textChnage()
     }
 }

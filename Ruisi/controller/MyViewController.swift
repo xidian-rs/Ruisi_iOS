@@ -77,7 +77,6 @@ class MyViewController: UIViewController, UITableViewDelegate,
         if let v = sender.view {
             switch v {
             case avaterImage:
-                print("avater click")
                 if App.isLogin && App.uid != nil {
                     self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
                 } else {

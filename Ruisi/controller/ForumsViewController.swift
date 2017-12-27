@@ -32,6 +32,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             loadData(loginState: loginState)
         }
     }
+    
 
     func loadData(loginState: Bool) {
         print("load forums login state:\(loginState)")
@@ -47,6 +48,17 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         })
 
         collectionView?.reloadData()
+    }
+    
+    // 点击头像
+    @objc func tapHandler(sender: UITapGestureRecognizer) {
+        if App.isLogin && App.uid != nil {
+            self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
+        } else {
+            //login
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            self.present(dest!, animated: true, completion: nil)
+        }
     }
 
 

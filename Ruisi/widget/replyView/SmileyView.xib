@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -40,7 +41,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="0W0-Cb-FAj" firstAttribute="top" secondItem="uuU-Ko-udS" secondAttribute="bottom" id="5JX-L5-3Dh"/>
-                <constraint firstItem="Oyg-WS-nYc" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="FOx-gG-Jol"/>
+                <constraint firstItem="Oyg-WS-nYc" firstAttribute="bottom" secondItem="9Cl-Ew-Eu7" secondAttribute="bottom" id="FOx-gG-Jol"/>
                 <constraint firstItem="uuU-Ko-udS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Iep-Gc-33A"/>
                 <constraint firstAttribute="trailing" secondItem="uuU-Ko-udS" secondAttribute="trailing" id="J2y-Yd-kMN"/>
                 <constraint firstAttribute="trailing" secondItem="0W0-Cb-FAj" secondAttribute="trailing" id="OeY-o3-RkO"/>
@@ -51,6 +52,7 @@
                 <constraint firstItem="0W0-Cb-FAj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ofg-CT-UmG"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="9Cl-Ew-Eu7"/>
             <connections>
                 <outlet property="smileyCollection" destination="uuU-Ko-udS" id="lqq-vw-gwT"/>
                 <outlet property="smileyPageControl" destination="0W0-Cb-FAj" id="2YA-PE-nPE"/>

@@ -73,10 +73,12 @@ class PostViewController: UIViewController {
         self.replyView.enableTail = true
         self.replyView.minTextLen = 13
         
-        replyView.onSubmitClick { (content, userinfo) in
+        // 回复楼主
+        replyView.onSubmitClick { content in
             if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
                 print("message is:||\(content)||len:\(content.count)")
-                self.doReply(content: content, userinfo: userinfo)
+                self.replyView.isSending = true
+                HttpUtil.POST(url: self.replyLzUrl!, params: ["message": content, "handlekey": "fastpost", "loc": 1, "inajax": 1], callback: self.handleReplyResult)
             }
         }
         
@@ -108,17 +110,6 @@ class PostViewController: UIViewController {
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         rsRefreshControl.beginRefreshing()
         loadData()
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.hidesBarsOnSwipe = false
     }
     
     //刷新数据
@@ -382,7 +373,17 @@ class PostViewController: UIViewController {
             dest.isEditMode = true
             dest.tid = self.tid
             dest.pid = datas[index.row].pid
+        } else if segue.identifier == "toReplyCzController" ,let nav = segue.destination as? UINavigationController,let dest = nav.topViewController as? ReplyCzViewController, let data = sender as? PostData {
+            dest.title = "回复:\(data.index) \(data.author)"
+            dest.data = data
         }
+    }
+    
+    
+    // 返回到本vc
+    @IBAction func backToPostVc(segue: UIStoryboardSegue) {
+        print("back")
+        print(segue.source)
     }
     
     // MARK: html text里面的链接点击事件
@@ -520,58 +521,16 @@ extension PostViewController {
     // 评论层主 // TODO 新的页面。。。。
     @objc func replyCzClick(_ sender: UIButton) {
         if let indexPath = self.tableView.indexPath(for: sender.superview!.superview as! UITableViewCell),
-            let url =  datas[indexPath.row].replyUrl {
-            
-            replyView.showReplyBox(clear: true, placeholder: "回复:\(datas[indexPath.row].index) \(datas[indexPath.row].author)", userinfo: ["url": url])
-            
-            let y1 = tableView.cellForRow(at: indexPath)!.frame.maxY - tableView.contentOffset.y
-            let y2 = view.bounds.height - AboveKeyboardView.keyboardHeight - replyView.frame.height //(44--toolbarView)
-            
-            //print("y1:\(y1)  \(view.bounds.height - 253)")
-            if y1 > y2 {
-                tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + (y1 - y2)), animated: true)
-            }
+            datas[indexPath.row].replyUrl != nil {
+            self.performSegue(withIdentifier: "toReplyCzController", sender: datas[indexPath.row])
+            //let y1 = tableView.cellForRow(at: indexPath)!.frame.maxY - tableView.contentOffset.y
+            //let y2 = view.bounds.height - AboveKeyboardView.keyboardHeight - replyView.frame.height //(44--toolbarView)
+            //if y1 > y2 {
+            //    tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + (y1 - y2)), animated: true)
+            //}
         }
     }
     
-    // do 回复楼主/层主 userinfo==nil 回复楼主
-    private func doReply(content: String, userinfo: [AnyHashable : Any]?) {
-        replyView.isSending = true
-        if let info  = userinfo { // 回复层主
-            let url = info["url"]! as! String
-            //1.根据replyUrl获得相关参数
-            HttpUtil.GET(url: url, params: nil, callback: { (ok, res) in
-                //print(res)
-                if ok, let doc = try? HTML(html: res, encoding: .utf8) {
-                    //*[@id="postform"]
-                    print("=======")
-                    if let url = doc.xpath("//*[@id=\"postform\"]").first?["action"] {
-                        var parameters = ["message": content]
-                        //*[@id="formhash"]
-                        let inputs = doc.xpath("//*[@id=\"postform\"]/input")
-                        for input in inputs {
-                            parameters[input["name"]!] = input["value"]!
-                        }
-                        
-                        //2. 正式评论层主
-                        print("postCzUrl:\(url)")
-                        print("parameters:\(parameters)")
-                        HttpUtil.POST(url: url, params: parameters, callback: self.handleReplyResult)
-                        return
-                    }
-                }
-                
-                //处理未成功加载的楼层回复
-                DispatchQueue.main.async { [weak self] in
-                    self?.replyView.isSending = false
-                    self?.replyView.hidekeyboard()
-                    self?.showAlert(title: "回复失败", message: "回复失败,请稍后重试")
-                }
-            })
-        } else { // 回复楼主
-            HttpUtil.POST(url: self.replyLzUrl!, params: ["message": content, "handlekey": "fastpost", "loc": 1, "inajax": 1], callback: self.handleReplyResult)
-        }
-    }
     
     private func handleReplyResult(ok: Bool, res: String) {
         var success = false
@@ -681,12 +640,6 @@ extension PostViewController: GalleryItemsDataSource {
         return { imageCompletion in
             self.currentFetch = imageCompletion
             if index <= self.albums.count - 1,let url = URL(string: self.albums[index].src) {
-                //let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { (data, response, error) in
-                //    if let d = data {
-                //        imageCompletion(UIImage(data: d))
-                //    }
-                //})
-                //task.resume()
                 ImageDownloader.default.downloadImage(with: url, options: [], progressBlock: nil) {
                     (image, error, url, data) in
                     if let i = image {
