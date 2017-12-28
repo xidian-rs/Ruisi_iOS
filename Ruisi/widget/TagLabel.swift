@@ -8,6 +8,7 @@
 
 import UIKit
 
+// tag 的label
 class TagLabel: UILabel {
     
     override init(frame: CGRect) {

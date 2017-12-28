@@ -8,6 +8,8 @@
 
 import UIKit
 
+// 支持显示html的TextView
+// TODO 表情占位符替换位表情
 class HtmlTextView: UITextView, UITextViewDelegate {
     
     public static let baseURL = URL(string: Urls.baseUrl)

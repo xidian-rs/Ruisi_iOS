@@ -8,6 +8,8 @@
 
 import UIKit
 
+// 支持显示html的label
+// TODO 表情占位符替换位表情
 class HtmlLabel: UILabel {
     
     // 链接点击回调

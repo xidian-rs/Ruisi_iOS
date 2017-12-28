@@ -28,7 +28,5 @@ class ColorItemView: UIView {
             UIColor.white.setFill()
             p.fill()
         }
-
     }
-
 }

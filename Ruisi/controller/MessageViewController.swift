@@ -10,6 +10,7 @@ import UIKit
 import Kanna
 
 // 首页 - 消息
+// TODO 支持消息小圆点
 class MessageViewController: BaseTableViewController<MessageData> {
     
     private var lastLoginState = false

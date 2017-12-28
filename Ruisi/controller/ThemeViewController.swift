@@ -8,6 +8,8 @@
 
 import UIKit
 
+// 主题页面
+// TODO 支持夜间模式
 class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var collectionView: UICollectionView!

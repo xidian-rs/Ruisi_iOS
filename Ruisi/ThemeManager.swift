@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 // 主题管理类
+// 返回一些常见的颜色
+// currentPrimaryColor 当前主色调
+// currentTitleColor 当前字体颜色
+// TODO 支持更多实现夜间模式
+// bg,...
 class ThemeManager {
     private static var themeBackUp: Theme?
 

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// TODO 支持下载图片，现在支持表情的下载
 class ImageGetter {
     
     private static var queen = Set<String>()

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// 自定义http工具类
 public class HttpUtil {
     
     //当前正在执行的网络请求数目用于控制小菊花

@@ -13,6 +13,7 @@ import CoreData
  <?xml version="1.0" encoding="utf-8"?>
  <root><![CDATA[hualong95,卡斯摩,xhmrj,87144959,蓝鹰魂,抚琴而歌,★追逐√,panxipanxi,wangfuyang,FREEDOM_1,FREEDOM_2,dqahmas,草履虫,Dlive,fengqiu,此去经年,youhe6536,FYXGFS,aidim78,cutoutsy,風翊之殇,rpw,evebear,tubowen150,fleur小乔,HT0158,我与六便士]]></root>
  */
+// @ 选择好友 TODO 持久化 支持自定义
 class ChooseFriendViewController: UITableViewController {
     
     var delegate: ((_ names: [String]) -> ())?

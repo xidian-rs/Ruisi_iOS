@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 瀑布流 collectionView 布局
 class WaterFallCollectionViewLayout: UICollectionViewLayout {
 
     //列数目

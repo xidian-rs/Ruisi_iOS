@@ -8,14 +8,15 @@
 
 import Foundation
 
+// HTML 里面的链接点击事件
 public enum LinkClickType {
-    case viewPost(tid: Int, pid: Int?)
-    case viewAlbum(aid: Int, url: String)
-    case viewUser(uid: Int)
-    case newPost(fid: Int?)
-    case viewPosts(fid: Int)
-    case reply(tid: Int, pid: Int?)
-    case attachment(url: String)
-    case login()
-    case others(url: String)
+    case viewPost(tid: Int, pid: Int?) // 查看某贴的链接被点击
+    case viewAlbum(aid: Int, url: String) // 查看某贴的图片
+    case viewUser(uid: Int) // 查看用户详情
+    case newPost(fid: Int?) // 发帖
+    case viewPosts(fid: Int) // 帖子列表
+    case reply(tid: Int, pid: Int?) // 回复
+    case attachment(url: String) // 附件
+    case login() // 登陆
+    case others(url: String) // 其余
 }

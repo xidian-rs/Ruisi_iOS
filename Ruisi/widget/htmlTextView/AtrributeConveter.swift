@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 
+// HTML -> AttributeString
 class AttributeConverter: HtmlParserDelegate {
     
     //NSFontAttributeName               UIFont

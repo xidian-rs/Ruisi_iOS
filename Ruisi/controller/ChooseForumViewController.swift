@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 发帖 - 选择板块
 class ChooseForumViewController: UITableViewController {
     
     private var forums = [Forums]()

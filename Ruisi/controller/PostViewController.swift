@@ -13,6 +13,7 @@ import Kanna
 
 // 帖子详情页
 // 判断帖子作者的逻辑目前有问题
+// TODO 根据pid参数跳转到指定页，当用户从消息页面点击进来，有pid参数，默认打开回复用户的那一页
 class PostViewController: UIViewController {
     
     var tid: Int? // 由前一个页面传过来的值

@@ -11,6 +11,7 @@ import Kanna
 
 // 聊天
 // TODO 手动行高
+// TODO 加载上一页
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!

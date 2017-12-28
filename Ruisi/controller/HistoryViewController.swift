@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 // 浏览历史
+// 用户每次浏览一个帖子会存到浏览历史数据库用于显示帖子列表页面灰色的标题代表浏览过
 class HistoryViewController: UITableViewController {
     
     var historys: [History] = []

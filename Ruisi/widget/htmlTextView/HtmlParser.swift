@@ -8,6 +8,7 @@
 
 import Foundation
 
+// HTML -> nodes
 class HtmlParser {
 
     private let MAX_TAG_LEN = 16
