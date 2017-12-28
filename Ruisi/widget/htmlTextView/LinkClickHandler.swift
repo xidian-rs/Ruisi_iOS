@@ -8,6 +8,7 @@
 
 import Foundation
 
+// 默认的处理链接点击的函数
 class LinkClickHandler {
     class func handle (url: String, delegate: ((LinkClickType) -> Void)) {
         // base http://rs.xidian.edu.cn/

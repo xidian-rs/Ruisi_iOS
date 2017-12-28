@@ -8,6 +8,7 @@
 
 import UIKit
 
+// 带小尖头的label 用户消息页面
 class ArrowLabel: UILabel {
 
     @IBInspectable var topInset: CGFloat = 9.0
