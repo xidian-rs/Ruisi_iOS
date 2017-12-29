@@ -71,8 +71,11 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
             }
-        } else {
+        } else if App.uid != nil {
+            //
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登陆", style: .plain, target: self, action: #selector(exitClick))
+            self.chatBtn.isHidden = true
+        } else {
             self.chatBtn.isHidden = true
         }
     }
