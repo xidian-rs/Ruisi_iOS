@@ -2,8 +2,12 @@
 西安电子科技大学校园睿思论坛客户端。本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈    
 Android客户端见[Ruisi](https://github.com/freedom10086/Ruisi)
 
-### 下载
-暂无
+### 依赖
+[Kingfisher](https://github.com/onevcat/Kingfisher)
+
+[Kanna](https://github.com/tid-kijyun/Kanna)
+
+这两个库没有包含在项目，请自行引入
 
 ### 软件截图
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/1.png)
@@ -27,7 +31,7 @@ Android客户端见[Ruisi](https://github.com/freedom10086/Ruisi)
 
 ### License
 
-    Copyright 2017 freedom10086
+    Copyright 2017-2018 freedom10086
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
