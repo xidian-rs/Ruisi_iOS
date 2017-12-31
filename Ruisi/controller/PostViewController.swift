@@ -538,6 +538,7 @@ extension PostViewController {
     private func handleReplyResult(ok: Bool, res: String) {
         var success = false
         var reason: String
+        var isLogin = true
         if ok {
             if res.contains("成功") || res.contains("层主") || res.contains("class=\"postlist\"") {
                 success = true
@@ -548,6 +549,9 @@ extension PostViewController {
                 reason = "此主题已关闭回复,无法回复"
             } else if res.contains("字符的限制") {
                 reason = "抱歉，您的帖子小于 13 个字符的限制"
+            } else if res.contains("form id=\"loginform\"") {
+                reason = "你需要登陆才能回贴"
+                isLogin = false
             } else {
                 print(res)
                 reason = "由于未知原因发表失败"
@@ -558,7 +562,9 @@ extension PostViewController {
         
         DispatchQueue.main.async { [weak self] in
             self?.replyView.isSending = false
-            if !success {
+            if !isLogin {
+                self?.showLoginAlert(message: reason)
+            } else if !success {
                 self?.replyView.hidekeyboard()
                 self?.showAlert(title: "回复失败", message: reason)
             } else {

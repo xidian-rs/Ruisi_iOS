@@ -160,7 +160,6 @@ public class HttpUtil {
         print("start http post url:\(url)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             HttpUtil.workingSize -= 1
-            print("===========")
             guard let data = data, error == nil else {
                 print("error=\(String(describing: error))")
                 callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")

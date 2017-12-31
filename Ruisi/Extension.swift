@@ -93,18 +93,21 @@ extension UIViewController {
     // 检测是否登陆 如果登录 返回true 如果没有登陆显示弹窗
     func checkLogin(message: String?) -> Bool {
         if !App.isLogin || App.uid == nil {
-            let alert = UIAlertController(title: "需要登陆", message: message ?? "你需要登陆才能执行此操作", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
-                let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
-                self.present(dest!, animated: true, completion: nil)
-            }))
-            alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
+            showLoginAlert(message: message ?? "你需要登陆才能执行此操作")
             return false
         }
         
         return true
+    }
+    
+    func showLoginAlert(message: String? = nil) {
+        let alert = UIAlertController(title: "需要登陆", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+            let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            self.present(dest!, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func showBackAlert(title: String, message: String? = nil) {
