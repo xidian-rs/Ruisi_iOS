@@ -28,6 +28,8 @@ Android客户端见[Ruisi](https://github.com/freedom10086/Ruisi)
 
 [MailOnline/ImageViewer](https://github.com/MailOnline/ImageViewer)
 
+[SwiftGif](https://github.com/bahlo/SwiftGif)
+
 
 ### License
 

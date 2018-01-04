@@ -36,7 +36,7 @@ public class HttpUtil {
         var url = getUrl(url: url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-
+        
         if let p = encodeParameters(params) {
             if url.contains("?") {
                 url = url + "&" + p
@@ -66,6 +66,39 @@ public class HttpUtil {
                 }
 
                 callback(true, "服务端无返回")
+                return
+            }
+        }
+        
+        HttpUtil.workingSize += 1
+        task.resume()
+    }
+    
+    // 获得验证码图片
+    public static func GET_VALID_IMAGE(url: String, callback: @escaping (Bool, Data?) -> Void) {
+        
+        var request = URLRequest(url: URL(string: getUrl(url: url))!)
+        request.httpMethod = "GET"
+        
+        // 验证码图片必须要有
+        request.addValue(Urls.loginUrl, forHTTPHeaderField: "Referer")
+        
+        print("start http get url:\(url)")
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            HttpUtil.workingSize -= 1
+            guard let data = data, error == nil else {
+                print("error=\(String(describing: error))")
+                callback(false, nil)
+                return
+            }
+            
+            // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                callback(false, nil)
+                return
+            } else {
+                callback(true, data)
                 return
             }
         }

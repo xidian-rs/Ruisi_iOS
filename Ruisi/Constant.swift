@@ -41,6 +41,7 @@ public class Urls {
         return baseUrl + "forum.php?mod=guide&view=new&mobile=2"//&page=1
     }
 
+    // 登陆
     public static var loginUrl: String {
         return baseUrl + "member.php?mod=logging&action=login&mobile=2"
     }

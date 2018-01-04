@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Kanna
+import Kingfisher
 
 // 登陆页面
 class LoginViewController: UIViewController, UITextFieldDelegate {
@@ -16,8 +18,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var remberSwitch: UISwitch!
     @IBOutlet weak var questBtn: UIButton!
     @IBOutlet weak var questInput: UITextField!
+    
     private var answerSelect = 0
     private let quests = ["请选择(未设置选此)", "母亲的名字", "爷爷的名字", "父亲出生的城市", "您其中一位老师的名字", "您个人计算机的型号", "您最喜欢的餐馆名称", "驾驶执照最后四位数字"]
+    
+    private var loginUrl: String?
+    
+    // 验证码相关
+    private var haveValid = false
+    private var validInputTextField: UITextField!
+    private var validImageView: UIImageView!
+    private var seccodehash: String?
+    private var validValue: String? //验证码输入值
+    private var validImageSrc: String? //验证码图片地址
     
     private var username: String {
         return usernameTextField.text ?? ""
@@ -34,6 +47,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             usernameTextField.text = Settings.username
             passwordTextField.text = Settings.password
         }
+        
+        loadData()
     }
     
     func selectQuest(action: UIAlertAction) {
@@ -69,7 +84,42 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.present(vc, animated: true)
     }
     
-    @IBAction func loginClick(_ sender: UIBarButtonItem) {
+    func loadData() {
+        HttpUtil.GET(url: Urls.loginUrl, params: nil) { [weak self] ok, res in
+            if ok {
+                if res.contains("欢迎您回来") {
+                    print("cookie is still work login ok")
+                    self?.loginResult(isok: true, res: res)
+                    return
+                }
+                
+                if let _ = res.index(of: "sec_code vm"), let doc = try? HTML(html: res, encoding: .utf8) {
+                    self?.haveValid = true
+                    self?.seccodehash =  doc.xpath("//*[@name=\"seccodehash\"]").first?["value"]
+                    self?.validImageSrc = doc.xpath("//*[@id=\"loginform\"]/div[1]/div/img").first?["src"]
+                }
+                
+                if let start = res.endIndex(of: "action=\"") {
+                    let substr = String(res[start...])
+                    let end = substr.index(of: "\"")
+                    self?.loginUrl = String(substr[..<end!])
+                    return
+                }
+            }
+            
+            let alert = UIAlertController(title: "加载失败", message: "是否重新加载", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (alert) in
+                self?.dismiss(animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "重新加载", style: .default, handler: { (alert) in
+                self?.loadData()
+            }))
+            self?.present(alert, animated: true)
+        }
+    }
+    
+    @IBAction func loginClick(_ sender: UIBarButtonItem? = nil) {
         usernameTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
         if !questInput.isHidden {
@@ -86,56 +136,93 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
+        if haveValid && validValue == nil {
+            showInputValidDialog()
+            return
+        }
+        
         showLoadingView()
         let username = self.username
         let password = self.password
         let answer = answerSelect == 0 ? "" : questInput.text ?? ""
         
-        HttpUtil.GET(url: Urls.loginUrl, params: nil) { ok, res in
-            if ok {
-                if res.contains("欢迎您回来") {
-                    print("cookie is still work login ok")
-                    self.loginResult(isok: true, res: res)
-                    return
-                }
-                
-                if let start = res.endIndex(of: "action=\"") {
-                    let substr = String(res[start...])
-                    let end = substr.index(of: "\"")
-                    let loginUrl = String(substr[..<end!])
-                    
-                    HttpUtil.POST(url: loginUrl, params: ["username": username, "password": password, "fastloginfield": "username", "cookietime": "2592000", "questionid": self.answerSelect, "answer": answer], callback: { ok, res in
-                        print("post ok")
-                        if ok && res.contains("欢迎您回来") {
-                            self.loginResult(isok: true, res: res)
-                        } else {
-                            self.loginResult(isok: false, res: "账号或密码错误")
-                        }
-                    })
-                } else {
-                    self.loginResult(isok: false, res: "未知错误")
-                }
+        var params: [String : Any] = ["username": username, "password": password, "fastloginfield": "username", "cookietime": "2592000", "questionid": self.answerSelect, "answer": answer]
+        if self.haveValid { //是否有验证码
+            params["seccodehash"] = self.seccodehash!
+            params["seccodeverify"] = self.validValue!
+        }
+        
+        HttpUtil.POST(url: self.loginUrl!, params: params, callback: { ok, res in
+            if ok && res.contains("欢迎您回来") {
+                self.loginResult(isok: true, res: res)
+            } else if res.contains("抱歉，验证码填写错误") {
+                self.dismiss(animated: true, completion: {
+                    self.showInputValidDialog()
+                })
             } else {
-                self.loginResult(isok: false, res: "网络错误")
+                self.loginResult(isok: false, res: "账号或密码错误")
+            }
+        })
+    }
+    
+    // 显示输入验证码的框
+    func showInputValidDialog() {
+        let alert = UIAlertController(title: "验证码\n\n", message: nil, preferredStyle: .alert)
+        let margin: CGFloat = 10.0
+        let width = alert.view.frame.size.width
+        let rect = CGRect(x: width / 2 - 100 , y: margin + 35, width: 100, height: 50)
+        validImageView = UIImageView(frame: rect)
+        validImageView.isUserInteractionEnabled = true
+        validImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeValid)))
+        alert.view.addSubview(validImageView)
+
+        alert.addTextField { (textField) in
+            textField.placeholder = "验证码"
+            self.validInputTextField = textField
+        }
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
+        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: { (alert) in
+            if let text = self.validInputTextField.text, text.count > 2 {
+                self.validValue = text
+                self.loginClick()
+            } else {
+                self.validValue = nil
+            }
+        }))
+        self.present(alert, animated: true)
+        loadValidImage(hash: self.seccodehash!, url: self.validImageSrc!)
+    }
+    
+    // 换一个验证码图片
+    @objc func changeValid()  {
+        let hash = "S\(100 +  (arc4random() % 101))"
+        self.seccodehash = hash
+        self.validValue = nil
+        self.validInputTextField.text = nil
+        loadValidImage(hash: hash, url: self.validImageSrc!)
+    }
+    
+    
+    // 加载验证码图片
+    func loadValidImage(hash: String, url: String) {
+        var u = url
+        if !url.contains(hash) {
+            //misc.php?mod=seccode&update=27663&idhash=SszZ1&mobile=2
+            let start = url.range(of: "idhash=")!.upperBound
+            let end = url.range(of: "&mobile=2")!.lowerBound
+            u.replaceSubrange(start..<end, with: hash)
+            self.validImageSrc = u
+        }
+        
+        HttpUtil.GET_VALID_IMAGE(url: u) { (ok, data) in
+            if ok, let d = data {
+                DispatchQueue.main.async {
+                    self.validImageView.image =   UIImage.gif(data: d)
+                }
             }
         }
     }
-    
-    var loadingView: UIAlertController?
-    
-    func showLoadingView() {
-        if loadingView == nil {
-            loadingView = UIAlertController(title: "登陆中", message: "请稍后...", preferredStyle: .alert)
-            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-            loadingIndicator.hidesWhenStopped = true
-            loadingIndicator.activityIndicatorViewStyle = .gray
-            loadingIndicator.startAnimating()
-            loadingView!.view.addSubview(loadingIndicator)
-        }
-        present(loadingView!, animated: true)
-    }
-    
-    
+
     func loginResult(isok: Bool = false, res: String) {
         print("=== login result \(isok) ===")
         DispatchQueue.main.async { [weak self] in
@@ -181,6 +268,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self?.present(vc, animated: true)
             })
         }
+    }
+    
+    var loadingView: UIAlertController?
+    
+    func showLoadingView() {
+        if loadingView == nil {
+            loadingView = UIAlertController(title: "登陆中", message: "请稍后...", preferredStyle: .alert)
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.activityIndicatorViewStyle = .gray
+            loadingIndicator.startAnimating()
+            loadingView!.view.addSubview(loadingIndicator)
+        }
+        present(loadingView!, animated: true)
     }
     
     // 处理软键盘
