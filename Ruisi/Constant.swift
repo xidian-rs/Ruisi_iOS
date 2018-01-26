@@ -208,4 +208,19 @@ public class Urls {
     public static func deleteUploadedUrl(aid: String) -> String {
         return "\(baseUrl)forum.php?mod=ajax&action=deleteattach&inajax=yes&aids[]=\(aid)&mobile=2"
     }
+    
+    // 更新验证码图片地址
+    public static func updateValidUrl(update: String, hash: String) -> String {
+        return "\(baseUrl)misc.php?mod=seccode&update=\(update)&idhash=\(hash)&mobile=2"
+    }
+    
+    // 查询update地址
+    public static func getValidUpdateUrl(hash: String) -> String {
+        return "\(baseUrl)misc.php?mod=seccode&action=update&idhash=\(hash)&mobile=2"
+    }
+    
+    // 检查验证码是否正确
+    public static func checkValidUrl(hash: String, value: String) -> String {
+        return "\(baseUrl)misc.php?mod=seccode&action=check&inajax=1&idhash=\(hash)&secverify=\(value)&mobile=2"
+    }
 }

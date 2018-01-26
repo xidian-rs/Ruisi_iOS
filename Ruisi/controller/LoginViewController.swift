@@ -26,11 +26,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // 验证码相关
     private var haveValid = false
-    private var validInputTextField: UITextField!
-    private var validImageView: UIImageView!
     private var seccodehash: String?
+    private var validUpdate: String?
     private var validValue: String? //验证码输入值
-    private var validImageSrc: String? //验证码图片地址
+    private var inputValidVc: InputValidController?
     
     private var username: String {
         return usernameTextField.text ?? ""
@@ -96,7 +95,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if let _ = res.index(of: "sec_code vm"), let doc = try? HTML(html: res, encoding: .utf8) {
                     self?.haveValid = true
                     self?.seccodehash =  doc.xpath("//*[@name=\"seccodehash\"]").first?["value"]
-                    self?.validImageSrc = doc.xpath("//*[@id=\"loginform\"]/div[1]/div/img").first?["src"]
+                    if let src = doc.xpath("//*[@id=\"loginform\"]/div[1]/div/img").first?["src"] {
+                        let start = src.range(of: "update=")!.upperBound
+                        let end = src.range(of: "&idhash")!.lowerBound
+                        self?.validUpdate = String(src[start..<end])
+                    }
+                    print("有验证码 \(self?.seccodehash ?? "")  \(self?.validUpdate ?? "")")
                 }
                 
                 if let start = res.endIndex(of: "action=\"") {
@@ -165,64 +169,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
+    
+    // 验证码输入框回调
+    // click 是否点击的确认
+    func validInputChange(click: Bool, hash: String, value: String) {
+        self.seccodehash = hash
+        self.validValue = value
+        if click {
+            loginClick()
+        }
+    }
+    
     // 显示输入验证码的框
     func showInputValidDialog() {
-        let alert = UIAlertController(title: "验证码\n\n", message: nil, preferredStyle: .alert)
-        let margin: CGFloat = 10.0
-        let width = alert.view.frame.size.width
-        let rect = CGRect(x: width / 2 - 100 , y: margin + 35, width: 100, height: 50)
-        validImageView = UIImageView(frame: rect)
-        validImageView.isUserInteractionEnabled = true
-        validImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeValid)))
-        alert.view.addSubview(validImageView)
-
-        alert.addTextField { (textField) in
-            textField.placeholder = "验证码"
-            self.validInputTextField = textField
+        if inputValidVc == nil {
+            inputValidVc = InputValidController(hash: self.seccodehash!, update: self.validUpdate)
+            inputValidVc?.delegate = validInputChange
         }
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
-        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: { (alert) in
-            if let text = self.validInputTextField.text, text.count > 2 {
-                self.validValue = text
-                self.loginClick()
-            } else {
-                self.validValue = nil
-            }
-        }))
-        self.present(alert, animated: true)
-        loadValidImage(hash: self.seccodehash!, url: self.validImageSrc!)
+        inputValidVc?.show(vc: self)
     }
     
-    // 换一个验证码图片
-    @objc func changeValid()  {
-        let hash = "S\(100 +  (arc4random() % 101))"
-        self.seccodehash = hash
-        self.validValue = nil
-        self.validInputTextField.text = nil
-        loadValidImage(hash: hash, url: self.validImageSrc!)
-    }
-    
-    
-    // 加载验证码图片
-    func loadValidImage(hash: String, url: String) {
-        var u = url
-        if !url.contains(hash) {
-            //misc.php?mod=seccode&update=27663&idhash=SszZ1&mobile=2
-            let start = url.range(of: "idhash=")!.upperBound
-            let end = url.range(of: "&mobile=2")!.lowerBound
-            u.replaceSubrange(start..<end, with: hash)
-            self.validImageSrc = u
-        }
-        
-        HttpUtil.GET_VALID_IMAGE(url: u) { (ok, data) in
-            if ok, let d = data {
-                DispatchQueue.main.async {
-                    self.validImageView.image =   UIImage.gif(data: d)
-                }
-            }
-        }
-    }
-
     func loginResult(isok: Bool = false, res: String) {
         print("=== login result \(isok) ===")
         DispatchQueue.main.async { [weak self] in

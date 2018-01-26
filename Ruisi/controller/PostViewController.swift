@@ -183,8 +183,6 @@ class PostViewController: UIViewController {
         }
     }
     
-    // 风扇策略比较保守，温度很低就开始转了，其余还行
-    
     // 子类重写此方法支持解析自己的数据
     func parseData(doc: HTMLDocument,title: String?) -> [PostData] {
         var subDatas: [PostData] = []
