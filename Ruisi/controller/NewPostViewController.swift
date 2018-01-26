@@ -52,6 +52,12 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         }
     }
     
+    // 验证码相关
+    private var haveValid = false
+    private var seccodehash: String?
+    private var validValue: String? //验证码输入值
+    private var inputValidVc: InputValidController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = isEditMode ? "编辑帖子" : "发帖"
@@ -85,6 +91,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         } else if let f = fid {
             selectedBtn.setTitle(name, for: .normal)
             fidChange(fid: f)
+        }
+        
+        if !isEditMode {
+            checkValid()
         }
     }
     
@@ -382,6 +392,12 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         if !checkInput() {
             return
         }
+        
+        if haveValid && validValue == nil {
+            showInputValidDialog()
+            return
+        }
+        
         self.titleInput.resignFirstResponder()
         self.contentInput.resignFirstResponder()
         
@@ -418,6 +434,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             if let type = typeId {
                 params["typeid"] = type
             }
+            
+            if self.haveValid { //是否有验证码
+                params["seccodehash"] = self.seccodehash!
+                params["seccodeverify"] = self.validValue!
+            }
         } else { // 编辑帖子
             params = editFormDatas
             params["subject"] = titleInput.text!
@@ -437,9 +458,12 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             var message: String
             let str = (self?.isEditMode ?? false) ? "编辑帖子" : "发帖"
             if ok {
-                if res.contains("已经被系统拒绝") {
+                let jumpIndex = res.range(of: "class=\"jump_c\"")?.upperBound
+                if let jump = jumpIndex {
                     success = false
-                    message = "由于未知原因\(str)失败"
+                    let start = res.range(of: "<p>", range: jump ..< res.endIndex)!.upperBound
+                    let end = res.range(of: "</p>", range: jump ..< res.endIndex)!.lowerBound
+                    message = String(res[start..<end])
                 } else {
                     success = true
                     message = "\(str)成功!你要返回关闭此页面吗？"
@@ -451,18 +475,57 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             
             DispatchQueue.main.async { [weak self] in
                 self?.progress.dismiss(animated: true) {
-                    let alert = UIAlertController(title: success ? "\(str)成功!" : "错误", message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: success ? "取消" : "好", style: .cancel, handler: nil))
-                    if success {
-                        alert.addAction(UIAlertAction(title: "返回", style: .default) { action in
-                            self?.navigationController?.popViewController(animated: true)
-                        })
+                    if !success && message.contains("验证码填写错误") {
+                        self?.showInputValidDialog()
+                    } else {
+                        let alert = UIAlertController(title: success ? "\(str)成功!" : "错误", message: message, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: success ? "取消" : "好", style: .cancel, handler: nil))
+                        if success {
+                            alert.addAction(UIAlertAction(title: "返回", style: .default) { action in
+                                self?.navigationController?.popViewController(animated: true)
+                            })
+                        }
+                        
+                        self?.present(alert, animated: true, completion: nil)
                     }
-                    
-                    self?.present(alert, animated: true, completion: nil)
                 }
             }
         }
+    }
+    
+    // MARK: - 验证码相关
+    
+    // 判断发帖是否需要验证码
+    func checkValid() {
+        HttpUtil.GET(url: Urls.checkNewpostUrl, params: nil) { (ok, res) in
+            if ok {
+                let start = res.range(of: "seccode_")?.upperBound
+                if let s = start {
+                    let end = res.range(of: "\"", range: s ..< res.endIndex)!.lowerBound
+                    self.seccodehash = String(res[s..<end])
+                    self.haveValid = true
+                }
+            }
+        }
+    }
+    
+    // 验证码输入框回调
+    // click 是否点击的确认
+    func validInputChange(click: Bool, hash: String, value: String) {
+        self.seccodehash = hash
+        self.validValue = value
+        if click {
+            postClick()
+        }
+    }
+    
+    // 显示输入验证码的框
+    func showInputValidDialog() {
+        if inputValidVc == nil {
+            inputValidVc = InputValidController(hash: self.seccodehash!, update: nil)
+            inputValidVc?.delegate = validInputChange
+        }
+        inputValidVc?.show(vc: self)
     }
     
     // MARK: - Navigation

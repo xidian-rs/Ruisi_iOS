@@ -209,6 +209,11 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=ajax&action=deleteattach&inajax=yes&aids[]=\(aid)&mobile=2"
     }
     
+    // 检查发帖需不需要输入验证码
+    public static var checkNewpostUrl: String {
+        return "\(baseUrl)forum.php?mod=ajax&action=checkpostrule&ac=newthread&mobile=2"
+    }
+    
     // 更新验证码图片地址
     public static func updateValidUrl(update: String, hash: String) -> String {
         return "\(baseUrl)misc.php?mod=seccode&update=\(update)&idhash=\(hash)&mobile=2"

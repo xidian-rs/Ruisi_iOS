@@ -160,9 +160,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if ok && res.contains("欢迎您回来") {
                 self.loginResult(isok: true, res: res)
             } else if res.contains("抱歉，验证码填写错误") {
-                self.dismiss(animated: true, completion: {
-                    self.showInputValidDialog()
-                })
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: {
+                        self.showInputValidDialog()
+                    })
+                }
             } else {
                 self.loginResult(isok: false, res: "账号或密码错误")
             }
