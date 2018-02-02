@@ -214,12 +214,13 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // 相册选择回掉
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        // 最大图片宽度1080像素
+        // rs 限制最大1M的附件
+        let pickedImageData = ((info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as? UIImage)?
+            .scaleToSizeAndWidth(width: 1080, maxSize: 1024)
         picker.dismiss(animated: true, completion: nil)
         
-        if let imageData = image?.scaleToSizeAndWidth(width: 1080, maxSize: 1024) {
-            // 最大图片宽度1080像素
-            // rs 限制最大1M的附件
+        if let imageData = pickedImageData {
             uploadImages.append(UploadImageItem(name: "1.png", imageData: imageData))
             let indexPath = IndexPath(item: uploadImages.count - 1, section: 0)
             self.imagesCollection.insertItems(at: [indexPath])
@@ -449,6 +450,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         uploadImages.forEach { (item) in
             if let aid = item.aid {
                 params["attachnew[\(aid)]"] = ""
+                params["message"] = "\(params["message"]!)\n[attachimg]\(aid)[/attachimg]"
             }
         }
         

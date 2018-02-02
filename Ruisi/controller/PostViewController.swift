@@ -229,7 +229,7 @@ class PostViewController: UIViewController {
                 var uid: Int?
                 var index: String?
                 var time: String?
-                
+            
                 if let au = comment.xpath("div/ul/li[1]/b/a").first {
                     author = au.text
                     uid = Utils.getNum(from: au["href"] ?? "0") ?? 0
@@ -479,7 +479,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         lz.isHidden = datas[0].author != data.author
         author.text = data.author
         time.text = data.time
-        img.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid))
+        img.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName: "placeholder"))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
         
         content.attributedText =  data.content

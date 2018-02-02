@@ -24,7 +24,7 @@ public class App {
 public class Urls {
     public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
     public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
-
+    
     public static var baseUrl: String {
         return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_ME
     }

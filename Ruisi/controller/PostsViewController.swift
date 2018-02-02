@@ -155,7 +155,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             let viewsLabel = cell.viewWithTag(7) as! UILabel
             
             if let uid = d.uid {
-                avater.kf.setImage(with: Urls.getAvaterUrl(uid: uid))
+                avater.kf.setImage(with: Urls.getAvaterUrl(uid: uid), placeholder: #imageLiteral(resourceName: "placeholder"))
                 avater.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
             } else {
                 avater.image = #imageLiteral(resourceName:"placeholder")

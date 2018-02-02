@@ -11,12 +11,14 @@ class Forums: Codable {
     var gid: Int
     var name: String
     var login: Bool
+    var canPost: Bool
     var forums: [Forum]?
 
-    init(gid: Int, name: String, login: Bool) {
+    init(gid: Int, name: String, login: Bool, canPost: Bool) {
         self.gid = gid
         self.name = name
         self.login = login
+        self.canPost = canPost
     }
 
     func getSize() -> Int {

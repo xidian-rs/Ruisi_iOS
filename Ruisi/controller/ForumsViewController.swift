@@ -116,8 +116,10 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         let imageView = cell.viewWithTag(1) as! UIImageView
         let label = cell.viewWithTag(2) as! UILabel
         let fileName = datas[indexPath.section].forums![indexPath.row].fid
-        let path = Bundle.main.path(forResource: "common_\(fileName)_icon", ofType: "gif", inDirectory: logoDir)!
-        imageView.image = UIImage(contentsOfFile: path)
+        if let path = Bundle.main.path(forResource: "common_\(fileName)_icon", ofType: "gif", inDirectory: logoDir) {
+            imageView.image = UIImage(contentsOfFile: path)
+        }
+        
         label.text = datas[indexPath.section].forums![indexPath.row].name
         return cell
     }

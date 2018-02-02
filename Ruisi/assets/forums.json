@@ -3,6 +3,7 @@
     "name": "休闲娱乐",
     "gid":71,
     "login":false,
+    "canPost":true,
     "forums": [
         {"name": "灌水专区", "fid": 72, "login": false},
         {"name": "摄影天地", "fid": 561, "login": false},
@@ -21,6 +22,7 @@
     "name": "西电生活",
     "gid":89,
     "login":false,
+    "canPost":true,
     "forums": [
       {"name": "文章天地", "fid": 549, "login": false},
       {"name": "心灵花园", "fid": 550, "login": false},
@@ -40,6 +42,7 @@
     "name": "学术交流",
     "login":false,
     "gid":101,
+    "canPost":true,
     "forums": [
       {"name": "技术博客", "fid": 560, "login": false},
       {"name": "学习交流", "fid": 548, "login": false},
@@ -55,6 +58,7 @@
     "name":"BT资源",
     "gid":11,
     "login":true,
+    "canPost":false,
     "forums": [
       {"name": "电影", "fid": 13, "login": true},
       {"name": "剧集", "fid": 14, "login": true},
@@ -77,6 +81,7 @@
   {
     "name": "社团&站务",
     "login":false,
+    "canPost":true,
     "gid":1,
     "forums": [
       {"name": "新人指南", "fid": 566, "login": false},

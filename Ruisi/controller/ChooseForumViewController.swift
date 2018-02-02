@@ -24,7 +24,7 @@ class ChooseForumViewController: UITableViewController {
         let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
         let decoder = JSONDecoder()
         forums = try! decoder.decode([Forums].self, from: data).filter({ (f) -> Bool in
-            return f.gid != 11
+            return f.canPost
         })
         
         for i in 0..<forums.count {
