@@ -15,7 +15,7 @@ class LinkClickHandler {
         // asb  http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=862167&aid=871569&from=album&page=1&mobile=2
         print("url click", url)
         // 内部链接点击
-        if url.hasPrefix("http://rs.xidian.edu.cn/") || url.hasPrefix("http://rsbbs.xidian.edu.cn/") {
+        if url.hasPrefix(Urls.BASE_URL_EDU) || url.hasPrefix(Urls.BASE_URL_ME) {
             if url.contains("from=album") && url.contains("aid") { //点击了图片
                 if let aid = Utils.getNum(prefix: "aid=", from: url) {
                     delegate(.viewAlbum(aid: aid, url: url))
