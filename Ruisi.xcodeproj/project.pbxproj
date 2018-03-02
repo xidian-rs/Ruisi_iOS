@@ -42,6 +42,7 @@
 		2F2670491FEFAADC00AB291D /* SearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670481FEFAADC00AB291D /* SearchData.swift */; };
 		2F2670571FEFE78100AB291D /* LinkClickHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670561FEFE78100AB291D /* LinkClickHandler.swift */; };
 		2F2670591FEFE93400AB291D /* UrlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2670581FEFE93400AB291D /* UrlItem.swift */; };
+		2F2BC23320498F4400AD828B /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2FF91D44201B448300D13EA1 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2F35E9AE1F00F69E00CDD60D /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */; };
 		2F35E9B01F00F6ED00CDD60D /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */; };
 		2F37A08F1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F37A08E1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift */; };
@@ -245,6 +246,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2F2BC23320498F4400AD828B /* Kingfisher.framework in Embed Frameworks */,
 				2F4FDA151FCC4AA200CD2A7D /* Kanna.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";

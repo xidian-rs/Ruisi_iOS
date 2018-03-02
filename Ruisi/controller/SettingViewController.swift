@@ -11,6 +11,7 @@ import UIKit
 // 设置
 class SettingViewController: UITableViewController {
     
+    @IBOutlet weak var versionTitle: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var networkChangeSwitch: UISegmentedControl!
     @IBOutlet weak var tailContentTextVIew: UITextView!
@@ -22,6 +23,7 @@ class SettingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        versionTitle.text = "版本信息"
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
         tailContentTextVIew.text = Settings.tailContent
@@ -73,17 +75,7 @@ class SettingViewController: UITableViewController {
     }
     
     @IBAction func cleanCacheClick(_ sender: UIButton) {
-        //TODO
+        showAlert(title: "还没做", message: "待以后完成，欢迎提供你的建议")
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

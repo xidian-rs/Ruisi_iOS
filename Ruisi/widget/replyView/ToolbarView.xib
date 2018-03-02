@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xro-FK-odq">
-                    <rect key="frame" x="261" y="10" width="24" height="24"/>
+                    <rect key="frame" x="252" y="10" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="Fg1-C9-pGc"/>
                         <constraint firstAttribute="height" constant="24" id="irH-WY-oIK"/>
@@ -28,7 +28,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iNY-nO-TcE">
-                    <rect key="frame" x="300" y="10" width="24" height="24"/>
+                    <rect key="frame" x="294" y="10" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="24" id="Cye-9b-0Gv"/>
                         <constraint firstAttribute="height" constant="24" id="qPY-yJ-JK8"/>
@@ -39,7 +39,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rYR-XT-MqJ">
-                    <rect key="frame" x="339" y="10" width="24" height="24"/>
+                    <rect key="frame" x="336" y="10" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="NNu-DC-YYa"/>
                         <constraint firstAttribute="width" constant="24" id="zgg-9c-pYm"/>
@@ -59,14 +59,14 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="iNY-nO-TcE" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="3gJ-3i-Fj9"/>
-                <constraint firstItem="rYR-XT-MqJ" firstAttribute="leading" secondItem="iNY-nO-TcE" secondAttribute="trailing" constant="15" id="51L-lx-aye"/>
-                <constraint firstItem="iNY-nO-TcE" firstAttribute="leading" secondItem="Xro-FK-odq" secondAttribute="trailing" constant="15" id="7cg-bh-rDV"/>
-                <constraint firstItem="cfz-gC-yE4" firstAttribute="trailing" secondItem="rYR-XT-MqJ" secondAttribute="trailing" constant="12" id="W2p-t7-Od4"/>
+                <constraint firstItem="rYR-XT-MqJ" firstAttribute="leading" secondItem="iNY-nO-TcE" secondAttribute="trailing" constant="18" id="51L-lx-aye"/>
+                <constraint firstItem="iNY-nO-TcE" firstAttribute="leading" secondItem="Xro-FK-odq" secondAttribute="trailing" constant="18" id="7cg-bh-rDV"/>
+                <constraint firstItem="cfz-gC-yE4" firstAttribute="trailing" secondItem="rYR-XT-MqJ" secondAttribute="trailing" constant="15" id="W2p-t7-Od4"/>
                 <constraint firstItem="9xk-di-nXy" firstAttribute="leading" secondItem="cfz-gC-yE4" secondAttribute="leading" constant="12" id="aTs-jh-Tdt"/>
                 <constraint firstItem="rYR-XT-MqJ" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="bHi-dq-Tcs"/>
                 <constraint firstItem="Xro-FK-odq" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="k4v-Ud-tw8"/>
                 <constraint firstItem="9xk-di-nXy" firstAttribute="centerY" secondItem="AFm-1y-HE4" secondAttribute="centerY" id="rBD-g9-xxl"/>
-                <constraint firstItem="Xro-FK-odq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9xk-di-nXy" secondAttribute="trailing" constant="16" id="rrJ-VY-rcD"/>
+                <constraint firstItem="Xro-FK-odq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9xk-di-nXy" secondAttribute="trailing" constant="15" id="rrJ-VY-rcD"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="cfz-gC-yE4"/>

@@ -183,7 +183,7 @@ class SignViewController: UIViewController {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
         
-        if !(7 <= hour && hour < 23) {
+        if !(7 <= hour && hour < 24) {
             labelStatus.isHidden = false
             labelStatus.text = "不在签到时间 无法签到"
         } else {

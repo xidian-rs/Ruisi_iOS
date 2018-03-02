@@ -34,7 +34,11 @@ public class HttpUtil {
 
     public static func GET(url: String, params: [String: String]?, callback: @escaping (Bool, String) -> Void) {
         var url = getUrl(url: url)
-        var request = URLRequest(url: URL(string: url)!)
+        guard let u = URL(string: url) else {
+            return
+        }
+        
+        var request = URLRequest(url: u)
         request.httpMethod = "GET"
         
         if let p = encodeParameters(params) {
