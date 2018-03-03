@@ -4,6 +4,7 @@
 //
 //  Created by Kristian Angyal on 01/07/2016.
 //  Copyright © 2016 MailOnline. All rights reserved.
+//  Copyright © 2017 - 2018 freedom10086.
 //
 
 import UIKit
@@ -12,10 +13,12 @@ import AVFoundation
 open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     // UI
     fileprivate var closeButton: UIButton?
+    fileprivate var saveButton: UIButton?
     fileprivate let overlayView = BlurView()
     /// A custom view at the bottom of the gallery with layout using default (or custom) pinning settings for footer.
     open var footerView: CounterView?
     fileprivate weak var initialItemController: ItemController?
+    fileprivate var currentImageViewController: UIViewController?
 
     // LOCAL STATE
     // represents the current page index, updated when the root view of the view controller representing the page stops animating inside visible bounds and stays on screen.
@@ -87,6 +90,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
         let initialController = pagingDataSource.createItemController(startIndex, isInitial: true)
         self.setViewControllers([initialController], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        self.currentImageViewController = initialController
 
         if let controller = initialController as? ItemController {
 
@@ -99,6 +103,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         applicationWindow().windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
         NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    func updateDataSource(startIndex: Int, itemsDataSource: GalleryItemsDataSource) {
+        self.currentIndex = startIndex
+        self.footerView?.count = itemsDataSource.itemCount()
+        self.footerView?.currentIndex = startIndex
     }
 
     deinit {
@@ -135,6 +145,16 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         closeButton!.alpha = 0
         self.view.addSubview(closeButton!)
     }
+    
+    fileprivate func configureSaveButton() {
+        saveButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 50, height: 50)))
+        saveButton!.setTitle("保存", for: .normal)
+        saveButton!.setTitleColor(UIColor.white, for: .normal)
+        
+        saveButton!.addTarget(self, action: #selector(GalleryViewController.saveInteractively), for: .touchUpInside)
+        saveButton!.alpha = 0
+        self.view.addSubview(saveButton!)
+    }
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,7 +167,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         configureFooterView()
         configureCloseButton()
-
+        configureSaveButton()
+        
         self.view.clipsToBounds = false
     }
 
@@ -202,7 +223,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
 
         overlayView.frame = view.bounds.insetBy(dx: -UIScreen.main.bounds.width * 2, dy: -UIScreen.main.bounds.height * 2)
-        layoutButton(closeButton)
+        layoutButtons()
         layoutFooterView()
     }
 
@@ -214,14 +235,18 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
     }
 
-    fileprivate func layoutButton(_ button: UIButton?) {
-
-        guard let button = button else {
-            return
+    fileprivate func layoutButtons() {
+        if let btn = closeButton {
+            btn.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
+            btn.frame.origin.x = self.view.bounds.size.width - 16 - btn.bounds.size.width
+            btn.frame.origin.y = defaultInsets.top + 8
         }
-        button.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-        button.frame.origin.x = self.view.bounds.size.width - 16 - button.bounds.size.width
-        button.frame.origin.y = defaultInsets.top + 8
+        
+        if let btn2 = saveButton {
+            btn2.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]
+            btn2.frame.origin.x = self.view.bounds.size.width - 16 - btn2.bounds.size.width
+            btn2.frame.origin.y = self.view.bounds.height - btn2.bounds.height - 14 - defaultInsets.bottom
+        }
     }
 
     fileprivate func layoutFooterView() {
@@ -239,6 +264,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             return
         }
         let imageViewController = self.pagingDataSource.createItemController(index)
+        self.currentImageViewController = imageViewController
         let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .forward : .reverse
 
         // workaround to make UIPageViewController happy
@@ -305,14 +331,39 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     /// Invoked when closed programmatically
     open func close() {
-
         closeDecorationViews(programmaticallyClosedCompletion)
     }
 
     /// Invoked when closed via close button
     @objc fileprivate func closeInteractively() {
-
         closeDecorationViews(closedCompletion)
+    }
+    
+    /// Invoked when save image via save button
+    @objc fileprivate func saveInteractively() {
+        if let vc = currentImageViewController as? ImageViewController, let image = vc.itemView.image {
+            saveButton?.isEnabled = false
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.saveImageResult(_:didFinishSavingWithError:contextInfo:)), nil)
+        } else {
+            let ac = UIAlertController(title: "提示", message: "获取不到图片无法保存!", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "好", style: .default))
+            present(ac, animated: true)
+        }
+    }
+    
+    
+    //MARK: - Add image to Library
+    @objc func saveImageResult(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        saveButton?.isEnabled = true
+        if let error = error {
+            let ac = UIAlertController(title: "保存失败", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "好", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "保存成功", message: "图片成功保存到你的图库!", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "好", style: .default))
+            present(ac, animated: true)
+        }
     }
 
     fileprivate func closeDecorationViews(_ completion: (() -> Void)?) {
@@ -330,7 +381,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         UIView.animate(withDuration: decorationViewsFadeDuration, animations: { [weak self] in
             self?.footerView?.alpha = 0.0
             self?.closeButton?.alpha = 0.0
-
+            self?.saveButton?.alpha = 0.0
+            
         }, completion: { [weak self] done in
 
             if let strongSelf = self,
@@ -366,6 +418,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         UIView.animate(withDuration: decorationViewsFadeDuration, animations: { [weak self] in
             self?.footerView?.alpha = targetAlpha
             self?.closeButton?.alpha = targetAlpha
+            self?.saveButton?.alpha = targetAlpha
         })
     }
 
@@ -400,6 +453,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         if decorationViewsHidden == false {
             let alpha = 1 - distance * swipeToDismissFadeOutAccelerationFactor
             closeButton?.alpha = alpha
+            saveButton?.alpha = alpha
             footerView?.alpha = alpha
         }
 

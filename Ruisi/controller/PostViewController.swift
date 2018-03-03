@@ -77,7 +77,7 @@ class PostViewController: UIViewController {
         // 回复楼主
         replyView.onSubmitClick { content in
             if content.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
-                print("message is:||\(content)||len:\(content.count)")
+                //print("message is:||\(content)||len:\(content.count)")
                 self.replyView.isSending = true
                 HttpUtil.POST(url: self.replyLzUrl!, params: ["message": content, "handlekey": "fastpost", "loc": 1, "inajax": 1], callback: self.handleReplyResult)
             }
@@ -115,7 +115,6 @@ class PostViewController: UIViewController {
     
     //刷新数据
     @objc func reloadData() {
-        print("refresh click")
         currentPage = 1
         loadData()
     }
@@ -317,13 +316,11 @@ class PostViewController: UIViewController {
             UIApplication.shared.open(URL(string: Urls.getPostUrl(tid: self.tid!) + "&page=\(self.currentPage)")!)
         })
         sheet.addAction(UIAlertAction(title: "收藏文章", style: .default) { action in
-            print("star click")
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
                 self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
             })
         })
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default) { action in
-            print("share click")
             let shareVc = UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
             shareVc.setValue(self.title, forKey: "subject")
             self.present(shareVc, animated: true, completion: nil)
@@ -584,6 +581,7 @@ extension PostViewController {
 
 // MARK: - GalleryItemsDataSource
 extension PostViewController: GalleryItemsDataSource {
+    
     private func showAlbums(aid: Int, url: String) {
         if self.albums.count > 0 {
             self.showViewerController(aid: aid)
@@ -656,7 +654,6 @@ extension PostViewController: GalleryItemsDataSource {
             }
         }
     }
-    
     
     func itemCount() -> Int {
         return (albums.count == 0) ? 1 : albums.count

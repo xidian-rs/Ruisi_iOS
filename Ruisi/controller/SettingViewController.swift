@@ -11,7 +11,6 @@ import UIKit
 // 设置
 class SettingViewController: UITableViewController {
     
-    @IBOutlet weak var versionTitle: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var networkChangeSwitch: UISegmentedControl!
     @IBOutlet weak var tailContentTextVIew: UITextView!
@@ -23,7 +22,6 @@ class SettingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        versionTitle.text = "版本信息"
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
         tailContentTextVIew.text = Settings.tailContent
@@ -33,11 +31,10 @@ class SettingViewController: UITableViewController {
         
         //CFBundleVersion
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            versionLabel.text = "当前版本 V:\(version) Code:\(Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1)"
+            versionLabel.text = "当前版本:\(version) Build:\(Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1)"
         } else {
             versionLabel.text = "获取版本号出错"
         }
-        
     }
     
     // 是否显示置顶帖
