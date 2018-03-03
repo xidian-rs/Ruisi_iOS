@@ -34,9 +34,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>上传照片附件</string>
+	<string>是否允许此APP使用相机拍照上传图片附件？</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>上传图片附件</string>
+	<string>是否允许此APP浏览相册上传图片附件？</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch</string>
 	<key>UIMainStoryboardFile</key>

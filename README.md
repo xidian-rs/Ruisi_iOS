@@ -1,24 +1,22 @@
-## 西电睿思手机客户端(IOS)
-西安电子科技大学校园睿思论坛客户端。本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈    
-Android客户端见[Ruisi](https://github.com/freedom10086/Ruisi)
-
-### 依赖
-[Kingfisher](https://github.com/onevcat/Kingfisher)
-
-[Kanna](https://github.com/tid-kijyun/Kanna)
-
-这两个库没有包含在项目，请自行引入
+## 西电睿思手机客户端(iOS)
+西安电子科技大学校园睿思论坛客户端。
+本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。
+Android版本[Ruisi](https://github.com/freedom10086/Ruisi)
 
 ### 软件截图
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/1.png)
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/2.png)
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/3.png)
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/4.png)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/5.png)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/6.png)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/7.png)
+![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/8.png)
 
 ### 意见和反馈
 - freedom10086 <2351386755@qq.com>
 
-### 参考和用到的开源库和软件：
+### 参考和使用的开源库和软件：
 
 [Kingfisher](https://github.com/onevcat/Kingfisher)
 
