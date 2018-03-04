@@ -97,7 +97,11 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
+    // FIXME 好像没调用
     override func loadData(_ pos: Int) {
+        if !App.isLogin {
+            return
+        }
         super.loadData(pos)
         updateUnreads()
     }
@@ -113,7 +117,6 @@ class MessageViewController: BaseTableViewController<MessageData> {
             }
         }
     }
-    
     
     override func parseData(pos: Int, doc: HTMLDocument) -> [MessageData] {
         var subDatas = [MessageData]()

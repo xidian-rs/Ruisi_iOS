@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
@@ -23,9 +21,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,10 +33,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>是否允许此APP使用相机拍照上传图片附件？</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>是否允许此APP浏览相册上传图片附件？</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>是否允许此APP保存图片到相册？</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>是否允许此APP浏览相册上传图片附件？</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch</string>
 	<key>UIMainStoryboardFile</key>
@@ -51,5 +49,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

@@ -22,7 +22,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private var answerSelect = 0
     private let quests = ["请选择(未设置选此)", "母亲的名字", "爷爷的名字", "父亲出生的城市", "您其中一位老师的名字", "您个人计算机的型号", "您最喜欢的餐馆名称", "驾驶执照最后四位数字"]
     
-    private var loginUrl: String?
+    private var loginUrl: String!
     
     // 验证码相关
     private var haveValid = false
@@ -41,12 +41,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if Settings.remberPassword {
             remberSwitch.isOn = true
             usernameTextField.text = Settings.username
             passwordTextField.text = Settings.password
         }
         
+        self.loginUrl = Urls.loginUrl + "&loginsubmit=yes"
         loadData()
     }
     
@@ -156,7 +158,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             params["seccodeverify"] = self.validValue!
         }
         
-        HttpUtil.POST(url: self.loginUrl!, params: params, callback: { ok, res in
+        HttpUtil.POST(url: self.loginUrl, params: params, callback: { ok, res in
             if ok && res.contains("欢迎您回来") {
                 self.loginResult(isok: true, res: res)
             } else if res.contains("抱歉，验证码填写错误") {

@@ -93,8 +93,6 @@ UITableViewDataSource, UINavigationControllerDelegate {
     
     //控制显示隐藏导航栏
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        print(viewController)
-        
         // 判断要显示的控制器是否是自己
         if let _ = viewController as? MyViewController {
             self.navigationController?.setNavigationBarHidden(true, animated: true)

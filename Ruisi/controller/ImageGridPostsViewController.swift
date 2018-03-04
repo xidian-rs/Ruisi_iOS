@@ -12,13 +12,13 @@ import Kanna
 // 图片帖子列表板块
 // 摄影天地，等图片板块的controller，注意此页面只在校园网环境下出现
 class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-    
     var fid: Int? // 由前一个页面传过来的值
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     private var currentPage = 1
     private var totalPage = Int.max
     private var isLoading = false
     private var datas = [ArticleListData]()
-    @IBOutlet weak var collectionView: UICollectionView!
     private lazy var rsRefreshControl =  RSRefreshControl()
     
     override func viewDidLoad() {

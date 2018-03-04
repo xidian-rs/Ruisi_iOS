@@ -31,10 +31,48 @@ public class HttpUtil {
     public static func decodeUrl(url: String) -> String {
         return url.replacingOccurrences(of: "&amp;", with: "&")
     }
+    
+    public static func PING(url: String, timeout: TimeInterval, callback: @escaping (Bool, String) -> Void) {
+        guard let u = URL(string: url) else {
+            callback(false, "错误的请求地址:\(url)")
+            return
+        }
+        print("ping \(url)")
+        var request = URLRequest(url: u, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: timeout)
+        request.httpMethod = "GET"
+    
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            HttpUtil.workingSize -= 1
+            guard let data = data, error == nil else {
+                print("error=\(String(describing: error))")
+                callback(false, error?.localizedDescription ?? "似乎已断开与互联网的连接")
+                return
+            }
+            
+            // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                callback(false, "Http Status: \(httpStatus.statusCode)")
+                return
+            } else {
+                if let res = String(data: data, encoding: .utf8) {
+                    callback(true, res)
+                    return
+                }
+                
+                callback(true, "服务端无返回")
+                return
+            }
+        }
+        
+        HttpUtil.workingSize += 1
+        task.resume()
+    }
 
     public static func GET(url: String, params: [String: String]?, callback: @escaping (Bool, String) -> Void) {
         var url = getUrl(url: url)
         guard let u = URL(string: url) else {
+            callback(false, "错误的请求地址:\(url)")
             return
         }
         
@@ -80,7 +118,6 @@ public class HttpUtil {
     
     // 获得验证码图片
     public static func GET_VALID_IMAGE(url: String, callback: @escaping (Bool, Data?) -> Void) {
-        
         var request = URLRequest(url: URL(string: getUrl(url: url))!)
         request.httpMethod = "GET"
         
@@ -113,7 +150,12 @@ public class HttpUtil {
 
     public static func POST(url: String, params: [String: Any]?, callback: @escaping (Bool, String) -> Void) {
         let url = getUrl(url: url)
-
+        let components = URLComponents(string: url)
+        guard let u = components?.url else {
+            callback(false, "请求链接不合法:\(url)");
+            return
+        }
+        
         var ps = params
         if let hash = App.formHash {
             if ps != nil {
@@ -121,12 +163,6 @@ public class HttpUtil {
             } else {
                 ps = ["formhash": hash]
             }
-        }
-
-        let components = URLComponents(string: url)
-        guard let u = components?.url else {
-            callback(false, "请求链接不合法");
-            return
         }
 
         var request = URLRequest(url: u)
