@@ -3,6 +3,10 @@
 本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。    
 Android版本[Ruisi](https://github.com/freedom10086/Ruisi)
 
+### 下载
+- App Store 搜索 **西电睿思**
+- App Store：https://itunes.apple.com/cn/app/%E7%9D%BF%E6%80%9D/id1322805454
+
 ### 软件截图
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/1.png)
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/2.png)
