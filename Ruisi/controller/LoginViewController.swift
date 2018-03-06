@@ -159,6 +159,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
         HttpUtil.POST(url: self.loginUrl, params: params, callback: { ok, res in
+            //print(res)
             if ok && res.contains("欢迎您回来") {
                 self.loginResult(isok: true, res: res)
             } else if res.contains("抱歉，验证码填写错误") {
@@ -167,6 +168,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.showInputValidDialog()
                     })
                 }
+            } else if res.contains("密码错误次数过多") {
+                let start = res.range(of: "密码错误次数过多")!.lowerBound
+                let end = res.range(of: "</p>", range: start..<res.endIndex)!.lowerBound
+                self.loginResult(isok: false, res: String(res[start..<end]))
             } else {
                 self.loginResult(isok: false, res: "账号或密码错误")
             }
