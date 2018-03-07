@@ -131,7 +131,7 @@ public class Settings {
 
     public static func getAvater(uid: Int, size: Int = 1, callback: @escaping (Data?) -> Void) {
         var d: Data?
-        if let d = UserDefaults.standard.data(forKey: "\(key_avater)_\(size)") {
+        if let d = UserDefaults.standard.data(forKey: "\(key_avater)_\(uid)_\(size)") {
             callback(d)
             return
         }
@@ -155,7 +155,7 @@ public class Settings {
     //设置头像
     public static func setAvater(uid: Int, size: Int = 1, data: Data) {
         DispatchQueue.global(qos: .background).async {
-            UserDefaults.standard.set(data, forKey: "\(key_avater)_\(size)")
+            UserDefaults.standard.set(data, forKey: "\(key_avater)_\(uid)_\(size)")
         }
     }
 }

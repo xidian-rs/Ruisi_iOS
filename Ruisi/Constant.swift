@@ -16,6 +16,9 @@ public class App {
     public static var grade: String? //等级
     public static var formHash: String? //fromhash
 
+    //App ID
+    public static let APP_ID = "id1322805454"
+    
     //发布地址tid
     public static let POST_ID = 805203
     public static let HOST_RS = "rs.xidian.edu.cn"

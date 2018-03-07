@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 // 首页 - 我
 class MyViewController: UIViewController, UITableViewDelegate,
@@ -19,8 +20,8 @@ UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var headBgView: UIView!
     
     
-    var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_info_48pt", "ic_share_48pt", /*"ic_favorite_48pt",*/"ic_settings_48pt"]
-    var titles = ["签到中心", "主题设置", "关于本程序", "分享手机睿思"/*,"到商店评分"*/, "设置"]
+    var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_info_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
+    var titles = ["签到中心", "主题设置", "关于本程序", "分享手机睿思","五星好评", "设置"]
     
     // 创建的时候的登陆状态
     var isLogin: Bool!
@@ -109,7 +110,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -161,13 +162,19 @@ UITableViewDataSource, UINavigationControllerDelegate {
             // present the controller
             present(activityController, animated: true, completion: nil)
             break
-            //        case 4:
-            // TODO
-            //            //evaluate
-            //            let ac = UIAlertController(title: "到商店评分", message: "暂时不准备上架商店,无法评分(99美刀～～)", preferredStyle: .alert)
-            //            ac.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-        //            present(ac, animated: true)
         case 4:
+            let ac = UIAlertController(title: "五星好评", message: "你们的支持是我最大的动力！", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "好", style: .default, handler: {(alertAc) in
+                if #available(iOS 10.3, *) {
+                    SKStoreReviewController.requestReview()
+                } else {
+                    // Fallback on earlier versions
+                    UIApplication.shared.open(URL(string: "itms-apps://itunes.apple.com/app/\(App.APP_ID)?action=write-review")!)
+                }
+            }))
+            ac.addAction(UIAlertAction(title: "残忍拒绝", style: .destructive, handler: nil))
+            present(ac, animated: true)
+        case 5:
             //setting
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "settingViewController")
             self.show(dest!, sender: self)

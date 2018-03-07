@@ -24,6 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+    
+    // 从ShortCut打开
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        switch shortcutItem.type {
+        case "ShortCutLove":
+            UIApplication.shared.open(URL(string: "itms-apps://itunes.apple.com/app/\(App.APP_ID)")!)
+        default:
+            break
+        }
+    }
 
 
     func applicationWillResignActive(_ application: UIApplication) {
