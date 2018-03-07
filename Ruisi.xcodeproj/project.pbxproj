@@ -28,6 +28,7 @@
 		2F175ACD1FCD95F200917895 /* fontawesome-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */; };
 		2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F801F01FCCA00DDEED9 /* Utils.swift */; };
 		2F175F831F02976D00DDEED9 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F175F821F02976D00DDEED9 /* SettingViewController.swift */; };
+		2F1879C8205017420007E102 /* DDDTouchPeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */; };
 		2F1C30FD1FEBDCD900498C96 /* SmileyToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */; };
 		2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1C30F61FEBDCD800498C96 /* ImageAttachment.swift */; };
 		2F1C30FF1FEBDCD900498C96 /* SmileyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F1C30F71FEBDCD900498C96 /* SmileyView.xib */; };
@@ -150,6 +151,7 @@
 		2F175ACC1FCD95DA00917895 /* fontawesome-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fontawesome-webfont.ttf"; sourceTree = "<group>"; };
 		2F175F801F01FCCA00DDEED9 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2F175F821F02976D00DDEED9 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDDTouchPeekViewController.swift; sourceTree = "<group>"; };
 		2F1C30E91FEBDCD800498C96 /* SmileyToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmileyToolbar.swift; sourceTree = "<group>"; };
 		2F1C30F61FEBDCD800498C96 /* ImageAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAttachment.swift; sourceTree = "<group>"; };
 		2F1C30F71FEBDCD900498C96 /* SmileyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SmileyView.xib; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				2F3885721FE2A883000749F4 /* ThemeViewController.swift */,
 				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
 				2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */,
+				2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
 				2F1C31011FEBDCD900498C96 /* SmileyCollectionLayout.swift in Sources */,
+				2F1879C8205017420007E102 /* DDDTouchPeekViewController.swift in Sources */,
 				2F37A09F1FE404E400493A59 /* ImageGridPostsViewController.swift in Sources */,
 				2F24B9931FCE9213001D287E /* Reachability.swift in Sources */,
 				2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */,

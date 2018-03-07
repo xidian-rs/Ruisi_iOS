@@ -19,7 +19,6 @@ UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var usergradeLabel: UILabel!
     @IBOutlet weak var headBgView: UIView!
     
-    
     var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_info_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
     var titles = ["签到中心", "主题设置", "关于本程序", "分享手机睿思","五星好评", "设置"]
     

@@ -482,6 +482,11 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         content.attributedText =  data.content
         content.linkClickDelegate = self.linkClick
         
+        //forceTouch
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: img)
+        }
+        
         return cell
     }
     
@@ -510,7 +515,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     // 计算行高
     private func caculateRowheight(width: CGFloat, content: NSAttributedString) -> CGFloat {
         let contentHeight = content.height(for: self.tableViewWidth - 30)
-        return 12 + 36 + 6 + contentHeight + 10
+        return 12 + 36 + 8 + contentHeight + 10
     }
 }
 
@@ -577,6 +582,24 @@ extension PostViewController {
             }
         }
     }
+}
+
+// MARK: - 3D Touch
+extension PostViewController: UIViewControllerPreviewingDelegate {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let cell = previewingContext.sourceView.superview?.superview as? UITableViewCell, let index = self.tableView?.indexPath(for:cell ) {
+            let peekVc = DDDTouchPeekViewController(uid: datas[index.row].uid, uname: datas[index.row].author)
+            peekVc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width + 64 - 20)
+            return peekVc
+        }
+        
+        return nil
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.performSegue(withIdentifier: "postToUserDetail", sender: previewingContext.sourceView.superview?.superview)
+    }
+    
 }
 
 // MARK: - GalleryItemsDataSource
