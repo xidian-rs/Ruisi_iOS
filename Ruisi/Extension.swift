@@ -39,7 +39,8 @@ extension UILabel {
 extension String {
     func height(for width: CGFloat, font: UIFont) -> CGFloat {
         let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-        let actualSize = self.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font: font], context: nil)
+        let actualSize = self.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin],
+                                           attributes: [NSAttributedStringKey.font: font], context: nil)
         return actualSize.height
     }
 }

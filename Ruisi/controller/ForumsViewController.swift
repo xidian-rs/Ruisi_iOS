@@ -15,6 +15,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     let logoDir = "assets/forumlogo/"
     let jsonPath = "assets/forums"
     var loginState: Bool = false
+    private var colCount = 6 //collectionView列数
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
         loadData(loginState: loginState)
+        colCount = Int(UIScreen.main.bounds.width / 75)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +65,6 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     
     // MARK: UICollectionViewDataSource
-    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return datas.count
     }
@@ -71,13 +72,13 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     // MARK: UICollectionViewDelegateFlowLayout
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellSize = (collectionView.frame.width - 90) / 4.0
-        return CGSize(width: cellSize, height: cellSize + 16)
+        let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 8) - CGFloat(24)) / CGFloat(colCount)
+        return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 13).lineHeight - 3)
     }
     
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 16, bottom: 12, right: 16)
+        return UIEdgeInsets(top: 8, left: 12, bottom: 12, right: 12)
     }
     
     

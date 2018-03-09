@@ -447,7 +447,7 @@
                                                     </state>
                                                 </button>
                                                 <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mni-MS-0T5" customClass="HtmlLabel" customModule="Ruisi" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="69" width="345" height="57.5"/>
+                                                    <rect key="frame" x="15" y="56" width="345" height="57.5"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
 优研软院的话考试科目会不会和计算机不一样</string>
@@ -468,8 +468,8 @@
                                                 <constraint firstItem="A6u-2v-aZK" firstAttribute="leading" secondItem="eTc-SO-RoJ" secondAttribute="leading" constant="15" id="Mpg-IY-2Nu"/>
                                                 <constraint firstItem="cQH-v6-olb" firstAttribute="top" secondItem="ndl-OP-vYO" secondAttribute="bottom" constant="3" id="NZA-nF-uL7"/>
                                                 <constraint firstItem="7G8-U9-tJT" firstAttribute="centerY" secondItem="ndl-OP-vYO" secondAttribute="centerY" id="Qah-NP-PlE"/>
-                                                <constraint firstAttribute="bottom" secondItem="Mni-MS-0T5" secondAttribute="bottom" constant="10" id="WFO-sH-gQC"/>
                                                 <constraint firstItem="K9R-fc-i4F" firstAttribute="leading" secondItem="ndl-OP-vYO" secondAttribute="leading" id="Wsr-K1-SI2"/>
+                                                <constraint firstItem="Mni-MS-0T5" firstAttribute="top" secondItem="A6u-2v-aZK" secondAttribute="bottom" constant="8" id="b61-rg-IQ6"/>
                                                 <constraint firstItem="PLf-qU-dl3" firstAttribute="leading" secondItem="Krw-dF-v2Q" secondAttribute="trailing" constant="8" id="fzO-d1-b0a"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cQH-v6-olb" secondAttribute="trailing" constant="40" id="jrc-Nw-KKU"/>
                                                 <constraint firstItem="Mni-MS-0T5" firstAttribute="leading" secondItem="eTc-SO-RoJ" secondAttribute="leading" constant="15" id="lDu-en-1gH"/>
@@ -1028,7 +1028,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-MG-kwy">
-                                <rect key="frame" x="105.5" y="164" width="52" height="33"/>
+                                <rect key="frame" x="105.5" y="163.5" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去回复">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1064,7 +1064,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUh-qB-3Md">
-                                <rect key="frame" x="184" y="190" width="52" height="33"/>
+                                <rect key="frame" x="184" y="189.5" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去提交"/>
                                 <connections>
@@ -1149,18 +1149,19 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="45" id="NfR-hQ-EVN"/>
-                                                        <constraint firstAttribute="height" constant="45" id="Nfx-64-0cU"/>
+                                                        <constraint firstAttribute="width" secondItem="Gcp-lT-JjK" secondAttribute="height" multiplier="1:1" id="nbD-13-JuH"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="默认" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiJ-UJ-mcR">
-                                                    <rect key="frame" x="33" y="58" width="33" height="20"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <rect key="frame" x="34" y="58" width="31" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="kiJ-UJ-mcR" secondAttribute="bottom" constant="2" id="JAB-gF-bF5"/>
                                             <constraint firstItem="Gcp-lT-JjK" firstAttribute="centerX" secondItem="ME7-GA-Zfz" secondAttribute="centerX" id="OEN-fW-CWU"/>
                                             <constraint firstItem="Gcp-lT-JjK" firstAttribute="top" secondItem="ME7-GA-Zfz" secondAttribute="top" constant="8" id="gyL-1e-ewK"/>
                                             <constraint firstItem="kiJ-UJ-mcR" firstAttribute="top" secondItem="Gcp-lT-JjK" secondAttribute="bottom" constant="5" id="hmk-BK-RON"/>
@@ -2978,6 +2979,6 @@
         <segue reference="U1Y-Qc-Rhq"/>
         <segue reference="TmY-Es-Rva"/>
         <segue reference="YoA-98-yHC"/>
-        <segue reference="Lma-GQ-XAj"/>
+        <segue reference="Vmk-sa-qkS"/>
     </inferredMetricsTieBreakers>
 </document>

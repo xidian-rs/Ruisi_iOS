@@ -14,12 +14,14 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     @IBOutlet weak var collectionView: UICollectionView!
     private let themes = ThemeManager.themes
+    private var colCount = 6 //collectionView列数
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
         collectionView.dataSource = self
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneClick))
+        colCount = Int(UIScreen.main.bounds.width - 32)  / 56
     }
     
     var zero = 0
@@ -56,8 +58,8 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
     // MARK: UICollectionViewDelegateFlowLayout
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellSize = (collectionView.frame.width - 72) / 6.0
-        return CGSize(width: cellSize, height: cellSize + 25)
+        let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 8) - CGFloat(32)) / CGFloat(colCount)
+        return CGSize(width: cellSize, height: cellSize + 5 + UIFont.systemFont(ofSize: 15).lineHeight + 2)
     }
     
     // collectionView的上下左右间距
