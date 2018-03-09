@@ -53,7 +53,10 @@ public class Urls {
         return getPostUrl(tid: App.POST_ID)
     }
 
-    public static func getPostUrl(tid: Int) -> String {
+    public static func getPostUrl(tid: Int, pid: Int? = nil) -> String {
+        if let p = pid {
+            return "\(baseUrl)forum.php?mod=redirect&goto=findpost&ptid=\(tid)&pid=\(p)&mobile=2"
+        }
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&mobile=2"
     }
 

@@ -60,6 +60,7 @@ class PostViewController: UIViewController {
         }
         
         super.viewDidLoad()
+        
         tableViewWidth = tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
@@ -110,7 +111,8 @@ class PostViewController: UIViewController {
         tableView.addSubview(rsRefreshControl)
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         rsRefreshControl.beginRefreshing()
-        loadData()
+        
+        loadData(pid != nil)
     }
     
     //刷新数据
@@ -120,14 +122,21 @@ class PostViewController: UIViewController {
     }
     
     
-    func loadData() {
+    func loadData(_ needRedirect: Bool = false) {
         // 所持请求的数据正在加载中/未加载
         if isLoading {
             return
         }
         isLoading = true
-        let url =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
-        print("load data page:\(currentPage) sumPage:\(pageSum)")
+        let url: String
+        if needRedirect { //从消息点进来需要重定向
+            url  =  Urls.getPostUrl(tid: tid!, pid: pid)
+            print("load data with redirect \(url)")
+        } else {
+            url  =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
+            print("load data page:\(currentPage) sumPage:\(pageSum)")
+        }
+        
         HttpUtil.GET(url: url, params: nil) { [weak self] ok, res in
             guard let this = self else { return }
             var title: String?
@@ -154,7 +163,7 @@ class PostViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let this = self else { return }
                 this.setUpHeaderView(title: title)
-                if this.currentPage == 1 {
+                if this.currentPage == 1 || this.datas.count == 0 {
                     this.datas = subDatas
                     this.tableView.reloadData()
                 } else {
@@ -189,7 +198,7 @@ class PostViewController: UIViewController {
         if comments.count > 0 {
             //获取总页数 和当前页数
             if let pg = doc.css(".pg").first {
-                // var page = Utils.getNum(from: pg.css("strong").first?.text ?? "1")
+                self.currentPage = Utils.getNum(from: pg.css("strong").first?.text ?? "1") ?? currentPage
                 let sum = Utils.getNum(from: pg.css("span").first?["title"] ?? "1")
                 if let s = sum, sum! > 1 {
                     self.pageSum = s
@@ -219,6 +228,7 @@ class PostViewController: UIViewController {
                         }
                     }
                 }
+                
                 if have {
                     continue
                 }

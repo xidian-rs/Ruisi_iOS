@@ -19,11 +19,12 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         loginState = App.isLogin
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
         loadData(loginState: loginState)
-        colCount = Int(UIScreen.main.bounds.width / 75)
+        colCount = Int(UIScreen.main.bounds.width / 80)
     }
     
     override func viewWillAppear(_ animated: Bool) {

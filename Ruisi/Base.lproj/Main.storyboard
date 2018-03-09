@@ -40,13 +40,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Da3-c3-KYG">
-                                            <rect key="frame" x="15" y="8" width="104" height="104"/>
+                                            <rect key="frame" x="16" y="8" width="102" height="102"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="Da3-c3-KYG" secondAttribute="height" multiplier="1:1" id="9Pm-bZ-k1G"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WxY-IV-lD7">
-                                            <rect key="frame" x="0.0" y="117" width="134" height="16"/>
+                                            <rect key="frame" x="0.0" y="115" width="134" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -56,8 +56,8 @@
                                 <constraints>
                                     <constraint firstItem="Da3-c3-KYG" firstAttribute="top" secondItem="Ibt-rh-duA" secondAttribute="top" constant="8" id="7pP-bk-UCv"/>
                                     <constraint firstItem="WxY-IV-lD7" firstAttribute="width" secondItem="Ibt-rh-duA" secondAttribute="width" id="CKr-bY-EHw"/>
-                                    <constraint firstItem="Da3-c3-KYG" firstAttribute="leading" secondItem="Ibt-rh-duA" secondAttribute="leading" constant="15" id="KqS-Ce-dCi"/>
-                                    <constraint firstAttribute="trailing" secondItem="Da3-c3-KYG" secondAttribute="trailing" constant="15" id="ghH-wh-eAY"/>
+                                    <constraint firstItem="Da3-c3-KYG" firstAttribute="leading" secondItem="Ibt-rh-duA" secondAttribute="leading" constant="16" id="KqS-Ce-dCi"/>
+                                    <constraint firstAttribute="trailing" secondItem="Da3-c3-KYG" secondAttribute="trailing" constant="16" id="ghH-wh-eAY"/>
                                     <constraint firstItem="WxY-IV-lD7" firstAttribute="centerX" secondItem="Ibt-rh-duA" secondAttribute="centerX" id="vef-bV-Qu2"/>
                                     <constraint firstItem="WxY-IV-lD7" firstAttribute="top" secondItem="Da3-c3-KYG" secondAttribute="bottom" constant="5" id="x9N-rD-x5T"/>
                                 </constraints>
@@ -446,7 +446,7 @@
                                                         <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                 </button>
-                                                <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mni-MS-0T5" customClass="HtmlLabel" customModule="Ruisi" customModuleProvider="target">
+                                                <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mni-MS-0T5" customClass="HtmlLabel" customModule="Ruisi" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="56" width="345" height="57.5"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
@@ -1028,7 +1028,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-MG-kwy">
-                                <rect key="frame" x="105.5" y="163.5" width="52" height="33"/>
+                                <rect key="frame" x="105.5" y="164" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去回复">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1064,7 +1064,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUh-qB-3Md">
-                                <rect key="frame" x="184" y="189.5" width="52" height="33"/>
+                                <rect key="frame" x="184" y="190" width="52" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="去提交"/>
                                 <connections>

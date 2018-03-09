@@ -196,7 +196,7 @@ class RSRefreshControl: UIControl {
         // 如果要显示刷新后的状态则暂停0.8s
         if let m = message {
             refreshState = .endding(title: m)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.8) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.45) {
                 var inset = sv.contentInset
                 inset.top = self.initTopInset
                 sv.contentInset = inset

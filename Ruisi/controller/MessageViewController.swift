@@ -42,6 +42,15 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
+    // FIXME 好像没调用 时机不对
+    override func loadData(_ pos: Int) {
+        if !App.isLogin {
+            return
+        }
+        super.loadData(pos)
+        updateUnreads()
+    }
+    
     // 切换回复0 和 PM1 AT2
     @IBAction func messageTypeChange(_ sender: UISegmentedControl) {
         position = sender.selectedSegmentIndex
@@ -97,15 +106,6 @@ class MessageViewController: BaseTableViewController<MessageData> {
         }
     }
     
-    // FIXME 好像没调用
-    override func loadData(_ pos: Int) {
-        if !App.isLogin {
-            return
-        }
-        super.loadData(pos)
-        updateUnreads()
-    }
-    
     // 设置badge
     func updateUnreads()  {
         let unreadCount =  self.datas.reduce(0) { $0 + ($1.isRead ? 0 : 1) }
@@ -139,6 +139,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
         var time: String
         var content: String
         var isRead: Bool
+        var pid: Int?
         
         for ele in nodes {
             isRead = true
@@ -153,12 +154,14 @@ class MessageViewController: BaseTableViewController<MessageData> {
                     title = aa.text ?? "未知主题"
                     content = title
                     tid = Utils.getNum(from: aa["href"]!) ?? 0
+                    pid = Utils.getNum(prefix: "pid=", from: aa["href"]!)
                 } else { //系统消息
                     author = "系统消息"
                     let a = ele.css(".ntc_body a").first
                     title = a?.text ?? "未知主题"
                     content = (ele.css(".ntc_body").first?.text)!
                     tid = Utils.getNum(from: a?["href"] ?? "0") ?? 0
+                    pid = nil
                     uid = nil
                 }
                 
@@ -177,14 +180,17 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 uid = Utils.getNum(from: ele.css("img").first?["src"] ?? "0")
                 //在这里tid = tuid
                 tid = Utils.getNum(from: ele.css("a").first?["href"] ?? "0") ?? 0
+                pid = nil
             } else { //at
                 type = .At
                 time = ele.css(".xg1.xw0").first?.text ?? "未知时间"
                 
                 if let t = ele.xpath("dd[2]/a[2]").first {
                     tid = Utils.getNum(from: t["href"]!) ?? 0
+                    pid = Utils.getNum(prefix: "pid=", from: t["href"]!)
                 } else {
                     tid = 0
+                    pid = nil
                 }
                 
                 let authorA = ele.css(".ntc_body a[href^=home.php?mod=space]").first
@@ -201,8 +207,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 isRead = (ele.css(".ntc_body").first?["style"]?.contains("font-weight:bold") ?? true) ? false : true
             }
             
-            
-            let d = MessageData(type: type, title: title, tid: tid, uid: uid, author: author,
+            let d = MessageData(type: type, title: title, tid: tid,pid: pid, uid: uid, author: author,
                                 time: time, content: content.trimmingCharacters(in: .whitespacesAndNewlines), isRead: isRead)
             d.rowHeight = caculateRowheight(width: self.tableViewWidth, content: d.content)
             subDatas.append(d)
@@ -309,6 +314,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
             let index = sender as? IndexPath {
             dest.title = datas[index.row].title
             dest.tid = datas[index.row].tid
+            dest.pid = datas[index.row].pid
         } else if let dest = segue.destination as? UserDetailViewController,
             let index = sender as? IndexPath {
             if let uid = datas[index.row].uid {

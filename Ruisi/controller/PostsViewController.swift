@@ -36,7 +36,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             let showZhidin = (currentPage == 1) && Settings.showZhiding
             let nodes = doc.xpath("//*[@id=\"threadlisttableid\"]/tbody")
             for li in nodes {
-                if !showZhidin && li["id"]!.contains("stickthread") {
+                if li["id"] == nil || (!showZhidin && li["id"]!.contains("stickthread")) {
                     continue
                 }
                 let a = li.xpath("tr/th/a[starts-with(@href,\"forum.php?mod=viewthread\")]").first
