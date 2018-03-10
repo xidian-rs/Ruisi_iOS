@@ -45,11 +45,11 @@ class AttributeConverter: HtmlParserDelegate {
         }
     }
     
-    //UIColor(red: 0, green: CGFloat(122) / 255, blue: 1.0, alpha: 1.0)
-    
+
     init(font: UIFont, textColor: UIColor) {
         self.font = font
         self.textColor = textColor
+        
         attributedString = NSMutableAttributedString()
         nodes = [HtmlNode]()
     }
@@ -58,16 +58,16 @@ class AttributeConverter: HtmlParserDelegate {
         HtmlParser(src: src, delegate: self).parse()
         
         let paraStyle = NSMutableParagraphStyle()
-        paraStyle.lineHeightMultiple = CGFloat(1.25)
+        paraStyle.lineHeightMultiple = CGFloat(1.4)
+
         addAttrs([NSAttributedStringKey.paragraphStyle: paraStyle], start: 0, end: position)
         addAttrs([NSAttributedStringKey.font: font], start: 0, end: position)
-        
         return attributedString
     }
     
     // MARK: - HtmlParserDelegate
     func start() {
-        //print("===start of html===")
+        // print("===start of html===")
     }
     
     func startNode(node: HtmlNode) {
@@ -115,21 +115,28 @@ class AttributeConverter: HtmlParserDelegate {
         let endNode = HtmlNode(type: type, name: name, attr: startNode.attr)
         endNode.start = startNode.start
         
+        appendCount = 0
         if endNode.type.isBlock() {
             handleBlockTag()
+        } else if endNode.type == .A && position - startNode.start > 0 {
+            //A标签加一个空格
+            attributedString.append(NSAttributedString(string: " "))
+            appendCount = 1
         }
         
         //var start = startNode.start
-        startNode.end = position
-        endNode.end = position
+        startNode.end = position - appendCount
+        endNode.end = position - appendCount
         nodes.append(endNode)
     }
     
     func end() {
+        //print("===end of html===")
+        
         // 移除内容结尾的\n
         while attributedString.length > 0 {
             let len = attributedString.length
-            let lastCharRange = NSRange.init(location: len - 1, length: 1)
+            let lastCharRange = NSRange(location: len - 1, length: 1)
             let lastChar = attributedString.attributedSubstring(from: lastCharRange).string
             if lastChar == "\n" {
                 attributedString.deleteCharacters(in: lastCharRange)
@@ -138,7 +145,7 @@ class AttributeConverter: HtmlParserDelegate {
             break
         }
         
-        //print("===end of html===")
+
         while let endNode = nodes.popLast() {
             var startNode: HtmlNode? = nil
             for (i, v) in nodes.enumerated() {
@@ -163,7 +170,8 @@ class AttributeConverter: HtmlParserDelegate {
                 // todo 会覆盖表情 待解决
                 break
             case .B, .STRONG:
-                addAttrs([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)], start: start, end: end)
+                //addAttrs([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)], start: start, end: end)
+                addAttrs([NSAttributedStringKey.foregroundColor: UIColor.black], start: start, end: end)
             case .P:
                 handleParagraph(start: start, attr: attr)
             case .A:
@@ -198,7 +206,7 @@ class AttributeConverter: HtmlParserDelegate {
                 //setSpan(start, new Li());
                 break;
             case .PRE, .BLOCKQUOTE: // darkGray 0.9fontSize
-                addAttrs([NSAttributedStringKey.foregroundColor: UIColor.darkGray ,NSAttributedStringKey.font: UIFont.systemFont(ofSize: font.pointSize - 0.5)], start: start, end: end)
+                addAttrs([NSAttributedStringKey.foregroundColor: UIColor.darkGray,/*,NSAttributedStringKey.font: UIFont.systemFont(ofSize: font.pointSize - 0.5) */], start: start, end: end)
             case .Q, .CODE, .KBD:
                 //等宽 字体
                 addAttrs([NSAttributedStringKey.backgroundColor: UIColor(white: 0.97, alpha: 1)], start: start, end: end)
@@ -238,6 +246,7 @@ class AttributeConverter: HtmlParserDelegate {
     //div ul 等块状标签
     //主要是添加回车
     private var lastignore = false
+    private var appendCount = 0 //添加的字符
     
     private func handleBlockTag() { // 适当减少连续br的数目
         if attributedString.length == 0 {
@@ -245,10 +254,12 @@ class AttributeConverter: HtmlParserDelegate {
         }
         if lastignore {
             attributedString.append(NSAttributedString(string: "\n"))
+            appendCount += 1
             lastignore = false
         } else if let item = attributedString.string.last, item != "\n" {
             lastignore = false
             attributedString.append(NSAttributedString(string: "\n"))
+            appendCount += 1
         } else {
             lastignore = true
         }
@@ -293,6 +304,6 @@ class AttributeConverter: HtmlParserDelegate {
         if start >= end {
             return
         }
-        attributedString.addAttributes(attrs, range: NSMakeRange(start, end - start))
+        attributedString.addAttributes(attrs, range: NSMakeRange(start, min(end, attributedString.length) - start))
     }
 }

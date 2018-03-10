@@ -88,13 +88,13 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         if isEditMode {
             loadEditContent()
-        } else if let f = fid {
+        } else {
+            checkValid()
+        }
+            
+        if let f = fid {
             selectedBtn.setTitle(name, for: .normal)
             fidChange(fid: f)
-        }
-        
-        if !isEditMode {
-            checkValid()
         }
     }
     
@@ -232,29 +232,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         }
     }
     
-    func checkInput() -> Bool {
-        var reason: String?
-        if !isEditMode {
-            if fid == nil {
-                reason = "你还没有选择分区"
-            }
-        }
-        
-        if !titleInput.isHidden && (titleInput.text == nil || titleInput.text?.count == 0) {
-            reason = "标题不能为空"
-        } else if contentInput.text == nil || contentInput.text.count == 0 {
-            reason = "内容不能为空"
-        }
-        
-        if reason != nil {
-            let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-        return reason == nil
-    }
-    
     func uploadImage(position: Int, imageData: Data) {
         uploadImages[position].state = .uploading(progress: 0)
         imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
@@ -330,35 +307,62 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func loadEditContent() {
         HttpUtil.GET(url: Urls.editPostUrl(tid: tid!, pid: pid!), params: nil) { [weak self] (ok, res) in
             var success = false
-            if ok, let node = try? HTML(html: res, encoding: .utf8) {
+            if ok, let node = try? HTML(html: res, encoding: .utf8),let this = self {
                 let inputs = node.xpath("//input[@name]")
                 for input in inputs {
                     if let v = input["value"] {
-                        self?.editFormDatas[input["name"]!] = v
+                        this.editFormDatas[input["name"]!] = v
                     }
                 }
                 
                 if let content = node.xpath("//*[@id=\"needmessage\"]").first {
-                    self?.editFormDatas["message"] = content.text ?? ""
+                    this.editFormDatas["message"] = content.text ?? ""
                 }
                 
-                if self?.editFormDatas["subject"] != nil && self?.editFormDatas["message"] != nil {
+                if this.editFormDatas["subject"] != nil && this.editFormDatas["message"] != nil {
                     success = true
                     if let index = res.endIndex(of: "uploadformdata:") {
                         //uploadformdata:{uid:"252553", hash:"fe626ed21ff334263dfe552cd9a4c209"},
                         if let r = res.range(of: "}", options: String.CompareOptions.literal, range: index..<res.endIndex) {
                             if let hashStartIndex = res.range(of: "hash:\"", options: .literal, range: index..<r.upperBound)?.upperBound {
                                 let hashEndIndex = res.index(r.upperBound, offsetBy: -2)
-                                self?.uploadHash = String(res[hashStartIndex..<hashEndIndex])
-                                print("upload hash:\(self?.uploadHash ?? "")")
+                                this.uploadHash = String(res[hashStartIndex..<hashEndIndex])
+                                print("upload hash:\(this.uploadHash ?? "")")
                             }
                         }
+                    }
+                }
+                
+                let nodes = node.css("#typeid option")
+                for node in nodes {
+                    if !node.text!.contains("选择主题分类") {
+                        if node["selected"] != nil {
+                            this.typeId = node["value"]
+                        }
+                        this.typeIds.append(KeyValueData(key: node["value"]!, value: node.text!))
                     }
                 }
             }
             
             DispatchQueue.main.async {
                 if success {
+                    if (self?.typeIds.count ?? 0) > 0 {
+                        self?.forumStackView.isHidden = false
+                        self?.subSeletedBtn.isHidden = false
+                        
+                        if let typeId = self?.typeId {
+                            for data in (self?.typeIds ?? []) {
+                                if data.key == typeId {
+                                    self?.subSeletedBtn.setTitle(data.value, for: .normal)
+                                    break
+                                }
+                            }
+                        }
+                    } else {
+                        self?.forumStackView.isHidden = true
+                        self?.subSeletedBtn.isHidden = true
+                    }
+                    
                     if let title = self?.editFormDatas["subject"] {
                         if title == "" {
                             self?.titleInput.isHidden = true
@@ -387,6 +391,29 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             })
         }
         self.present(sheet, animated: true, completion: nil)
+    }
+    
+    func checkInput() -> Bool {
+        var reason: String?
+        if !isEditMode {
+            if fid == nil {
+                reason = "你还没有选择分区"
+            }
+        }
+        
+        if !titleInput.isHidden && (titleInput.text == nil || titleInput.text?.count == 0) {
+            reason = "标题不能为空"
+        } else if contentInput.text == nil || contentInput.text.count == 0 {
+            reason = "内容不能为空"
+        }
+        
+        if reason != nil {
+            let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        return reason == nil
     }
     
     @objc func postClick() {
@@ -432,10 +459,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         var params: [String: Any]
         if !isEditMode { //发帖
             params = ["topicsubmit": "yes", "subject": titleInput.text!, "message": contentInput.text!]
-            if let type = typeId {
-                params["typeid"] = type
-            }
-            
             if self.haveValid { //是否有验证码
                 params["seccodehash"] = self.seccodehash!
                 params["seccodeverify"] = self.validValue!
@@ -444,6 +467,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             params = editFormDatas
             params["subject"] = titleInput.text!
             params["message"] = contentInput.text!
+        }
+        
+        if let type = typeId {
+            params["typeid"] = type
         }
         
         // 添加附件列表

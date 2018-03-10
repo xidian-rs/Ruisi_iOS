@@ -13,7 +13,6 @@ import Kanna
 
 // 帖子详情页
 // 判断帖子作者的逻辑目前有问题
-// TODO 根据pid参数跳转到指定页，当用户从消息页面点击进来，有pid参数，默认打开回复用户的那一页
 class PostViewController: UIViewController {
     
     var tid: Int? // 由前一个页面传过来的值
@@ -60,7 +59,6 @@ class PostViewController: UIViewController {
         }
         
         super.viewDidLoad()
-        
         tableViewWidth = tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
@@ -163,7 +161,8 @@ class PostViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let this = self else { return }
                 this.setUpHeaderView(title: title)
-                if this.currentPage == 1 || this.datas.count == 0 {
+                this.title = "帖子正文(第\(this.currentPage)/\(this.pageSum)页)"
+                if this.datas.count == 0 {
                     this.datas = subDatas
                     this.tableView.reloadData()
                 } else {
@@ -183,6 +182,18 @@ class PostViewController: UIViewController {
                 } else {
                     this.replyView.placeholder = "回复楼主:\(this.datas[0].author)"
                     this.replyView.contentView.isEditable = true
+                }
+                
+                //重定向进来的跳转到指定楼层
+                if let p = this.pid , needRedirect {
+                    for (k,v) in this.datas.enumerated() {
+                        if v.pid == p {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                                this.tableView.scrollToRow(at: IndexPath(row: k, section: 0), at: .top, animated: true)
+                            })
+                            break
+                        }
+                    }
                 }
                 
                 this.isLoading = false
@@ -252,9 +263,33 @@ class PostViewController: UIViewController {
                 }
                 //层主url
                 let replyCzUrl = comment.xpath("div/div[2]/input").first?["href"]
-                let content = comment.xpath("div/div[1]").first?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "获取内容失败"
-                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText).convert(src: content)
-                let c = PostData(content: attrContent, author: author ?? "未知作者",
+                let contentNode = comment.xpath("div/div[1]").first
+                
+                var content: String?
+                //处理引用
+                if let node =  contentNode, let quoteNode = node.css(".grey.quote").first,
+                    let indexUserStart = quoteNode.text?.range(of: "引用: ")?.upperBound,
+                    let indexUserEnd = quoteNode.text?.range(of: " 发表于")?.lowerBound {
+                    let userName = quoteNode.text![indexUserStart..<indexUserEnd]
+                    
+                    let sstart = quoteNode.innerHTML!.range(of: "<br>")?.upperBound
+                    let ssend = quoteNode.innerHTML!.range(of: "</blockquote>")?.lowerBound
+                    let referContent: String
+                    if sstart != nil && ssend != nil {
+                        referContent = "<blockquote>“\(userName):&nbsp;\(quoteNode.innerHTML![sstart!..<ssend!])”</blockquote>"
+                            .replacingOccurrences(of: "<br>", with: " ")
+                    } else {
+                        referContent = "<blockquote>“回复:&nbsp;\(userName)”</blockquote>"
+                    }
+                    node.removeChild(quoteNode)
+                    content = referContent + "</br>" + (node.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
+                }
+                
+                if content == nil {
+                    content = contentNode?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "获取内容失败"
+                }
+                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText).convert(src: content!)
+                let c = PostData(content: attrContent, author: author ?? "匿名",
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
                 //计算行高
@@ -454,11 +489,9 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let data: PostData
-        let cell: UITableViewCell
-        
-        data = datas[indexPath.row]
-        cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let data = datas[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+
         let index = cell.viewWithTag(6) as! UILabel
         index.text = data.index
         let replyBtn = cell.viewWithTag(7) as? UIButton
@@ -467,6 +500,12 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
             replyBtn?.addTarget(self, action: #selector(replyCzClick(_:)), for: .touchUpInside)
         } else {
             replyBtn?.isHidden = true
+        }
+        
+        if data.pid == self.pid {
+            cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        } else {
+            cell.backgroundColor = UIColor.clear
         }
         
         let img = cell.viewWithTag(1) as! UIImageView
@@ -523,9 +562,10 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     // 计算行高
+    // FIXME 现在计算行高有bug，内容比较多的时候会少计算1行左右
     private func caculateRowheight(width: CGFloat, content: NSAttributedString) -> CGFloat {
         let contentHeight = content.height(for: self.tableViewWidth - 30)
-        return 12 + 36 + 8 + contentHeight + 10
+        return 12 + 36 + 6 + contentHeight + 15
     }
 }
 

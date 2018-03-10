@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import WebKit
 
 extension String {
     func index(of string: String, options: CompareOptions = .literal) -> Index? {
@@ -272,13 +271,9 @@ extension UIViewController {
     
     func loadWebView(title: String?, url: URL) {
         
-        let vc = UIViewController()
-        let webview = WKWebView(frame: view.frame)
-        
-        webview.load(URLRequest(url: url))
-        
-        vc.view.addSubview(webview)
-        vc.title = title ?? "网页"
+        let vc = WebViewController()
+        vc.url = url
+        vc.title = title ?? url.absoluteString
         
         self.show(vc, sender: self)
     }

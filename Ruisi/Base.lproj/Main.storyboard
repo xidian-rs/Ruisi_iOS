@@ -447,7 +447,7 @@
                                                     </state>
                                                 </button>
                                                 <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mni-MS-0T5" customClass="HtmlLabel" customModule="Ruisi" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="56" width="345" height="57.5"/>
+                                                    <rect key="frame" x="15" y="54" width="345" height="57.5"/>
                                                     <string key="text">有几个疑问 希望知情同学解答下~
 咱们学校软件学院研究生咋样（专硕）
 优研软院的话考试科目会不会和计算机不一样</string>
@@ -469,7 +469,7 @@
                                                 <constraint firstItem="cQH-v6-olb" firstAttribute="top" secondItem="ndl-OP-vYO" secondAttribute="bottom" constant="3" id="NZA-nF-uL7"/>
                                                 <constraint firstItem="7G8-U9-tJT" firstAttribute="centerY" secondItem="ndl-OP-vYO" secondAttribute="centerY" id="Qah-NP-PlE"/>
                                                 <constraint firstItem="K9R-fc-i4F" firstAttribute="leading" secondItem="ndl-OP-vYO" secondAttribute="leading" id="Wsr-K1-SI2"/>
-                                                <constraint firstItem="Mni-MS-0T5" firstAttribute="top" secondItem="A6u-2v-aZK" secondAttribute="bottom" constant="8" id="b61-rg-IQ6"/>
+                                                <constraint firstItem="Mni-MS-0T5" firstAttribute="top" secondItem="A6u-2v-aZK" secondAttribute="bottom" constant="6" id="b61-rg-IQ6"/>
                                                 <constraint firstItem="PLf-qU-dl3" firstAttribute="leading" secondItem="Krw-dF-v2Q" secondAttribute="trailing" constant="8" id="fzO-d1-b0a"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cQH-v6-olb" secondAttribute="trailing" constant="40" id="jrc-Nw-KKU"/>
                                                 <constraint firstItem="Mni-MS-0T5" firstAttribute="leading" secondItem="eTc-SO-RoJ" secondAttribute="leading" constant="15" id="lDu-en-1gH"/>
@@ -2977,8 +2977,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U1Y-Qc-Rhq"/>
-        <segue reference="TmY-Es-Rva"/>
+        <segue reference="5zA-VW-dPn"/>
         <segue reference="YoA-98-yHC"/>
-        <segue reference="Vmk-sa-qkS"/>
+        <segue reference="csF-Ug-UhR"/>
     </inferredMetricsTieBreakers>
 </document>

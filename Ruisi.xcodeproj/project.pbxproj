@@ -60,6 +60,7 @@
 		2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */; };
 		2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */; };
 		2F63F2521FE4E857005FCD29 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F2511FE4E857005FCD29 /* SQLiteError.swift */; };
+		2F72891920542223000EC5C9 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F72891820542223000EC5C9 /* WebViewController.swift */; };
 		2F77A66B201AFA5300322B28 /* InputValidController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F77A66A201AFA5300322B28 /* InputValidController.swift */; };
 		2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E621F03AF3900994123 /* FriendViewController.swift */; };
 		2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */; };
@@ -183,6 +184,7 @@
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
 		2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
 		2F63F2511FE4E857005FCD29 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
+		2F72891820542223000EC5C9 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		2F77A66A201AFA5300322B28 /* InputValidController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidController.swift; sourceTree = "<group>"; };
 		2F7A9E621F03AF3900994123 /* FriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
 		2F7A9E641F03AF6900994123 /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
 				2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */,
 				2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */,
+				2F72891820542223000EC5C9 /* WebViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */,
 				2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */,
+				2F72891920542223000EC5C9 /* WebViewController.swift in Sources */,
 				2F848A9C1FF0E0830089177B /* RSRefreshState.swift in Sources */,
 				2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */,
 				2F77A66B201AFA5300322B28 /* InputValidController.swift in Sources */,
