@@ -21,9 +21,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     private var answerSelect = 0
     private let quests = ["请选择(未设置选此)", "母亲的名字", "爷爷的名字", "父亲出生的城市", "您其中一位老师的名字", "您个人计算机的型号", "您最喜欢的餐馆名称", "驾驶执照最后四位数字"]
-    
-    private var loginUrl: String!
-    
+
     // 验证码相关
     private var haveValid = false
     private var seccodehash: String?
@@ -47,8 +45,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             usernameTextField.text = Settings.username
             passwordTextField.text = Settings.password
         }
-        
-        self.loginUrl = Urls.loginUrl + "&loginsubmit=yes"
+
         loadData()
     }
     
@@ -86,42 +83,54 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func loadData() {
-        HttpUtil.GET(url: Urls.loginUrl, params: nil) { [weak self] ok, res in
+        HttpUtil.GET(url: Urls.checkLoginUrl, params: nil) { [weak self] ok, res in
+            var isLogin = false
+            var errorTitle: String?
+            var errorContent: String?
+            
             if ok {
                 if res.contains("欢迎您回来") {
-                    print("cookie is still work login ok")
-                    self?.loginResult(isok: true, res: res)
-                    return
-                }
-                
-                if let _ = res.index(of: "sec_code vm"), let doc = try? HTML(html: res, encoding: .utf8) {
-                    self?.haveValid = true
-                    self?.seccodehash =  doc.xpath("//*[@name=\"seccodehash\"]").first?["value"]
-                    if let src = doc.xpath("//*[@id=\"loginform\"]/div[1]/div/img").first?["src"] {
-                        let start = src.range(of: "update=")!.upperBound
-                        let end = src.range(of: "&idhash")!.lowerBound
-                        self?.validUpdate = String(src[start..<end])
+                    //TDOD 你现在还是登陆状态
+                    errorTitle = "提示"
+                    errorContent = "你现在是登陆状态无需登陆"
+                    isLogin = true
+                } else {
+                    if let s = res.range(of: "[CDATA[")?.upperBound ,let e =  res.range(of: "]]></root>")?.lowerBound {
+                        if let html = try? HTML(html: res, encoding: .utf8) {
+                            let hash = html.css("input#formhash").first?["value"]
+                            if hash != nil {
+                                App.formHash = hash
+                                print("formHash:\(hash!)")
+                            }
+                            
+                            let sechash = html.css("input[name=seccodehash]").first?["value"]
+                            if sechash != nil {
+                                self?.haveValid = true
+                                self?.seccodehash = sechash
+                                print("有验证码 \(sechash!)")
+                            }
+                        }
                     }
-                    print("有验证码 \(self?.seccodehash ?? "")  \(self?.validUpdate ?? "")")
                 }
-                
-                if let start = res.endIndex(of: "action=\"") {
-                    let substr = String(res[start...])
-                    let end = substr.index(of: "\"")
-                    self?.loginUrl = String(substr[..<end!])
-                    return
-                }
+            } else {
+                errorTitle = "加载失败"
+                errorContent = "是否重新加载"
             }
             
-            let alert = UIAlertController(title: "加载失败", message: "是否重新加载", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (alert) in
-                self?.dismiss(animated: true, completion: nil)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "重新加载", style: .default, handler: { (alert) in
-                self?.loadData()
-            }))
-            self?.present(alert, animated: true)
+            if let t = errorTitle {
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: t, message: errorContent!, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: isLogin ? "退出" : "重新加载", style: .default, handler: { (alert) in
+                        if isLogin {
+                            self?.dismiss(animated: true, completion: nil)
+                        } else {
+                            self?.loadData()
+                        }
+                    }))
+                    self?.present(alert, animated: true)
+                }
+            }
         }
     }
     
@@ -153,13 +162,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let answer = answerSelect == 0 ? "" : questInput.text ?? ""
         
         var params: [String : Any] = ["username": username, "password": password, "fastloginfield": "username", "cookietime": "2592000", "questionid": self.answerSelect, "answer": answer]
+        
         if self.haveValid { //是否有验证码
             params["seccodehash"] = self.seccodehash!
             params["seccodeverify"] = self.validValue!
         }
         
-        HttpUtil.POST(url: self.loginUrl, params: params, callback: { ok, res in
-            //print(res)
+        HttpUtil.POST(url: Urls.loginUrl + "&loginsubmit=yes", params: params, callback: { ok, res in
             if ok && res.contains("欢迎您回来") {
                 self.loginResult(isok: true, res: res)
             } else if res.contains("抱歉，验证码填写错误") {

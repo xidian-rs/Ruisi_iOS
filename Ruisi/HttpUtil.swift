@@ -71,6 +71,14 @@ public class HttpUtil {
 
     public static func GET(url: String, params: [String: String]?, callback: @escaping (Bool, String) -> Void) {
         var url = getUrl(url: url)
+        if let p = encodeParameters(params) {
+            if url.contains("?") {
+                url = url + "&" + p
+            } else {
+                url = url + "?" + p
+            }
+        }
+        
         guard let u = URL(string: url) else {
             callback(false, "错误的请求地址:\(url)")
             return
@@ -79,15 +87,7 @@ public class HttpUtil {
         var request = URLRequest(url: u)
         request.httpMethod = "GET"
         
-        if let p = encodeParameters(params) {
-            if url.contains("?") {
-                url = url + "&" + p
-            } else {
-                url = url + "?" + p
-            }
-        }
-
-        print("start http get url:\(url)")
+        print("start http get url:\(request.url?.absoluteString ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             HttpUtil.workingSize -= 1
             guard let data = data, error == nil else {

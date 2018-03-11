@@ -112,6 +112,8 @@
 		2FEDBB631F1113A6006E645D /* PostData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBB621F1113A6006E645D /* PostData.swift */; };
 		2FEDBDD11FD434360048CE6C /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */; };
 		2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF5F9821FE95DF700C6535D /* AlbumData.swift */; };
+		2FF7B1B020550B5C00DE202E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */; };
+		2FF7B1B220557ADC00DE202E /* ForgetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
 		984BEE229C75F1F36A692B31 /* Pods_Ruisi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB3DD8EC910C367A9D2527A /* Pods_Ruisi.framework */; };
 /* End PBXBuildFile section */
@@ -237,6 +239,8 @@
 		2FEDBB621F1113A6006E645D /* PostData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostData.swift; sourceTree = "<group>"; };
 		2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		2FF5F9821FE95DF700C6535D /* AlbumData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumData.swift; sourceTree = "<group>"; };
+		2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordController.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
 		5B234EA6D38FE03BE17A7D68 /* Pods-Ruisi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ruisi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ruisi/Pods-Ruisi.debug.xcconfig"; sourceTree = "<group>"; };
 		A84F4CE1CA58E76A05931BD1 /* Pods-Ruisi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ruisi.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ruisi/Pods-Ruisi.release.xcconfig"; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 				2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */,
 				2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */,
 				2F72891820542223000EC5C9 /* WebViewController.swift */,
+				2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */,
+				2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -666,6 +672,7 @@
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
 				2F1C31001FEBDCD900498C96 /* SmileyManager.swift in Sources */,
 				2F7C75B11EFE356F0067D499 /* SignViewController.swift in Sources */,
+				2FF7B1B020550B5C00DE202E /* RegisterViewController.swift in Sources */,
 				2F2670491FEFAADC00AB291D /* SearchData.swift in Sources */,
 				2F37A0AD1FE4155600493A59 /* PostsType.swift in Sources */,
 				2F175AC91FCD499100917895 /* KeyValueData.swift in Sources */,
@@ -708,6 +715,7 @@
 				2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
 				2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */,
+				2FF7B1B220557ADC00DE202E /* ForgetPasswordController.swift in Sources */,
 				2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */,
 				2F3DDA9D1FED41600082C670 /* HtmlLabel.swift in Sources */,
 				2F7A9E671F03AFB300994123 /* UserDetailViewController.swift in Sources */,

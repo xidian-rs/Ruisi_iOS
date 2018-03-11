@@ -53,6 +53,7 @@ class MainViewController: UITabBarController {
         
         App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
         checkCount = 0
+        print("临时设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
         checkLogin()
     }
     

@@ -39,16 +39,30 @@ public class Urls {
     public static let signPostUrl = "\(BASE_URL_EDU)plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1"
 
     public static var hotUrl: String {
-        return baseUrl + "forum.php?mod=guide&view=hot&mobile=2"
+        return "\(baseUrl)forum.php?mod=guide&view=hot&mobile=2"
     }
 
     public static var newUrl: String {
-        return baseUrl + "forum.php?mod=guide&view=new&mobile=2"//&page=1
+        return "\(baseUrl)forum.php?mod=guide&view=new&mobile=2"//&page=1
     }
 
     // 登陆
     public static var loginUrl: String {
-        return baseUrl + "member.php?mod=logging&action=login&mobile=2"
+        return "\(baseUrl)member.php?mod=logging&action=login&mobile=2"
+    }
+    
+    // 检查登陆
+    public static var checkLoginUrl: String {
+        return "\(baseUrl)member.php?mod=logging&action=login&infloat=yes&frommessage&inajax=1&ajaxtarget=messagelogin&mobile=2"
+    }
+    
+    //注册检测的地址，检查用户名/邮箱/邀请码是否合法
+    public static var regCheckUrl: String {
+        return "\(baseUrl)forum.php?mod=ajax&inajax=yes&infloat=register&handlekey=register&ajaxmenu=1&mobile=2"
+    }
+    
+    public static var forgetPasswordUrl: String {
+        return "\(baseUrl)/member.php?mod=lostpasswd&lostpwsubmit=yes&infloat=yes&inajax=1&mobile=2"
     }
 
     public static var checkUpdate: String {
