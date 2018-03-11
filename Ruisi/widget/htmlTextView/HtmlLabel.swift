@@ -135,11 +135,9 @@ class HtmlLabel: UILabel {
             let index = layoutManager.glyphIndex(for: location, in: textContainer)
             if let item = clickItem, NSLocationInRange(index, item.range) {
                 // 抬起的链接和点击的链接是一个则表示用户点击了链接
-                //print("抬起:\(item.url)")
-                LinkClickHandler.handle(url: item.url, delegate: delegate)
+                LinkClickHandler.handle(url: item.url.replacingOccurrences(of: "&amp;", with: "&"), delegate: delegate)
             }
         }
-        
         
         if let item = clickItem {
             textStorage.removeAttribute(NSAttributedStringKey.backgroundColor, range: item.range)

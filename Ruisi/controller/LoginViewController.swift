@@ -208,9 +208,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             } else {
                 let start = res.range(of: "欢迎您回来")!.upperBound
                 let end = res.range(of: "</p>", range: start..<res.endIndex)!.lowerBound
+                
                 let info = res[start..<end].components(separatedBy: "，")
-                let name = info[1].components(separatedBy: " ")[1]
-                let grade = info[1].components(separatedBy: " ")[0] //注意这是html
+                let name: String
+                let grade: String
+                if res.range(of: "</font>", range: start..<res.endIndex) != nil {
+                    //"<p>欢迎您回来，<font color=\"#0099FF\">实习版主</font> 激萌路小叔，现在将转入登录前页面</p>"
+                    grade = String(info[1][info[1].range(of: "\">")!.upperBound..<info[1].range(of: "</font>")!.lowerBound])
+                    name = info[1].components(separatedBy: " ").last!
+                } else {
+                    //"<p>欢迎您回来，实习版主 激萌路小叔，现在将转入登录前页面</p>"
+                    name = info[1].components(separatedBy: " ")[1]
+                    grade = info[1].components(separatedBy: " ")[0]
+                }
+                
                 let indexStart = res.range(of: "home.php?mod=space", range: start..<res.endIndex)!.upperBound
                 let indexEnd = res.range(of: "</a>", range: indexStart..<res.endIndex)!.lowerBound
                 let uid = Utils.getNum(from: String(res[indexStart..<indexEnd]))!

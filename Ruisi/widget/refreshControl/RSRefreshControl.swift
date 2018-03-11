@@ -196,12 +196,13 @@ class RSRefreshControl: UIControl {
         // 如果要显示刷新后的状态则暂停0.8s
         if let m = message {
             refreshState = .endding(title: m)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.45) {
+            UIView.animate(withDuration: 0.25, delay: 0.5, options: .curveEaseOut, animations: {
                 var inset = sv.contentInset
                 inset.top = self.initTopInset
                 sv.contentInset = inset
+            }, completion: { (finish) in
                 self.refreshState = .normal
-            }
+            })
         } else {
             self.refreshState = .normal
             var inset = sv.contentInset

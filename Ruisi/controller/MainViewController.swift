@@ -98,7 +98,6 @@ class MainViewController: UITabBarController {
                 } else {
                     print("schoolnet:\(App.isSchoolNet) login:\(App.isLogin)")
                 }
-                
             } else {
                 print("unknown login state")
             }

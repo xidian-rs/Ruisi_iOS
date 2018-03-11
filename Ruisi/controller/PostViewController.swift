@@ -30,6 +30,7 @@ class PostViewController: UIViewController {
     private var lastLoad: UInt64 = 0
     private var replyLzUrl: String? //回复楼主的地址
     private var tableViewWidth: CGFloat = 0
+    private var normalOrder = true //正序
     
     private var loading = false
     open var isLoading: Bool {
@@ -64,7 +65,6 @@ class PostViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
         
-        setUpHeaderView(title: title)
         self.title = "帖子正文"
         
         //回复框回调
@@ -116,9 +116,11 @@ class PostViewController: UIViewController {
     //刷新数据
     @objc func reloadData() {
         currentPage = 1
+        self.datas = []
+        tableView.reloadData()
+        
         loadData()
     }
-    
     
     func loadData(_ needRedirect: Bool = false) {
         // 所持请求的数据正在加载中/未加载
@@ -128,11 +130,11 @@ class PostViewController: UIViewController {
         isLoading = true
         let url: String
         if needRedirect { //从消息点进来需要重定向
-            url  =  Urls.getPostUrl(tid: tid!, pid: pid)
+            url  =  Urls.getPostUrl(tid: tid!, pid: pid) + (normalOrder ? "" : "&ordertype=1")
             print("load data with redirect \(url)")
         } else {
-            url  =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)"
-            print("load data page:\(currentPage) sumPage:\(pageSum)")
+            url  =  Urls.getPostUrl(tid: tid!) + "&page=\(currentPage)\(normalOrder ? "" : "&ordertype=1")"
+            print("load data page:\(currentPage) sumPage:\(pageSum) order:\(normalOrder)")
         }
         
         HttpUtil.GET(url: url, params: nil) { [weak self] ok, res in
@@ -161,7 +163,7 @@ class PostViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let this = self else { return }
                 this.setUpHeaderView(title: title)
-                this.title = "帖子正文(第\(this.currentPage)/\(this.pageSum)页)"
+                this.title = "\(this.normalOrder ? "正序" : "倒序") - 第\(this.currentPage)/\(this.pageSum)页"
                 if this.datas.count == 0 {
                     this.datas = subDatas
                     this.tableView.reloadData()
@@ -177,7 +179,7 @@ class PostViewController: UIViewController {
                 }
                 
                 if this.replyLzUrl == nil { //不支持回复
-                    this.replyView.placeholder = "本帖不支持回复(已关闭,没有权限\(App.isLogin ? "" : ",未登陆"))"
+                    this.replyView.placeholder = "本帖不支持回复(已关闭,\(App.isLogin ? "没有权限" : "未登陆"))"
                     this.replyView.contentView.isEditable = false
                 } else {
                     this.replyView.placeholder = "回复楼主:\(this.datas[0].author)"
@@ -230,7 +232,7 @@ class PostViewController: UIViewController {
                 
                 var have = false
                 //第一页是全更新不过滤
-                if self.currentPage > 1 && datas.count > 0 {
+                if datas.count > 0 {
                     //过滤重复的
                     for i in (0..<datas.count).reversed() {
                         if datas[i].pid == pid {
@@ -323,7 +325,6 @@ class PostViewController: UIViewController {
         }
     }
     
-    
     // 设置headerView 显示标题
     private var isSetHeaderView = false
     func setUpHeaderView(title: String?) {
@@ -345,7 +346,6 @@ class PostViewController: UIViewController {
         headerView.addSubview(label)
         
         tableView.tableHeaderView = headerView
-        
     }
     
     
@@ -357,6 +357,12 @@ class PostViewController: UIViewController {
     //显示更多按钮
     @objc func moreClick(_ sender: UIBarButtonItem) {
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
+        
+        sheet.addAction(UIAlertAction(title: normalOrder ? "倒序浏览" : "正序浏览", style: .default) { action in
+            self.normalOrder = !self.normalOrder
+            self.reloadData()
+        })
+        
         sheet.addAction(UIAlertAction(title: "浏览器中打开", style: .default) { action in
             UIApplication.shared.open(URL(string: Urls.getPostUrl(tid: self.tid!) + "&page=\(self.currentPage)")!)
         })
@@ -366,8 +372,8 @@ class PostViewController: UIViewController {
             })
         })
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default) { action in
-            let shareVc = UIActivityViewController(activityItems: [UIActivityType.copyToPasteboard], applicationActivities: nil)
-            shareVc.setValue(self.title, forKey: "subject")
+            let shareVc = UIActivityViewController(activityItems: ["分享帖子 地址: \(Urls.getPostUrl(tid: self.tid!) + "&page=\(self.currentPage)")"], applicationActivities: nil)
+            // present the controller
             self.present(shareVc, animated: true, completion: nil)
         })
         sheet.addAction(UIAlertAction(title: "关闭", style: .cancel, handler: nil))
@@ -437,21 +443,24 @@ class PostViewController: UIViewController {
         case .viewAlbum(let (aid, url)):
             showAlbums(aid: aid, url: url)
         case .viewPost(let (tid, pid)):
-            if pid == self.pid { // 点击了跳转到本帖的url
-                for i in 0..<datas.count {
-                    if datas[i].pid == pid {
-                        self.tableView.scrollToRow(at: IndexPath.init(row: i, section: 0), at: .top, animated: true)
-                        break
+            if tid == self.tid { // 点击了跳转到本帖的url
+                if let p = pid {
+                    for i in 0..<datas.count {
+                        if datas[i].pid == p {
+                            self.tableView.scrollToRow(at: IndexPath(row: i, section: 0), at: .top, animated: true)
+                            return
+                        }
                     }
                 }
-            } else { // 点击了跳转到别的帖子的url打开新的页面
-                let vc = PostViewController()
-                vc.tid = tid
-                vc.pid = pid
-                self.show(vc, sender: true)
             }
+            
+            // 点击了跳转到别的帖子的url打开新的页面
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+            vc.tid = tid
+            vc.pid = pid
+            self.show(vc, sender: self)
         case .login():
-            let vc = LoginViewController()
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as! LoginViewController
             self.present(vc, animated: true)
         case .others(let url), .attachment(let url):
             if let u = URL(string: url) {

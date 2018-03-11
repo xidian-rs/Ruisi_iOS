@@ -153,7 +153,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
             self.show(dest!, sender: self)
         case 3:
             //share
-            let activityController = UIActivityViewController(activityItems: ["分享:手机睿思IOS版[\(Urls.getPostUrl(tid: App.POST_ID))]"], applicationActivities: nil)
+            let activityController = UIActivityViewController(activityItems: ["分享:手机睿思iOS版\nApp Store 地址: https://itunes.apple.com/cn/app/\(App.APP_ID)"], applicationActivities: nil)
             // should be the rect that the pop over should anchor to
             activityController.popoverPresentationController?.sourceRect = view.frame
             activityController.popoverPresentationController?.sourceView = view

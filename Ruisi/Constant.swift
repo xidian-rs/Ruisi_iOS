@@ -20,12 +20,14 @@ public class App {
     public static let APP_ID = "id1322805454"
     
     //发布地址tid
-    public static let POST_ID = 805203
+    public static let POST_ID = 921699
     public static let HOST_RS = "rs.xidian.edu.cn"
 }
 
 public class Urls {
+    //校园网地址
     public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
+    //校外网地址
     public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
     
     public static var baseUrl: String {
