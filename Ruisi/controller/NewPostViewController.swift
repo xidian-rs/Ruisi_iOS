@@ -236,7 +236,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         uploadImages[position].state = .uploading(progress: 0)
         imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
         let formData: [String: NSObject] = [
-            "uid": String(App.uid!) as NSObject,
+            "uid": String(Settings.uid!) as NSObject,
             "hash": self.uploadHash! as NSObject
         ]
         

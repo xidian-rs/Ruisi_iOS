@@ -64,14 +64,14 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         levelView.text = "--"
         loadData(uid: uid!)
         
-        if App.uid != uid { //别人
+        if Settings.uid != uid { //别人
             self.title = username
             if !isFriend {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
             } else {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
             }
-        } else if App.uid != nil {
+        } else if Settings.uid != nil {
             //
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登陆", style: .plain, target: self, action: #selector(exitClick))
             self.chatBtn.isHidden = true
@@ -193,12 +193,13 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             cookieStore.deleteCookie(cookie)
         }
         
-        Settings.username = nil
-        Settings.password = nil
-        
-        App.isLogin = false
-        App.username = nil
-        App.uid = nil
+        Settings.uid = nil
+        if !Settings.remberPassword {
+            Settings.username = nil
+            Settings.password = nil
+        }
+        Settings.grade = nil
+        Settings.formhash = nil
         
         navigationController?.popViewController(animated: true)
     }

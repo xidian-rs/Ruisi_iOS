@@ -146,7 +146,7 @@ class PostViewController: UIViewController {
                     // load fromHash
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
                     if let hash = Utils.getFormHash(from: exitNode?["href"]) {
-                        App.formHash = hash
+                        Settings.formhash = hash
                     }
                     
                     // load title
@@ -524,7 +524,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         let content = cell.viewWithTag(5) as! HtmlLabel
         let editBtn = cell.viewWithTag(8) as! UIButton
         
-        if App.uid != nil && App.uid! == data.uid && data.pid > 0 {
+        if App.isLogin && Settings.uid! == data.uid && data.pid > 0 {
             editBtn.isHidden = false
             editBtn.addTarget(self, action: #selector(editClick(_:)), for: .touchUpInside)
         } else {

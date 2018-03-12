@@ -7,55 +7,123 @@
 //
 
 import UIKit
+import Kanna
 
 // 首页 - 板块列表
 class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private var datas: [Forums] = []
-    let logoDir = "assets/forumlogo/"
-    let jsonPath = "assets/forums"
-    var loginState: Bool = false
+    var loadedUid: Int?
     private var colCount = 6 //collectionView列数
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginState = App.isLogin
+        loadedUid = Settings.uid
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
-        loadData(loginState: loginState)
         colCount = Int(UIScreen.main.bounds.width / 80)
+        
+        loadData(uid: loadedUid)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if App.isLogin != loginState { //第一次
-            loginState = App.isLogin
-            loadData(loginState: loginState)
+        if Settings.uid != loadedUid { //第一次
+            loadedUid = Settings.uid
+            loadData(uid: loadedUid)
         }
     }
     
-    
-    func loadData(loginState: Bool) {
-        print("load forums login state:\(loginState)")
-        let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
-        //let jsonData = jsonString.data(encoding: .utf8)!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
-        let decoder = JSONDecoder()
-        datas = try! decoder.decode([Forums].self, from: data).filter({ (f) -> Bool in
-            f.forums = f.forums?.filter({ (ff) -> Bool in
-                return loginState || !ff.login
-            })
-            return loginState || !f.login
-        })
+    // uid == nil 加载未登陆的
+    func loadData(uid: Int?) {
+        print("====================")
+        print("加载板块列表")
         
-        collectionView?.reloadData()
+        let day = Int(Date().timeIntervalSince1970 / 86400) - Settings.getFormlistSavedTime(uid: uid)
+        if day >= 7 {
+            print("缓存过期\(day)，从网页读取板块列表")
+            loadFormlistFromWeb()
+            return
+        } else if let d = Settings.getForumlist(uid: uid),let ds = try? JSONDecoder().decode([Forums].self, from: d) {
+            //不用过滤
+            datas = ds
+            print("从保存的设置里面 读取板块列表 uid:\(uid ?? 0)")
+        }
+        
+        if datas.count == 0 {
+            print("临时使用forums.json板块列表")
+            let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
+            let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
+            datas = try! JSONDecoder().decode([Forums].self, from: data).filter({ (f) -> Bool in
+                f.forums = f.forums?.filter({ (ff) -> Bool in
+                    return (loadedUid != nil) || !ff.login
+                })
+                return (loadedUid != nil) || !f.login
+            })
+            collectionView?.reloadData()
+            
+            print("开始从网页读取板块列表")
+            loadFormlistFromWeb()
+        }
+    }
+    
+    private func loadFormlistFromWeb() {
+        HttpUtil.GET(url: Urls.forumlistUrl, params: nil) { [weak self] (ok, res) in
+            guard ok else { return }
+            if let html = try? HTML(html: res, encoding: .utf8) {
+                var uid: Int?
+                if let userNode = html.xpath("//*[@id=\"usermsg\"]/a").first {
+                    uid = Utils.getNum(prefix: "uid=", from: userNode["href"]!)
+                }
+                let groups = html.xpath("//*[@id=\"wp\"]/div")
+                var listForms = [Forums]()
+                for group in groups {
+                    if let groupName = group.xpath(".//h2/a").first?.text {
+                        let items = group.xpath(".//a")
+                        var forms = [Forums.Forum]()
+                        for item in items {
+                            if let fid = Utils.getNum(prefix: "fid=", from: item["href"]!) {
+                                var new: Int?
+                                if let numNode = item.xpath("span").first {
+                                    new = Utils.getNum(from: numNode.text!)
+                                    item.removeChild(numNode)
+                                }
+                                
+                                let f = Forums.Forum(fid: fid, name: item.text!, login: false)
+                                f.new = new
+                                
+                                forms.append(f)
+                            }
+                        }
+                        
+                        let formss = Forums(gid: 0, name: groupName, login: false, canPost: true)
+                        formss.forums = forms
+                        
+                        listForms.append(formss)
+                    }
+                }
+                
+                self?.datas = listForms
+                self?.loadedUid = uid
+                
+                DispatchQueue.main.async {
+                    self?.collectionView?.reloadData()
+                }
+                
+                print("从网页加载板块列表完成 登陆:\(App.isLogin) uid:\(uid ?? 0) 设置里的uid:\(Settings.uid ?? 0)")
+                if let d = try? JSONEncoder().encode(listForms) {
+                    Settings.setForumlist(uid: uid, data: d)
+                    print("板块列表保存完毕")
+                }
+            }
+        }
     }
     
     // 点击头像
     @objc func tapHandler(sender: UITapGestureRecognizer) {
-        if App.isLogin && App.uid != nil {
+        if App.isLogin {
             self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
         } else {
             //login
@@ -73,13 +141,13 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     // MARK: UICollectionViewDelegateFlowLayout
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 8) - CGFloat(24)) / CGFloat(colCount)
-        return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 13).lineHeight - 3)
+        let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 8) - CGFloat(20)) / CGFloat(colCount)
+        return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 12).lineHeight - 5)
     }
     
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 12, bottom: 12, right: 12)
+        return UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
     }
     
     
@@ -94,6 +162,20 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         return 8
     }
     
+    // 是否能变色
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    // 变色
+    override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor(white: 0.96, alpha: 1.0)
+    }
+    
+    //结束变色
+    override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.clear
+    }
     
     // section 头或者尾部
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -117,9 +199,12 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         let imageView = cell.viewWithTag(1) as! UIImageView
         let label = cell.viewWithTag(2) as! UILabel
-        let fileName = datas[indexPath.section].forums![indexPath.row].fid
-        if let path = Bundle.main.path(forResource: "common_\(fileName)_icon", ofType: "gif", inDirectory: logoDir) {
+        let fid = datas[indexPath.section].forums![indexPath.row].fid
+        if let path = Bundle.main.path(forResource: "common_\(fid)_icon", ofType: "gif", inDirectory: "assets/forumlogo/") {
             imageView.image = UIImage(contentsOfFile: path)
+        } else {
+            let r = URL(string: "\(Urls.baseUrl)data/attachment/common/cc/common_\(fid)_icon.gif?mobile=2")
+            imageView.kf.setImage(with:  r, placeholder: #imageLiteral(resourceName: "placeholder"))
         }
         
         label.text = datas[indexPath.section].forums![indexPath.row].name

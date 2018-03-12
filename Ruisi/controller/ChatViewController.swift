@@ -80,7 +80,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             if ok {
                 if res.contains("操作成功") {
                     success = true
-                    self?.datas.append(ChatData(uid: App.uid!, uname: App.username ?? "我", message: text, time: "刚刚"))
+                    self?.datas.append(ChatData(uid: Settings.uid!, uname: Settings.username ?? "我", message: text, time: "刚刚"))
                 } else if res.contains("两次发送短消息太快") {
                     reason = "两次发送短消息太快，请稍候再发送"
                 } else {
@@ -161,8 +161,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 uid = self.uid!
                 username = self.username ?? "对方"
             } else {//右边
-                uid = App.uid!
-                username = App.username ?? "我"
+                uid = Settings.uid!
+                username = Settings.username ?? "我"
             }
             
             let content = m.css(".dialog_t").first?.innerHTML ?? ""

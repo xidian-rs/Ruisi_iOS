@@ -90,16 +90,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             if ok {
                 if res.contains("欢迎您回来") {
-                    //TDOD 你现在还是登陆状态
+                    print("你现在是登陆状")
                     errorTitle = "提示"
                     errorContent = "你现在是登陆状态无需登陆"
                     isLogin = true
                 } else {
+                    print("不是登陆状态")
                     if let s = res.range(of: "[CDATA[")?.upperBound ,let e =  res.range(of: "]]></root>")?.lowerBound {
                         if let html = try? HTML(html: res, encoding: .utf8) {
                             let hash = html.css("input#formhash").first?["value"]
                             if hash != nil {
-                                App.formHash = hash
+                                Settings.formhash = hash
                                 print("formHash:\(hash!)")
                             }
                             
@@ -114,7 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 errorTitle = "加载失败"
-                errorContent = "是否重新加载"
+                errorContent = "加载登陆信息失败，是否重新加载"
             }
             
             if let t = errorTitle {
@@ -156,7 +157,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        showLoadingView()
         let username = self.username
         let password = self.password
         let answer = answerSelect == 0 ? "" : questInput.text ?? ""
@@ -168,21 +168,30 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             params["seccodeverify"] = self.validValue!
         }
         
-        HttpUtil.POST(url: Urls.loginUrl + "&loginsubmit=yes", params: params, callback: { ok, res in
-            if ok && res.contains("欢迎您回来") {
-                self.loginResult(isok: true, res: res)
-            } else if res.contains("抱歉，验证码填写错误") {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: {
-                        self.showInputValidDialog()
-                    })
+        showLoadingView()
+        HttpUtil.POST(url: Urls.loginUrl + "&loginsubmit=yes", params: params, callback: { [weak self] ok, res in
+            if ok {
+                if res.contains("欢迎您回来") {
+                    self?.loginResult(isok: true, res: res)
+                } else if res.contains("抱歉，验证码填写错误") {
+                    DispatchQueue.main.async {
+                        self?.dismiss(animated: true, completion: {
+                            self?.showInputValidDialog()
+                        })
+                    }
+                } else if res.contains("登录失败") && res.contains("您还可以尝试") {
+                    let start = res.range(of: "登录失败")!.lowerBound
+                    let end = res.range(of: "</p>", range: start..<res.endIndex)!.lowerBound
+                    self?.loginResult(isok: false, res: String(res[start..<end]))
+                } else if res.contains("密码错误次数过多") {
+                    let start = res.range(of: "密码错误次数过多")!.lowerBound
+                    let end = res.range(of: "</p>", range: start..<res.endIndex)!.lowerBound
+                    self?.loginResult(isok: false, res: String(res[start..<end]))
+                } else {
+                    self?.loginResult(isok: false, res: "账号或密码错误")
                 }
-            } else if res.contains("密码错误次数过多") {
-                let start = res.range(of: "密码错误次数过多")!.lowerBound
-                let end = res.range(of: "</p>", range: start..<res.endIndex)!.lowerBound
-                self.loginResult(isok: false, res: String(res[start..<end]))
             } else {
-                self.loginResult(isok: false, res: "账号或密码错误")
+                self?.loginResult(isok: false, res: res)
             }
         })
     }
@@ -208,7 +217,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func loginResult(isok: Bool = false, res: String) {
-        print("=== login result \(isok) ===")
         DispatchQueue.main.async { [weak self] in
             let vc: UIAlertController
             if !isok {
@@ -235,20 +243,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let indexEnd = res.range(of: "</a>", range: indexStart..<res.endIndex)!.lowerBound
                 let uid = Utils.getNum(from: String(res[indexStart..<indexEnd]))!
                 
-                print("name: \(name) grade: \(grade) uid:\(uid)")
+                let hashStart = res.range(of: "member.php?mod=logging", range: start..<res.endIndex)!.upperBound
+                let hashEnd = res.range(of: "</a>", range: hashStart..<res.endIndex)!.lowerBound
+                let formhash = Utils.getFormHash(from: String(res[hashStart..<hashEnd]))
                 
-                App.isLogin = true
-                App.username = name
-                App.uid = uid
-                App.grade = grade
+                print("name: \(name) grade: \(grade) uid:\(uid) formhash:\(formhash ?? "")")
+                
+                Settings.uid = uid
+                Settings.username = name
+                Settings.grade = grade
+                Settings.formhash = formhash
                 
                 //记住密码
                 if let on = self?.remberSwitch.isOn, on {
-                    print("save username and password")
-                    Settings.username = name
+                    print("保存用户名和密码")
                     Settings.password = self?.password
                     Settings.remberPassword = true
                 } else {
+                    Settings.password = nil
                     Settings.remberPassword = false
                 }
                 

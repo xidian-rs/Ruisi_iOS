@@ -21,7 +21,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
     }
     
     override func getUrl(page: Int) -> String {
-        return Urls.getMyPostsUrl(uid: App.uid) + "&page=\(page)"
+        return Urls.getMyPostsUrl(uid: Settings.uid) + "&page=\(page)"
     }
     
     override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {

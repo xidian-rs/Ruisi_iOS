@@ -19,7 +19,7 @@ class StarViewController: BaseTableViewController<StarData> {
     }
     
     override func getUrl(page: Int) -> String {
-        return Urls.getStarUrl(uid: App.uid) + "&page=\(page)"
+        return Urls.starUrl + "&page=\(page)"
     }
     
     override func parseData(pos: Int, doc: HTMLDocument) -> [StarData] {

@@ -235,7 +235,7 @@ extension UIImage {
 extension UIViewController {
     // 检测是否登陆 如果登录 返回true 如果没有登陆显示弹窗
     func checkLogin(message: String?) -> Bool {
-        if !App.isLogin || App.uid == nil {
+        if !App.isLogin {
             showLoginAlert(message: message ?? "你需要登陆才能执行此操作")
             return false
         }

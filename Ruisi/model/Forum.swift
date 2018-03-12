@@ -37,6 +37,7 @@ class Forums: Codable {
         var name: String
         var fid: Int
         var login: Bool
+        var new: Int? //今日帖子数目
 
 
         init(fid: Int, name: String, login: Bool) {

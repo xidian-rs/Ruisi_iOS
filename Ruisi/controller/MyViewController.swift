@@ -53,10 +53,10 @@ UITableViewDataSource, UINavigationControllerDelegate {
     private func updateUi() {
         usergradeLabel.isHidden = !isLogin
         if isLogin {
-            usernameLabel.text = App.username
-            usergradeLabel.text = App.grade
+            usernameLabel.text = Settings.username
+            usergradeLabel.text = Settings.grade
             
-            if let uid = App.uid {
+            if let uid = Settings.uid {
                 Settings.getAvater(uid: uid) { data in
                     DispatchQueue.main.async { [weak self] in
                         if let d = data {
@@ -77,7 +77,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
         if let v = sender.view {
             switch v {
             case avaterImage:
-                if App.isLogin && App.uid != nil {
+                if App.isLogin {
                     self.performSegue(withIdentifier: "myProvileSegue", sender: nil)
                 } else {
                     //login
@@ -210,8 +210,8 @@ UITableViewDataSource, UINavigationControllerDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UserDetailViewController {
-            dest.uid = App.uid!
-            dest.username = App.username!
+            dest.uid = Settings.uid!
+            dest.username = Settings.username!
         }
     }
 }

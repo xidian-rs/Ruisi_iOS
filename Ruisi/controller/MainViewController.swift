@@ -8,7 +8,6 @@
 
 import UIKit
 import Kingfisher
-import Kanna
 
 // 首页 - 容器
 class MainViewController: UITabBarController {
@@ -16,9 +15,7 @@ class MainViewController: UITabBarController {
     var checkCount = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        App.isLogin = Settings.username != nil
         NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
-        
         checkNetwork()
     }
     
@@ -38,13 +35,9 @@ class MainViewController: UITabBarController {
     
     // 检查网络类型
     func checkNetwork() {
-        guard let status = Network.reachability?.status else {
-            return
-        }
-        
         print("====================")
         print("Reachability Summary")
-        print("Status:", status)
+        print("Status:", Network.reachability?.status ?? "unknown")
         print("ConnectedToNetwork:", Network.reachability?.isConnectedToNetwork ?? "unknown")
         print("HostName:", Network.reachability?.hostname ?? "nil")
         print("Reachable:", Network.reachability?.isReachable ?? "nil")
@@ -65,7 +58,7 @@ class MainViewController: UITabBarController {
                 if !(Network.reachability?.isConnectedToNetwork ?? false) {
                     self?.showAlert(title: "网络错误", message: "没有可用的网络连接，请打开网络连接!")
                 } else {
-                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!")
+                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!估计是睿思服务器又崩溃了 囧rz")
                 }
             }
             checkCount = 0
@@ -73,40 +66,43 @@ class MainViewController: UITabBarController {
         }
         
         checkCount += 1
-        HttpUtil.PING(url: Urls.loginUrl, timeout: App.isSchoolNet ? 1 : 3) { (ok, res) in
+        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 1 : 3) { (ok, res) in
             if !ok {
                 App.isSchoolNet = !App.isSchoolNet
                 self.checkLogin()
                 return
             }
-            
+        
             self.checkCount = 0
             if res.contains("id=\"loginform\"") {
-                App.isLogin = false
-                print("schoolnet:\(App.isSchoolNet) login:\(App.isLogin)")
-            } else if let doc = try? HTML(html: res, encoding: .utf8) {
-                let messageNode = doc.xpath("/html/body/div[1]/p[1]").first
-                let userNode = doc.xpath("/html/body/div[3]/div/a[1]").first
-                let exitNode = doc.xpath("/html/body/div[3]/div/a[2]").first
-                
-                if messageNode != nil && userNode != nil && messageNode!.innerHTML!.contains("欢迎您回来") {
-                    App.isLogin = true
-                    App.uid = Utils.getNum(from: userNode!["href"] ?? "0")
-                    App.username = userNode!.text
-                    App.grade = messageNode!.text?.components(separatedBy: "，")[1].components(separatedBy: " ")[0]
-                    App.formHash = Utils.getFormHash(from: exitNode?["href"])
-                    print("schoolnet:\(App.isSchoolNet) login:\(App.isLogin) name:\(App.username ?? "") grade:\(App.grade ?? "") uid:\(App.uid ?? 0) formhash:\(App.formHash ?? "")")
-                } else {
-                    print("schoolnet:\(App.isSchoolNet) login:\(App.isLogin)")
+                Settings.uid = nil
+                print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin)")
+            } else if res.contains("欢迎您回来") {
+                let start = res.range(of: "{'")!.upperBound
+                let end = res.range(of: "'}", range: start..<res.endIndex)!.lowerBound
+                //{'username':'FREEDOM_1','usergroup':'西电托儿所','uid':'262789'}
+                let dic = res[start..<end].replacingOccurrences(of: "'", with: "").components(separatedBy: ",")
+                for item in dic {
+                    let key = item.components(separatedBy: ":")[0]
+                    let val = item.components(separatedBy: ":")[1]
+                    if key == "username" {
+                        Settings.username = val
+                    } else if key == "usergroup" {
+                        Settings.grade = val
+                    } else if key == "uid" {
+                        Settings.uid = Utils.getNum(from: val)
+                    }
                 }
+                
+                print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin) uid:\(Settings.uid ?? 0) name:\(Settings.username ?? "") grade:\(Settings.grade ?? "")")
             } else {
-                print("unknown login state")
+                print("网络类型:\(App.isSchoolNet) 未知登陆状态")
             }
             
-            if let forumVc = self.childViewControllers[0].childViewControllers[0] as? ForumsViewController, forumVc.loginState != App.isLogin {
+            if let forumVc = self.childViewControllers[0].childViewControllers[0] as? ForumsViewController, forumVc.loadedUid != Settings.uid {
                 DispatchQueue.main.async {
-                    forumVc.loginState = App.isLogin
-                    forumVc.loadData(loginState: App.isLogin)
+                    forumVc.loadedUid = Settings.uid
+                    forumVc.loadData(uid: forumVc.loadedUid)
                 }
             }
         }

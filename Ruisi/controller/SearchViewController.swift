@@ -72,7 +72,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
                     if let hash = Utils.getFormHash(from: exitNode?["href"]) {
                         print("formhash: \(hash)")
-                        App.formHash = hash
+                        Settings.formhash = hash
                     }
                     //load subdata
                     subDatas = self.parseData(doc: doc)

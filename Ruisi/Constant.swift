@@ -9,13 +9,14 @@
 import Foundation
 
 public class App {
-    public static var isLogin = false //是否登陆
-    public static var isSchoolNet = false //是否是校园网
-    public static var username: String? //用户名
-    public static var uid: Int? // uid
-    public static var grade: String? //等级
-    public static var formHash: String? //fromhash
-
+    //是否登陆
+    public static var isLogin: Bool {
+        return Settings.uid != nil
+    }
+    
+    //是否是校园网
+    public static var isSchoolNet = false
+    
     //App ID
     public static let APP_ID = "id1322805454"
     
@@ -53,20 +54,26 @@ public class Urls {
     
     // 检查登陆
     public static var checkLoginUrl: String {
-        return "\(baseUrl)member.php?mod=logging&action=login&infloat=yes&frommessage&inajax=1&ajaxtarget=messagelogin&mobile=2"
+        return "\(baseUrl)member.php?mod=logging&action=login&inajax=1&mobile=2"
     }
     
-    //注册检测的地址，检查用户名/邮箱/邀请码是否合法
+    // 注册检测的地址，检查用户名/邮箱/邀请码是否合法
     public static var regCheckUrl: String {
-        return "\(baseUrl)forum.php?mod=ajax&inajax=yes&infloat=register&handlekey=register&ajaxmenu=1&mobile=2"
+        return "\(baseUrl)forum.php?mod=ajax&inajax=1&mobile=2"
     }
     
+    // 忘记密码
     public static var forgetPasswordUrl: String {
-        return "\(baseUrl)/member.php?mod=lostpasswd&lostpwsubmit=yes&infloat=yes&inajax=1&mobile=2"
+        return "\(baseUrl)member.php?mod=lostpasswd&lostpwsubmit=yes&inajax=1&mobile=2"
     }
 
     public static var checkUpdate: String {
         return getPostUrl(tid: App.POST_ID)
+    }
+    
+    // 板块列表
+    public static var forumlistUrl: String {
+        return "\(baseUrl)forum.php?inajax=1&forumlist=1&mobile=2"
     }
 
     public static func getPostUrl(tid: Int, pid: Int? = nil) -> String {
@@ -97,7 +104,7 @@ public class Urls {
 
     //回复
     public static var messageReply: String {
-        return "\(baseUrl)home.php?mod=space&do=notice&mobile=2"
+        return "\(baseUrl)home.php?mod=space&do=notice&inajax=1&mobile=2"
     }
 
     //pm
@@ -117,15 +124,12 @@ public class Urls {
 
     //at
     public static var messageAt: String {
-        return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&mobile=2"
+        return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&inajax=1&mobile=2"
     }
 
     // 我的收藏
-    public static func getStarUrl(uid: Int?) -> String {
-        if uid == nil {
-            return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
-        }
-        return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=favorite&view=me&type=thread&mobile=2"
+    public static var starUrl: String {
+        return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
     }
 
     // 收藏文章

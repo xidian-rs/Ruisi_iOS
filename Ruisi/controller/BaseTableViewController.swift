@@ -120,48 +120,57 @@ class BaseTableViewController<T>: UITableViewController {
     
     func loadData(_ pos: Int = 0) {
         isLoading = true
-        HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { ok, res in
-            //print(res)
+        HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { [weak self] ok, res in
+            guard let this = self else { return }
+            guard pos == this.position else { return }
+            
             var subDatas: [T] = []
-            if ok && pos == self.position { //返回的数据是我们要的
+            if ok {
                 if let doc = try? HTML(html: res, encoding: .utf8) {
                     // load fromHash
                     let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
                     if let hash = Utils.getFormHash(from: exitNode?["href"]) {
                         print("formhash: \(hash)")
-                        App.formHash = hash
+                        Settings.formhash = hash
                     }
-                    subDatas = self.parseData(pos: pos, doc: doc)
+                    subDatas = this.parseData(pos: pos, doc: doc)
                 }
-            } else {
-                print("加载的数据不是我们想要的不做任何事")
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
-                if subDatas.count > 0 {
-                    if self.currentPage == 1 {
-                        self.datas = subDatas
-                        self.tableView.reloadData()
+                this.rsRefreshControl?.endRefreshing(message: ok ? "刷新成功...":"刷新失败...")
+                this.isLoading = false
+                
+                if !ok && this.datas.count == 0 {
+                    //第一页加载失败
+                    let alert = UIAlertController(title: "加载失败", message: res, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: "重新加载", style: .default, handler: { (ac) in
+                        this.rsRefreshControl?.beginRefreshing()
+                        this.loadData(pos)
+                    }))
+                    this.present(alert, animated: true, completion: nil)
+                } else if subDatas.count > 0 {
+                    if this.currentPage == 1 {
+                        this.datas = subDatas
+                        this.tableView.reloadData()
                     } else {
                         var indexs = [IndexPath]()
                         for i in 0..<subDatas.count {
-                            indexs.append(IndexPath(row: self.datas.count + i, section: 0))
+                            indexs.append(IndexPath(row: this.datas.count + i, section: 0))
                         }
-                        self.datas.append(contentsOf: subDatas)
+                        this.datas.append(contentsOf: subDatas)
                         print("here :\(subDatas.count)")
-                        self.tableView.beginUpdates()
-                        self.tableView.insertRows(at: indexs, with: .automatic)
-                        self.tableView.endUpdates()
+                        this.tableView.beginUpdates()
+                        this.tableView.insertRows(at: indexs, with: .automatic)
+                        this.tableView.endUpdates()
                     }
                 } else {
                     //第一次没有加载到数据
-                    if self.currentPage == 1 {
-                        self.tableView.reloadData()
+                    if this.currentPage == 1 {
+                        this.tableView.reloadData()
                     }
                 }
-                
-                self.rsRefreshControl?.endRefreshing(message: ok ? "刷新成功...":"刷新失败...")
-                self.isLoading = false
             })
         }
     }

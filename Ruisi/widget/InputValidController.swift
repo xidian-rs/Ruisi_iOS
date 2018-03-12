@@ -44,6 +44,7 @@ class InputValidController {
         
         alertVc!.addTextField { (textField) in
             textField.placeholder = "验证码"
+            textField.autocapitalizationType = .allCharacters
             self.validInputTextField = textField
         }
         
@@ -59,6 +60,7 @@ class InputValidController {
     
     // 输入框改变
     @objc func inputChange(textField: UITextField) {
+        self.validInputTextField.textColor = UIColor.darkText
         if let text = textField.text, text.count == 4 {
             checkValid(hash: self.validhash, value: text)
         }

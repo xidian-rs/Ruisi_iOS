@@ -11,8 +11,11 @@ import Foundation
 // 首选项管理类
 public class Settings {
     private static let key_avater = "key_avater"
+    private static let key_uid = "key_uid"
     private static let key_username = "key_username"
     private static let key_password = "key_password"
+    private static let key_grade = "key_grade"
+    private static let key_formhash = "key_formhash"
     private static let key_rember_password = "key_rember_password"
     private static let key_enable_tail = "key_enable_tail"
     private static let key_tail_content = "key_tail_content"
@@ -21,6 +24,8 @@ public class Settings {
     private static let key_message_id_pm = "key_message_id_pm"
     private static let key_message_id_at = "key_message_id_at"
     private static let key_theme_id = "key_theme_id"
+    private static let key_forumlist = "key_forumlist"
+    private static let key_forumlist_saved_time = "key_forumlist_saved_time"
 
     static func getMessageId(type: Int) -> Int {
         switch type {
@@ -47,6 +52,18 @@ public class Settings {
             return
         }
     }
+    
+    // 用户id
+    public static var uid: Int? {
+        get {
+            let uid = UserDefaults.standard.integer(forKey: key_uid)
+            return uid > 0 ? uid : nil
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_uid)
+        }
+    }
 
     //用户名
     public static var username: String? {
@@ -56,6 +73,28 @@ public class Settings {
 
         set {
             UserDefaults.standard.set(newValue, forKey: key_username)
+        }
+    }
+    
+    //用户等级
+    public static var grade: String? {
+        get {
+            return UserDefaults.standard.string(forKey: key_grade)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_grade)
+        }
+    }
+    
+    //formhash
+    public static var formhash: String? {
+        get {
+            return UserDefaults.standard.string(forKey: key_formhash)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_formhash)
         }
     }
 
@@ -157,5 +196,25 @@ public class Settings {
         DispatchQueue.global(qos: .background).async {
             UserDefaults.standard.set(data, forKey: "\(key_avater)_\(uid)_\(size)")
         }
+    }
+    
+    //设置板块列表
+    //uid == nil 表示未登陆
+    public static func setForumlist(uid: Int?, data: Data) {
+        UserDefaults.standard.set((Date().timeIntervalSince1970 / 86400), forKey: "\(key_forumlist_saved_time)_\(uid ?? 0)")
+        DispatchQueue.global(qos: .background).async {
+            UserDefaults.standard.set(data, forKey: "\(key_forumlist)_\(uid ?? 0)")
+        }
+    }
+    
+    //uid == nil 表示未登陆
+    public static func getForumlist(uid: Int?) -> Data? {
+        return UserDefaults.standard.data(forKey: "\(key_forumlist)_\(uid ?? 0)")
+    }
+    
+    
+    // 板块列表保存的时间 天
+    public static func getFormlistSavedTime(uid: Int?) -> Int {
+        return UserDefaults.standard.integer(forKey: "\(key_forumlist_saved_time)_\(uid ?? 0)")
     }
 }

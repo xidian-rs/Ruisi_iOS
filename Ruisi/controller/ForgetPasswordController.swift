@@ -34,37 +34,40 @@ class ForgetPasswordController: UIViewController {
         emailInput.resignFirstResponder()
         usernameInput.resignFirstResponder()
         
-        if (emailInput.text ?? "").count > 0 {
-            var params:[String: Any] = ["handlekey":"lostpwform","email": emailInput.text!]
-            if let u = usernameInput.text {
-                params["username"] = u
-            }
-            
-            present(progress, animated: true, completion: nil)
-            HttpUtil.POST(url: Urls.forgetPasswordUrl, params: params, callback: { [weak self] (ok, res) in
-                //print(res)
-                var reason: String?
-                var success = false
-                if ok {
-                    if res.contains("取回密码的方法已通过") {
-                        success = true
-                        reason = "取回密码的方法已通过 Email 发送到您的信箱中，请尽快修改您的密码"
-                    } else if let html = try? HTML(html: res, encoding: .utf8) {
-                        reason = html.text
-                    }
+        guard  (emailInput.text ?? "").count > 0 else {
+            showAlert(title: "错误", message: "请填写邮箱")
+            return
+        }
+        
+        var params:[String: Any] = ["handlekey":"lostpwform","email": emailInput.text!]
+        if let u = usernameInput.text {
+            params["username"] = u
+        }
+        
+        present(progress, animated: true, completion: nil)
+        HttpUtil.POST(url: Urls.forgetPasswordUrl, params: params, callback: { [weak self] (ok, res) in
+            //print(res)
+            var reason: String?
+            var success = false
+            if ok {
+                if res.contains("取回密码的方法已通过") {
+                    success = true
+                    reason = "取回密码的方法已通过 Email 发送到您的信箱中，请尽快修改您的密码"
+                } else if let html = try? HTML(html: res, encoding: .utf8) {
+                    reason = html.text
                 } else {
                     reason = res
                 }
-                
-                DispatchQueue.main.async {
-                    self?.progress.dismiss(animated: true) {
-                        self?.showAlert(title: success ? "操作成功" : "错误", message: reason ?? (success ? "重置密码邮件已经发送到你的邮箱" : "未知错误"))
-                    }
+            } else {
+                reason = res
+            }
+            
+            DispatchQueue.main.async {
+                self?.progress.dismiss(animated: true) {
+                    self?.showAlert(title: success ? "操作成功" : "错误", message: reason ?? (success ? "重置密码邮件已经发送到你的邮箱" : "未知错误"))
                 }
-            })
-        } else {
-            showAlert(title: "错误", message: "请填写邮箱")
-        }
+            }
+        })
     }
 
 }

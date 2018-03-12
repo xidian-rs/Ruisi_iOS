@@ -122,13 +122,13 @@ class MessageViewController: BaseTableViewController<MessageData> {
         var subDatas = [MessageData]()
         let nodes: XPathObject
         if pos == 0 || pos == 2 { // reply at
-            currentPage = Int(doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/strong").first?.text ?? "") ?? currentPage
-            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[8]/div[3]/div[1]/div/div[2]/div/label/span").first?.text) ?? "") ?? currentPage
+            currentPage = Int(doc.xpath("//*[@id=\"ct\"]/div[1]/div/div[2]/div/strong").first?.text ?? "") ?? currentPage
+            totalPage = Utils.getNum(from: (doc.xpath("//*[@id=\"ct\"]/div[1]/div/div[2]/div/label/span").first?.text) ?? "") ?? currentPage
             nodes = doc.xpath("//*[@id=\"ct\"]/div[1]/div/div[1]/div/dl") //.css(".nts .cl")
         } else {// pm
-            currentPage = Int(doc.xpath("/html/body/div[2]/strong").first?.text ?? "") ?? currentPage
-            totalPage = Utils.getNum(from: (doc.xpath("/html/body/div[2]/label/span").first?.text) ?? "") ?? currentPage
-            nodes = doc.xpath("/html/body/div[1]/ul/li") //.css(".pmbox ul li")
+            currentPage = 1
+            totalPage = 1 //TODO 拿不到
+            nodes = doc.xpath("/html/body/div/ul/li") //.css(".pmbox ul li")
         }
         
         var type: MessageType

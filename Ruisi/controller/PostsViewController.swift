@@ -14,19 +14,45 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     var fid: Int? // 由前一个页面传过来的值
     
     private var isSchoolNet = App.isSchoolNet
+    private var subForums = [KeyValueData<String, Int>]()
+    private var subForumBtn: UIBarButtonItem!
+    private var submitBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         self.autoRowHeight = false
         self.showRefreshControl = true
-        super.viewDidLoad()
+        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
+        subForumBtn = UIBarButtonItem(title: "子分区", style: .plain, target: self, action: #selector(switchSubForum))
+        submitBtn = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
+        self.navigationItem.rightBarButtonItems = [submitBtn]
+        
+        super.viewDidLoad()
     }
     
     override func getUrl(page: Int) -> String {
         let url = Urls.getPostsUrl(fid: fid!) + "&page=\(page)"
         isSchoolNet = !url.contains("mobile")
         return url
+    }
+    
+    
+    @objc private func switchSubForum() {
+        guard subForums.count > 0 else {
+            self.navigationItem.rightBarButtonItems = [submitBtn]
+            return
+        }
+        
+        let alert = UIAlertController(title: "选择分区", message: nil, preferredStyle: .actionSheet)
+        for item in subForums {
+            alert.addAction(UIAlertAction(title: item.key, style: .default, handler: { (ac) in
+                self.title = item.key
+                self.fid = item.value
+                self.reloadData()
+            }))
+        }
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // 子类重写此方法支持解析自己的数据
@@ -73,6 +99,17 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 self.totalPage = self.currentPage
             }
         } else {
+            if (self.currentPage == 1 || self.datas.count == 0) && subForums.count == 0 {
+                for item in doc.xpath("//*[@id=\"subname_list\"]/ul/li") {
+                    let a = item.xpath("a").first!
+                    guard let fid = Utils.getNum(prefix: "fid=", from: a["href"]!) else {
+                        continue
+                    }
+                    subForums.append(KeyValueData(key: a.text!, value: fid))
+                    print("子板块: \(a.text!) fid:\(fid)")
+                }
+            }
+            
             let nodes = doc.css(".threadlist ul li")
             for li in nodes {
                 let a = li.css("a").first
@@ -118,6 +155,17 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         print("page total:\(self.totalPage)")
         //从浏览历史数据库读出是否已读
         SQLiteDatabase.instance?.setReadHistory(datas: &subDatas)
+        
+        if subForums.count > 0 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                // 设置子板块
+                if !(self.navigationItem.rightBarButtonItems ?? []).contains(self.subForumBtn) {
+                    self.navigationItem.rightBarButtonItems = [self.submitBtn, self.subForumBtn]
+                    self.switchSubForum()
+                }
+            }
+        }
+        
         return subDatas
     }
     

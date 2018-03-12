@@ -86,6 +86,7 @@ public class HttpUtil {
         
         var request = URLRequest(url: u)
         request.httpMethod = "GET"
+        request.timeoutInterval = 8
         
         print("start http get url:\(request.url?.absoluteString ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -120,6 +121,7 @@ public class HttpUtil {
     public static func GET_VALID_IMAGE(url: String, callback: @escaping (Bool, Data?) -> Void) {
         var request = URLRequest(url: URL(string: getUrl(url: url))!)
         request.httpMethod = "GET"
+        request.timeoutInterval = 10
         
         // 验证码图片必须要有
         request.addValue(Urls.loginUrl, forHTTPHeaderField: "Referer")
@@ -157,7 +159,7 @@ public class HttpUtil {
         }
         
         var ps = params
-        if let hash = App.formHash {
+        if let hash = Settings.formhash {
             if ps != nil {
                 ps!["formhash"] = hash
             } else {
@@ -167,6 +169,7 @@ public class HttpUtil {
 
         var request = URLRequest(url: u)
         request.httpMethod = "POST"
+        request.timeoutInterval = 10
 
         if let p = encodeParameters(ps) {
             request.httpBody = p.data(using: .utf8)
@@ -226,6 +229,7 @@ public class HttpUtil {
 
         var request = URLRequest(url: u)
         request.httpMethod = "POST"
+        
         let boundary = "------multipartformboundary\(Int(Date().timeIntervalSince1970 * 1000))"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
 

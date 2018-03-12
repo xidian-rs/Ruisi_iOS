@@ -224,7 +224,7 @@ class RegisterViewController: UITableViewController {
                 }
             } else {
                 success = false
-                message = "网络不太通畅,请稍后重试"
+                message = res
             }
             
             DispatchQueue.main.async { [weak self] in
@@ -233,7 +233,7 @@ class RegisterViewController: UITableViewController {
                         self?.showInputValidDialog()
                     } else {
                         let alert = UIAlertController(title: success ? "注册成功!" : "错误", message: message, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: success ? "取消" : "好", style: .cancel, handler: nil))
+                        alert.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
                         if success {
                             alert.addAction(UIAlertAction(title: "返回", style: .default) { action in
                                 self?.navigationController?.popViewController(animated: true)
@@ -279,7 +279,7 @@ class RegisterViewController: UITableViewController {
         }
         
         
-        HttpUtil.GET(url: Urls.regCheckUrl, params: params) {  (ok, res) in
+        HttpUtil.GET(url: Urls.regCheckUrl, params: params) { (ok, res) in
             var reason: String?
             var success = false
             if ok {
@@ -338,15 +338,4 @@ class RegisterViewController: UITableViewController {
         vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
         self.present(vc, animated: true)
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
