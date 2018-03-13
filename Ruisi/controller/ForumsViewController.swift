@@ -15,6 +15,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     private var datas: [Forums] = []
     var loadedUid: Int?
     private var colCount = 6 //collectionView列数
+    private var type = 1 // 0-grid显示 1-列表显示
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,8 +23,8 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         loadedUid = Settings.uid
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
-        colCount = Int(UIScreen.main.bounds.width / 80)
-        
+        type = Settings.forumListDisplayType ?? 1
+        caculateColCount()
         loadData(uid: loadedUid)
     }
     
@@ -33,6 +34,26 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         if Settings.uid != loadedUid { //第一次
             loadedUid = Settings.uid
             loadData(uid: loadedUid)
+        }
+    }
+    
+    @IBAction func switchDisplayTypeClick(_ sender: UIBarButtonItem) {
+        if type == 0 {
+            type = 1
+        } else {
+            type = 0
+        }
+        
+        Settings.forumListDisplayType = type
+        caculateColCount()
+        self.collectionView?.reloadData()
+    }
+    
+    private func caculateColCount() {
+        if type == 0 {
+            colCount = Int(UIScreen.main.bounds.width / 80)
+        } else {
+            colCount = Int(UIScreen.main.bounds.width / 135)
         }
     }
     
@@ -141,25 +162,30 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     // MARK: UICollectionViewDelegateFlowLayout
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 8) - CGFloat(20)) / CGFloat(colCount)
-        return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 12).lineHeight - 5)
+        if type == 0 {
+            let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 5) - CGFloat(16)) / CGFloat(colCount)
+            return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 12).lineHeight - 6)
+        } else {
+            let cellSize = (collectionView.frame.width - CGFloat(16)) / CGFloat(colCount)
+            return CGSize(width: cellSize, height: 52)
+        }
     }
     
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+        return UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
     }
     
     
     // 单元的行间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
+        return (type == 0) ? 5 : 0
     }
     
     
     // 每个小单元的列间距
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
+        return (type == 0) ? 5 : 0
     }
     
     // 是否能变色
@@ -175,6 +201,11 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     //结束变色
     override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.clear
+    }
+    
+    // 修复头部在滚动条下面
+    override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        view.layer.zPosition = 0.0
     }
     
     // section 头或者尾部
@@ -196,9 +227,10 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: (type == 0) ? "grid_cell" : "list_cell", for: indexPath)
         let imageView = cell.viewWithTag(1) as! UIImageView
         let label = cell.viewWithTag(2) as! UILabel
+        let countLabel = cell.viewWithTag(3) as? UILabel
         let fid = datas[indexPath.section].forums![indexPath.row].fid
         if let path = Bundle.main.path(forResource: "common_\(fid)_icon", ofType: "gif", inDirectory: "assets/forumlogo/") {
             imageView.image = UIImage(contentsOfFile: path)
@@ -208,6 +240,12 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         }
         
         label.text = datas[indexPath.section].forums![indexPath.row].name
+        countLabel?.textColor = ThemeManager.currentPrimaryColor
+        if let count = datas[indexPath.section].forums![indexPath.row].new, count > 0 {
+            countLabel?.text = "+\(count)"
+        } else {
+            countLabel?.text = ""
+        }
         return cell
     }
     

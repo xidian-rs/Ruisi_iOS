@@ -13,8 +13,15 @@ class ForgetPasswordController: UIViewController {
 
     @IBOutlet weak var usernameInput: UITextField!
     @IBOutlet weak var emailInput: UITextField!
+    @IBOutlet weak var noticeLabel: HtmlLabel!
     private var progress: UIAlertController!
     
+    let messageText = """
+    <b>无法访问校园网的用户注意</b><br>
+    找回密码成功后系统会给你的邮件发送一封邮件，邮件里面的链接只有校园网才能访问，需要修改链接<br>
+    修改前：http://rs.xidian...id=XXX<br>
+    修改后：http://rs<font color="red">bbs</font>.xidian...id=XXX<font color="red">&mobile=2</font>
+    """
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +35,8 @@ class ForgetPasswordController: UIViewController {
         loadingIndicator.startAnimating();
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        
+        noticeLabel.attributedText = AttributeConverter(font: UIFont.systemFont(ofSize: 14), textColor: UIColor.gray).convert(src: messageText)
     }
     
     @objc private func submitClick() {

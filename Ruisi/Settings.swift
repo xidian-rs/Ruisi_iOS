@@ -25,6 +25,7 @@ public class Settings {
     private static let key_message_id_at = "key_message_id_at"
     private static let key_theme_id = "key_theme_id"
     private static let key_forumlist = "key_forumlist"
+    private static let key_forumlist_display_type = "key_forumlist_display_type"
     private static let key_forumlist_saved_time = "key_forumlist_saved_time"
 
     static func getMessageId(type: Int) -> Int {
@@ -204,6 +205,17 @@ public class Settings {
         UserDefaults.standard.set((Date().timeIntervalSince1970 / 86400), forKey: "\(key_forumlist_saved_time)_\(uid ?? 0)")
         DispatchQueue.global(qos: .background).async {
             UserDefaults.standard.set(data, forKey: "\(key_forumlist)_\(uid ?? 0)")
+        }
+    }
+    
+    //板块列表的显示方式
+    public static var forumListDisplayType: Int? {
+        get {
+            return UserDefaults.standard.integer(forKey: key_forumlist_display_type)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_forumlist_display_type)
         }
     }
     

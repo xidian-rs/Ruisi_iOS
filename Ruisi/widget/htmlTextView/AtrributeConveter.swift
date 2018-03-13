@@ -58,7 +58,7 @@ class AttributeConverter: HtmlParserDelegate {
         HtmlParser(src: src, delegate: self).parse()
         
         let paraStyle = NSMutableParagraphStyle()
-        paraStyle.lineHeightMultiple = CGFloat(1.4)
+        paraStyle.lineHeightMultiple = CGFloat(1.5)
 
         addAttrs([NSAttributedStringKey.paragraphStyle: paraStyle], start: 0, end: position)
         addAttrs([NSAttributedStringKey.font: font], start: 0, end: position)

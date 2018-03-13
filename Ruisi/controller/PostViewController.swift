@@ -99,6 +99,10 @@ class PostViewController: UIViewController {
                         result = result.trimmingCharacters(in: CharacterSet(charactersIn: "@"))
                     }
                     
+                    if result.count == 0 {
+                        result += "@"
+                    }
+                    
                     textView.insertText(result)
                     textView.resignFirstResponder()
                 }
@@ -290,7 +294,7 @@ class PostViewController: UIViewController {
                 if content == nil {
                     content = contentNode?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "获取内容失败"
                 }
-                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText).convert(src: content!)
+                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 15), textColor: UIColor.darkText).convert(src: content!)
                 let c = PostData(content: attrContent, author: author ?? "匿名",
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
