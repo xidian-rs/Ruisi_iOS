@@ -1885,9 +1885,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iZ3-wP-TK6">
-                                                    <rect key="frame" x="240" y="14" width="109" height="29"/>
+                                                    <rect key="frame" x="185" y="14" width="164" height="29"/>
                                                     <segments>
-                                                        <segment title=" 外网"/>
+                                                        <segment title="自动"/>
+                                                        <segment title="外网"/>
                                                         <segment title="校园网"/>
                                                     </segments>
                                                     <connections>
@@ -2157,6 +2158,7 @@
                     <connections>
                         <outlet property="enableTailSwitch" destination="XkM-Up-cmv" id="Gyo-85-vjs"/>
                         <outlet property="networkChangeSwitch" destination="iZ3-wP-TK6" id="yUg-4m-jjl"/>
+                        <outlet property="networkNoticeLabel" destination="O8n-or-FCT" id="Kmf-aS-H0m"/>
                         <outlet property="showZhidingSwitch" destination="0uq-UG-me1" id="L4h-Dt-45p"/>
                         <outlet property="tailContentTextVIew" destination="5aZ-EZ-ycx" id="3jO-1G-2Vb"/>
                         <outlet property="versionLabel" destination="ATR-hb-qpw" id="lox-I1-OqW"/>

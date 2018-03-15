@@ -12,7 +12,10 @@ import UIKit
 class SettingViewController: UITableViewController {
     
     @IBOutlet weak var versionLabel: UILabel!
+    
     @IBOutlet weak var networkChangeSwitch: UISegmentedControl!
+    @IBOutlet weak var networkNoticeLabel: UILabel!
+    
     @IBOutlet weak var tailContentTextVIew: UITextView!
     @IBOutlet weak var showZhidingSwitch: UISwitch!
     @IBOutlet weak var enableTailSwitch: UISwitch!
@@ -26,7 +29,7 @@ class SettingViewController: UITableViewController {
         enableTailSwitch.isOn = Settings.enableTail
         tailContentTextVIew.text = Settings.tailContent
         tailContentTextVIew.isEditable = enableTailSwitch.isOn
-        networkChangeSwitch.selectedSegmentIndex = App.isSchoolNet ? 1 : 0
+        
         tailContentTextVIew.text = Settings.tailContent ?? defaultTail
         
         //CFBundleVersion
@@ -34,6 +37,19 @@ class SettingViewController: UITableViewController {
             versionLabel.text = "当前版本:\(version) Build:\(Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1)"
         } else {
             versionLabel.text = "获取版本号出错"
+        }
+        
+        networkChangeSwitch.selectedSegmentIndex = Settings.networkType
+        setNetworkTypeText()
+    }
+    
+    private func setNetworkTypeText() {
+        if networkChangeSwitch.selectedSegmentIndex == 0 {
+            networkNoticeLabel.text = "判断类型为:\(App.isSchoolNet ? "校园网" : "外网")"
+        } else if networkChangeSwitch.selectedSegmentIndex == 1 {
+            networkNoticeLabel.text = "当前选择:外网"
+        } else {
+            networkNoticeLabel.text = "当前选择:校园网"
         }
     }
     
@@ -46,8 +62,20 @@ class SettingViewController: UITableViewController {
     
     // 切换网络类型
     @IBAction func networkValueChange(_ sender: UISegmentedControl) {
-        App.isSchoolNet = sender.selectedSegmentIndex == 1
-        print("chnage network, is school net:\(App.isSchoolNet)")
+        Settings.networkType = sender.selectedSegmentIndex
+        setNetworkTypeText()
+        
+        if sender.selectedSegmentIndex == 1 {
+            showAlert(title: "提示", message: "网络类型已切换为外网,此设置校园网也可访问,如校园网没流量可设置为自动或校园网")
+            App.isSchoolNet = false
+        } else if sender.selectedSegmentIndex == 2 {
+            showAlert(title: "提示", message: "网络类型已切换为校园网,此设置不在校园网是无法访问的(如4G流量),如果无法访问请设回自动或者外网")
+            App.isSchoolNet = true
+        } else {
+            showAlert(title: "提示", message: "网络类型已切换为自动判断,下次重启后开始生效")
+        }
+
+        print("chnage network, auro:\(sender.selectedSegmentIndex == 0) is school net:\(App.isSchoolNet)")
     }
     
     
@@ -59,9 +87,7 @@ class SettingViewController: UITableViewController {
     
     // 小尾巴编辑结束
     override func viewWillDisappear(_ animated: Bool) {
-        print("end edit tail")
         Settings.tailContent = tailContentTextVIew.text
-        print("tail is \(tailContentTextVIew.text ?? "")")
     }
     
     

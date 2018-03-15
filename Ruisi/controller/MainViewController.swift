@@ -13,14 +13,22 @@ import Kingfisher
 class MainViewController: UITabBarController {
     
     var checkCount = 0
+    var isAutoNetworkType = (Settings.networkType == 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
+        
+        if isAutoNetworkType {
+            NotificationCenter.default.addObserver(self, selector: #selector(networkChange), name: .flagsChanged, object: Network.reachability)
+        }
+        
         checkNetwork()
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .flagsChanged, object: Network.reachability)
+        if isAutoNetworkType {
+            NotificationCenter.default.removeObserver(self, name: .flagsChanged, object: Network.reachability)
+        }
     }
     
     //selectedIndex 之前选择的位置
@@ -35,18 +43,24 @@ class MainViewController: UITabBarController {
     
     // 检查网络类型
     func checkNetwork() {
-        print("====================")
-        print("Reachability Summary")
-        print("Status:", Network.reachability?.status ?? "unknown")
-        print("ConnectedToNetwork:", Network.reachability?.isConnectedToNetwork ?? "unknown")
-        print("HostName:", Network.reachability?.hostname ?? "nil")
-        print("Reachable:", Network.reachability?.isReachable ?? "nil")
-        print("Wifi:", Network.reachability?.isReachableViaWiFi ?? "nil")
-        print("====================")
+        print("======checkNetwork======")
+        if Settings.networkType == 0 {
+            print("Reachability Summary")
+            print("Status:", Network.reachability?.status ?? "unknown")
+            print("ConnectedToNetwork:", Network.reachability?.isConnectedToNetwork ?? "unknown")
+            print("HostName:", Network.reachability?.hostname ?? "nil")
+            print("Reachable:", Network.reachability?.isReachable ?? "nil")
+            print("Wifi:", Network.reachability?.isReachableViaWiFi ?? "nil")
+            print("====================")
+            
+            App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
+            checkCount = 0
+            print("临时设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
+        } else {
+            App.isSchoolNet = (Settings.networkType == 2)
+            print("手动设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
+        }
         
-        App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
-        checkCount = 0
-        print("临时设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
         checkLogin()
     }
     
@@ -55,25 +69,35 @@ class MainViewController: UITabBarController {
     func checkLogin() {
         if checkCount >= 2 {
             DispatchQueue.main.async { [weak self] in
-                if !(Network.reachability?.isConnectedToNetwork ?? false) {
-                    self?.showAlert(title: "网络错误", message: "没有可用的网络连接，请打开网络连接!")
+                if self?.isAutoNetworkType ?? true {
+                    if !(Network.reachability?.isConnectedToNetwork ?? false) {
+                        self?.showAlert(title: "网络错误", message: "没有可用的网络连接，请打开网络连接!")
+                    } else {
+                        self?.showAlert(title: "网络错误", message: "无法连接到服务器!估计是睿思服务器又崩溃了 囧rz")
+                    }
                 } else {
-                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!估计是睿思服务器又崩溃了 囧rz")
+                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!请检查网络连接或者网络设置,你当前设置网络类型为:\(App.isSchoolNet ? "校园网" : "外网")")
                 }
+                
             }
             checkCount = 0
             return
         }
         
         checkCount += 1
-        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 1 : 3) { (ok, res) in
+        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 1.2 : 3) { [weak self] (ok, res) in
+            guard let this = self else { return }
             if !ok {
-                App.isSchoolNet = !App.isSchoolNet
-                self.checkLogin()
+                if this.isAutoNetworkType {
+                    App.isSchoolNet = !App.isSchoolNet
+                } else {
+                    this.checkCount += 2
+                }
+                this.checkLogin()
                 return
             }
         
-            self.checkCount = 0
+            this.checkCount = 0
             if res.contains("id=\"loginform\"") {
                 Settings.uid = nil
                 print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin)")
@@ -99,7 +123,8 @@ class MainViewController: UITabBarController {
                 print("网络类型:\(App.isSchoolNet) 未知登陆状态")
             }
             
-            if let forumVc = self.childViewControllers[0].childViewControllers[0] as? ForumsViewController, forumVc.loadedUid != Settings.uid {
+            if let forumVc = this.childViewControllers[0].childViewControllers[0] as? ForumsViewController,
+                forumVc.loadedUid != Settings.uid {
                 DispatchQueue.main.async {
                     forumVc.loadedUid = Settings.uid
                     forumVc.loadData(uid: forumVc.loadedUid)

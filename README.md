@@ -1,11 +1,18 @@
 ## 西电睿思手机客户端(iOS)
+**2018.03.15: 注意学校目前关闭了论坛外网访问，校园网不受影响**
 西安电子科技大学校园睿思论坛客户端。    
 本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。    
 Android版本[Ruisi](https://github.com/freedom10086/Ruisi)
 
 ### 下载
 - App Store 搜索 **西电睿思**
-- App Store：https://itunes.apple.com/cn/app/%E7%9D%BF%E6%80%9D/id1322805454
+- App Store：[西电睿思](https://itunes.apple.com/cn/app/id1322805454)
+
+### 使用
+- 安装Cocoapods: `sudo gem install cocoapods`
+- 克隆本项目: `git clone https://github.com/freedom10086/Ruisi.git`
+- 在项目文件夹中运行:  `pod install`
+- 打开生成的`.xcworkspace`文件，构建并运行.
 
 ### 软件截图
 ![image](https://github.com/freedom10086/Ruisi_Ios/blob/master/screenshots/1.png)

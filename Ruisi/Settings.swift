@@ -27,7 +27,8 @@ public class Settings {
     private static let key_forumlist = "key_forumlist"
     private static let key_forumlist_display_type = "key_forumlist_display_type"
     private static let key_forumlist_saved_time = "key_forumlist_saved_time"
-
+    private static let key_work_type = "key_work_type"
+    
     static func getMessageId(type: Int) -> Int {
         switch type {
         case 0:
@@ -216,6 +217,18 @@ public class Settings {
         
         set {
             UserDefaults.standard.set(newValue, forKey: key_forumlist_display_type)
+        }
+    }
+    
+    
+    //网络类型设置 0--auto 1-out 2-inner
+    public static var networkType: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: key_work_type)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_work_type)
         }
     }
     

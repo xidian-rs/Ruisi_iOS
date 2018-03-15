@@ -36,7 +36,6 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
         return url
     }
     
-    
     @objc private func switchSubForum() {
         guard subForums.count > 0 else {
             self.navigationItem.rightBarButtonItems = [submitBtn]
