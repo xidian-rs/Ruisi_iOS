@@ -58,6 +58,16 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
     override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {
         var subDatas: [ArticleListData] = []
         if isSchoolNet {
+            if (self.currentPage == 1 || self.datas.count == 0) && subForums.count == 0 {
+                for item in doc.css("#subforum_\(fid!) table tr h2 a") {
+                    guard let fid = Utils.getNum(prefix: "fid=", from: item["href"]!) else {
+                        continue
+                    }
+                    subForums.append(KeyValueData(key: item.text!, value: fid))
+                    print("子板块: \(item.text!) fid:\(fid)")
+                }
+            }
+            
             let showZhidin = (currentPage == 1) && Settings.showZhiding
             let nodes = doc.xpath("//*[@id=\"threadlisttableid\"]/tbody")
             for li in nodes {

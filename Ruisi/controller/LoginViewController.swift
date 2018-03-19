@@ -82,7 +82,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.present(vc, animated: true)
     }
     
-    func loadData() {
+    func loadData(show: Bool = false) {
         HttpUtil.GET(url: Urls.checkLoginUrl, params: nil) { [weak self] ok, res in
             var isLogin = false
             var errorTitle: String?
@@ -109,6 +109,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                                 self?.haveValid = true
                                 self?.seccodehash = sechash
                                 print("有验证码 \(sechash!)")
+                            }
+                            
+                            if show {
+                                self?.showInputValidDialog()
                             }
                         }
                     }
@@ -141,7 +145,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if !questInput.isHidden {
             questInput.resignFirstResponder()
         }
-        
+
         if self.username.count <= 0 {
             alert(message: "用户名不能为空")
             return
@@ -156,7 +160,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             showInputValidDialog()
             return
         }
-        
+
         let username = self.username
         let password = self.password
         let answer = answerSelect == 0 ? "" : questInput.text ?? ""
@@ -209,11 +213,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // 显示输入验证码的框
     func showInputValidDialog() {
-        if inputValidVc == nil {
-            inputValidVc = InputValidController(hash: self.seccodehash!, update: self.validUpdate)
-            inputValidVc?.delegate = validInputChange
+        if let sechash = self.seccodehash {
+            if inputValidVc == nil {
+                inputValidVc = InputValidController(hash: sechash, update: self.validUpdate)
+                inputValidVc?.delegate = validInputChange
+            }
+            inputValidVc?.show(vc: self)
+        } else {
+            loadData(show: true)
         }
-        inputValidVc?.show(vc: self)
     }
     
     func loginResult(isok: Bool = false, res: String) {

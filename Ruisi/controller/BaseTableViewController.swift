@@ -123,7 +123,6 @@ class BaseTableViewController<T>: UITableViewController {
         HttpUtil.GET(url: getUrl(page: currentPage), params: nil) { [weak self] ok, res in
             guard let this = self else { return }
             guard pos == this.position else { return }
-            
             var subDatas: [T] = []
             if ok {
                 if let doc = try? HTML(html: res, encoding: .utf8) {
