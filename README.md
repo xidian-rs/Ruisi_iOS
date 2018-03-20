@@ -7,7 +7,7 @@
 **Android版本** [Ruisi](https://github.com/freedom10086/Ruisi)
 
 **下一步计划** 校园网环境下支持Discuz Mobile API，主要现在外网不支持API,如果支持那好办太多了 .    
-睿思目前支持API列表详见 [API.md](https://github.com/freedom10086/Ruisi/blob/master/API.md)
+睿思目前支持API列表详见 [API.md](https://github.com/freedom10086/Ruisi_Ios/blob/master/API.md)
 
 ### 下载
 - App Store 搜索 **西电睿思**
