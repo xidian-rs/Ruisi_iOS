@@ -5,6 +5,9 @@
 本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。    
 Android版本[Ruisi](https://github.com/freedom10086/Ruisi)
 
+下一步计划:校园网支持Discuz API，主要现在外网不支持API
+API列表详见 [API.md](https://github.com/freedom10086/Ruisi/blob/master/API.md)
+
 ### 下载
 - App Store 搜索 **西电睿思**
 - App Store：[西电睿思](https://itunes.apple.com/cn/app/id1322805454)
