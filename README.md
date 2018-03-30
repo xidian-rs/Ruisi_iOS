@@ -1,12 +1,13 @@
 ## 西电睿思手机客户端(iOS)
-**2018.03.15: 注意学校目前关闭了论坛外网访问，校园网不受影响**
+**2018.03.15: 注意学校目前关闭了论坛外网访问，外网无法访问，校园网不受影响**
 
 西安电子科技大学校园睿思论坛客户端。    
 本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。    
-Android版本[Ruisi](https://github.com/freedom10086/Ruisi)
 
-下一步计划:校园网支持Discuz API，主要现在外网不支持API
-API列表详见 [API.md](https://github.com/freedom10086/Ruisi/blob/master/API.md)
+**Android版本** [Ruisi](https://github.com/freedom10086/Ruisi)
+
+**下一步计划** 校园网环境下支持Discuz Mobile API，主要现在外网不支持API,如果支持那好办太多了 .    
+睿思目前支持API列表详见 [API.md](https://github.com/freedom10086/Ruisi_Ios/blob/master/API.md)
 
 ### 下载
 - App Store 搜索 **西电睿思**
