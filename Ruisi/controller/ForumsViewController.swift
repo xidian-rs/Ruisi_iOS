@@ -13,9 +13,11 @@ import Kanna
 class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private var datas: [Forums] = []
-    var loadedUid: Int?
     private var colCount = 6 //collectionView列数
     private var type = 1 // 0-grid显示 1-列表显示
+    
+    var loadedUid: Int?
+    var loaded = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,16 +66,15 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         
         let day = Int(Date().timeIntervalSince1970 / 86400) - Settings.getFormlistSavedTime(uid: uid)
         if day >= 7 {
-            print("缓存过期\(day)，从网页读取板块列表")
-            loadFormlistFromWeb()
-            return
+            print("缓存过期\(day)，从网页读取板块列表: \(App.isSchoolNet)")
         } else if let d = Settings.getForumlist(uid: uid),let ds = try? JSONDecoder().decode([Forums].self, from: d) {
             //不用过滤
             datas = ds
+            loaded = true
             print("从保存的设置里面 读取板块列表 uid:\(uid ?? 0)")
         }
         
-        if datas.count == 0 {
+        if !loaded || datas.count == 0 {
             print("临时使用forums.json板块列表")
             let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
             let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
@@ -128,6 +129,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                 
                 self?.datas = listForms
                 self?.loadedUid = uid
+                self?.loaded = true
                 
                 DispatchQueue.main.async {
                     self?.collectionView?.reloadData()

@@ -78,7 +78,11 @@ class SmileyGroup: Codable {
 class SmileyItem: Codable {
     public var path: String? // 图片表情路机构
     public var name: String? // 表情的名字
-    public var value: String //发送给服务器的字符串 文字表情就是此
+    public var value: String! //发送给服务器的字符串 文字表情就是此
+    
+    init() {
+        
+    }
     
     public var image: UIImage? {
         if let path = self.path {

@@ -19,8 +19,8 @@ UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var usergradeLabel: UILabel!
     @IBOutlet weak var headBgView: UIView!
     
-    var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_info_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
-    var titles = ["签到中心", "主题设置", "关于本程序", "分享手机睿思","五星好评", "设置"]
+    var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
+    var titles = ["签到中心", "主题设置", "分享手机睿思","五星好评", "设置"]
     
     // 创建的时候的登陆状态
     var isLogin: Bool!
@@ -31,7 +31,6 @@ UITableViewDataSource, UINavigationControllerDelegate {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         //获得导航栏控制权
         self.navigationController?.delegate = self
-        
         
         myTableView.dataSource = self
         myTableView.delegate = self
@@ -128,7 +127,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        //["签到中心","关于本程序","分享手机睿思","到商店评分","设置"]
+        //["签到中心","分享手机睿思","到商店评分","设置"]
         switch indexPath.row {
         case 0:
             //sign
@@ -148,10 +147,6 @@ UITableViewDataSource, UINavigationControllerDelegate {
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "themeViewController")
             self.show(dest!, sender: self)
         case 2:
-            //about
-            let dest = self.storyboard?.instantiateViewController(withIdentifier: "aboutViewController")
-            self.show(dest!, sender: self)
-        case 3:
             //share
             let activityController = UIActivityViewController(activityItems: ["分享:手机睿思iOS版\nApp Store 地址: https://itunes.apple.com/cn/app/\(App.APP_ID)"], applicationActivities: nil)
             // should be the rect that the pop over should anchor to
@@ -161,7 +156,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
             // present the controller
             present(activityController, animated: true, completion: nil)
             break
-        case 4:
+        case 3:
             let ac = UIAlertController(title: "五星好评", message: "你们的支持是我最大的动力！", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "好", style: .default, handler: {(alertAc) in
                 if #available(iOS 10.3, *) {
@@ -173,7 +168,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
             }))
             ac.addAction(UIAlertAction(title: "残忍拒绝", style: .destructive, handler: nil))
             present(ac, animated: true)
-        case 5:
+        case 4:
             //setting
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "settingViewController")
             self.show(dest!, sender: self)

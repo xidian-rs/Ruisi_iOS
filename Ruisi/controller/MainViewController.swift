@@ -85,7 +85,7 @@ class MainViewController: UITabBarController {
         }
         
         checkCount += 1
-        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 1.2 : 3) { [weak self] (ok, res) in
+        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 2 : 3) { [weak self] (ok, res) in
             guard let this = self else { return }
             if !ok {
                 if this.isAutoNetworkType {
@@ -124,7 +124,7 @@ class MainViewController: UITabBarController {
             }
             
             if let forumVc = this.childViewControllers[0].childViewControllers[0] as? ForumsViewController,
-                forumVc.loadedUid != Settings.uid {
+                ((forumVc.loadedUid != Settings.uid) || !forumVc.loaded) {
                 DispatchQueue.main.async {
                     forumVc.loadedUid = Settings.uid
                     forumVc.loadData(uid: forumVc.loadedUid)
