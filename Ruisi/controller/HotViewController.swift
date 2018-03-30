@@ -97,6 +97,9 @@ class HotViewController: BaseTableViewController<ArticleListData> {
             d.rowHeight = caculateRowheight(isSchoolNet: false, width: self.tableViewWidth, title: d.title)
             subDatas.append(d)
         }
+        
+        //从浏览历史数据库读出是否已读
+        SQLiteDatabase.instance?.setReadHistory(datas: &subDatas)
         return subDatas
     }
     
@@ -110,14 +113,28 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         let d = datas[indexPath.row]
         
         titleLabel.text = d.title
-        if let color = d.titleColor {
+        if d.isRead {
+            titleLabel.textColor = UIColor.darkGray
+        } else if let color = d.titleColor {
             titleLabel.textColor = color
+        } else {
+            titleLabel.textColor = UIColor.darkText
         }
+        
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount
         haveImageLabel.isHidden = !d.haveImage
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        super.tableView(tableView, didSelectRowAt: indexPath)
+        
+        if (!datas[indexPath.row].isRead) { // 未读设置为已读
+            datas[indexPath.row].isRead = true
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
