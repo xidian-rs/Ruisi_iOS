@@ -150,6 +150,11 @@ public class Urls {
         }
         return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=thread&view=me&mobile=2"
     }
+    
+    // 我的回复
+    public static var myReplysUrl: String {
+        return "\(baseUrl)forum.php?mod=guide&view=my&type=reply&inajax=1&mobile=2"
+    }
 
     // 我的好友
     public static var friendsUrl: String {

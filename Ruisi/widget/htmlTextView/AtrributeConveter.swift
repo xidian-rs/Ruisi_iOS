@@ -108,6 +108,9 @@ class AttributeConverter: HtmlParserDelegate {
         }
         
         if nodes.last?.type != type {
+            if type.isBlock() {
+                handleBlockTag()
+            }
             return
         }
         //let node = nodes.popLast()!

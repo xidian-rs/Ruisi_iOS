@@ -96,7 +96,6 @@ class Reachability {
         return isReachable && !isWWAN
     }
 
-    /// Flags that indicate the reachability of a network node name or address, including whether a connection is required, and whether some user intervention might be required when establishing a connection.
     var flags: SCNetworkReachabilityFlags? {
         guard let reachability = reachability else {
             return nil

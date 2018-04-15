@@ -18,16 +18,52 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
         
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        initSegment()
+    }
+    
+    private func initSegment() {
+        let segment = UISegmentedControl(items: ["我的帖子","我的评论"])
+        segment.selectedSegmentIndex = 0
+        segment.addTarget(self, action: #selector(segmentChange), for: .valueChanged)
+        self.navigationItem.titleView = segment
+    }
+    
+    @objc private func segmentChange(_ sender: UISegmentedControl) {
+        position = sender.selectedSegmentIndex
+        self.isLoading = false
+        self.datas = []
+        self.tableView.reloadData()
+        self.rsRefreshControl?.beginRefreshing()
+        reloadData()
     }
     
     override func getUrl(page: Int) -> String {
-        return Urls.getMyPostsUrl(uid: Settings.uid) + "&page=\(page)"
+        if position == 0 {
+            return Urls.getMyPostsUrl(uid: Settings.uid) + "&page=\(page)"
+        } else {
+            return Urls.myReplysUrl + "&page=\(page)"
+        }
+    }
+    
+    override func prepareParseData(pos: Int, res: String) -> [ArticleListData] {
+        if pos == 0 {
+            return super.prepareParseData(pos: pos, res: res)
+        } else {
+            let start = res.range(of: "<root><![CDATA[")
+            let end = res.range(of: "]]></root>", options: .backwards)
+            if let s = start?.upperBound,let e = end?.lowerBound {
+                return super.prepareParseData(pos: pos, res: String(res[s..<e]))
+            }
+        }
+        
+        return super.prepareParseData(pos: pos, res: res)
     }
     
     override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {
         var subDatas: [ArticleListData] = []
+        let ls = doc.xpath("/html/body/div[1]/ul/li")
         loop1:
-            for li in doc.xpath("/html/body/div[1]/ul/li") {
+            for li in ls {
                 let a = li.css("a").first
                 var tid: Int?
                 if let u = a?["href"] {
@@ -43,6 +79,14 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
                     }
                 }
                 
+                let author: String
+                if pos == 1, let by = li.css(".by").first {
+                    author = by.text!
+                    li.removeChild(by)
+                } else {
+                    author = ""
+                }
+                
                 let img = (li.css("img").first)?["src"]
                 var haveImg = false
                 if let i = img {
@@ -51,8 +95,12 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
                 
                 var replyStr: String
                 let replys = li.css("span.num").first
+                
                 if let r = replys {
                     replyStr = r.text!
+                    if pos == 1 {
+                        li.removeChild(r)
+                    }
                 } else {
                     replyStr = "-"
                 }
@@ -60,7 +108,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
                 let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
                 let color = Utils.getHtmlColor(from: a?["style"])
                 
-                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, replys: replyStr, haveImage: haveImg, titleColor: color)
+                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author, replys: replyStr, haveImage: haveImg, titleColor: color)
                 d.rowHeight = caculateRowheight(width: self.tableViewWidth, title: d.title)
                 subDatas.append(d)
         }
@@ -76,6 +124,10 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let titleLabel = cell.viewWithTag(1) as! UILabel
         let commentsLabel = cell.viewWithTag(3) as! UILabel
+        
+        let authorIcon = cell.viewWithTag(4)
+        let authorLabel = cell.viewWithTag(5) as! UILabel
+        
         let d = datas[indexPath.row]
         
         titleLabel.text = d.title
@@ -83,6 +135,16 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
             titleLabel.textColor = color
         } else {
             titleLabel.textColor = UIColor.darkText
+        }
+        
+        if d.author.count > 0 {
+            authorIcon?.isHidden = false
+            authorLabel.isHidden = false
+            authorLabel.text = d.author
+        } else {
+            authorIcon?.isHidden = true
+            authorLabel.isHidden = true
+            authorLabel.text = nil
         }
         
         commentsLabel.text = d.replyCount

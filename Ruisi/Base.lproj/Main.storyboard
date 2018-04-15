@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mKa-a2-Cyu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mKa-a2-Cyu">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
@@ -1165,7 +1165,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-MG-kwy">
-                                <rect key="frame" x="100.5" y="156.5" width="49" height="32"/>
+                                <rect key="frame" x="100.5" y="157" width="49" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="去回复">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1201,7 +1201,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUh-qB-3Md">
-                                <rect key="frame" x="175.5" y="181" width="49" height="32"/>
+                                <rect key="frame" x="175.5" y="181.5" width="49" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="去提交"/>
                                 <connections>
@@ -2572,16 +2572,32 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wHO-hP-1D8" userLabel="usernameIcon">
+                                            <rect key="frame" x="15" y="58" width="10.5" height="12"/>
+                                            <fontDescription key="fontDescription" name="FontAwesome" family="FontAwesome" pointSize="12"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="freedopm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fww-7T-y1A" userLabel="replys">
+                                            <rect key="frame" x="28.5" y="56" width="55" height="14.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="fww-7T-y1A" firstAttribute="leading" secondItem="wHO-hP-1D8" secondAttribute="trailing" constant="3" id="1Hd-Qz-uuk"/>
+                                        <constraint firstAttribute="bottom" secondItem="wHO-hP-1D8" secondAttribute="bottom" constant="10" id="BQY-qv-on2"/>
                                         <constraint firstAttribute="trailing" secondItem="ABQ-Jp-UCm" secondAttribute="trailing" constant="15" id="Bhx-DL-rFG"/>
                                         <constraint firstItem="ABQ-Jp-UCm" firstAttribute="leading" secondItem="H5U-CK-UgR" secondAttribute="leading" constant="15" id="OKN-zs-YvA"/>
                                         <constraint firstAttribute="trailing" secondItem="ElW-X1-Rvl" secondAttribute="trailing" constant="15" id="T85-e2-Ft0"/>
                                         <constraint firstItem="kno-uS-Qv4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H5U-CK-UgR" secondAttribute="leading" constant="20" symbolic="YES" id="eQP-NE-muE"/>
                                         <constraint firstItem="ABQ-Jp-UCm" firstAttribute="top" secondItem="H5U-CK-UgR" secondAttribute="top" constant="12" id="f9E-Zf-d3N"/>
                                         <constraint firstItem="kno-uS-Qv4" firstAttribute="centerY" secondItem="ElW-X1-Rvl" secondAttribute="centerY" id="m8N-4N-EKw"/>
+                                        <constraint firstItem="fww-7T-y1A" firstAttribute="centerY" secondItem="wHO-hP-1D8" secondAttribute="centerY" id="pBt-eK-ibV"/>
                                         <constraint firstAttribute="bottom" secondItem="ElW-X1-Rvl" secondAttribute="bottom" constant="10" id="pjC-hk-4xV"/>
                                         <constraint firstItem="ElW-X1-Rvl" firstAttribute="leading" secondItem="kno-uS-Qv4" secondAttribute="trailing" constant="3" id="roD-gU-reM"/>
+                                        <constraint firstItem="wHO-hP-1D8" firstAttribute="leading" secondItem="H5U-CK-UgR" secondAttribute="leading" constant="15" id="sNH-Pu-Aac"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -3525,7 +3541,7 @@
         <segue reference="U1Y-Qc-Rhq"/>
         <segue reference="5zA-VW-dPn"/>
         <segue reference="OQ5-Uc-Z7S"/>
-        <segue reference="ZDE-jO-YnL"/>
-        <segue reference="csF-Ug-UhR"/>
+        <segue reference="qWn-2M-4PJ"/>
+        <segue reference="23S-4e-MvO"/>
     </inferredMetricsTieBreakers>
 </document>

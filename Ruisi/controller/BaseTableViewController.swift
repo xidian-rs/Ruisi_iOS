@@ -21,6 +21,20 @@ class BaseTableViewController<T>: UITableViewController {
         fatalError("要实现")
     }
     
+    func prepareParseData(pos: Int, res: String) -> [T] {
+        if let doc = try? HTML(html: res, encoding: .utf8) {
+            // load fromHash
+            let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
+            if let hash = Utils.getFormHash(from: exitNode?["href"]) {
+                print("formhash: \(hash)")
+                Settings.formhash = hash
+            }
+            return parseData(pos: pos, doc: doc)
+        }
+        
+        return []
+    }
+    
     public var autoRowHeight = true
     public var tableViewWidth: CGFloat = 0
     
@@ -125,15 +139,7 @@ class BaseTableViewController<T>: UITableViewController {
             guard pos == this.position else { return }
             var subDatas: [T] = []
             if ok {
-                if let doc = try? HTML(html: res, encoding: .utf8) {
-                    // load fromHash
-                    let exitNode = doc.xpath("/html/body/div[@class=\"footer\"]/div/a[2]").first
-                    if let hash = Utils.getFormHash(from: exitNode?["href"]) {
-                        print("formhash: \(hash)")
-                        Settings.formhash = hash
-                    }
-                    subDatas = this.parseData(pos: pos, doc: doc)
-                }
+                subDatas = this.prepareParseData(pos: pos, res: res)
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: {
