@@ -75,6 +75,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                     continue
                 }
                 let a = li.xpath("tr/th/a[starts-with(@href,\"forum.php?mod=viewthread\")]").first
+                let typeNode = li.xpath("tr/th/em/a[starts-with(@href,\"forum.php?mod=forumdisplay\")]").first
                 var tid: Int?
                 if let u = a?["href"] {
                     tid = Utils.getNum(from: u)
@@ -83,7 +84,12 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                     continue
                 }
                 
-                let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+                var typeName: String?
+                if let type = typeNode {
+                    typeName = "[" + type.text! + "] "
+                }
+                
+                let title = (typeName == nil ? "" : typeName!) + (a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n ")) ?? "")
                 let color = Utils.getHtmlColor(from: a?["style"])
                 
                 var author: String?
@@ -98,7 +104,7 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 let time = li.xpath("tr/td[2]/em/span").first?.text
                 let haveImage = li.xpath("tr/th/img").first?["src"]?.contains("image_s.gif") ?? false
                 
-                let d = ArticleListData(isSchoolNet: true, title: title ?? "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color, uid: uid, views: views, time: time)
+                let d = ArticleListData(isSchoolNet: true, title: title.count > 0 ? title : "未获取到标题", tid: tid!, author: author ?? "未知作者", replys: replys ?? "0", read: false, haveImage: haveImage, titleColor: color, uid: uid, views: views, time: time)
                 d.rowHeight = caculateRowheight(isSchoolNet: true, width: self.tableViewWidth, title: d.title)
                 subDatas.append(d)
             }
