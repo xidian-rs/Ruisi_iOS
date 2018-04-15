@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 首页 - 板块列表
-class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, ScrollTopable {
     
     private var datas: [Forums] = []
     private var colCount = 6 //collectionView列数
@@ -28,6 +28,10 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         type = Settings.forumListDisplayType ?? 1
         caculateColCount()
         loadData(uid: loadedUid)
+    }
+    
+    func scrollTop() {
+        self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

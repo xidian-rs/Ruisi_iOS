@@ -10,13 +10,16 @@ import UIKit
 import Kanna
 
 // 首页 - 热帖/新帖
-class HotViewController: BaseTableViewController<ArticleListData> {
+class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable {
+
+    private var initContentOffset: CGFloat = 0.0
     
     override func viewDidLoad() {
         self.autoRowHeight = false
         self.showRefreshControl = true
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        initContentOffset = self.tableView.contentOffset.y
     }
     
     // 切换热帖0 和 新帖1
@@ -27,6 +30,18 @@ class HotViewController: BaseTableViewController<ArticleListData> {
         self.tableView.reloadData()
         self.rsRefreshControl?.beginRefreshing()
         reloadData()
+    }
+    
+    func scrollTop() {
+        print("scrollTop")
+        if self.tableView?.contentOffset.y ?? initContentOffset > initContentOffset {
+            self.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        } else if !isLoading {
+            self.datas = []
+            self.tableView.reloadData()
+            self.rsRefreshControl?.beginRefreshing()
+            reloadData()
+        }
     }
     
     var isHotLoading = false

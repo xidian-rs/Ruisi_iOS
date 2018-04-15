@@ -66,10 +66,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             selectedBtn.isHidden = true
         }
         
-        let color = UIColor(white: 0.97, alpha: 1.0)
+        let color = UIColor(white: 0.96, alpha: 1.0)
         contentInput.layer.borderColor = color.cgColor
-        contentInput.layer.borderWidth = 1.0
-        contentInput.layer.cornerRadius = 2.0
+        contentInput.layer.borderWidth = 1.4
+        contentInput.layer.cornerRadius = 3.0
         contentInput.showToolbar = true
         contentInput.context = self
         contentInput.placeholder = "帖子内容"

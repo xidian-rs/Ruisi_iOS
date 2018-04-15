@@ -31,10 +31,21 @@ class MainViewController: UITabBarController {
         }
     }
     
+    var lastSelectItem: UITabBarItem?
+    
     //selectedIndex 之前选择的位置
     // 切换tab
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
+        if lastSelectItem != nil && item != lastSelectItem {
+            lastSelectItem = item
+        } else {
+            if lastSelectItem == nil {
+                lastSelectItem = item
+            }
+            if let topableVc = self.selectedViewController?.childViewControllers[0] as? ScrollTopable {
+                topableVc.scrollTop()
+            }
+        }
     }
     
     @objc func networkChange(_ notification: Notification) {

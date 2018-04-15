@@ -60,6 +60,8 @@
 		2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */; };
 		2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */; };
 		2F63F2521FE4E857005FCD29 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F2511FE4E857005FCD29 /* SQLiteError.swift */; };
+		2F6679E9208342750010F3AB /* HtmlArrawLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */; };
+		2F6679EB208348560010F3AB /* ScrollTopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6679EA208348560010F3AB /* ScrollTopable.swift */; };
 		2F72891920542223000EC5C9 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F72891820542223000EC5C9 /* WebViewController.swift */; };
 		2F77A66B201AFA5300322B28 /* InputValidController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F77A66A201AFA5300322B28 /* InputValidController.swift */; };
 		2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7A9E621F03AF3900994123 /* FriendViewController.swift */; };
@@ -186,6 +188,8 @@
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
 		2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
 		2F63F2511FE4E857005FCD29 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
+		2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlArrawLabel.swift; sourceTree = "<group>"; };
+		2F6679EA208348560010F3AB /* ScrollTopable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTopable.swift; sourceTree = "<group>"; };
 		2F72891820542223000EC5C9 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		2F77A66A201AFA5300322B28 /* InputValidController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputValidController.swift; sourceTree = "<group>"; };
 		2F7A9E621F03AF3900994123 /* FriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +322,7 @@
 				2F9086A41FC5B7FD008773AA /* Info.plist */,
 				2F24B9921FCE9213001D287E /* Reachability.swift */,
 				2F3885821FE2B33A000749F4 /* ThemeManager.swift */,
+				2F6679EA208348560010F3AB /* ScrollTopable.swift */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				2FAFE0B51FE94F3B00AD7FDC /* LinkClickType.swift */,
 				2F2670561FEFE78100AB291D /* LinkClickHandler.swift */,
 				2F2670581FEFE93400AB291D /* UrlItem.swift */,
+				2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */,
 			);
 			path = htmlTextView;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				2FAFE0BF1FE94F3B00AD7FDC /* ImageGetter.swift in Sources */,
 				2F175F811F01FCCA00DDEED9 /* Utils.swift in Sources */,
 				2F1C31031FEBDCD900498C96 /* SmileyView.swift in Sources */,
+				2F6679EB208348560010F3AB /* ScrollTopable.swift in Sources */,
 				2F42FE921F03A92300CC8C92 /* StarViewController.swift in Sources */,
 				2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */,
 				2FAFE0BC1FE94F3B00AD7FDC /* HtmlTextView.swift in Sources */,
@@ -666,6 +673,7 @@
 				2FAFE0DC1FE956F900AD7FDC /* ImageViewController.swift in Sources */,
 				2F77A66B201AFA5300322B28 /* InputValidController.swift in Sources */,
 				2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */,
+				2F6679E9208342750010F3AB /* HtmlArrawLabel.swift in Sources */,
 				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
 				2FB3A76F1FDFB07D002FE2F5 /* ChooseFriendViewController.swift in Sources */,
 				2FAFE0DD1FE956F900AD7FDC /* BlurView.swift in Sources */,

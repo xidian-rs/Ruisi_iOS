@@ -11,10 +11,11 @@ import Kanna
 
 // 首页 - 消息
 // TODO 支持消息小圆点
-class MessageViewController: BaseTableViewController<MessageData> {
+class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable {
     
     private var lastLoginState = false
     private var emptyPlaceholderText: String?
+    private var initContentOffset: CGFloat = 0.0
     
     override func viewDidLoad() {
         self.autoRowHeight = false
@@ -25,6 +26,7 @@ class MessageViewController: BaseTableViewController<MessageData> {
         if !lastLoginState { // 非登陆状态
             self.emptyPlaceholderText = "需要登陆才能查看"
         }
+        initContentOffset = self.tableView.contentOffset.y
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +41,17 @@ class MessageViewController: BaseTableViewController<MessageData> {
                 datas.removeAll()
                 tableView.reloadData()
             }
+        }
+    }
+    
+    func scrollTop() {
+        if self.tableView?.contentOffset.y ?? initContentOffset > initContentOffset {
+            self.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        } else if !isLoading {
+            self.datas = []
+            self.tableView.reloadData()
+            self.rsRefreshControl?.beginRefreshing()
+            reloadData()
         }
     }
     

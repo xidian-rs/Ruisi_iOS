@@ -22,7 +22,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
     }
     
     private func initSegment() {
-        let segment = UISegmentedControl(items: ["我的帖子","我的评论"])
+        let segment = UISegmentedControl(items: ["我的帖子","我的回复"])
         segment.selectedSegmentIndex = 0
         segment.addTarget(self, action: #selector(segmentChange), for: .valueChanged)
         self.navigationItem.titleView = segment
