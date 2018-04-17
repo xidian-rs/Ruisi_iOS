@@ -35,6 +35,11 @@ class BaseTableViewController<T>: UITableViewController {
         return []
     }
     
+    //成功加载一页数据 子类选择实现
+    func loadDataResult(success: Bool, page: Int) {
+        
+    }
+    
     public var autoRowHeight = true
     public var tableViewWidth: CGFloat = 0
     
@@ -155,6 +160,7 @@ class BaseTableViewController<T>: UITableViewController {
                         this.loadData(pos)
                     }))
                     this.present(alert, animated: true, completion: nil)
+                    this.loadDataResult(success: false, page: this.currentPage)
                 } else if subDatas.count > 0 {
                     if this.currentPage == 1 {
                         this.datas = subDatas
@@ -170,6 +176,7 @@ class BaseTableViewController<T>: UITableViewController {
                         this.tableView.insertRows(at: indexs, with: .automatic)
                         this.tableView.endUpdates()
                     }
+                    this.loadDataResult(success: true, page: this.currentPage)
                 } else {
                     //第一次没有加载到数据
                     if this.currentPage == 1 {

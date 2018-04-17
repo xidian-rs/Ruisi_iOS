@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 
 // 首页 - 热帖/新帖
-class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable {
+class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable,UIViewControllerPreviewingDelegate {
 
     private var initContentOffset: CGFloat = 0.0
     
@@ -140,6 +140,12 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable 
         commentsLabel.text = d.replyCount
         haveImageLabel.isHidden = !d.haveImage
         
+        //forceTouch
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: cell)
+        }
+        
+        
         return cell
     }
     
@@ -171,6 +177,31 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable 
             let index = tableView.indexPath(for: cell)!
             dest.title = datas[index.row].title
             dest.tid = datas[index.row].tid
+        }
+    }
+    
+    // MARK -- 3D touch
+    var peekedVc: UIViewController?
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let cell = previewingContext.sourceView as? UITableViewCell, let index = self.tableView?.indexPath(for:cell ) {
+            let peekVc = storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+            
+            peekVc.title = datas[index.row].title
+            peekVc.tid = datas[index.row].tid
+            
+            peekVc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            self.peekedVc = peekVc
+            return peekVc
+        }
+        
+        peekedVc = nil
+        return nil
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let vc = self.peekedVc {
+            self.show(vc, sender: self)
         }
     }
 }

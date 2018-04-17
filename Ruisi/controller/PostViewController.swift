@@ -111,6 +111,7 @@ class PostViewController: UIViewController {
         }
         
         tableView.addSubview(rsRefreshControl)
+        rsRefreshControl.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         rsRefreshControl.beginRefreshing()
         
@@ -663,6 +664,17 @@ extension PostViewController: UIViewControllerPreviewingDelegate {
         self.performSegue(withIdentifier: "postToUserDetail", sender: previewingContext.sourceView.superview?.superview)
     }
     
+    // 被预览的时候底下的菜单
+    override var previewActionItems: [UIPreviewActionItem] {
+        let ac1 = UIPreviewAction(title: "收藏", style: .default) { (ac, vc) in
+            PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
+                // FIXME 无法弹出提示窗口
+                vc.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+            })
+        }
+        
+        return [ac1]
+    }
 }
 
 // MARK: - GalleryItemsDataSource

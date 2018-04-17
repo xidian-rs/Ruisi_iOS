@@ -10,7 +10,8 @@ import UIKit
 import Kanna
 
 // 帖子列表
-class PostsViewController: BaseTableViewController<ArticleListData> {
+class PostsViewController: BaseTableViewController<ArticleListData>,UIViewControllerPreviewingDelegate {
+
     var fid: Int? // 由前一个页面传过来的值
     
     private var isSchoolNet = App.isSchoolNet
@@ -227,6 +228,12 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
             timeLabel.text = d.time
             viewsLabel.text = d.views ?? "0"
         }
+        
+        //forceTouch
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: cell)
+        }
+        
         return cell
     }
     
@@ -296,6 +303,31 @@ class PostsViewController: BaseTableViewController<ArticleListData> {
                 dest.uid = uid
                 dest.username = datas[index.row].author
             }
+        }
+    }
+    
+    // MARK -- 3D touch
+    var peekedVc: UIViewController?
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let cell = previewingContext.sourceView as? UITableViewCell, let index = self.tableView?.indexPath(for:cell ) {
+            let peekVc = storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+            
+            peekVc.title = datas[index.row].title
+            peekVc.tid = datas[index.row].tid
+            
+            peekVc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            self.peekedVc = peekVc
+            return peekVc
+        }
+        
+        peekedVc = nil
+        return nil
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let vc = self.peekedVc {
+            self.show(vc, sender: self)
         }
     }
 }

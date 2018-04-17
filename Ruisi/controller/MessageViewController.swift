@@ -11,7 +11,7 @@ import Kanna
 
 // 首页 - 消息
 // TODO 支持消息小圆点
-class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable {
+class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable, UIViewControllerPreviewingDelegate {
     
     private var lastLoginState = false
     private var emptyPlaceholderText: String?
@@ -61,7 +61,12 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
             return
         }
         super.loadData(pos)
-        updateUnreads()
+    }
+    
+    override func loadDataResult(success: Bool, page: Int) {
+        if success {
+            updateUnreads()
+        }
     }
     
     // 切换回复0 和 PM1 AT2
@@ -251,6 +256,12 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
         messageContent.text = data.content
         isReadLabel.isHidden = data.isRead
         
+        //forceTouch
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: cell)
+        }
+        
+        
         return cell
     }
     
@@ -343,6 +354,32 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
                     .replacingOccurrences(of: "我对 ", with: "")
                     .trimmingCharacters(in: CharacterSet(charactersIn: "说:"))
             }
+        }
+    }
+    
+    // MARK -- 3D touch
+    var peekedVc: UIViewController?
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let cell = previewingContext.sourceView as? UITableViewCell, let index = self.tableView?.indexPath(for:cell ) {
+            let peekVc = storyboard?.instantiateViewController(withIdentifier: "PostViewController") as! PostViewController
+            
+            peekVc.title = datas[index.row].title
+            peekVc.tid = datas[index.row].tid
+            peekVc.pid = datas[index.row].pid
+            
+            peekVc.preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            self.peekedVc = peekVc
+            return peekVc
+        }
+        
+        peekedVc = nil
+        return nil
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let vc = self.peekedVc {
+            self.show(vc, sender: self)
         }
     }
 }

@@ -32,6 +32,7 @@ class DDDTouchPeekViewController: UIViewController {
         self.initSubView()
         
         self.potoView?.kf.setImage(with: Urls.getAvaterUrl(uid: self.uid!, size: 2))
+
     }
     
     func initSubView(){
