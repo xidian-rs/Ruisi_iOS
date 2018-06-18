@@ -97,7 +97,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     print("不是登陆状态")
                     if let s = res.range(of: "[CDATA[")?.upperBound ,let e =  res.range(of: "]]></root>")?.lowerBound {
-                        if let html = try? HTML(html: res, encoding: .utf8) {
+                        if let html = try? HTML(html: String(res[s..<e]), encoding: .utf8) {
                             let hash = html.css("input#formhash").first?["value"]
                             if hash != nil {
                                 Settings.formhash = hash

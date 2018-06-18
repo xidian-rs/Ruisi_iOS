@@ -60,11 +60,9 @@ class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate
     }
     
     @objc func feedBackClick() {
-        print("feed back")
-        
-        let emailTitle = "Feedback"
-        let messageBody = "Feature request or bug report?"
-        let toRecipents = ["friend@stackoverflow.com"]
+        let emailTitle = "手机睿思(iOS)反馈\(Settings.username != nil ? (" -by:" + Settings.username!) : "") -ver:\(self.versionLabel.text ?? "unknown")"
+        let messageBody = ""
+        let toRecipents = ["2351386755@qq.com"]
         
         if MFMailComposeViewController.canSendMail() {
             let mc: MFMailComposeViewController = MFMailComposeViewController()
