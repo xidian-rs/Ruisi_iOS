@@ -1,5 +1,7 @@
 ## 西电睿思手机客户端(iOS)
 
+[![Build Status](https://travis-ci.org/freedom10086/Ruisi_Ios.svg?branch=master)](https://travis-ci.org/freedom10086/Ruisi_Ios)
+
 西安电子科技大学校园睿思论坛客户端。    
 本客户端在校园网和校外网环境下均可使用。如有bug,建议等欢迎反馈。    
 
