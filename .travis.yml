@@ -4,4 +4,4 @@ podfile: Podfile
 osx_image: xcode9.4
 
 script:
-  - "xctool -workspace Ruisi.xcworkspace -scheme Ruisi"
+  - "xctool -workspace Ruisi.xcworkspace -scheme Pods-Ruisi"
