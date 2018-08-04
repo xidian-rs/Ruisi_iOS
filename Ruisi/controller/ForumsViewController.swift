@@ -131,11 +131,10 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                     }
                 }
                 
-                self?.datas = listForms
-                self?.loadedUid = uid
-                self?.loaded = true
-                
                 DispatchQueue.main.async {
+                    self?.datas = listForms
+                    self?.loadedUid = uid
+                    self?.loaded = true
                     self?.collectionView?.reloadData()
                 }
                 

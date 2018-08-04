@@ -501,7 +501,6 @@
 				2F16B5DD1EA502420068EE20 /* Resources */,
 				2F4FDA131FCC4A9D00CD2A7D /* Embed Frameworks */,
 				1972CC9E45359B5ACE81327B /* [CP] Embed Pods Frameworks */,
-				0AE5B39A184BDE57905BAAD3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -567,21 +566,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0AE5B39A184BDE57905BAAD3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ruisi/Pods-Ruisi-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1972CC9E45359B5ACE81327B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

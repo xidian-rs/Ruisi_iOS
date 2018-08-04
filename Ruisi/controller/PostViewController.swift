@@ -295,6 +295,19 @@ class PostViewController: UIViewController {
                 if content == nil {
                     content = contentNode?.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "获取内容失败"
                 }
+                
+                // 处理未点击添加到帖子里的图片
+                // http://rsbbs.xidian.edu.cn/forum.php?mod=viewthread&tid=952530&page=1&mobile=2
+                let extraImageNodes = comment.xpath("div/ul[2]/li/a")
+                for extraImageNode in extraImageNodes {
+                    if let d = extraImageNode.xpath("//div").first {
+                        extraImageNode.removeChild(d)
+                    }
+                    let ext = extraImageNode.toHTML!
+                    print("extra image \(ext)")
+                    content = content! + ext
+                }
+                
                 let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 15), textColor: UIColor.darkText).convert(src: content!)
                 let c = PostData(content: attrContent, author: author ?? "匿名",
                                  uid: uid ?? 0, time: time ?? "未知时间",
