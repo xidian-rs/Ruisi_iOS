@@ -108,7 +108,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                 for group in groups {
                     if let groupName = group.xpath(".//h2/a").first?.text {
                         let items = group.xpath(".//a")
-                        var forms = [Forums.Forum]()
+                        var forms = [Forum]()
                         for item in items {
                             if let fid = Utils.getNum(prefix: "fid=", from: item["href"]!) {
                                 var new: Int?
@@ -117,7 +117,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                                     item.removeChild(numNode)
                                 }
                                 
-                                let f = Forums.Forum(fid: fid, name: item.text!, login: false)
+                                let f = Forum(fid: fid, name: item.text!, login: false)
                                 f.new = new
                                 
                                 forms.append(f)

@@ -6,7 +6,21 @@
 //  Copyright © 2017年 yang. All rights reserved.
 //
 
-class Forums: Codable {
+public class Forum: Codable {
+    var name: String
+    var fid: Int
+    var login: Bool
+    var new: Int? //今日帖子数目
+    
+    
+    init(fid: Int, name: String, login: Bool) {
+        self.name = name
+        self.fid = fid
+        self.login = login
+    }
+}
+
+public class Forums: Codable {
 
     var gid: Int
     var name: String
@@ -31,19 +45,5 @@ class Forums: Codable {
 
     func setForums(forums: [Forum]) {
         self.forums = forums
-    }
-
-    class Forum: Codable {
-        var name: String
-        var fid: Int
-        var login: Bool
-        var new: Int? //今日帖子数目
-
-
-        init(fid: Int, name: String, login: Bool) {
-            self.name = name
-            self.fid = fid
-            self.login = login
-        }
     }
 }

@@ -13,21 +13,26 @@ import Kanna
 class PostsViewController: BaseTableViewController<ArticleListData>,UIViewControllerPreviewingDelegate {
 
     var fid: Int? // 由前一个页面传过来的值
+    var parentFid: Int?
     
     private var isSchoolNet = App.isSchoolNet
     private var subForums = [KeyValueData<String, Int>]()
     private var subForumBtn: UIBarButtonItem!
     private var submitBtn: UIBarButtonItem!
     
+    // 是不是由记录的子分区载入
+    private var isLoadFormSetting: Bool = true
+    
     override func viewDidLoad() {
         self.autoRowHeight = false
         self.showRefreshControl = true
+        self.parentFid = fid
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         subForumBtn = UIBarButtonItem(title: "子分区", style: .plain, target: self, action: #selector(switchSubForum))
         submitBtn = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
         self.navigationItem.rightBarButtonItems = [submitBtn]
-        
+
         super.viewDidLoad()
     }
     
@@ -43,9 +48,25 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
             return
         }
         
+        let f = Settings.getSelectSubForum(fid: parentFid!)
+        if f != nil && isLoadFormSetting {
+            isLoadFormSetting = false
+            for item in subForums {
+                if item.value == f!.fid {
+                    print("load choosed subforum \(self.parentFid!) -> \(item.value) \(item.key)")
+                    self.title = item.key
+                    self.fid = item.value
+                    self.reloadData()
+                    return
+                }
+            }
+        }
+        
         let alert = UIAlertController(title: "选择分区", message: nil, preferredStyle: .actionSheet)
         for item in subForums {
             alert.addAction(UIAlertAction(title: item.key, style: .default, handler: { (ac) in
+                Settings.setSelectSubForum(fid: self.parentFid!, subForum: Forum(fid: item.value, name: item.key, login: false))
+                print("save choosed subforum \(self.parentFid!) -> \(item.value) \(item.key)")
                 self.title = item.key
                 self.fid = item.value
                 self.reloadData()

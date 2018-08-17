@@ -28,6 +28,7 @@ public class Settings {
     private static let key_forumlist_display_type = "key_forumlist_display_type"
     private static let key_forumlist_saved_time = "key_forumlist_saved_time"
     private static let key_work_type = "key_work_type"
+    private static let key_select_subforum = "key_select_subforum"
     
     static func getMessageId(type: Int) -> Int {
         switch type {
@@ -165,6 +166,26 @@ public class Settings {
             UserDefaults.standard.set(newValue, forKey: key_tail_content)
         }
     }
+    
+    // choosed subforum 选择的子板块
+    public static func setSelectSubForum(fid: Int, subForum: Forum) {
+        UserDefaults.standard.set(subForum.fid, forKey: "\(key_select_subforum)_\(fid)_fid")
+        UserDefaults.standard.set(subForum.name, forKey: "\(key_select_subforum)_\(fid)_title")
+    }
+    
+    // choosed subforum 选择的子板块
+    public static func getSelectSubForum(fid: Int) -> Forum? {
+        let fid = UserDefaults.standard.integer(forKey: "\(key_select_subforum)_\(fid)_fid") ;
+        if fid > 0 {
+            let name = UserDefaults.standard.string(forKey: "\(key_select_subforum)_\(fid)_title")
+            let f = Forum(fid: fid, name: name ?? "", login: false)
+            return f
+        }
+        
+        return nil
+    }
+    
+    
 
     //size = 0 small 1 = middle 2 = large
     //下载并保存头像
