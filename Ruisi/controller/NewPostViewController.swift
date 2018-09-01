@@ -14,9 +14,9 @@ import Kanna
 // 1. attachnew[931707] attachnew[931707]可多个可以没值//提交在表单
 // 2. [attachimg]931707[/attachimg]在内容
 class NewPostViewController: UIViewController,
-    UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
-UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+        UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+        UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
     @IBOutlet weak var forumStackView: UIStackView!
     @IBOutlet weak var imageCollectionHeight: NSLayoutConstraint!
     @IBOutlet weak var selectedBtn: UIButton!
@@ -29,21 +29,21 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             imagesCollection.delegate = self
         }
     }
-    
+
     var fid: Int?
     var typeId: String?
     var name: String?
-    
+
     var isEditMode = false
-    
+
     var tid: Int? //编辑模式需要
     var pid: Int? //编辑模式需要
-    
+
     private var editFormDatas = [String: String]()
     private var typeIds = [KeyValueData<String, String>]()
     private var progress: UIAlertController!
     private var uploadImages = [UploadImageItem]()
-    
+
     private var uploadHash: String? {
         didSet {
             DispatchQueue.main.async {
@@ -51,13 +51,13 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
         }
     }
-    
+
     // 验证码相关
     private var haveValid = false
     private var seccodehash: String?
     private var validValue: String? //验证码输入值
     private var inputValidVc: InputValidController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = isEditMode ? "编辑帖子" : "发帖"
@@ -65,7 +65,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             forumStackView.isHidden = true
             selectedBtn.isHidden = true
         }
-        
+
         let color = UIColor(white: 0.96, alpha: 1.0)
         contentInput.layer.borderColor = color.cgColor
         contentInput.layer.borderWidth = 1.4
@@ -73,10 +73,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         contentInput.showToolbar = true
         contentInput.context = self
         contentInput.placeholder = "帖子内容"
-        
+
         subSeletedBtn.isHidden = true
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(postClick))]
-        
+
         progress = UIAlertController(title: isEditMode ? "提交中" : "发帖中", message: "请稍后...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 13, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
@@ -85,36 +85,36 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         uploadHash = nil
-        
+
         if isEditMode {
             loadEditContent()
         } else {
             checkValid()
         }
-            
+
         if let f = fid {
             selectedBtn.setTitle(name, for: .normal)
             fidChange(fid: f)
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         titleInput.resignFirstResponder()
         contentInput.resignFirstResponder()
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 60, height: 80)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return uploadImages.count + 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: (indexPath.row == uploadImages.count) ? "addCell" : "imageCell", for: indexPath)
-        
+
         if indexPath.row < uploadImages.count {
             let imageBg = cell.viewWithTag(1) as! UIImageView
             let delBtn = cell.viewWithTag(2) as! UIButton
@@ -136,30 +136,30 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 delBtn.isHidden = false
                 failedBtn.isHidden = false
             }
-            
+
             failedBtn.addTarget(self, action: #selector(uploadFailedBtnClick), for: .touchUpInside)
             delBtn.addTarget(self, action: #selector(deleteUploadBtnClick), for: .touchUpInside)
         } else {
             let addBtn = cell.viewWithTag(1) as! UIButton
             addBtn.addTarget(self, action: #selector(addUploadClick), for: .touchUpInside)
         }
-        
+
         cell.contentView.layer.cornerRadius = 2.0
         cell.contentView.layer.borderWidth = 1.0
         cell.contentView.layer.borderColor = UIColor(white: 0.97, alpha: 1.0).cgColor
         cell.contentView.layer.masksToBounds = true
-        
+
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        
+
         if indexPath.row == uploadImages.count {
             addUploadClick()
         }
     }
-    
+
     @objc func uploadFailedBtnClick(sender: UIButton) {
         if let item = sender.superview?.superview as? UICollectionViewCell, let index = imagesCollection.indexPath(for: item) {
             let alert = UIAlertController(title: "此图片上传失败", message: "请选择要执行的操作", preferredStyle: .alert)
@@ -174,7 +174,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
     @objc func deleteUploadBtnClick(sender: UIButton) {
         if let item = sender.superview?.superview as? UICollectionViewCell, let index = imagesCollection.indexPath(for: item) {
             let alert = UIAlertController(title: "删除图片附件?", message: nil, preferredStyle: .alert)
@@ -184,7 +184,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                         print("delete result :\(res)")
                     })
                 }
-                
+
                 self.uploadImages.remove(at: index.item)
                 self.imagesCollection.deleteItems(at: [index])
             }))
@@ -192,7 +192,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
     @objc func addUploadClick() {
         let handler: ((UIAlertAction) -> Void) = { alert in
             let picker = UIImagePickerController()
@@ -204,22 +204,22 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
             self.present(picker, animated: true, completion: nil)
         }
-        
+
         let alert = UIAlertController(title: "请选择图片来源", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "相册", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "拍照", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     // 相册选择回掉
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         // 最大图片宽度1080像素
         // rs 限制最大1M的附件
         let pickedImageData = ((info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as? UIImage)?
-            .scaleToSizeAndWidth(width: 1080, maxSize: 1024)
+                .scaleToSizeAndWidth(width: 1080, maxSize: 1024)
         picker.dismiss(animated: true, completion: nil)
-        
+
         if let imageData = pickedImageData {
             uploadImages.append(UploadImageItem(name: "1.png", imageData: imageData))
             let indexPath = IndexPath(item: uploadImages.count - 1, section: 0)
@@ -231,7 +231,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             self.present(alert, animated: true)
         }
     }
-    
+
     func uploadImage(position: Int, imageData: Data) {
         uploadImages[position].state = .uploading(progress: 0)
         imagesCollection.reloadItems(at: [IndexPath(item: position, section: 0)])
@@ -239,7 +239,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             "uid": String(Settings.uid!) as NSObject,
             "hash": self.uploadHash! as NSObject
         ]
-        
+
         print("image data length:\((imageData as NSData).length)")
         HttpUtil.UPLOAD_IMAGE(url: Urls.uploadImageUrl, params: formData, imageName: "upload_\(position).jpg", imageData: imageData) { [weak self] (ok, res) in
             print("upload result:\(res) \(ok)")
@@ -254,7 +254,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 } else {
                     self?.uploadImages[position].state = .failed
                     self?.uploadImages[position].errmessage = res
-                    
+
                     let alert = UIAlertController(title: "上传图片附件出错", message: res, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
                     self?.present(alert, animated: true, completion: nil)
@@ -263,12 +263,12 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
         }
     }
-    
+
     func fidChange(fid: Int) {
         typeIds = []
         typeId = nil
         subSeletedBtn.isHidden = true
-        
+
         HttpUtil.GET(url: Urls.newPostUrl(fid: fid), params: nil) { [weak self] (ok, res) in
             if ok {
                 if let index = res.endIndex(of: "uploadformdata:") {
@@ -291,7 +291,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                         }
                     }
                 }
-                
+
                 DispatchQueue.main.async {
                     if self?.typeIds.count ?? 0 > 0 {
                         self?.typeId = self?.typeIds[0].key
@@ -302,23 +302,23 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
         }
     }
-    
+
     // 加编辑帖子的内容
     func loadEditContent() {
         HttpUtil.GET(url: Urls.editPostUrl(tid: tid!, pid: pid!), params: nil) { [weak self] (ok, res) in
             var success = false
-            if ok, let node = try? HTML(html: res, encoding: .utf8),let this = self {
+            if ok, let node = try? HTML(html: res, encoding: .utf8), let this = self {
                 let inputs = node.xpath("//input[@name]")
                 for input in inputs {
                     if let v = input["value"] {
                         this.editFormDatas[input["name"]!] = v
                     }
                 }
-                
+
                 if let content = node.xpath("//*[@id=\"needmessage\"]").first {
                     this.editFormDatas["message"] = content.text ?? ""
                 }
-                
+
                 if this.editFormDatas["subject"] != nil && this.editFormDatas["message"] != nil {
                     success = true
                     if let index = res.endIndex(of: "uploadformdata:") {
@@ -332,7 +332,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                         }
                     }
                 }
-                
+
                 let nodes = node.css("#typeid option")
                 for node in nodes {
                     if !node.text!.contains("选择主题分类") {
@@ -343,13 +343,13 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                     }
                 }
             }
-            
+
             DispatchQueue.main.async {
                 if success {
                     if (self?.typeIds.count ?? 0) > 0 {
                         self?.forumStackView.isHidden = false
                         self?.subSeletedBtn.isHidden = false
-                        
+
                         if let typeId = self?.typeId {
                             for data in (self?.typeIds ?? []) {
                                 if data.key == typeId {
@@ -362,7 +362,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                         self?.forumStackView.isHidden = true
                         self?.subSeletedBtn.isHidden = true
                     }
-                    
+
                     if let title = self?.editFormDatas["subject"] {
                         if title == "" {
                             self?.titleInput.isHidden = true
@@ -381,7 +381,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             }
         }
     }
-    
+
     @IBAction func chooseSubForumClick(_ sender: UIButton) {
         let sheet = UIAlertController(title: "请选择主题分类", message: nil, preferredStyle: .actionSheet)
         for a in typeIds {
@@ -392,7 +392,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         }
         self.present(sheet, animated: true, completion: nil)
     }
-    
+
     func checkInput() -> Bool {
         var reason: String?
         if !isEditMode {
@@ -400,35 +400,35 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 reason = "你还没有选择分区"
             }
         }
-        
+
         if !titleInput.isHidden && (titleInput.text == nil || titleInput.text?.count == 0) {
             reason = "标题不能为空"
         } else if contentInput.text == nil || contentInput.text.count == 0 {
             reason = "内容不能为空"
         }
-        
+
         if reason != nil {
             let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
-        
+
         return reason == nil
     }
-    
+
     @objc func postClick() {
         if !checkInput() {
             return
         }
-        
+
         if haveValid && validValue == nil {
             showInputValidDialog()
             return
         }
-        
+
         self.titleInput.resignFirstResponder()
         self.contentInput.resignFirstResponder()
-        
+
         var reason: String?
         for item in uploadImages {
             switch item.state {
@@ -439,7 +439,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             default: break
             }
         }
-        
+
         if reason != nil {
             let alert = UIAlertController(title: "提示", message: reason, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "继续发帖", style: .default) { action in
@@ -451,11 +451,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             doPost()
         }
     }
-    
+
     // 开始post没有任何检查 所有的检查之前已经合法
     func doPost() {
         self.present(progress, animated: true, completion: nil)
-        
+
         var params: [String: Any]
         if !isEditMode { //发帖
             params = ["topicsubmit": "yes", "subject": titleInput.text!, "message": contentInput.text!]
@@ -468,11 +468,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             params["subject"] = titleInput.text!
             params["message"] = contentInput.text!
         }
-        
+
         if let type = typeId {
             params["typeid"] = type
         }
-        
+
         // 添加附件列表
         uploadImages.forEach { (item) in
             if let aid = item.aid {
@@ -480,19 +480,16 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 params["message"] = "\(params["message"]!)\n[attachimg]\(aid)[/attachimg]"
             }
         }
-        
+
         HttpUtil.POST(url: isEditMode ? Urls.editSubmitUrl : Urls.newPostUrl(fid: self.fid!), params: params) { [weak self] (ok, res) in
             //print(res)
             var success = false
             var message: String
             let str = (self?.isEditMode ?? false) ? "编辑帖子" : "发帖"
             if ok {
-                let jumpIndex = res.range(of: "class=\"jump_c\"")?.upperBound
-                if let jump = jumpIndex {
+                if let err = Utils.getRuisiReqError(res: res) {
                     success = false
-                    let start = res.range(of: "<p>", range: jump ..< res.endIndex)!.upperBound
-                    let end = res.range(of: "</p>", range: jump ..< res.endIndex)!.lowerBound
-                    message = String(res[start..<end])
+                    message = err
                 } else {
                     success = true
                     message = "\(str)成功!你要返回关闭此页面吗？"
@@ -501,7 +498,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 success = false
                 message = "网络不太通畅,请稍后重试"
             }
-            
+
             DispatchQueue.main.async { [weak self] in
                 self?.progress.dismiss(animated: true) {
                     if !success && message.contains("验证码填写错误") {
@@ -514,30 +511,30 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                                 self?.navigationController?.popViewController(animated: true)
                             })
                         }
-                        
+
                         self?.present(alert, animated: true, completion: nil)
                     }
                 }
             }
         }
     }
-    
+
     // MARK: - 验证码相关
-    
+
     // 判断发帖是否需要验证码
     func checkValid() {
         HttpUtil.GET(url: Urls.checkNewpostUrl, params: nil) { (ok, res) in
             if ok {
                 let start = res.range(of: "seccode_")?.upperBound
                 if let s = start {
-                    let end = res.range(of: "\"", range: s ..< res.endIndex)!.lowerBound
+                    let end = res.range(of: "\"", range: s..<res.endIndex)!.lowerBound
                     self.seccodehash = String(res[s..<end])
                     self.haveValid = true
                 }
             }
         }
     }
-    
+
     // 验证码输入框回调
     // click 是否点击的确认
     func validInputChange(click: Bool, hash: String, value: String) {
@@ -547,7 +544,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             postClick()
         }
     }
-    
+
     // 显示输入验证码的框
     func showInputValidDialog() {
         if inputValidVc == nil {
@@ -556,7 +553,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         }
         inputValidVc?.show(vc: self)
     }
-    
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UINavigationController, let target = dest.topViewController as? ChooseForumViewController {

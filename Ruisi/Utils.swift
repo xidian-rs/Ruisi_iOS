@@ -233,4 +233,23 @@ public class Utils {
             return 0
         }
     }
+
+    // 统一处理睿思请求失败获取失败内容
+    /* eg:
+     * <div class="jump_c">
+     * <p>本版块禁止发帖</p>
+     * <p><a class="grey" href="javascript:history.back();">[ 点击这里返回上一页 ]</a></p>
+     * </div>
+     * 提取：本版块禁止发帖
+     */
+    public static func getRuisiReqError(res: String?) -> String? {
+        if let r = res, let jumpIndex = r.range(of: "class=\"jump_c\"")?.upperBound,
+           let start = r.range(of: "<p>", range: jumpIndex..<r.endIndex)?.upperBound,
+           let end = r.range(of: "</p>", range: jumpIndex..<r.endIndex)?.lowerBound {
+            return String(r[start..<end])
+        }
+
+        return nil
+    }
+
 }

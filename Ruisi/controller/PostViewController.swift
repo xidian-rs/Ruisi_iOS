@@ -322,7 +322,7 @@ class PostViewController: UIViewController {
             }
         } else { //错误
             //有可能没有列表处理错误
-            let errorText = doc.css(".jump_c").first?.text
+            let errorText = Utils.getRuisiReqError(res: doc.innerHTML);
             print(errorText ?? "网络错误")
             DispatchQueue.main.async {
                 self.showBackAlert(title: "无法查看帖子", message: errorText ?? "帖子不存在")

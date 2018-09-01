@@ -39,6 +39,8 @@ class RegisterViewController: UITableViewController {
     private var confirmPasswordKey: String?
     private var emailKey: String?
     
+    private var agreement: String?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +86,12 @@ class RegisterViewController: UITableViewController {
             }
             
             if ok, let node = try? HTML(html: res, encoding: .utf8) ,let this = self {
+                //*[@id="fwin_dialog"]/table/tbody/tr[2]/td[2]/div
+                if let agreementNode = node.xpath("//*[@id=\"layer_bbrule\"]/div").first {
+                    print("agreement:\(agreementNode.innerHTML ?? "")")
+                    self?.agreement = agreementNode.innerHTML
+                }
+                
                 let trs = node.xpath("//form[@id=\"registerform\"]//tr")
                 for tr in trs {
                     success = true
@@ -104,6 +112,12 @@ class RegisterViewController: UITableViewController {
                         }
                     }
                 }
+                
+                if let agreeNode = node.xpath("//*[@id=\"agreebbrule\"]").first {
+                    print("agree value \(agreeNode["value"] ?? "")")
+                    this.postForms[agreeNode["name"]!] = agreeNode["value"] ?? ""
+                }
+                
             }
             
             if !success {
@@ -194,6 +208,7 @@ class RegisterViewController: UITableViewController {
         postForms["field1"] = idNum
         postForms["gender"] = String(sex)
         postForms["realname"] = realName
+        postForms["regsubmit"] = "yes"
         
         if haveValid && validValue == nil {
             showInputValidDialog()
@@ -207,7 +222,7 @@ class RegisterViewController: UITableViewController {
         
         present(progress, animated: true, completion: nil)
         
-        HttpUtil.POST(url: "member.php?mod=register\(App.isSchoolNet ? "" : "&mobile=2")", params: postForms) { (ok, res) in
+        HttpUtil.POST(url: "member.php?mod=register&inajax=1\(App.isSchoolNet ? "" : "&mobile=2")", params: postForms, multipart: true) { (ok, res) in
             //抱歉，验证码填写错误
             var success = false
             var message: String
@@ -218,9 +233,15 @@ class RegisterViewController: UITableViewController {
                     let start = res.range(of: "<p>", range: jump ..< res.endIndex)!.upperBound
                     let end = res.range(of: "</p>", range: jump ..< res.endIndex)!.lowerBound
                     message = String(res[start..<end])
+                } else if res.contains("感谢您注册") && res.contains("succeedmessage") {
+                    success = true
+                    message = "注册成功!系统给您发送了一封激活邮件，快去登录邮箱激活账号吧!"
+                } else if let sStart = res.range(of: "<root><![CDATA[")?.upperBound,
+                    let eEnd = res.range(of: "<script", range: sStart ..< res.endIndex)?.lowerBound {
+                    message = String(res[sStart..<eEnd])
                 } else {
                     success = true
-                    message = "注册成功!你要返回关闭此页面吗？"
+                    message = "注册成功!系统给您发送了一封激活邮件，快去登录邮箱激活账号吧!"
                 }
             } else {
                 success = false
@@ -337,5 +358,15 @@ class RegisterViewController: UITableViewController {
         let vc = UIAlertController(title: "注册错误", message: message, preferredStyle: .alert)
         vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
         self.present(vc, animated: true)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toAgreementNavVc", let dest = segue.destination as? UINavigationController {
+            let agreeVc = dest.viewControllers[0] as! AgreementViewController
+            if let ag = agreement {
+                agreeVc.agreement = ag
+            }
+        }
     }
 }

@@ -84,16 +84,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func loadData(show: Bool = false) {
         HttpUtil.GET(url: Urls.checkLoginUrl, params: nil) { [weak self] ok, res in
-            var isLogin = false
             var errorTitle: String?
             var errorContent: String?
             
             if ok {
                 if res.contains("欢迎您回来") {
                     print("你现在是登陆状")
-                    errorTitle = "提示"
-                    errorContent = "你现在是登陆状态无需登陆"
-                    isLogin = true
+                    self?.loginResult(isok: true, res: res, haveLoadingView: false)
+                    return
                 } else {
                     print("不是登陆状态")
                     if let s = res.range(of: "[CDATA[")?.upperBound ,let e =  res.range(of: "]]></root>")?.lowerBound {
@@ -126,12 +124,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 DispatchQueue.main.async {
                     let alert = UIAlertController(title: t, message: errorContent!, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-                    alert.addAction(UIAlertAction(title: isLogin ? "退出" : "重新加载", style: .default, handler: { (alert) in
-                        if isLogin {
-                            self?.dismiss(animated: true, completion: nil)
-                        } else {
-                            self?.loadData()
-                        }
+                    alert.addAction(UIAlertAction(title: "重新加载", style: .default, handler: { (alert) in
+                        self?.loadData()
                     }))
                     self?.present(alert, animated: true)
                 }
@@ -224,7 +218,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func loginResult(isok: Bool = false, res: String) {
+    func loginResult(isok: Bool = false, res: String, haveLoadingView: Bool = true) {
         DispatchQueue.main.async { [weak self] in
             let vc: UIAlertController
             if !isok {
@@ -279,9 +273,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
             
             // 取消loading
-            self?.dismiss(animated: true, completion: {
+            if haveLoadingView {
+                self?.dismiss(animated: true, completion: {
+                    self?.present(vc, animated: true)
+                })
+            } else {
                 self?.present(vc, animated: true)
-            })
+            }
         }
     }
     

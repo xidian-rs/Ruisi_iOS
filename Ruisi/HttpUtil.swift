@@ -150,7 +150,7 @@ public class HttpUtil {
         task.resume()
     }
 
-    public static func POST(url: String, params: [String: Any]?, callback: @escaping (Bool, String) -> Void) {
+    public static func POST(url: String, params: [String: Any]?, multipart: Bool = false, callback: @escaping (Bool, String) -> Void) {
         let url = getUrl(url: url)
         let components = URLComponents(string: url)
         guard let u = components?.url else {
@@ -166,16 +166,30 @@ public class HttpUtil {
                 ps = ["formhash": hash]
             }
         }
-
+        
+        
         var request = URLRequest(url: u)
         request.httpMethod = "POST"
         request.timeoutInterval = 10
-
-        if let p = encodeParameters(ps) {
-            request.httpBody = p.data(using: .utf8)
+        if multipart {
+            let boundary = "------multipartformboundary\(Int(Date().timeIntervalSince1970 * 1000))"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "content-type")
+            let body = NSMutableData()
+            for (key, value) in ps ?? [:] {
+                body.appendString(string: "--\(boundary)\r\n")
+                body.appendString(string: "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString(string: "\(value)\r\n")
+            }
+            
+            body.appendString(string: "--\(boundary)--\r\n")
+            request.httpBody = body as Data
+        } else {
+            if let p = encodeParameters(ps) {
+                request.httpBody = p.data(using: .utf8)
+            }
         }
-
-        print("start http post url:\(url)")
+        
+        print("start http post url:\(url) multipart:\(multipart)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             HttpUtil.workingSize -= 1
             guard let data = data, error == nil else {
