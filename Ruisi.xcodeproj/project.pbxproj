@@ -59,6 +59,7 @@
 		2F5DF0C51EFE750A00428EE1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C41EFE750A00428EE1 /* Settings.swift */; };
 		2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */; };
 		2F63A41A213A86090074201B /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63A419213A86090074201B /* AgreementViewController.swift */; };
+		2F63A41C213AD4D10074201B /* SpotlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63A41B213AD4D10074201B /* SpotlightManager.swift */; };
 		2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */; };
 		2F63F2521FE4E857005FCD29 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F2511FE4E857005FCD29 /* SQLiteError.swift */; };
 		2F6679E9208342750010F3AB /* HtmlArrawLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */; };
@@ -188,6 +189,7 @@
 		2F5DF0C41EFE750A00428EE1 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
 		2F63A419213A86090074201B /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
+		2F63A41B213AD4D10074201B /* SpotlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightManager.swift; sourceTree = "<group>"; };
 		2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
 		2F63F2511FE4E857005FCD29 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlArrawLabel.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				2F24B9921FCE9213001D287E /* Reachability.swift */,
 				2F3885821FE2B33A000749F4 /* ThemeManager.swift */,
 				2F6679EA208348560010F3AB /* ScrollTopable.swift */,
+				2F63A41B213AD4D10074201B /* SpotlightManager.swift */,
 			);
 			path = Ruisi;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				2F8E7C661FF2933A0007B6E6 /* ToolbarView.swift in Sources */,
 				2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */,
 				2FAFE0D71FE956F900AD7FDC /* ItemControllerDelegate.swift in Sources */,
+				2F63A41C213AD4D10074201B /* SpotlightManager.swift in Sources */,
 				2F1C30FE1FEBDCD900498C96 /* ImageAttachment.swift in Sources */,
 				2F72891920542223000EC5C9 /* WebViewController.swift in Sources */,
 				2F848A9C1FF0E0830089177B /* RSRefreshState.swift in Sources */,

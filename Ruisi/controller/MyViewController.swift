@@ -66,7 +66,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
             }
         } else {
             usernameLabel.text = "点击头像登陆"
-            avaterImage.image = #imageLiteral(resourceName:"placeholder")
+            avaterImage.image = #imageLiteral(resourceName: "placeholder")
         }
     }
     

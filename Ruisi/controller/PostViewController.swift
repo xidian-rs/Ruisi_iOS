@@ -340,6 +340,7 @@ class PostViewController: UIViewController {
         self.saveToHistory = true
         DispatchQueue.global(qos: .background).async {
             SQLiteDatabase.instance?.addHistory(tid: Int(tid)!, title: title, author: author ?? "未知作者", created: created ?? "")
+            SpotlightManager.sharedInstance.addPostSpotlight(tid: Int(tid)!, title: title, author: author ?? "未知作者", created: created)
         }
     }
     
@@ -768,6 +769,10 @@ extension PostViewController: GalleryItemsDataSource {
     
     func itemCount() -> Int {
         return (albums.count == 0) ? 1 : albums.count
+    }
+    
+    @objc func dismissFormSpotlight() {
+        dismiss(animated: true, completion: nil)
     }
 }
 

@@ -84,6 +84,30 @@ class StarViewController: BaseTableViewController<StarData> {
         return 16 + titleHeight + 16
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        _ = super.numberOfSections(in: tableView)
+        if datas.count == 0 && !isLoading {//no data avaliable
+            let title = "暂无收藏"
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+            label.text = title
+            label.textColor = UIColor.darkGray
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = UIColor.lightGray
+            label.sizeToFit()
+            
+            tableView.backgroundView = label
+            tableView.separatorStyle = .none
+            
+            return 0
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+            return 1
+        }
+    }
+    
     func showDeleteStarAlert(indexPath: IndexPath) {
         let title = datas[indexPath.row].title
         let _ = datas[indexPath.row].tid

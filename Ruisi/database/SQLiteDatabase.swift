@@ -32,10 +32,19 @@ public class SQLiteDatabase {
             print("init database")
             do {
                 try SQLiteDatabase.instance?.createTables()
-                try SQLiteDatabase.instance?.clearOldHistory(max: 1000) //最多存1000条
             } catch {
                 print(error)
             }
+        }
+    }
+    
+    public static func clearOldData(size: Int) {
+        print("====================")
+        print("clear old history data")
+        do {
+            try SQLiteDatabase.instance?.clearOldHistory(max: size) //最多存1000条
+        } catch {
+            print(error)
         }
     }
 
@@ -193,9 +202,9 @@ public class SQLiteDatabase {
     }
 
     // 加载浏览历史
-    func loadReadHistory(count: Int) -> [History] {
+    func loadReadHistory(count: Int, offset: Int = 0) -> [History] {
         var datas = [History]()
-        let sql = "SELECT * FROM \(TABLE_READ_HISTORY) order by last_read desc limit \(count)"
+        let sql = "SELECT * FROM \(TABLE_READ_HISTORY) order by last_read desc limit \(count) offset \(offset)"
         guard let statement = try? prepare(statement: sql) else {
             return datas
         }

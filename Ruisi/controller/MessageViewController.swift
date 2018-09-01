@@ -35,9 +35,11 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
             lastLoginState = App.isLogin
             showRefreshControl = lastLoginState
             if lastLoginState { //未登陆转为登陆
+                emptyPlaceholderText = nil
                 rsRefreshControl?.beginRefreshing()
                 loadData(position)
             } else { //登陆转为未登陆
+                emptyPlaceholderText = "需要登陆才能查看"
                 datas.removeAll()
                 tableView.reloadData()
             }
@@ -267,20 +269,20 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         _ = super.numberOfSections(in: tableView)
-        if datas.count == 0 {//no data avaliable
-            if let title = emptyPlaceholderText {
-                let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
-                label.text = title
-                label.textColor = UIColor.darkGray
-                label.numberOfLines = 0
-                label.textAlignment = .center
-                label.font = UIFont.systemFont(ofSize: 20)
-                label.textColor = UIColor.lightGray
-                label.sizeToFit()
-                
-                tableView.backgroundView = label
-                tableView.separatorStyle = .none
-            }
+        if datas.count == 0 && !isLoading {//no data avaliable
+            let title = emptyPlaceholderText ?? "暂无消息"
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+            label.text = title
+            label.textColor = UIColor.darkGray
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = UIColor.lightGray
+            label.sizeToFit()
+            
+            tableView.backgroundView = label
+            tableView.separatorStyle = .none
+            
             return 0
         } else {
             tableView.backgroundView = nil

@@ -147,7 +147,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ErC-9H-a0f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1367.2" y="-1257.1214392803599"/>
+            <point key="canvasLocation" x="-1482" y="-1257"/>
         </scene>
         <!--搜索-->
         <scene sceneID="8H4-Tl-QQu">
@@ -417,7 +417,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x4N-Tz-fiw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-854" y="-485"/>
+            <point key="canvasLocation" x="-639" y="-537"/>
         </scene>
         <!--帖子详情-->
         <scene sceneID="yFl-Fa-IO4">
@@ -552,6 +552,7 @@
                             <constraint firstItem="fbp-7q-6bA" firstAttribute="top" secondItem="Vsc-Tu-tc0" secondAttribute="bottom" id="qOy-Ec-Gun"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="v2G-yh-96I"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -564,7 +565,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxu-p5-xxX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1094" y="-537"/>
+            <point key="canvasLocation" x="769" y="-398"/>
         </scene>
         <!--热帖新帖-->
         <scene sceneID="ppi-9d-c7N">
@@ -664,7 +665,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TIK-eL-cap" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1546.4000000000001" y="-437.63118440779613"/>
+            <point key="canvasLocation" x="-1532" y="-557"/>
         </scene>
         <!--登陆-->
         <scene sceneID="YrY-yN-Fyd">
@@ -1120,7 +1121,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m2t-0d-EPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1311.2" y="244.22788605697153"/>
+            <point key="canvasLocation" x="-1482" y="141"/>
         </scene>
         <!--关于-->
         <scene sceneID="KtM-s2-t1w">
@@ -1165,7 +1166,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1L1-MG-kwy">
-                                <rect key="frame" x="100.5" y="157" width="49" height="32"/>
+                                <rect key="frame" x="100.5" y="156.5" width="49" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="去回复">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1201,7 +1202,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUh-qB-3Md">
-                                <rect key="frame" x="175.5" y="181.5" width="49" height="32"/>
+                                <rect key="frame" x="175.5" y="181" width="49" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="去提交"/>
                                 <connections>
@@ -2289,7 +2290,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0Z2-AG-WWE">
                                         <rect key="frame" x="0.0" y="42" width="375" height="127.5"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="01g-cr-rXj">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="01g-cr-rXj">
                                                 <rect key="frame" x="147.5" y="0.0" width="80" height="80"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -2587,7 +2588,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Nu-Iw-WQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-410.39999999999998" y="236.13193403298354"/>
+            <point key="canvasLocation" x="-340" y="379"/>
         </scene>
         <!--我的收藏-->
         <scene sceneID="gYd-AM-Ai2">
@@ -3133,7 +3134,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qRB-Ye-juh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="764" y="-1802"/>
+            <point key="canvasLocation" x="703" y="-2056"/>
         </scene>
         <!--选择分区-->
         <scene sceneID="flp-Sv-JPt">
@@ -3387,7 +3388,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J8Y-pI-g92" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2276" y="-567"/>
+            <point key="canvasLocation" x="-2306" y="-557"/>
         </scene>
         <!--消息-->
         <scene sceneID="fjI-MZ-fzy">
@@ -3406,7 +3407,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAs-6X-OiU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2276" y="161"/>
+            <point key="canvasLocation" x="-2306" y="141"/>
         </scene>
         <!--我-->
         <scene sceneID="Qup-Sa-5mc">
@@ -3425,7 +3426,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pgz-aE-xaW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2276" y="970"/>
+            <point key="canvasLocation" x="-2306" y="968"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ftL-VR-XPD">
@@ -3612,10 +3613,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="76Q-oO-XOJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="79"/>
+            <point key="canvasLocation" x="1905" y="104"/>
         </scene>
     </scenes>
     <resources>
+        <image name="avatar_placeholder" width="60" height="60"/>
         <image name="done" width="64" height="64"/>
         <image name="ic_home_36pt" width="30" height="30"/>
         <image name="ic_notifications_36pt" width="30" height="30"/>

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,9 +20,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ThemeManager.initTheme()
 
         Reachability.startCheckHost(host: App.HOST_RS)
-
+        
         SQLiteDatabase.initDatabase()
-
+        
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
+            let his = SQLiteDatabase.instance?.loadReadHistory(count: 800, offset: 800)
+            
+            // init spotlight
+            SpotlightManager.sharedInstance.initSpotlight(his: his)
+            
+            SQLiteDatabase.clearOldData(size: 800)
+        }
         return true
     }
     
@@ -60,5 +69,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
     }
 
+}
+
+//MARK: - Spotlight Search
+extension AppDelegate {
+    
+    // 从Spotlight打开
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        // Called when Spotlight item tapped. Do anything with specified data.
+        
+        if userActivity.activityType == CSSearchableItemActionType {
+            if let userInfo = userActivity.userInfo {
+                let selectedItem = userInfo[CSSearchableItemActivityIdentifier] as! String
+                
+                
+                // Read data from selected activity info that was set to related item, and save into dictionary.
+                var valueDict = Dictionary<String,String>()
+                
+                if let components = URLComponents(string: selectedItem), let queryItems = components.queryItems {
+                    for item in queryItems {
+                        valueDict[item.name] = item.value
+                    }
+                }
+                
+                print("Selected Item Parameters: \(valueDict)")
+                if let vc = UIApplication.shared.keyWindow?.rootViewController, let dest = vc.storyboard?.instantiateViewController(withIdentifier: "PostViewController") as? PostViewController {
+                    
+                    dest.tid = Int(valueDict["tid"]!)
+                    let navVc = UINavigationController(rootViewController: dest)
+                    dest.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: dest, action: #selector(dest.dismissFormSpotlight))
+                    
+                    vc.present(navVc, animated: true, completion: nil)
+                }
+            
+                
+            }
+        }
+        
+        return true
+    }
 }
 

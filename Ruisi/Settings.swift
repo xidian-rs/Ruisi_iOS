@@ -192,10 +192,14 @@ public class Settings {
     private static var isLoadingAvater = false
 
     public static func getAvater(uid: Int, size: Int = 1, callback: @escaping (Data?) -> Void) {
+        let day = UserDefaults.standard.integer(forKey: "saved_avatar_time_\(uid)")
+        // 缓存头像保存3天
         var d: Data?
-        if let d = UserDefaults.standard.data(forKey: "\(key_avater)_\(uid)_\(size)") {
-            callback(d)
-            return
+        if Int(Date().timeIntervalSince1970 / 86400) - day < 3 {
+            if let d = UserDefaults.standard.data(forKey: "\(key_avater)_\(uid)_\(size)") {
+                callback(d)
+                return
+            }
         }
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -217,6 +221,7 @@ public class Settings {
     //设置头像
     public static func setAvater(uid: Int, size: Int = 1, data: Data) {
         DispatchQueue.global(qos: .background).async {
+            UserDefaults.standard.set(Date().timeIntervalSince1970 / 86400, forKey: "saved_avatar_time_\(uid)")
             UserDefaults.standard.set(data, forKey: "\(key_avater)_\(uid)_\(size)")
         }
     }
