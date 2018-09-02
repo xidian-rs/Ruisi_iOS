@@ -18,6 +18,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private var datas = [KeyValueData<String, String>]()
     
+    @IBOutlet weak var passwordSafeBtn: UIButton!
     @IBOutlet weak var chatBtn: UIButton!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -65,6 +66,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         loadData(uid: uid!)
         
         if Settings.uid != uid { //别人
+            passwordSafeBtn.isHidden = true
             self.title = username
             if !isFriend {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriendBtnClick))
@@ -72,10 +74,12 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteFriendClick))
             }
         } else if Settings.uid != nil {
-            //
+            passwordSafeBtn.isHidden = false
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登陆", style: .plain, target: self, action: #selector(exitClick))
             self.chatBtn.isHidden = true
+            passwordSafeBtn.addTarget(self, action: #selector(passwordSafeClick), for: .touchUpInside)
         } else {
+            passwordSafeBtn.isHidden = true
             self.chatBtn.isHidden = true
         }
     }
@@ -83,6 +87,20 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     @objc func avatarClick() {
         let viewer = GalleryViewController(startIndex: 0, itemsDataSource: self, displacedViewsDataSource: self)
         self.present(viewer, animated: false, completion: nil)
+    }
+    
+    @objc func passwordSafeClick() {
+        let sheet = UIAlertController(title: "请选择操作", message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "修改密码", style: .default, handler: { (ac) in
+            self.performSegue(withIdentifier: "profileToPasswordVc", sender: ac)
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "修改邮箱", style: .default, handler: { (ac) in
+            self.performSegue(withIdentifier: "profileToPasswordVc", sender: ac)
+        }))
+        
+        sheet.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        self.present(sheet, animated: true, completion: nil)
     }
     
     func checkLogin() -> Bool {
@@ -303,6 +321,11 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         if let dest = segue.destination as? ChatViewController, let uid = self.uid {
             dest.uid = uid
             dest.username = username
+        } else if segue.identifier == "profileToPasswordVc" {
+            let destNavVc = segue.destination as! UINavigationController
+            let destVc = destNavVc.viewControllers[0] as! PasswordViewController
+            destVc.mode = (sender as! UIAlertAction).title! == "修改密码" ? 1 : 2
+            destVc.title = (sender as! UIAlertAction).title
         }
     }
 }

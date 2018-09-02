@@ -31,7 +31,7 @@ public class Urls {
     //校外网地址
     public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
     
-    public static var baseUrl: String {
+    public class var baseUrl: String {
         return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_ME
     }
 
@@ -39,58 +39,71 @@ public class Urls {
     public static let signUrl = "\(BASE_URL_EDU)plugin.php?id=dsu_paulsign:sign"
     public static let signPostUrl = "\(BASE_URL_EDU)plugin.php?id=dsu_paulsign:sign&operation=qiandao&infloat=1&inajax=1"
 
-    public static var hotUrl: String {
+    public class var hotUrl: String {
         return "\(baseUrl)forum.php?mod=guide&view=hot&mobile=2"
     }
 
-    public static var newUrl: String {
+    public class var newUrl: String {
         return "\(baseUrl)forum.php?mod=guide&view=new&mobile=2"//&page=1
     }
 
     // 登陆
-    public static var loginUrl: String {
+    public class var loginUrl: String {
         return "\(baseUrl)member.php?mod=logging&action=login&mobile=2"
     }
     
     // 检查登陆
-    public static var checkLoginUrl: String {
+    public class var checkLoginUrl: String {
         return "\(baseUrl)member.php?mod=logging&action=login&inajax=1&mobile=2"
     }
     
     // 注册检测的地址，检查用户名/邮箱/邀请码是否合法
-    public static var regCheckUrl: String {
+    public class var regCheckUrl: String {
         return "\(baseUrl)forum.php?mod=ajax&inajax=1&mobile=2"
     }
     
     // 忘记密码
-    public static var forgetPasswordUrl: String {
+    public class var forgetPasswordUrl: String {
         return "\(baseUrl)member.php?mod=lostpasswd&lostpwsubmit=yes&inajax=1&mobile=2"
     }
+    
+    // 修改密码 修改邮箱
+    public class var passwordSafeUrl: String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=profile&op=password&mobile=2&inajax=1"
+    }
+    
+    public class var passwordSafePostUrl: String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=profile&mobile=2&inajax=1"
+    }
+    
+    public class var resentEmailUrl: String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=profile&op=password&resend=1&mobile=2&inajax=1"
+    }
 
-    public static var checkUpdate: String {
+    public class var checkUpdate: String {
         return getPostUrl(tid: App.POST_ID)
     }
     
     // 板块列表
-    public static var forumlistUrl: String {
+    public class var forumlistUrl: String {
         return "\(baseUrl)forum.php?inajax=1&forumlist=1&mobile=2"
     }
 
-    public static func getPostUrl(tid: Int, pid: Int? = nil) -> String {
+    public class func getPostUrl(tid: Int, pid: Int? = nil) -> String {
         if let p = pid {
             return "\(baseUrl)forum.php?mod=redirect&goto=findpost&ptid=\(tid)&pid=\(p)&mobile=2"
         }
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&mobile=2"
     }
 
-    public static func getPostsUrl(fid: Int) -> String {
+    public class func getPostsUrl(fid: Int) -> String {
         if App.isSchoolNet {
             return "\(BASE_URL_EDU)forum.php?mod=forumdisplay&fid=\(fid)" //&page=1
         }
         return "\(BASE_URL_ME)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
     }
 
-    public static func getPostsType(fid: Int, isSchoolNet: Bool) -> PostsType {
+    public class func getPostsType(fid: Int, isSchoolNet: Bool) -> PostsType {
         if !isSchoolNet {
             return .list
         }
@@ -103,7 +116,7 @@ public class Urls {
     }
 
     //回复
-    public static var messageReply: String {
+    public class var messageReply: String {
         return "\(baseUrl)home.php?mod=space&do=notice&inajax=1&mobile=2"
     }
 
@@ -113,33 +126,33 @@ public class Urls {
     }
 
     // 聊天详情页
-    public static func getChatDetailUrl(tuid: Int) -> String {
+    public class func getChatDetailUrl(tuid: Int) -> String {
         return "\(baseUrl)home.php?mod=space&do=pm&subop=view&touid=\(tuid)&mobile=2"
     }
     
     // 发送聊天
-    public static func postChatUrl(tuid: Int) -> String {
+    public class func postChatUrl(tuid: Int) -> String {
         return "\(baseUrl)home.php?mod=spacecp&ac=pm&op=send&pmid=\(tuid)&daterange=0&pmsubmit=yes&mobile=2"
     }
 
     //at
-    public static var messageAt: String {
+    public class var messageAt: String {
         return "\(baseUrl)home.php?mod=space&do=notice&view=mypost&type=at&inajax=1&mobile=2"
     }
 
     // 我的收藏
-    public static var starUrl: String {
+    public class var starUrl: String {
         return "\(baseUrl)home.php?mod=space&do=favorite&view=me&mobile=2"
     }
 
     // 收藏文章
-    public static func addStarUrl(tid: Any) -> String {
+    public class func addStarUrl(tid: Any) -> String {
         return "\(baseUrl)home.php?mod=spacecp&ac=favorite&type=thread&id=\(tid)&mobile=2&handlekey=favbtn&inajax=1"
     }
 
 
     // 删除收藏 TODO 不支持外网
-    public static func getDelStarUrl(favid: Int) -> String {
+    public class func getDelStarUrl(favid: Int) -> String {
         return "\(baseUrl)home.php?mod=spacecp&ac=favorite&op=delete&favid=\(favid)&type=all&inajax=1"
     }
 
@@ -152,7 +165,7 @@ public class Urls {
     }
     
     // 我的回复
-    public static var myReplysUrl: String {
+    public class var myReplysUrl: String {
         return "\(baseUrl)forum.php?mod=guide&view=my&type=reply&inajax=1&mobile=2"
     }
 
@@ -162,7 +175,7 @@ public class Urls {
     }
 
     // 删除好友
-    public static func deleteFriendUrl(uid: Int) -> String {
+    public class func deleteFriendUrl(uid: Int) -> String {
         return "\(baseUrl)home.php?mod=spacecp&ac=friend&op=ignore&uid=\(uid)&confirm=1&mobile=2"
     }
 
@@ -172,14 +185,14 @@ public class Urls {
     }
 
     // 添加好友
-    public static func addFriendUrl(uid: Int) -> String {
+    public class func addFriendUrl(uid: Int) -> String {
         return "\(baseUrl)home.php?mod=spacecp&ac=friend&op=add&uid=\(uid)&inajax=1&mobile=2"
     }
 
 
     // size =0 small 1-middle 2-large
     // 获得头像链接
-    public static func getAvaterUrl(uid: Any, size: Int = 1) -> URL? {
+    public class func getAvaterUrl(uid: Any, size: Int = 1) -> URL? {
         let sizeStr: String
         if size == 0 {
             sizeStr = "small"
@@ -193,70 +206,70 @@ public class Urls {
     }
 
     // 获得用户详情页
-    public static func getUserDetailUrl(uid: Any) -> String {
+    public class func getUserDetailUrl(uid: Any) -> String {
         return "\(baseUrl)home.php?mod=space&uid=\(uid)&do=profile&mobile=2"
     }
 
     // 搜索
     public static var searchUrl = "\(baseUrl)search.php?mod=forum&mobile=2"
 
-    public static func getSearchUrl2(searchId: String) -> String {
+    public class func getSearchUrl2(searchId: String) -> String {
         return "\(baseUrl)search.php?mod=forum&searchid=\(searchId)&orderby=lastpost&ascdesc=desc&searchsubmit=yes&mobile=2"
     }
 
     // 发帖url
-    public static func newPostUrl(fid: Int) -> String {
+    public class func newPostUrl(fid: Int) -> String {
         return "\(baseUrl)forum.php?mod=post&action=newthread&fid=\(fid)&mobile=2"
     }
 
     // 提交编辑url
-    public static var editSubmitUrl: String {
+    public class var editSubmitUrl: String {
         return "\(baseUrl)forum.php?mod=post&action=edit&extra=&editsubmit=yes&mobile=2"
     }
 
     // 编辑帖子URL
-    public static func editPostUrl(tid: Int, pid: Int) -> String {
+    public class func editPostUrl(tid: Int, pid: Int) -> String {
         return "\(baseUrl)forum.php?mod=post&action=edit&tid=\(tid)&pid=\(pid)&mobile=2"
     }
 
     // @列表
-    public static var AtListUrl: String {
+    public class var AtListUrl: String {
         return "\(baseUrl)misc.php?mod=getatuser&inajax=1&mobile=2"
     }
 
     // 浏览帖子图片列表
-    public static func viewAlbumUrl(tid: Int, aid: Int?) -> String {
+    public class func viewAlbumUrl(tid: Int, aid: Int?) -> String {
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&from=album&mobile=2\((aid != nil) ? "&aid=\(aid!)" : "")"
     }
 
 
     // 上传图片
-    public static var uploadImageUrl: String {
+    public class var uploadImageUrl: String {
         return "\(baseUrl)misc.php?mod=swfupload&operation=upload&type=image&inajax=yes&infloat=yes&simple=2&mobile=2"
     }
 
     // 删除上传的图片
-    public static func deleteUploadedUrl(aid: String) -> String {
+    public class func deleteUploadedUrl(aid: String) -> String {
         return "\(baseUrl)forum.php?mod=ajax&action=deleteattach&inajax=yes&aids[]=\(aid)&mobile=2"
     }
     
     // 检查发帖需不需要输入验证码
-    public static var checkNewpostUrl: String {
+    public class var checkNewpostUrl: String {
         return "\(baseUrl)forum.php?mod=ajax&action=checkpostrule&ac=newthread&mobile=2"
     }
     
     // 更新验证码图片地址
-    public static func updateValidUrl(update: String, hash: String) -> String {
+    public class func updateValidUrl(update: String, hash: String) -> String {
         return "\(baseUrl)misc.php?mod=seccode&update=\(update)&idhash=\(hash)&mobile=2"
     }
     
     // 查询update地址
-    public static func getValidUpdateUrl(hash: String) -> String {
+    public class func getValidUpdateUrl(hash: String) -> String {
         return "\(baseUrl)misc.php?mod=seccode&action=update&idhash=\(hash)&mobile=2"
     }
     
     // 检查验证码是否正确
-    public static func checkValidUrl(hash: String, value: String) -> String {
+    public class func checkValidUrl(hash: String, value: String) -> String {
         return "\(baseUrl)misc.php?mod=seccode&action=check&inajax=1&idhash=\(hash)&secverify=\(value)&mobile=2"
     }
 }

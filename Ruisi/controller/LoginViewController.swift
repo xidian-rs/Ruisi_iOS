@@ -77,7 +77,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func alert(title: String? = "登陆错误", message: String) {
-        let vc = UIAlertController(title: "登陆错误", message: message, preferredStyle: .alert)
+        let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
         vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
         self.present(vc, animated: true)
     }

@@ -60,6 +60,7 @@
 		2F5DF0C71EFE7A3200428EE1 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */; };
 		2F63A41A213A86090074201B /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63A419213A86090074201B /* AgreementViewController.swift */; };
 		2F63A41C213AD4D10074201B /* SpotlightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63A41B213AD4D10074201B /* SpotlightManager.swift */; };
+		2F63F1CA213BA35000531EF4 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F1C9213BA35000531EF4 /* PasswordViewController.swift */; };
 		2F63F24F1FE4E7F2005FCD29 /* SQLiteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */; };
 		2F63F2521FE4E857005FCD29 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F63F2511FE4E857005FCD29 /* SQLiteError.swift */; };
 		2F6679E9208342750010F3AB /* HtmlArrawLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */; };
@@ -190,6 +191,7 @@
 		2F5DF0C61EFE7A3200428EE1 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
 		2F63A419213A86090074201B /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		2F63A41B213AD4D10074201B /* SpotlightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightManager.swift; sourceTree = "<group>"; };
+		2F63F1C9213BA35000531EF4 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		2F63F24E1FE4E7F2005FCD29 /* SQLiteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteDatabase.swift; sourceTree = "<group>"; };
 		2F63F2511FE4E857005FCD29 /* SQLiteError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		2F6679E8208342750010F3AB /* HtmlArrawLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlArrawLabel.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				2FD4ADCC1EA75C3400602516 /* PostsViewController.swift */,
 				2F37A09E1FE404E400493A59 /* ImageGridPostsViewController.swift */,
 				2F8AD6951EA787EE002540AA /* LoginViewController.swift */,
+				2F63F1C9213BA35000531EF4 /* PasswordViewController.swift */,
 				2FA780EC1EA8603800ACBEAF /* PostViewController.swift */,
 				2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */,
 				2F7C75B01EFE356F0067D499 /* SignViewController.swift */,
@@ -714,6 +717,7 @@
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
 				2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
+				2F63F1CA213BA35000531EF4 /* PasswordViewController.swift in Sources */,
 				2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */,
 				2FF7B1B220557ADC00DE202E /* ForgetPasswordController.swift in Sources */,
 				2FEBEFB71FD0286E0037E7A4 /* ChatViewController.swift in Sources */,

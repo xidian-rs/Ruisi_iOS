@@ -242,13 +242,25 @@ public class Utils {
      * </div>
      * 提取：本版块禁止发帖
      */
-    public static func getRuisiReqError(res: String?) -> String? {
+    public class func getRuisiReqError(res: String?) -> String? {
         if let r = res, let jumpIndex = r.range(of: "class=\"jump_c\"")?.upperBound,
            let start = r.range(of: "<p>", range: jumpIndex..<r.endIndex)?.upperBound,
            let end = r.range(of: "</p>", range: jumpIndex..<r.endIndex)?.lowerBound {
             return String(r[start..<end])
         }
 
+        return nil
+    }
+    
+    //<dt id="messagetext">
+    //<p>密码太弱，密码中必须包含数字<script type="text/javascript" reload="1">if(typeof errorhandle_=='function') {errorhandle_('密码太弱，密码中必须包含数字', {});}</script></p>
+    public class func getRuisiReqAjaxError(res: String?) -> String? {
+        if let r = res, let jumpIndex = r.range(of: "id=\"messagetext\"")?.upperBound,
+            let start = r.range(of: "<p>", range: jumpIndex..<r.endIndex)?.upperBound,
+            let end = r.range(of: "<script", range: jumpIndex..<r.endIndex)?.lowerBound {
+            return String(r[start..<end])
+        }
+        
         return nil
     }
 

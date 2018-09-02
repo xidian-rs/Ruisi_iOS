@@ -87,6 +87,12 @@ class SignViewController: UIViewController {
                 success = true
                 let end = res.range(of: "</div>", options: .literal, range: s.upperBound..<res.endIndex)
                 message = String(res[s.lowerBound..<end!.lowerBound])
+                
+            } else if let eStart = res.range(of: "class=\"c\">")?.upperBound {
+                //<div class="c">对不起，您所在的用户组未被加入允许签到的行列. </div>
+                success = false
+                let eEnd = res.range(of: "</div>", range: eStart..<res.endIndex)!.lowerBound
+                message = String(res[eStart..<eEnd])
             } else {
                 message = Utils.getRuisiReqError(res: res) ?? res
                 success = false
