@@ -18,6 +18,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var usergradeLabel: UILabel!
     @IBOutlet weak var headBgView: UIView!
+    @IBOutlet weak var resentEmailBtn: UIButton!
     
     var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
     var titles = ["签到中心", "主题设置", "分享手机睿思","五星好评", "设置"]
@@ -27,7 +28,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        headBgView.backgroundColor = ThemeManager.currentPrimaryColor
+        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         //获得导航栏控制权
         self.navigationController?.delegate = self
@@ -47,6 +48,9 @@ UITableViewDataSource, UINavigationControllerDelegate {
             isLogin = App.isLogin
             updateUi()
         }
+        
+        headBgView.backgroundColor = ThemeManager.currentPrimaryColor
+        resentEmailBtn.isHidden = !(Settings.grade == "等待验证会员")
     }
     
     private func updateUi() {

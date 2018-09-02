@@ -1276,12 +1276,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6nH-KE-4Hb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="542" y="3486"/>
+            <point key="canvasLocation" x="270" y="4025"/>
         </scene>
-        <!--密码安全-->
+        <!--修改邮箱-->
         <scene sceneID="6yw-fI-1jW">
             <objects>
-                <viewController storyboardIdentifier="passwordSafeVc" title="密码安全" hidesBottomBarWhenPushed="YES" id="1Br-ji-2Yu" customClass="PasswordViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="passwordSafeVc" title="修改邮箱" hidesBottomBarWhenPushed="YES" id="1Br-ji-2Yu" customClass="PasswordViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4pm-kK-qKl"/>
                         <viewControllerLayoutGuide type="bottom" id="Vcd-kr-1Gj"/>
@@ -1291,7 +1291,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="46D-p2-IzN">
-                                <rect key="frame" x="16" y="72" width="343" height="320"/>
+                                <rect key="frame" x="16" y="72" width="343" height="318"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前密码:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2X-dS-icc">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -1348,8 +1348,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbT-6x-tfN">
-                                        <rect key="frame" x="0.0" y="290" width="343" height="30"/>
-                                        <state key="normal" title="重发验证邮件(无需密码)"/>
+                                        <rect key="frame" x="0.0" y="290" width="343" height="28"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <state key="normal" title="重发验证邮件(无需密码，留意垃圾箱)"/>
                                         <connections>
                                             <action selector="resentClick:" destination="1Br-ji-2Yu" eventType="touchUpInside" id="54f-QY-YLc"/>
                                         </connections>
@@ -1386,11 +1387,12 @@
                         <outlet property="newPasswordLabel" destination="lGB-Ub-iiL" id="YVD-Eu-ahp"/>
                         <outlet property="passwordInput" destination="tQO-2J-WxB" id="kzM-Xv-Dg0"/>
                         <outlet property="resentBtn" destination="fbT-6x-tfN" id="9Bc-Af-q61"/>
+                        <outlet property="submitBtn" destination="LvI-pr-DOu" id="aeV-NW-u9a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VCY-yp-2vm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1650" y="3487"/>
+            <point key="canvasLocation" x="1007" y="4024"/>
         </scene>
         <!--主题设置-->
         <scene sceneID="maF-Ch-974">
@@ -2424,10 +2426,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mZg-BW-WJm">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="185.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="220.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0Z2-AG-WWE">
-                                        <rect key="frame" x="0.0" y="42" width="375" height="127.5"/>
+                                        <rect key="frame" x="0.0" y="42" width="375" height="162.5"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="01g-cr-rXj">
                                                 <rect key="frame" x="147.5" y="0.0" width="80" height="80"/>
@@ -2454,6 +2456,14 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pdM-pG-epf">
+                                                <rect key="frame" x="150.5" y="135.5" width="74" height="27"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <state key="normal" title="重发验证邮件"/>
+                                                <connections>
+                                                    <segue destination="8at-vS-71m" kind="show" id="yAY-7M-p9M"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -2467,7 +2477,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Efz-ik-bhl">
-                                <rect key="frame" x="32" y="193.5" width="311" height="61.5"/>
+                                <rect key="frame" x="32" y="228.5" width="311" height="61.5"/>
                                 <subviews>
                                     <stackView opaque="NO" tag="4" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="RHg-MS-j3l">
                                         <rect key="frame" x="0.0" y="0.0" width="49.5" height="61.5"/>
@@ -2562,7 +2572,7 @@
                                 </subviews>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xuB-CX-cqD">
-                                <rect key="frame" x="0.0" y="263" width="375" height="355"/>
+                                <rect key="frame" x="0.0" y="298" width="375" height="320"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                 <prototypes>
@@ -2621,6 +2631,7 @@
                         <outlet property="avaterImage" destination="01g-cr-rXj" id="Rki-ws-sUH"/>
                         <outlet property="headBgView" destination="mZg-BW-WJm" id="NyU-DD-io2"/>
                         <outlet property="myTableView" destination="xuB-CX-cqD" id="Xwg-bT-nGP"/>
+                        <outlet property="resentEmailBtn" destination="pdM-pG-epf" id="cBa-0Z-qe8"/>
                         <outlet property="usergradeLabel" destination="0ng-o3-zgw" id="95P-M5-8GD"/>
                         <outlet property="usernameLabel" destination="gaB-Gs-RcA" id="ZMP-Q1-epO"/>
                         <segue destination="MBf-zb-Kcw" kind="show" identifier="myProvileSegue" id="VUh-ie-Gaz"/>
@@ -3772,6 +3783,7 @@
         <segue reference="U1Y-Qc-Rhq"/>
         <segue reference="gtb-Ty-3Uw"/>
         <segue reference="OQ5-Uc-Z7S"/>
+        <segue reference="yAY-7M-p9M"/>
         <segue reference="VUh-ie-Gaz"/>
         <segue reference="xwk-zK-WJF"/>
     </inferredMetricsTieBreakers>

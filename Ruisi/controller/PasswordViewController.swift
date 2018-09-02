@@ -25,6 +25,7 @@ class PasswordViewController: UIViewController {
     @IBOutlet weak var emailInput: UITextField!
     @IBOutlet weak var emailNotifyInput: UILabel!
     @IBOutlet weak var resentBtn: UIButton!
+    @IBOutlet weak var submitBtn: UIBarButtonItem!
     
     // 验证码相关
     private var haveValid = false
@@ -49,6 +50,7 @@ class PasswordViewController: UIViewController {
             confirmNewPasswordInput.isHidden = true
         }
         
+        submitBtn.title = title
         emailNotifyInput.isHidden = true
         
         loadData()

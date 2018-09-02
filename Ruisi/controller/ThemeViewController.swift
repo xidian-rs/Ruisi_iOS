@@ -28,13 +28,10 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     @objc
     func doneClick() {
-        let alert = UIAlertController(title: "提示", message: "主题设置重启App后生效", preferredStyle: .alert)
+        let alert = UIAlertController(title: "提示", message: "主题可能需要重启App后生效", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "好", style: .default, handler: { (ac) in
-            //alert.dismiss(animated: true, completion: nil)
-            print(1 / self.zero)
             self.navigationController?.popViewController(animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
