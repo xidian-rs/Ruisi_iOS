@@ -44,7 +44,7 @@ class ThemeManager {
         UIApplication.shared.statusBarStyle = .lightContent
 
         //设置导航栏颜色
-        let textAttributes = [NSAttributedStringKey.foregroundColor: theme.titleColor]
+        let textAttributes = [NSAttributedString.Key.foregroundColor: theme.titleColor]
         UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
         UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
         UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色

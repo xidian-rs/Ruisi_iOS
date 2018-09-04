@@ -215,7 +215,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     // section 头或者尾部
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
+        if kind == UICollectionView.elementKindSectionHeader {
             let head = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "head", for: indexPath)
             let label = head.viewWithTag(1) as! UILabel
             label.text = datas[indexPath.section].name

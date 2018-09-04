@@ -166,7 +166,7 @@ class SignViewController: UIViewController {
             loadingAlert = UIAlertController(title: "签到中", message: "请稍后...", preferredStyle: .alert)
             let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
             loadingIndicator.hidesWhenStopped = true
-            loadingIndicator.activityIndicatorViewStyle = .gray
+            loadingIndicator.style = .gray
             loadingIndicator.startAnimating()
             loadingAlert!.view.addSubview(loadingIndicator)
         }

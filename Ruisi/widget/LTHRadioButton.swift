@@ -110,8 +110,8 @@ public class LTHRadioButton: UIView {
         borderWidth.duration = 0.2
         borderWidth.fromValue = 0.0
         borderWidth.toValue = innerBorderWidth
-        borderWidth.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        borderWidth.fillMode = kCAFillModeBackwards
+        borderWidth.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+        borderWidth.fillMode = CAMediaTimingFillMode.backwards
         borderWidth.beginTime = CACurrentMediaTime()
 
         return borderWidth
@@ -135,7 +135,7 @@ public class LTHRadioButton: UIView {
 
         group.duration = 0.1
         group.animations = [bounds, cornerRadius]
-        group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        group.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         group.beginTime = CACurrentMediaTime() + 0.23
 
         return group
@@ -159,7 +159,7 @@ public class LTHRadioButton: UIView {
 
         group.duration = 0.15
         group.animations = [bounds, cornerRadius]
-        group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        group.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         group.beginTime = CACurrentMediaTime() + 0.31
 
         return group
@@ -172,8 +172,8 @@ public class LTHRadioButton: UIView {
         borderColor.duration = 0.15
         borderColor.fromValue = deselectedColor.cgColor
         borderColor.toValue = selectedColor.cgColor
-        borderColor.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        borderColor.fillMode = kCAFillModeBackwards
+        borderColor.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        borderColor.fillMode = CAMediaTimingFillMode.backwards
         borderColor.beginTime = CACurrentMediaTime() + 0.28
 
         return borderColor
@@ -200,7 +200,7 @@ public class LTHRadioButton: UIView {
 
         group.duration = 0.25
         group.animations = [bounds, cornerRadius]
-        group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        group.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         group.beginTime = CACurrentMediaTime() + start
 
         return group
@@ -213,7 +213,7 @@ public class LTHRadioButton: UIView {
         opacity.duration = 0.31
         opacity.fromValue = 0.3
         opacity.toValue = 0
-        opacity.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        opacity.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         opacity.beginTime = CACurrentMediaTime() + 0.26
 
         return opacity
@@ -227,7 +227,7 @@ public class LTHRadioButton: UIView {
         borderWidth.duration = 0.26
         borderWidth.fromValue = frame.width * 0.3
         borderWidth.toValue = 0
-        borderWidth.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        borderWidth.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         borderWidth.beginTime = CACurrentMediaTime() + 0.29
 
         return borderWidth
@@ -250,7 +250,7 @@ public class LTHRadioButton: UIView {
 
         group.duration = duration
         group.animations = [borderWidth, opacity]
-        group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        group.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         group.beginTime = CACurrentMediaTime()
 
         return group
@@ -263,7 +263,7 @@ public class LTHRadioButton: UIView {
         borderColor.duration = duration
         borderColor.fromValue = selectedColor.cgColor
         borderColor.toValue = deselectedColor.cgColor
-        borderColor.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        borderColor.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         borderColor.beginTime = CACurrentMediaTime()
 
         return borderColor

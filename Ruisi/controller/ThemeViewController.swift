@@ -42,7 +42,7 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         
-        let titleAttr = [NSAttributedStringKey.foregroundColor: theme.titleColor]
+        let titleAttr = [NSAttributedString.Key.foregroundColor: theme.titleColor]
         //标题颜色
         self.navigationController?.navigationBar.titleTextAttributes = titleAttr
         //按钮颜色

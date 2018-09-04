@@ -60,7 +60,7 @@ class RegisterViewController: UITableViewController {
         progress = UIAlertController(title: "提交中", message: "请稍后...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 13, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.activityIndicatorViewStyle = .gray
+        loadingIndicator.style = .gray
         loadingIndicator.startAnimating();
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))

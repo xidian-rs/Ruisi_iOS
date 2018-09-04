@@ -37,7 +37,7 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
         smileyCollection.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
         smileyCollection.register(SmileyCell.self, forCellWithReuseIdentifier: "cell")
         smileyToolbar.itemSelected = { [weak self] (btn,pos) in
-            self?.smileyCollection.scrollToItem(at: IndexPath(item: 0, section: pos) , at: UICollectionViewScrollPosition.left, animated: true)
+            self?.smileyCollection.scrollToItem(at: IndexPath(item: 0, section: pos) , at: UICollectionView.ScrollPosition.left, animated: true)
         }
     }
     

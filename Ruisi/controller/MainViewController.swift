@@ -42,7 +42,7 @@ class MainViewController: UITabBarController {
             if lastSelectItem == nil {
                 lastSelectItem = item
             }
-            if let topableVc = self.selectedViewController?.childViewControllers[0] as? ScrollTopable {
+            if let topableVc = self.selectedViewController?.children[0] as? ScrollTopable {
                 topableVc.scrollTop()
             }
         }
@@ -134,7 +134,7 @@ class MainViewController: UITabBarController {
                 print("网络类型:\(App.isSchoolNet) 未知登陆状态")
             }
             
-            if let forumVc = this.childViewControllers[0].childViewControllers[0] as? ForumsViewController,
+            if let forumVc = this.children[0].children[0] as? ForumsViewController,
                 ((forumVc.loadedUid != Settings.uid) || !forumVc.loaded) {
                 DispatchQueue.main.async {
                     forumVc.loadedUid = Settings.uid

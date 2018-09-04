@@ -54,7 +54,7 @@ class RitchTextView: UITextView {
         
         addSubview(placeholderLabel)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(textChnage), name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(textChnage), name: UITextView.textDidChangeNotification, object: nil)
     }
     
     override func layoutSubviews() {
@@ -63,7 +63,7 @@ class RitchTextView: UITextView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextViewTextDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextView.textDidChangeNotification, object: nil)
     }
     
     @objc func textChnage(_ notification: Notification? = nil) {
@@ -108,7 +108,7 @@ class RitchTextView: UITextView {
         
         var result = String()
         attrStr.enumerateAttributes(in: NSRange(location: 0, length: attrStr.length), options: []) { (dict, range, _) in
-            if let attach = dict[NSAttributedStringKey.attachment] as? ImageAttachment {
+            if let attach = dict[NSAttributedString.Key.attachment] as? ImageAttachment {
                 if let v = attach.value {
                     result += v
                 }
@@ -155,7 +155,7 @@ class RitchTextView: UITextView {
         attach.bounds = CGRect(x: 0, y: 0, width:  width, height: height)
         
         //添加font属性防止字体变小
-        attrStr.addAttributes([NSAttributedStringKey.attachment : attach,NSAttributedStringKey.font: font ?? UIFont.systemFont(ofSize: 15)],range: NSRange(location: 0, length: 1))
+        attrStr.addAttributes([NSAttributedString.Key.attachment : attach,NSAttributedString.Key.font: font ?? UIFont.systemFont(ofSize: 15)],range: NSRange(location: 0, length: 1))
         insertImageText(imageText: attrStr)
         
         //手冻执行代理

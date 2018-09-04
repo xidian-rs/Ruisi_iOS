@@ -533,7 +533,7 @@
 					2F16B5DE1EA502420068EE20 = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = 3B86X32L6X;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -868,8 +868,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -888,8 +887,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

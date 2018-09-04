@@ -32,7 +32,7 @@ class TagLabel: UILabel {
     
     override func drawText(in rect: CGRect) {
         let insets = UIEdgeInsets(top: 1, left: 2, bottom: 1, right: 2)
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+        super.drawText(in: rect.inset(by: insets))
     }
     
     override var intrinsicContentSize: CGSize {

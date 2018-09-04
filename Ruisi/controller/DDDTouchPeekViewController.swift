@@ -38,7 +38,7 @@ class DDDTouchPeekViewController: UIViewController {
     func initSubView(){
         self.potoView = UIImageView(frame: CGRect(x: 0, y: 64, width: self.preferredContentSize.width,
                                                   height: self.preferredContentSize.height - 64))
-        self.potoView?.contentMode = UIViewContentMode.scaleAspectFill
+        self.potoView?.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.addSubview(self.potoView!)
         
         let titleView = UILabel(frame: CGRect(x: 0, y: 0, width: self.preferredContentSize.width, height: 64))

@@ -80,7 +80,7 @@ class NewPostViewController: UIViewController,
         progress = UIAlertController(title: isEditMode ? "提交中" : "发帖中", message: "请稍后...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 13, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.activityIndicatorViewStyle = .gray
+        loadingIndicator.style = .gray
         loadingIndicator.startAnimating();
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
@@ -213,10 +213,13 @@ class NewPostViewController: UIViewController,
     }
 
     // 相册选择回掉
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         // 最大图片宽度1080像素
         // rs 限制最大1M的附件
-        let pickedImageData = ((info[UIImagePickerControllerEditedImage] ?? info[UIImagePickerControllerOriginalImage]) as? UIImage)?
+        let pickedImageData = ((info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.editedImage)] ?? info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)]) as? UIImage)?
                 .scaleToSizeAndWidth(width: 1080, maxSize: 1024)
         picker.dismiss(animated: true, completion: nil)
 
@@ -568,4 +571,14 @@ class NewPostViewController: UIViewController,
             target.currentSelectFid = self.fid!
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

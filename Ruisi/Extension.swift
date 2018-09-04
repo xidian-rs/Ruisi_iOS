@@ -39,7 +39,7 @@ extension String {
     func height(for width: CGFloat, font: UIFont) -> CGFloat {
         let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let actualSize = self.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin],
-                                           attributes: [NSAttributedStringKey.font: font], context: nil)
+                                           attributes: [NSAttributedString.Key.font: font], context: nil)
         return actualSize.height
     }
 }
@@ -72,7 +72,7 @@ extension UIImage {
     //调整大小
     func scaleToSizeAndWidth(width: CGFloat, maxSize: Int) -> Data? {
         let image = self.scaleToWidth(width: width) //原始缩放过后的image
-        guard var imageData = UIImageJPEGRepresentation(image, 1.0) else {
+        guard var imageData = image.jpegData(compressionQuality: 1.0) else {
             return nil
         }
         
@@ -80,7 +80,7 @@ extension UIImage {
         var resizeRate: CGFloat = 0.9
         
         while sizeKb > maxSize && resizeRate > 0.1 {
-            imageData = UIImageJPEGRepresentation(image, resizeRate)!
+            imageData = image.jpegData(compressionQuality: resizeRate)!
             sizeKb = (imageData as NSData).length / 1024
             resizeRate -= 0.1
         }

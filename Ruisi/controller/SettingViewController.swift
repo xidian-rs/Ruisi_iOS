@@ -29,12 +29,11 @@ class SettingViewController: UITableViewController {
         enableTailSwitch.isOn = Settings.enableTail
         tailContentTextVIew.text = Settings.tailContent
         tailContentTextVIew.isEditable = enableTailSwitch.isOn
-        
         tailContentTextVIew.text = Settings.tailContent ?? defaultTail
         
         //CFBundleVersion
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            versionLabel.text = "当前版本:\(version) Build:\(Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1)"
+            versionLabel.text = "当前版本:\(version) Build:\(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "1")"
         } else {
             versionLabel.text = "获取版本号出错"
         }

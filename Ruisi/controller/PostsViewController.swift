@@ -278,7 +278,7 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let starBtn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "收藏", handler: { action, indexpath in
+        let starBtn = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "收藏", handler: { action, indexpath in
             self.doStarPost(tid: self.datas[indexPath.row].tid)
         })
         starBtn.backgroundColor = UIColor.orange

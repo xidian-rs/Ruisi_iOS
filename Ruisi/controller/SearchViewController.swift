@@ -56,7 +56,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
         
-        indicateView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicateView = UIActivityIndicatorView(style: .gray)
         indicateView?.hidesWhenStopped = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: indicateView!)
     }
@@ -116,7 +116,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
             let attrTitle: NSAttributedString
             if let searchText = currentSearchText?.trimmingCharacters(in: CharacterSet.whitespaces),let range = title.range(of: searchText) {
                 let attrStr = NSMutableAttributedString(string: title)
-                attrStr.addAttributes([NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.red],
+                attrStr.addAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.red],
                                       range: NSMakeRange(range.lowerBound.encodedOffset, range.upperBound.encodedOffset - range.lowerBound.encodedOffset))
                 attrTitle = attrStr
             }else {

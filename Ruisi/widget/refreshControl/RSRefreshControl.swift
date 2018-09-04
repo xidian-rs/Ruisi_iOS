@@ -13,7 +13,7 @@ class RSRefreshControl: UIControl {
     
     // 父scrollView
     private weak var scrollView: UIScrollView?
-    private lazy var progress =  UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private lazy var progress =  UIActivityIndicatorView(style: .gray)
     private lazy var titleLabel =  UILabel()
     private var initTopInset: CGFloat = 0
     

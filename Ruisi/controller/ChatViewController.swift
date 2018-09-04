@@ -58,7 +58,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         self.title = username
         self.pageSum = 1

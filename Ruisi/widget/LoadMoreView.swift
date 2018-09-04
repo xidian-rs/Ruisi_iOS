@@ -28,14 +28,14 @@ class LoadMoreView: UIView {
     func xibSetup() {
         contentView = loadViewFromNib()
         //contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        label = contentView.viewWithTag(2) as! UILabel
+        label = contentView.viewWithTag(2) as? UILabel
         label.text = "正在加载"
-        indicate = contentView.viewWithTag(1) as! UIActivityIndicatorView
+        indicate = contentView.viewWithTag(1) as? UIActivityIndicatorView
         // use bounds not frame or it'll be offset
         contentView.frame = bounds
 
         // Make the view stretch with containing view
-        contentView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        contentView.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
 
         // Adding custom subview on top of our view (over any custom drawing > see note below)
         addSubview(contentView)

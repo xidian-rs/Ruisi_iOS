@@ -79,7 +79,7 @@ class HtmlLabel: UILabel {
             return
         }
         
-        attrString.enumerateAttribute(NSAttributedStringKey.link, in: NSRange(location: 0, length: attrString.length) , options: []) { (url, range, _) in
+        attrString.enumerateAttribute(NSAttributedString.Key.link, in: NSRange(location: 0, length: attrString.length) , options: []) { (url, range, _) in
             guard let url = url as? URL else { return }
             urlRanges?.append(UrlItem(url: url.absoluteString, range: range))
         }
@@ -117,7 +117,7 @@ class HtmlLabel: UILabel {
                 clickItem = item
                 //print("按下:\(item.url) \(item.range)")
                 //85, 26, 139
-                textStorage.addAttributes([NSAttributedStringKey.backgroundColor : UIColor(white: 0.97, alpha: 1.0)], range: item.range)
+                textStorage.addAttributes([NSAttributedString.Key.backgroundColor : UIColor(white: 0.97, alpha: 1.0)], range: item.range)
                 setNeedsDisplay()
                 break
             }
@@ -140,7 +140,7 @@ class HtmlLabel: UILabel {
         }
         
         if let item = clickItem {
-            textStorage.removeAttribute(NSAttributedStringKey.backgroundColor, range: item.range)
+            textStorage.removeAttribute(NSAttributedString.Key.backgroundColor, range: item.range)
             setNeedsDisplay()
         }
         
@@ -149,7 +149,7 @@ class HtmlLabel: UILabel {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let item = clickItem {
-            textStorage.removeAttribute(NSAttributedStringKey.backgroundColor, range: item.range)
+            textStorage.removeAttribute(NSAttributedString.Key.backgroundColor, range: item.range)
             setNeedsDisplay()
         }
         clickItem = nil

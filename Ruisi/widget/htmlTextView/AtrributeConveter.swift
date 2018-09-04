@@ -60,8 +60,8 @@ class AttributeConverter: HtmlParserDelegate {
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.lineHeightMultiple = CGFloat(1.5)
 
-        addAttrs([NSAttributedStringKey.paragraphStyle: paraStyle], start: 0, end: position)
-        addAttrs([NSAttributedStringKey.font: font], start: 0, end: position)
+        addAttrs([NSAttributedString.Key.paragraphStyle: paraStyle], start: 0, end: position)
+        addAttrs([NSAttributedString.Key.font: font], start: 0, end: position)
         return attributedString
     }
     
@@ -174,7 +174,7 @@ class AttributeConverter: HtmlParserDelegate {
                 break
             case .B, .STRONG:
                 //addAttrs([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)], start: start, end: end)
-                addAttrs([NSAttributedStringKey.foregroundColor: UIColor.black], start: start, end: end)
+                addAttrs([NSAttributedString.Key.foregroundColor: UIColor.black], start: start, end: end)
             case .P:
                 handleParagraph(start: start, attr: attr)
             case .A:
@@ -195,31 +195,31 @@ class AttributeConverter: HtmlParserDelegate {
                                 start += 1
                             }
                         }
-                        addAttrs([NSAttributedStringKey.link: u,NSAttributedStringKey.foregroundColor: linkTextClor], start: start, end: end)
+                        addAttrs([NSAttributedString.Key.link: u,NSAttributedString.Key.foregroundColor: linkTextClor], start: start, end: end)
                     }
                 }
                 break
             case .I, .EM, .CITE, .DFN: // 倾斜 darkGray
-                addAttrs([NSAttributedStringKey.obliqueness: 0.15, NSAttributedStringKey.foregroundColor: UIColor.darkGray], start: start, end: end)
+                addAttrs([NSAttributedString.Key.obliqueness: 0.15, NSAttributedString.Key.foregroundColor: UIColor.darkGray], start: start, end: end)
             case .DEL, .S, .STRIKE: // 删除线
-                addAttrs([NSAttributedStringKey.strikethroughStyle: 1], start: start, end: end)
+                addAttrs([NSAttributedString.Key.strikethroughStyle: 1], start: start, end: end)
             case .U, .INS: // 下划线
-                addAttrs([NSAttributedStringKey.underlineStyle: 1], start: start, end: end)
+                addAttrs([NSAttributedString.Key.underlineStyle: 1], start: start, end: end)
             case .LI:
                 //setSpan(start, new Li());
                 break;
             case .PRE, .BLOCKQUOTE: // darkGray 0.9fontSize
-                addAttrs([NSAttributedStringKey.foregroundColor: UIColor.darkGray,/*,NSAttributedStringKey.font: UIFont.systemFont(ofSize: font.pointSize - 0.5) */], start: start, end: end)
+                addAttrs([NSAttributedString.Key.foregroundColor: UIColor.darkGray,/*,NSAttributedStringKey.font: UIFont.systemFont(ofSize: font.pointSize - 0.5) */], start: start, end: end)
             case .Q, .CODE, .KBD:
                 //等宽 字体
-                addAttrs([NSAttributedStringKey.backgroundColor: UIColor(white: 0.97, alpha: 1)], start: start, end: end)
+                addAttrs([NSAttributedString.Key.backgroundColor: UIColor(white: 0.97, alpha: 1)], start: start, end: end)
             case .FONT:
                 if let color = attr?.color {
-                    addAttrs([NSAttributedStringKey.foregroundColor: color], start: start, end: end)
+                    addAttrs([NSAttributedString.Key.foregroundColor: color], start: start, end: end)
                 }
                 
                 if let bgColor = attr?.bgColor {
-                    addAttrs([NSAttributedStringKey.backgroundColor: bgColor], start: start, end: end)
+                    addAttrs([NSAttributedString.Key.backgroundColor: bgColor], start: start, end: end)
                 }
                 /* // TODO 会使布局变乱
                  if let size = attr?.size { //dz 默认字体大概在2.5左右 1-7
@@ -274,7 +274,7 @@ class AttributeConverter: HtmlParserDelegate {
         if let textAlign = attr?.textAlign {
             let style = NSMutableParagraphStyle()
             style.alignment = textAlign
-            addAttrs([NSAttributedStringKey.paragraphStyle: style], start: start, end: position)
+            addAttrs([NSAttributedString.Key.paragraphStyle: style], start: start, end: position)
         }
     }
     
@@ -303,7 +303,7 @@ class AttributeConverter: HtmlParserDelegate {
     }
     
     // 添加属性
-    private func addAttrs(_ attrs: [NSAttributedStringKey: Any], start: Int, end: Int) {
+    private func addAttrs(_ attrs: [NSAttributedString.Key: Any], start: Int, end: Int) {
         if start >= end {
             return
         }

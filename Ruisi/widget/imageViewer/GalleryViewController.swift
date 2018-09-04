@@ -81,15 +81,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         pagingDataSource = GalleryPagingDataSource(itemsDataSource: itemsDataSource, displacedViewsDataSource: displacedViewsDataSource, configuration: configuration)
 
-        super.init(transitionStyle: UIPageViewControllerTransitionStyle.scroll,
-                navigationOrientation: UIPageViewControllerNavigationOrientation.horizontal,
-                options: [UIPageViewControllerOptionInterPageSpacingKey: NSNumber(value: spineDividerWidth as Float)])
+        super.init(transitionStyle: UIPageViewController.TransitionStyle.scroll,
+                navigationOrientation: UIPageViewController.NavigationOrientation.horizontal,
+                options: convertToOptionalUIPageViewControllerOptionsKeyDictionary([convertFromUIPageViewControllerOptionsKey(UIPageViewController.OptionsKey.interPageSpacing): NSNumber(value: spineDividerWidth as Float)]))
 
         pagingDataSource.itemControllerDelegate = self
 
         ///This feels out of place, one would expect even the first presented(paged) item controller to be provided by the paging dataSource but there is nothing we can do as Apple requires the first controller to be set via this "setViewControllers" method.
         let initialController = pagingDataSource.createItemController(startIndex, isInitial: true)
-        self.setViewControllers([initialController], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        self.setViewControllers([initialController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
         self.currentImageViewController = initialController
 
         if let controller = initialController as? ItemController {
@@ -101,8 +101,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.modalPresentationStyle = .overFullScreen
         self.dataSource = pagingDataSource
 
-        applicationWindow().windowLevel = (statusBarHidden) ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal
-        NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        applicationWindow().windowLevel = (statusBarHidden) ? UIWindow.Level.statusBar + 1 : UIWindow.Level.normal
+        NotificationCenter.default.addObserver(self, selector: #selector(GalleryViewController.rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     func updateDataSource(startIndex: Int, itemsDataSource: GalleryItemsDataSource) {
@@ -126,7 +126,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         overlayView.center = CGPoint(x: (UIScreen.main.bounds.width / 2), y: (UIScreen.main.bounds.height / 2))
 
         self.view.addSubview(overlayView)
-        self.view.sendSubview(toBack: overlayView)
+        self.view.sendSubviewToBack(overlayView)
     }
 
     fileprivate func configureFooterView() {
@@ -265,7 +265,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         }
         let imageViewController = self.pagingDataSource.createItemController(index)
         self.currentImageViewController = imageViewController
-        let direction: UIPageViewControllerNavigationDirection = index > currentIndex ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection = index > currentIndex ? .forward : .reverse
 
         // workaround to make UIPageViewController happy
         if direction == .forward {
@@ -316,7 +316,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
         isAnimating = true
 
-        UIView.animate(withDuration: rotationDuration, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { [weak self] () -> Void in
+        UIView.animate(withDuration: rotationDuration, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { [weak self] () -> Void in
 
             self?.view.transform = windowRotationTransform()
             self?.view.bounds = rotationAdjustedBounds()
@@ -408,7 +408,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
         self.modalTransitionStyle = .crossDissolve
 
         self.dismiss(animated: animated) {
-            applicationWindow().windowLevel = UIWindowLevelNormal
+            applicationWindow().windowLevel = UIWindow.Level.normal
             completion?()
         }
     }
@@ -473,4 +473,15 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     public func itemControllerWillDisappear(_ controller: ItemController) {
 
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIPageViewController.OptionsKey(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
+	return input.rawValue
 }

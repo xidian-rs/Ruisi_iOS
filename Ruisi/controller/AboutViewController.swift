@@ -42,7 +42,7 @@ class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate
             versionLabel.text = "获取版本号出错"
         }
         
-        let versionCode = Bundle.main.infoDictionary?["CFBundleVersion"] as? Int ?? 1
+        let versionCode = Bundle.main.infoDictionary?["CFBundleVersion"] ?? "1"
         print("current versionCode:\(versionCode)")
     }
     

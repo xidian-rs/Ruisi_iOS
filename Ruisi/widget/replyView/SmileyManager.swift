@@ -104,7 +104,7 @@ class SmileyItem: Codable {
         let attrStr = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attach))
         
         //添加font属性防止字体变小
-        attrStr.addAttributes([NSAttributedStringKey.font: font],
+        attrStr.addAttributes([NSAttributedString.Key.font: font],
                               range: NSRange(location: 0, length: 1))
         return attrStr
     }

@@ -115,7 +115,7 @@ class BaseTableViewController<T>: UITableViewController {
         if autoRowHeight {
             // FIXME 自动行高会导致加载更多动画异常，暂时关闭自动行高
             self.tableView.estimatedRowHeight = 80
-            self.tableView.rowHeight = UITableViewAutomaticDimension
+            self.tableView.rowHeight = UITableView.automaticDimension
         }
         
         if showFooter {

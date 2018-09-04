@@ -82,7 +82,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         //"开始加载网页"
         self.progress.isHidden = false
         self.progress.transform = CGAffineTransform(scaleX: 1.0, y: 1.5)
-        self.view.bringSubview(toFront: self.progress)
+        self.view.bringSubviewToFront(self.progress)
     }
     
     //加载完成
