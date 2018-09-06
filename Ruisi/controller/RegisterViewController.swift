@@ -88,7 +88,6 @@ class RegisterViewController: UITableViewController {
             if ok, let node = try? HTML(html: res, encoding: .utf8) ,let this = self {
                 //*[@id="fwin_dialog"]/table/tbody/tr[2]/td[2]/div
                 if let agreementNode = node.xpath("//*[@id=\"layer_bbrule\"]/div").first {
-                    print("agreement:\(agreementNode.innerHTML ?? "")")
                     self?.agreement = agreementNode.innerHTML
                 }
                 

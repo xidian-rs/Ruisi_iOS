@@ -22,7 +22,7 @@ class InputValidController {
     private var update: String?
     
     init(hash: String, update: String?) {
-        alertVc = UIAlertController(title: "验证码\n\n", message: nil, preferredStyle: .alert)
+        alertVc = UIAlertController(title: "验证码\n\n\n", message: nil, preferredStyle: .alert)
         self.validhash = hash
         self.update = update
         setUpUi()
@@ -34,7 +34,7 @@ class InputValidController {
     }
     
     func setUpUi() {
-        let margin: CGFloat = 10.0
+        let margin: CGFloat = 12.0
         let width = alertVc!.view.frame.size.width
         let rect = CGRect(x: width / 2 - 100 , y: margin + 35, width: 100, height: 50)
         validImageView = UIImageView(frame: rect)

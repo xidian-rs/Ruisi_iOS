@@ -11,6 +11,8 @@ import Kanna
 import Kingfisher
 
 // 登陆页面
+// 部分支持 password autofill api 需要后台支持
+// https://developer.apple.com/documentation/security/password_autofill/
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var usernameTextField: UITextField!

@@ -206,6 +206,7 @@
 		2F848A9B1FF0E0830089177B /* RSRefreshState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSRefreshState.swift; sourceTree = "<group>"; };
 		2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageItem.swift; sourceTree = "<group>"; };
 		2F8AD6951EA787EE002540AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		2F8C62DB2141131E0020D3C1 /* Ruisi.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ruisi.entitlements; sourceTree = "<group>"; };
 		2F8CDA4E1EFD782D006FE6EC /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		2F8E7C5D1FF276410007B6E6 /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
 		2F8E7C611FF290870007B6E6 /* SimpleReplyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleReplyView.xib; sourceTree = "<group>"; };
@@ -310,6 +311,7 @@
 		2F16B5E11EA502420068EE20 /* Ruisi */ = {
 			isa = PBXGroup;
 			children = (
+				2F8C62DB2141131E0020D3C1 /* Ruisi.entitlements */,
 				2FB3A76A1FDFAE8A002FE2F5 /* controller */,
 				2FB3A76B1FDFAEAE002FE2F5 /* model */,
 				2F0233B41FE0032000373969 /* widget */,
@@ -535,6 +537,11 @@
 						DevelopmentTeam = 3B86X32L6X;
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -860,6 +867,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Ruisi/Ruisi.entitlements;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
@@ -879,6 +887,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Ruisi/Ruisi.entitlements;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
