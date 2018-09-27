@@ -16,6 +16,10 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
     private let themes = ThemeManager.themes
     private var colCount = 6 //collectionView列数
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
@@ -39,7 +43,6 @@ class ThemeViewController: UIViewController, UICollectionViewDelegate, UICollect
         let theme = ThemeManager.currentTheme
         
         //状态栏颜色
-        UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         
         let titleAttr = [NSAttributedString.Key.foregroundColor: theme.titleColor]

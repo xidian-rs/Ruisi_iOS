@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F00B90A1FCF04E600A6D136 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F00B9091FCF04E600A6D136 /* SearchViewController.swift */; };
+		2F00DC462150DAE1007B6546 /* NewPostSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F00DC452150DAE1007B6546 /* NewPostSettingViewController.swift */; };
 		2F01C2461EFF9CE900102CF2 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F01C2451EFF9CE900102CF2 /* Launch.storyboard */; };
 		2F01C24A1EFFA46400102CF2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C2491EFFA46400102CF2 /* MainViewController.swift */; };
 		2F01C24C1EFFAA2E00102CF2 /* ArticleListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */; };
@@ -138,6 +139,7 @@
 
 /* Begin PBXFileReference section */
 		2F00B9091FCF04E600A6D136 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		2F00DC452150DAE1007B6546 /* NewPostSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostSettingViewController.swift; sourceTree = "<group>"; };
 		2F01C2451EFF9CE900102CF2 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		2F01C2491EFFA46400102CF2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2F01C24B1EFFAA2E00102CF2 /* ArticleListData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleListData.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 				2FB3A76E1FDFB07D002FE2F5 /* ChooseFriendViewController.swift */,
 				2F3885721FE2A883000749F4 /* ThemeViewController.swift */,
 				2FEDBDD01FD434360048CE6C /* NewPostViewController.swift */,
+				2F00DC452150DAE1007B6546 /* NewPostSettingViewController.swift */,
 				2F3C7BA61FF3B2E800CC2CB3 /* ReplyCzViewController.swift */,
 				2F1879C7205017420007E102 /* DDDTouchPeekViewController.swift */,
 				2F72891820542223000EC5C9 /* WebViewController.swift */,
@@ -724,6 +727,7 @@
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
 				2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,
+				2F00DC462150DAE1007B6546 /* NewPostSettingViewController.swift in Sources */,
 				2F63F1CA213BA35000531EF4 /* PasswordViewController.swift in Sources */,
 				2F3885831FE2B33A000749F4 /* ThemeManager.swift in Sources */,
 				2FF7B1B220557ADC00DE202E /* ForgetPasswordController.swift in Sources */,

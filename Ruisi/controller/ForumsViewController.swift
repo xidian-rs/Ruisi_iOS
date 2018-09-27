@@ -57,7 +57,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     private func caculateColCount() {
         if type == 0 {
-            colCount = Int(UIScreen.main.bounds.width / 80)
+            colCount = Int(UIScreen.main.bounds.width / 75)
         } else {
             colCount = Int(UIScreen.main.bounds.width / 135)
         }
