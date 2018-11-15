@@ -13,7 +13,7 @@ import UIKit
 public class HttpUtil {
     
     //当前正在执行的网络请求数目用于控制小菊花
-    private static var  workingSize = 0 {
+    private static var workingSize = 0 {
         didSet {
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = workingSize > 0

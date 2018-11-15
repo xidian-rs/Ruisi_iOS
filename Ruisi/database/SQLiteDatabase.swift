@@ -88,7 +88,7 @@ public class SQLiteDatabase {
     // 打开数据库
     private static func open(path: String) throws -> SQLiteDatabase {
         var db: OpaquePointer? = nil
-        if sqlite3_open(path, &db) == SQLITE_OK {
+        if sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
             return SQLiteDatabase(dbPointer: db)
         } else {
             defer {

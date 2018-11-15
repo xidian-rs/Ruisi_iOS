@@ -34,13 +34,21 @@ class InputValidController {
     }
     
     func setUpUi() {
-        let margin: CGFloat = 12.0
-        let width = alertVc!.view.frame.size.width
-        let rect = CGRect(x: width / 2 - 100 , y: margin + 35, width: 100, height: 50)
-        validImageView = UIImageView(frame: rect)
+        validImageView = UIImageView()
+        validImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 大小约束加到自己
+        validImageView.addConstraint(NSLayoutConstraint(item: validImageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50))
+        validImageView.addConstraint(NSLayoutConstraint(item: validImageView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100))
+        
         validImageView.isUserInteractionEnabled = true
         validImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeValid)))
         alertVc!.view.addSubview(validImageView)
+        
+        // 位置约束需要加到父view
+        alertVc!.view.addConstraint(NSLayoutConstraint(item: validImageView, attribute: .centerX, relatedBy: .equal, toItem: alertVc!.view, attribute: .centerX, multiplier: 1, constant: 0))
+        
+        alertVc!.view.addConstraint(NSLayoutConstraint(item: validImageView, attribute: .top, relatedBy: .equal, toItem: alertVc!.view, attribute: .top, multiplier: 1, constant: 48))
         
         alertVc!.addTextField { (textField) in
             textField.placeholder = "验证码"
