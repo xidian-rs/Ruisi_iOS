@@ -63,6 +63,9 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         }
         
         let alert = UIAlertController(title: "选择分区", message: nil, preferredStyle: .actionSheet)
+        alert.popoverPresentationController?.sourceView = self.view
+        alert.popoverPresentationController?.barButtonItem = subForumBtn
+        
         for item in subForums {
             alert.addAction(UIAlertAction(title: item.key, style: .default, handler: { (ac) in
                 Settings.setSelectSubForum(fid: self.parentFid!, subForum: Forum(fid: item.value, name: item.key, login: false))

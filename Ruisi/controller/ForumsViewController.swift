@@ -22,12 +22,10 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadedUid = Settings.uid
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
         type = Settings.forumListDisplayType ?? 1
         caculateColCount()
-        loadData(uid: loadedUid)
     }
     
     func scrollTop() {
@@ -36,10 +34,8 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if Settings.uid != loadedUid { //第一次
-            loadedUid = Settings.uid
-            loadData(uid: loadedUid)
+        if loadedUid != (Settings.uid ?? 0) {
+            loadData(uid: Settings.uid)
         }
     }
     
@@ -57,42 +53,45 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     private func caculateColCount() {
         if type == 0 {
-            colCount = Int(UIScreen.main.bounds.width / 75)
+            colCount = min(9, Int(UIScreen.main.bounds.width / 75))
         } else {
-            colCount = Int(UIScreen.main.bounds.width / 135)
+            colCount = min(6, Int(UIScreen.main.bounds.width / 135))
         }
     }
     
     // uid == nil 加载未登陆的
-    func loadData(uid: Int?) {
+    private func loadData(uid: Int?) {
+        loadedUid = (Settings.uid ?? 0)
         print("====================")
-        print("加载板块列表")
+        print("加载板块列表:\(loadedUid!)")
         
         let day = Int(Date().timeIntervalSince1970 / 86400) - Settings.getFormlistSavedTime(uid: uid)
-        if day >= 7 {
-            print("缓存过期\(day)，从网页读取板块列表: \(App.isSchoolNet)")
-        } else if let d = Settings.getForumlist(uid: uid),let ds = try? JSONDecoder().decode([Forums].self, from: d) {
+        if day < 7, let d = Settings.getForumlist(uid: uid), let ds = try? JSONDecoder().decode([Forums].self, from: d) {
             //不用过滤
             datas = ds
             loaded = true
             print("从保存的设置里面 读取板块列表 uid:\(uid ?? 0)")
-        }
-        
-        if !loaded || datas.count == 0 {
-            print("临时使用forums.json板块列表")
-            let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
-            let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
-            datas = try! JSONDecoder().decode([Forums].self, from: data).filter({ (f) -> Bool in
-                f.forums = f.forums?.filter({ (ff) -> Bool in
-                    return (loadedUid != nil) || !ff.login
-                })
-                return (loadedUid != nil) || !f.login
-            })
             collectionView?.reloadData()
-            
+        } else {
+            loaded = false
+            print("缓存过期\(day)，从网页读取板块列表: \(App.isSchoolNet)")
             print("开始从网页读取板块列表")
+            loadDeafultForum()
             loadFormlistFromWeb()
         }
+    }
+    
+    private func loadDeafultForum() {
+        print("临时使用forums.json板块列表")
+        let filePath = Bundle.main.path(forResource: "assets/forums", ofType: "json")!
+        let data = try! Data(contentsOf: URL(fileURLWithPath: filePath, isDirectory: false))
+        datas = try! JSONDecoder().decode([Forums].self, from: data).filter({ (f) -> Bool in
+            f.forums = f.forums?.filter({ (ff) -> Bool in
+                return (Settings.uid != nil) || !ff.login
+            })
+            return (Settings.uid != nil) || !f.login
+        })
+        collectionView?.reloadData()
     }
     
     private func loadFormlistFromWeb() {

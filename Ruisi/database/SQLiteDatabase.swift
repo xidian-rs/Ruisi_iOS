@@ -62,7 +62,11 @@ public class SQLiteDatabase {
                 print("success create db dir:\(dirURL.path)")
             }
 
-            try? SQLiteDatabase.db = SQLiteDatabase.open(path: fileURL.path)
+            do {
+               try SQLiteDatabase.db = SQLiteDatabase.open(path: fileURL.path)
+            } catch {
+                print(error)
+            }
         }
 
         return SQLiteDatabase.db
@@ -88,7 +92,7 @@ public class SQLiteDatabase {
     // 打开数据库
     private static func open(path: String) throws -> SQLiteDatabase {
         var db: OpaquePointer? = nil
-        if sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
+        if sqlite3_open_v2(path, &db, SQLITE_OPEN_CREATE|SQLITE_OPEN_READWRITE|SQLITE_OPEN_FULLMUTEX, nil) == SQLITE_OK {
             return SQLiteDatabase(dbPointer: db)
         } else {
             defer {

@@ -133,14 +133,6 @@ class MainViewController: UITabBarController {
             } else {
                 print("网络类型:\(App.isSchoolNet) 未知登陆状态")
             }
-            
-            if let forumVc = this.children[0].children[0] as? ForumsViewController,
-                ((forumVc.loadedUid != Settings.uid) || !forumVc.loaded) {
-                DispatchQueue.main.async {
-                    forumVc.loadedUid = Settings.uid
-                    forumVc.loadData(uid: forumVc.loadedUid)
-                }
-            }
         }
     }
 }
