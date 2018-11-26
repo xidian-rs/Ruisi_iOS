@@ -8,9 +8,14 @@
 
 import UIKit
 import Kanna
+import IntentsUI
 
 // 签到页面
+// 支持siri捷径 https://www.appcoda.com/siri-shortcuts/
+// https://www.jianshu.com/p/19b248333b18
 class SignViewController: UIViewController {
+
+    var openFromSiri = false
 
     let items = ["开心", "难过", "郁闷", "无聊", "怒", "擦汗", "奋斗", "慵懒", "衰"]
     let itemsValue = ["kx", "ng", "ym", "wl", "nu", "ch", "fd", "yl", "shuai"]
@@ -23,7 +28,8 @@ class SignViewController: UIViewController {
     @IBOutlet weak var labelStatus: UILabel!
     @IBOutlet weak var labelTotal: UILabel!
     @IBOutlet weak var labelTotal2: UILabel!
-
+    @IBOutlet weak var addToSiriBtn: UIButton!
+    
     var isSigned: Bool = false {
         didSet {
             haveSignImg.isHidden = !isSigned
@@ -65,7 +71,7 @@ class SignViewController: UIViewController {
         present(chooseAlert, animated: true, completion: nil)
     }
 
-    @IBAction func signBtnClick(_ sender: UIButton) {
+    @IBAction func signBtnClick(_ sender: UIButton? = nil) {
         self.inputText.resignFirstResponder()
         showLoadingView()
 
@@ -149,6 +155,9 @@ class SignViewController: UIViewController {
                         self?.isSigned = true
                     } else {
                         self?.isSigned = false
+                        if self?.openFromSiri ?? false {
+                            self?.signBtnClick()
+                        }
                     }
                 } else {
                     self?.labelStatus.isHidden = false
@@ -172,10 +181,68 @@ class SignViewController: UIViewController {
         }
         present(loadingAlert!, animated: true)
     }
+    
+    
+    //com.xdluoyang.Ruisi.sign
+    func setupIntents() -> NSUserActivity {
+        let activity = NSUserActivity(activityType: "com.xdluoyang.Ruisi.sign") // 1
+        activity.title = "睿思签到" // 2
+        activity.userInfo = ["data1" : "value1"] // 3
+        activity.isEligibleForSearch = true // 4
+        if #available(iOS 12.0, *) {
+            activity.isEligibleForPrediction = true // 5
+            activity.persistentIdentifier = NSUserActivityPersistentIdentifier("com.xdluoyang.Ruisi.sign") // 6
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        view.userActivity = activity // 7
+        activity.becomeCurrent() // 8
+        print("siri shortcut configed")
+        
+        return activity
+    }
 
+    
+    @objc func dismissFormSiriShortCut() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func addSignToSiriClick(_ sender: UIButton) {
+        let intent = setupIntents()
+        if #available(iOS 12.0, *) {
+            let shortcut = INShortcut(userActivity: intent)
+            INVoiceShortcutCenter.shared.getAllVoiceShortcuts { (shortCuts, err) in
+                for sh in shortCuts ?? [] {
+                    if "com.xdluoyang.Ruisi.sign" == sh.shortcut.userActivity?.activityType {
+                        // 编辑Siri短语
+                        print("edit")
+                        let editVoiceShortcutViewController = INUIEditVoiceShortcutViewController(voiceShortcut: sh)
+                        editVoiceShortcutViewController.delegate = self
+                        DispatchQueue.main.async {
+                            self.present(editVoiceShortcutViewController, animated: true, completion: nil)
+                        }
+                        return
+                    }
+                }
+                
+                // 添加 Siri短语
+                print("add")
+                let viewController = INUIAddVoiceShortcutViewController(shortcut: shortcut)
+                viewController.modalPresentationStyle = .formSheet
+                viewController.delegate = self
+                DispatchQueue.main.async {
+                    self.present(viewController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         chooseAlert = UIAlertController(title: "选择心情", message: nil, preferredStyle: .actionSheet)
         for v in items {
@@ -207,9 +274,43 @@ class SignViewController: UIViewController {
             btnSign.isHidden = true
 
             loadingView.stopAnimating()
-
         } else {
             checkSignStatus()
         }
     }
+}
+
+@available(iOS 12.0, *)
+extension SignViewController: INUIAddVoiceShortcutViewControllerDelegate {
+    func addVoiceShortcutViewController(_ controller: INUIAddVoiceShortcutViewController, didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?) {
+        print("did add:\(voiceShortcut?.invocationPhrase ?? "")")
+        self.addToSiriBtn.setTitle("修改Siri捷径", for: .normal)
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func addVoiceShortcutViewControllerDidCancel(_ controller: INUIAddVoiceShortcutViewController) {
+        print("canceled")
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+@available(iOS 12.0, *)
+extension SignViewController: INUIEditVoiceShortcutViewControllerDelegate {
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didUpdate voiceShortcut: INVoiceShortcut?, error: Error?) {
+        print("updated")
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewController(_ controller: INUIEditVoiceShortcutViewController, didDeleteVoiceShortcutWithIdentifier deletedVoiceShortcutIdentifier: UUID) {
+        print("deleted")
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func editVoiceShortcutViewControllerDidCancel(_ controller: INUIEditVoiceShortcutViewController) {
+        print("cenceled")
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }

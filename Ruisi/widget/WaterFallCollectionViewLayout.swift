@@ -12,7 +12,7 @@ import UIKit
 class WaterFallCollectionViewLayout: UICollectionViewLayout {
 
     //列数目
-    public var columnCount = 2
+    public var columnCount = Int(UIScreen.main.bounds.width / 160)
     //列边距
     public var columnSpacing: CGFloat = 10
     //行间距

@@ -74,14 +74,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //MARK: - Spotlight Search
 extension AppDelegate {
     
-    // 从Spotlight打开
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         // Called when Spotlight item tapped. Do anything with specified data.
         
+        // 从Spotlight打开
         if userActivity.activityType == CSSearchableItemActionType {
             if let userInfo = userActivity.userInfo {
                 let selectedItem = userInfo[CSSearchableItemActivityIdentifier] as! String
-                
                 
                 // Read data from selected activity info that was set to related item, and save into dictionary.
                 var valueDict = Dictionary<String,String>()
@@ -105,6 +104,19 @@ extension AppDelegate {
                 
             }
         }
+        // 从siri 捷径打开 签到
+        else if userActivity.activityType == "com.xdluoyang.Ruisi.sign" {
+            print("siri捷径签到")
+            if let vc = UIApplication.shared.keyWindow?.rootViewController, let dest = vc.storyboard?.instantiateViewController(withIdentifier: "signViewController") as? SignViewController {
+                dest.openFromSiri = true
+                let navVc = UINavigationController(rootViewController: dest)
+                dest.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: dest, action: #selector(dest.dismissFormSiriShortCut))
+                
+                vc.present(navVc, animated: true, completion: nil)
+            }
+        }
+        
+        
         
         return true
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mKa-a2-Cyu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mKa-a2-Cyu">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -138,13 +138,13 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <segue destination="O6Y-h6-4Lu" kind="show" identifier="forumToNormalPosts" id="08F-hi-pqM"/>
                         <segue destination="ttD-4N-Sna" kind="show" identifier="forumToImagePosts" id="e07-mg-oW4"/>
+                        <segue destination="O6Y-h6-4Lu" kind="show" identifier="forumToNormalPosts" id="cCz-Jp-bm2"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ErC-9H-a0f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1482" y="-1257"/>
+            <point key="canvasLocation" x="-1575" y="-1257"/>
         </scene>
         <!--搜索-->
         <scene sceneID="8H4-Tl-QQu">
@@ -209,7 +209,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-410" y="-1257"/>
+            <point key="canvasLocation" x="-554" y="-1269"/>
         </scene>
         <!--帖子列表-->
         <scene sceneID="3zA-B5-aiY">
@@ -414,7 +414,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x4N-Tz-fiw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-639" y="-537"/>
+            <point key="canvasLocation" x="-553" y="-494"/>
         </scene>
         <!--帖子详情-->
         <scene sceneID="yFl-Fa-IO4">
@@ -662,7 +662,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TIK-eL-cap" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1532" y="-557"/>
+            <point key="canvasLocation" x="-1575" y="-557"/>
         </scene>
         <!--登陆-->
         <scene sceneID="YrY-yN-Fyd">
@@ -704,7 +704,7 @@
                                         <rect key="frame" x="0.0" y="95" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES" textContentType="password"/>
                                         <connections>
                                             <outlet property="delegate" destination="NUc-Li-a0X" id="wHE-Zj-ylg"/>
                                         </connections>
@@ -1127,7 +1127,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m2t-0d-EPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1482" y="141"/>
+            <point key="canvasLocation" x="-1575" y="141"/>
         </scene>
         <!--关于-->
         <scene sceneID="KtM-s2-t1w">
@@ -1927,13 +1927,13 @@
                                 <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="bLL-Yz-7Kb" userLabel="contentView">
-                                <rect key="frame" x="12" y="135" width="351" height="296.5"/>
+                                <rect key="frame" x="12" y="185.5" width="351" height="296.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7tC-pH-qCi">
                                         <rect key="frame" x="115.5" y="0.0" width="120.5" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择心情:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twu-cx-Vfs">
-                                                <rect key="frame" x="0.0" y="5" width="74.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="4.5" width="74.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1949,6 +1949,9 @@
                                     </stackView>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="输入你最想说的话(可选)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i2P-pr-rl0">
                                         <rect key="frame" x="30" y="45" width="291" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" priority="750" constant="400" id="NiN-OM-s6L"/>
+                                        </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -1991,16 +1994,25 @@
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="i2P-pr-rl0" secondAttribute="trailing" constant="30" id="g5n-yZ-UaP"/>
-                                    <constraint firstItem="i2P-pr-rl0" firstAttribute="leading" secondItem="bLL-Yz-7Kb" secondAttribute="leading" constant="30" id="hSj-V6-BOQ"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="i2P-pr-rl0" secondAttribute="trailing" constant="30" id="g5n-yZ-UaP"/>
+                                    <constraint firstItem="i2P-pr-rl0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bLL-Yz-7Kb" secondAttribute="leading" constant="30" id="hSj-V6-BOQ"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWg-oa-zAn">
+                                <rect key="frame" x="146" y="627" width="83" height="30"/>
+                                <state key="normal" title="设置Siri捷径"/>
+                                <connections>
+                                    <action selector="addSignToSiriClick:" destination="SrL-DD-cGj" eventType="touchUpInside" id="UCu-4l-He6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="92h-Iz-SjP" firstAttribute="top" secondItem="uWg-oa-zAn" secondAttribute="bottom" constant="10" id="0cH-0X-uWN"/>
                             <constraint firstItem="izh-5l-nvI" firstAttribute="centerY" secondItem="Kd4-11-1Cz" secondAttribute="centerY" id="0p8-oy-aTB"/>
                             <constraint firstItem="bLL-Yz-7Kb" firstAttribute="centerX" secondItem="Kd4-11-1Cz" secondAttribute="centerX" id="55s-nq-m20"/>
-                            <constraint firstItem="bLL-Yz-7Kb" firstAttribute="top" secondItem="GAp-n2-pYe" secondAttribute="bottom" constant="35" id="Xws-aF-T9b"/>
+                            <constraint firstItem="bLL-Yz-7Kb" firstAttribute="centerY" secondItem="Kd4-11-1Cz" secondAttribute="centerY" id="IW1-SD-77g"/>
+                            <constraint firstItem="uWg-oa-zAn" firstAttribute="centerX" secondItem="Kd4-11-1Cz" secondAttribute="centerX" id="Szr-ob-kpa"/>
                             <constraint firstItem="GAp-n2-pYe" firstAttribute="top" secondItem="3BR-xO-jXd" secondAttribute="bottom" id="k98-SU-5QI"/>
                             <constraint firstItem="izh-5l-nvI" firstAttribute="centerX" secondItem="Kd4-11-1Cz" secondAttribute="centerX" id="nDa-8K-YuU"/>
                             <constraint firstItem="GAp-n2-pYe" firstAttribute="centerX" secondItem="Kd4-11-1Cz" secondAttribute="centerX" id="s7N-KR-wEy"/>
@@ -2011,6 +2023,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="addToSiriBtn" destination="uWg-oa-zAn" id="hld-iR-NJd"/>
                         <outlet property="btnSign" destination="9cj-EC-iEC" id="yf5-gI-N61"/>
                         <outlet property="btnSmiley" destination="Kc6-xJ-SdK" id="mEV-bW-NN9"/>
                         <outlet property="haveSignImg" destination="Fd9-kx-NDK" id="Xie-gi-DZl"/>
@@ -2735,7 +2748,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Nu-Iw-WQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-639" y="141"/>
+            <point key="canvasLocation" x="-564" y="198"/>
         </scene>
         <!--我的收藏-->
         <scene sceneID="gYd-AM-Ai2">
@@ -3010,8 +3023,8 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHM-2k-4c1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fEq-ti-iCr">
-                                    <size key="itemSize" width="171" height="206"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="q5R-W6-2ib">
+                                    <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3962,23 +3975,23 @@
     </scenes>
     <resources>
         <image name="done" width="64" height="64"/>
-        <image name="ic_home_36pt" width="30" height="30"/>
-        <image name="ic_notifications_36pt" width="30" height="30"/>
-        <image name="ic_person_36pt" width="30" height="30"/>
-        <image name="ic_whatshot_36pt" width="30" height="30"/>
-        <image name="icon_mine_collect" width="40" height="40"/>
-        <image name="icon_mine_friend" width="40" height="40"/>
-        <image name="icon_mine_history" width="40" height="40"/>
-        <image name="icon_mine_info" width="40" height="40"/>
-        <image name="icon_switch" width="24" height="24"/>
-        <image name="placeholder" width="128" height="128"/>
+        <image name="ic_home_36pt" width="60" height="60"/>
+        <image name="ic_notifications_36pt" width="60" height="60"/>
+        <image name="ic_person_36pt" width="60" height="60"/>
+        <image name="ic_whatshot_36pt" width="60" height="60"/>
+        <image name="icon_mine_collect" width="80" height="80"/>
+        <image name="icon_mine_friend" width="80" height="80"/>
+        <image name="icon_mine_history" width="80" height="80"/>
+        <image name="icon_mine_info" width="80" height="80"/>
+        <image name="icon_switch" width="48" height="48"/>
+        <image name="placeholder" width="61.439998626708984" height="61.439998626708984"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U1Y-Qc-Rhq"/>
-        <segue reference="gtb-Ty-3Uw"/>
+        <segue reference="5zA-VW-dPn"/>
         <segue reference="OQ5-Uc-Z7S"/>
         <segue reference="yAY-7M-p9M"/>
         <segue reference="YoA-98-yHC"/>
-        <segue reference="xwk-zK-WJF"/>
+        <segue reference="YlS-1A-enY"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -47,6 +47,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             usernameTextField.text = Settings.username
             passwordTextField.text = Settings.password
         }
+        
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
 
         loadData()
     }
@@ -301,7 +304,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // 处理软键盘
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField == usernameTextField {
+            passwordTextField.becomeFirstResponder()
+        } else if textField == passwordTextField {
+            textField.resignFirstResponder()
+            loginClick()
+        }
         return true
     }
 }

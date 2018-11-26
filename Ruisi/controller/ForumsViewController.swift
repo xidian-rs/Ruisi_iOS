@@ -55,7 +55,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         if type == 0 {
             colCount = min(9, Int(UIScreen.main.bounds.width / 75))
         } else {
-            colCount = min(6, Int(UIScreen.main.bounds.width / 135))
+            colCount = min(5, Int(UIScreen.main.bounds.width / 135))
         }
     }
     
