@@ -58,6 +58,9 @@ class NewPostSettingViewController: UITableViewController {
 
     @IBAction func timeEveryPeople(_ sender: UIButton) {
         let sheet = UIAlertController(title: "每人最多可获得", message: nil, preferredStyle: .actionSheet)
+        sheet.popoverPresentationController?.sourceView = sender
+        sheet.popoverPresentationController?.sourceRect = sender.bounds
+
         sheet.addAction(UIAlertAction(title: "1次", style: .default) { action in
             self.timeEveryPersonValue = 1
             sender.setTitle(action.title, for: .normal)
@@ -76,6 +79,9 @@ class NewPostSettingViewController: UITableViewController {
     
     @IBAction func possibleClick(_ sender: UIButton) {
         let sheet = UIAlertController(title: "中奖率", message: nil, preferredStyle: .actionSheet)
+        sheet.popoverPresentationController?.sourceView = sender
+        sheet.popoverPresentationController?.sourceRect = sender.bounds
+
         sheet.addAction(UIAlertAction(title: "100%", style: .default) { action in
             self.posibilityValue = 100
             sender.setTitle(action.title, for: .normal)

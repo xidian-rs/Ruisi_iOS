@@ -91,6 +91,8 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc func passwordSafeClick() {
         let sheet = UIAlertController(title: "请选择操作", message: nil, preferredStyle: .actionSheet)
+        sheet.popoverPresentationController?.sourceView = passwordSafeBtn
+        sheet.popoverPresentationController?.sourceRect = passwordSafeBtn.bounds
         sheet.addAction(UIAlertAction(title: "修改密码", style: .default, handler: { (ac) in
             self.performSegue(withIdentifier: "profileToPasswordVc", sender: ac)
         }))

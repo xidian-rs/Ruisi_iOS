@@ -245,6 +245,9 @@ class SignViewController: UIViewController {
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         chooseAlert = UIAlertController(title: "选择心情", message: nil, preferredStyle: .actionSheet)
+        chooseAlert.popoverPresentationController?.sourceView = btnSmiley
+        chooseAlert.popoverPresentationController?.sourceRect = btnSmiley.bounds
+
         for v in items {
             let ac = UIAlertAction(title: v, style: .default, handler: handlePick)
             chooseAlert.addAction(ac)

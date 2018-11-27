@@ -65,8 +65,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         questInput.isHidden = (answerSelect == 0)
     }
     
-    @IBAction func questBtnClick(_ sender: Any) {
+    @IBAction func questBtnClick(_ sender: UIButton) {
         let sheet = UIAlertController(title: "安全提问", message: nil, preferredStyle: .actionSheet)
+        sheet.popoverPresentationController?.sourceView = sender
+        sheet.popoverPresentationController?.sourceRect = sender.bounds
         for item in quests {
             let action = UIAlertAction(title: item, style: .default, handler: selectQuest)
             sheet.addAction(action)

@@ -206,6 +206,8 @@ class NewPostViewController: UIViewController,
         }
 
         let alert = UIAlertController(title: "请选择图片来源", message: nil, preferredStyle: .actionSheet)
+        alert.popoverPresentationController?.sourceView = imagesCollection
+        alert.popoverPresentationController?.sourceRect = imagesCollection.bounds
         alert.addAction(UIAlertAction(title: "相册", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "拍照", style: .default, handler: handler))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
@@ -387,6 +389,9 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
     @IBAction func chooseSubForumClick(_ sender: UIButton) {
         let sheet = UIAlertController(title: "请选择主题分类", message: nil, preferredStyle: .actionSheet)
+        sheet.popoverPresentationController?.sourceView = sender
+        sheet.popoverPresentationController?.sourceRect = sender.bounds
+
         for a in typeIds {
             sheet.addAction(UIAlertAction(title: a.value, style: .default) { ac in
                 self.typeId = a.key

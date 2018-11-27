@@ -37,6 +37,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
         myTableView.delegate = self
         
         avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
+        avaterImage.layer.cornerRadius = avaterImage.frame.width / 2
         
         isLogin = App.isLogin
         updateUi()

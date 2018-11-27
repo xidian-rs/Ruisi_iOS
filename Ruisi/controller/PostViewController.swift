@@ -65,8 +65,6 @@ class PostViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
         
-        self.title = "帖子正文"
-        
         //回复框回调
         self.replyView.contentView.isEditable = false
         self.replyView.placeholder = "回复内容"
@@ -114,6 +112,8 @@ class PostViewController: UIViewController {
         rsRefreshControl.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         rsRefreshControl.beginRefreshing()
+        
+        self.title = self.title ?? "加载中..."
         
         loadData(pid != nil)
     }
@@ -168,7 +168,7 @@ class PostViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let this = self else { return }
                 this.setUpHeaderView(title: title)
-                this.title = "\(this.normalOrder ? "正序" : "倒序") - 第\(this.currentPage)/\(this.pageSum)页"
+                this.title = "\(this.normalOrder ? "" : "(倒序)")\(title ?? "未知标题") - 第\(this.currentPage)/\(this.pageSum)页"
                 if this.datas.count == 0 {
                     this.datas = subDatas
                     this.tableView.reloadData()
@@ -376,7 +376,8 @@ class PostViewController: UIViewController {
     //显示更多按钮
     @objc func moreClick(_ sender: UIBarButtonItem) {
         let sheet = UIAlertController(title: "操作", message: nil, preferredStyle: .actionSheet)
-        
+        sheet.popoverPresentationController?.sourceView = self.view
+        sheet.popoverPresentationController?.barButtonItem = sender
         sheet.addAction(UIAlertAction(title: normalOrder ? "倒序浏览" : "正序浏览", style: .default) { action in
             self.normalOrder = !self.normalOrder
             self.reloadData()
