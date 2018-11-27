@@ -1,8 +1,8 @@
 language: swift
 xcode_workspace: Ruisi.xcworkspace
-xcode_scheme: Ruisi
+xcode_scheme: Pods-Ruisi
 podfile: Podfile
 osx_image:  xcode10.1
 
 script:
-  - "xctool -workspace Ruisi.xcworkspace -scheme Ruisi"
+  - "xctool -workspace Ruisi.xcworkspace -scheme Pods-Ruisi"
