@@ -3,6 +3,4 @@ xcode_workspace: Ruisi.xcworkspace
 xcode_scheme: Pods-Ruisi
 podfile: Podfile
 osx_image:  xcode10.1
-
-script:
-  - "xctool -workspace Ruisi.xcworkspace -scheme Pods-Ruisi"
+xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
