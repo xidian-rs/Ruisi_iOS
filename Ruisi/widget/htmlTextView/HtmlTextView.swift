@@ -42,8 +42,14 @@ class HtmlTextView: UITextView, UITextViewDelegate {
         textContainerInset = UIEdgeInsets.zero
         //textContainer.lineFragmentPadding = 0
         //layoutManager.usesFontLeading = false
-        
         textColor = UIColor.darkText
+        
+        //let linkAttributes: [NSAttributedString.Key : Any] = [
+            //NSAttributedString.Key.foregroundColor: linkTextClor,
+            //NSAttributedString.Key.underlineColor: UIColor.lightGray,
+            //NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single
+        //]
+        //linkTextAttributes = linkAttributes
         isScrollEnabled = false
         delegate = self
         

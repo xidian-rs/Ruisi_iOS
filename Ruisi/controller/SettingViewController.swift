@@ -12,13 +12,12 @@ import UIKit
 class SettingViewController: UITableViewController {
     
     @IBOutlet weak var versionLabel: UILabel!
-    
     @IBOutlet weak var networkChangeSwitch: UISegmentedControl!
     @IBOutlet weak var networkNoticeLabel: UILabel!
-    
     @IBOutlet weak var tailContentTextVIew: UITextView!
     @IBOutlet weak var showZhidingSwitch: UISwitch!
     @IBOutlet weak var enableTailSwitch: UISwitch!
+    @IBOutlet weak var postRenderTypeSwitch: UISwitch!
     
     private let defaultTail = "[size=1][color=Gray]-----来自[url=\(Urls.getPostUrl(tid: App.POST_ID))]手机睿思IOS版[/url][/color][/size]"
     
@@ -27,6 +26,7 @@ class SettingViewController: UITableViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
+        postRenderTypeSwitch.isOn = Settings.postContentRenderType
         tailContentTextVIew.text = Settings.tailContent
         tailContentTextVIew.isEditable = enableTailSwitch.isOn
         tailContentTextVIew.text = Settings.tailContent ?? defaultTail
@@ -77,6 +77,10 @@ class SettingViewController: UITableViewController {
         print("chnage network, auro:\(sender.selectedSegmentIndex == 0) is school net:\(App.isSchoolNet)")
     }
     
+    // 正文渲染控件 UILabel or UITextView
+    @IBAction func postContentRenderChange(_ sender: UISwitch) {
+        Settings.postContentRenderType = sender.isOn
+    }
     
     // 是否允许小尾巴
     @IBAction func showTailValueChane(_ sender: UISwitch) {

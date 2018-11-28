@@ -44,6 +44,11 @@ class LinkClickHandler {
                 }
             } else if url.contains("forum.php?mod=attachment") { // 附件
                 delegate(.attachment(url: url))
+            } else if url.contains("forum.php?mod=misc&action=votepoll") { // 投票
+                //forum.php?mod=misc&action=votepoll&fid=72&tid=974978&pollsubmit=yes&quickforward=yes&mobile=2
+                if let fid = Utils.getNum(prefix: "fid=", from: url), let tid = Utils.getNum(prefix: "tid=", from: url) {
+                    delegate(.vote(fid: fid, tid: tid))
+                }
             } else {
                 delegate(.others(url: url))
             }

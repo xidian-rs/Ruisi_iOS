@@ -275,8 +275,6 @@ class SignViewController: UIViewController {
             btnSmiley.isHidden = true
             inputText.isHidden = true
             btnSign.isHidden = true
-
-            loadingView.stopAnimating()
         } else {
             checkSignStatus()
         }

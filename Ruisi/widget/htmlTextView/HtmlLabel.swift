@@ -56,6 +56,7 @@ class HtmlLabel: UILabel {
     private func initialize() {
         textColor = UIColor.darkText
         isUserInteractionEnabled = true
+        
         initTextStorage()
         textStorage.addLayoutManager(layoutManager)
         layoutManager.addTextContainer(textContainer)

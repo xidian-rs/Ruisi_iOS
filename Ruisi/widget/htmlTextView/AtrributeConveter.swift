@@ -101,7 +101,6 @@ class AttributeConverter: HtmlParserDelegate {
     }
     
     func endNode(type: HtmlTag, name: String) {
-        //print("</\(name)>")
         if type == .UNKNOWN || type == .BR || type == .IMG
             || type == .HR || nodes.isEmpty {
             return
@@ -129,8 +128,10 @@ class AttributeConverter: HtmlParserDelegate {
         
         //var start = startNode.start
         startNode.end = position - appendCount
-        endNode.end = position - appendCount
+        endNode.end = startNode.end
         nodes.append(endNode)
+        //print("start:\(startNode.start) end:\(startNode.end)")
+        //print("</\(name)>")
     }
     
     func end() {
@@ -159,12 +160,14 @@ class AttributeConverter: HtmlParserDelegate {
                 }
             }
             
-            if startNode == nil {
+            if startNode == nil { continue }
+            
+            let start = min(endNode.start, position)
+            let end = min(endNode.end, position)
+            if end < start {
+                print("end node < start \(endNode.type) start:\(endNode.start) end:\(endNode.end) position: \(position)")
                 continue
             }
-            
-            var start = endNode.start
-            let end = min(endNode.end, position)
             let attr = startNode!.attr
             
             switch (endNode.type) {
@@ -186,7 +189,8 @@ class AttributeConverter: HtmlParserDelegate {
                         uu = URL(string: url)
                     }
                     
-                    if let u = uu {
+                    if let u = uu, end > start {
+                        /*
                         if start > 0 {
                             // 链接不包括回车 空格
                             var index = attributedString.string.index(attributedString.string.startIndex, offsetBy: start)
@@ -194,8 +198,9 @@ class AttributeConverter: HtmlParserDelegate {
                                 index = attributedString.string.index(after: index)
                                 start += 1
                             }
-                        }
-                        addAttrs([NSAttributedString.Key.link: u,NSAttributedString.Key.foregroundColor: linkTextClor], start: start, end: end)
+                        } */
+                        addAttrs([NSAttributedString.Key.link: u,
+                                  NSAttributedString.Key.foregroundColor: linkTextClor], start: start, end: end)
                     }
                 }
                 break

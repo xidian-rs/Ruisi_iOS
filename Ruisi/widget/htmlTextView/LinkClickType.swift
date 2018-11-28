@@ -18,5 +18,6 @@ public enum LinkClickType {
     case reply(tid: Int, pid: Int?) // 回复
     case attachment(url: String) // 附件
     case login() // 登陆
+    case vote(fid: Int, tid: Int) // 投票
     case others(url: String) // 其余
 }

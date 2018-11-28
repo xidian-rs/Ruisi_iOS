@@ -32,6 +32,8 @@ class PostViewController: UIViewController {
     private var tableViewWidth: CGFloat = 0
     private var normalOrder = true //正序
     
+    private var renderUseLabel = false
+    
     private var loading = false
     open var isLoading: Bool {
         get {
@@ -60,7 +62,10 @@ class PostViewController: UIViewController {
         }
         
         super.viewDidLoad()
-        tableViewWidth = tableView.frame.width
+        
+        self.renderUseLabel = Settings.postContentRenderType
+        
+        tableViewWidth = self.view.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(moreClick))]
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
@@ -165,7 +170,7 @@ class PostViewController: UIViewController {
             }
             
             //人为加长加载的时间
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 guard let this = self else { return }
                 this.setUpHeaderView(title: title)
                 this.title = "\(this.normalOrder ? "" : "(倒序)")\(title ?? "未知标题") - 第\(this.currentPage)/\(this.pageSum)页"
@@ -272,6 +277,45 @@ class PostViewController: UIViewController {
                 let replyCzUrl = comment.xpath("div/div[2]/input").first?["href"]
                 let contentNode = comment.xpath("div/div[1]").first
                 
+                // 内容页处理投票
+                var voteData: VoteData?
+                if currentPage == 1 && subDatas.count == 0 {
+                    if let voteNode = contentNode?.xpath("//form[@id=\"poll\"]").first, let action =  voteNode["action"], action.hasPrefix("forum.php?mod=misc&action=votepoll") {
+                        print("有投票:\(voteNode.innerHTML ?? "")")
+                        // 检查投票按钮
+                        if var submitNode = voteNode.xpath("//input[@id=\"pollsubmit\"]").first {
+                            var maxSelection = 1
+                            if voteNode.text?.contains("单选投票") ?? false {
+                                maxSelection = 1
+                            } else if let start = voteNode.text?.range(of: "多选投票")?.upperBound {
+                                maxSelection = Utils.getNum(from: String(voteNode.text![start..<voteNode.text!.endIndex])) ?? 1
+                            }
+                            print("最多选择:\(maxSelection) action:\(action)")
+                            let items = voteNode.xpath("div[2]/p")
+                            var options = [KeyValueData<String, String>]()
+                            for item in items {
+                                guard let inputNode = item.xpath("input").first else { continue }
+                                guard let id = inputNode["value"] else { continue }
+                                if inputNode["type"]?.elementsEqual("radio") ?? false {
+                                    maxSelection = 1
+                                }
+                                let text = item.xpath("label").first?.text ?? ""
+                                print("\(id) \(text)")
+                                options.append(KeyValueData<String, String>(key: id, value: text))
+                            }
+                            
+                            if options.count > 0 {
+                                voteData = VoteData(action: action, options: options, maxSelect: maxSelection)
+                                submitNode.tagName = "a"
+                                submitNode["href"] = action
+                                submitNode.content = "点此投票"
+                            }
+                        } else {
+                            print("无投票权限")
+                        }
+                    }
+                }
+                
                 var content: String?
                 //处理引用
                 if let node =  contentNode, let quoteNode = node.css(".grey.quote").first,
@@ -312,6 +356,7 @@ class PostViewController: UIViewController {
                 let c = PostData(content: attrContent, author: author ?? "匿名",
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
+                c.voteData = voteData
                 //计算行高
                 c.rowHeight = caculateRowheight(width: self.tableViewWidth, content: attrContent)
                 subDatas.append(c)
@@ -443,6 +488,17 @@ class PostViewController: UIViewController {
         } else if segue.identifier == "toReplyCzController" ,let nav = segue.destination as? UINavigationController,let dest = nav.topViewController as? ReplyCzViewController, let data = sender as? PostData {
             dest.title = "回复:\(data.index) \(data.author)"
             dest.data = data
+        } else if segue.identifier == "postToVoteSegue", let dest = segue.destination as? UINavigationController, let target = dest.viewControllers[0] as? VoteViewController {
+            let (fid, tid, voteData) = sender as! (Int, Int, VoteData)
+            target.fid = fid
+            target.tid = tid
+            target.voteData = voteData
+            target.callback = { ok in
+                print("vote callback \(ok)")
+                if ok {
+                    reloadData()
+                }
+            }
         }
     }
     
@@ -482,6 +538,19 @@ class PostViewController: UIViewController {
         case .login():
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as! LoginViewController
             self.present(vc, animated: true)
+        case .vote(let (fid, tid)):
+            var voteData: VoteData?
+            for item in datas {
+                if let v = item.voteData {
+                    voteData = v
+                    break
+                }
+            }
+            if let v = voteData {
+                 self.performSegue(withIdentifier: "postToVoteSegue", sender: (fid, tid, v))
+            } else {
+                print("vote click but cant find vote data")
+            }
         case .others(let url), .attachment(let url):
             if let u = URL(string: url) {
                 self.loadWebView(title: nil, url: u)
@@ -542,6 +611,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         let lz = cell.viewWithTag(3) as! UILabel
         let time = cell.viewWithTag(4) as! UILabel
         let content = cell.viewWithTag(5) as! HtmlLabel
+        let content2 = cell.viewWithTag(9) as! HtmlTextView
         let editBtn = cell.viewWithTag(8) as! UIButton
         
         if App.isLogin && Settings.uid! == data.uid && data.pid > 0 {
@@ -557,8 +627,15 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         img.kf.setImage(with: Urls.getAvaterUrl(uid: data.uid), placeholder: #imageLiteral(resourceName: "placeholder"))
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarClick(_:))))
         
-        content.attributedText =  data.content
-        content.linkClickDelegate = self.linkClick
+        if self.renderUseLabel {
+            content2.isHidden = true
+            content.attributedText =  data.content
+            content.linkClickDelegate = self.linkClick
+        } else {
+            content.isHidden = true
+            content2.attributedText = data.content
+            content2.linkClickDelegate = self.linkClick
+        }
         
         //forceTouch
         if traitCollection.forceTouchCapability == .available {
@@ -594,6 +671,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     // FIXME 现在计算行高有bug，内容比较多的时候会少计算1行左右
     private func caculateRowheight(width: CGFloat, content: NSAttributedString) -> CGFloat {
         let contentHeight = content.height(for: self.tableViewWidth - 30)
+        //print(self.tableViewWidth)
         return 12 + 36 + 6 + contentHeight + 15
     }
 }
@@ -632,7 +710,7 @@ extension PostViewController {
                 reason = "你需要登陆才能回贴"
                 isLogin = false
             } else {
-                print(res)
+                //print(res)
                 reason = "由于未知原因发表失败"
             }
         } else {

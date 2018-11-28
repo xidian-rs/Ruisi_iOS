@@ -25,6 +25,7 @@ public class Settings {
     private static let key_message_id_at = "key_message_id_at"
     private static let key_theme_id = "key_theme_id"
     private static let key_forumlist = "key_forumlist"
+    private static let key_post_use_uitextview = "key_post_use_uitextview"
     private static let key_forumlist_display_type = "key_forumlist_display_type"
     private static let key_forumlist_saved_time = "key_forumlist_saved_time"
     private static let key_work_type = "key_work_type"
@@ -142,6 +143,19 @@ public class Settings {
 
         set {
             UserDefaults.standard.set(newValue, forKey: key_theme_id)
+        }
+    }
+    
+    // 帖子正文渲染方式
+    // true - UILabel
+    // false - UITextView
+    public static var postContentRenderType: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: key_post_use_uitextview)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: key_post_use_uitextview)
         }
     }
 

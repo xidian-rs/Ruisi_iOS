@@ -18,6 +18,7 @@ class PostData {
     var pid: Int
     var index: String //楼层
     var replyUrl: String?
+    var voteData: VoteData? //投票
     
     public var rowHeight: CGFloat = 0
 

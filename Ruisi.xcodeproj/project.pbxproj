@@ -84,6 +84,9 @@
 		2F9771E71EA648070058EDB4 /* HotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9771E61EA648070058EDB4 /* HotViewController.swift */; };
 		2F9772461EA65A3F0058EDB4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9772451EA65A3F0058EDB4 /* Constant.swift */; };
 		2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA780EC1EA8603800ACBEAF /* PostViewController.swift */; };
+		2FA9EC1B21AD93B200A5BFFF /* MoneyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA9EC1A21AD93B200A5BFFF /* MoneyConfig.swift */; };
+		2FAB94DE21AE6DCB0094E2D5 /* VoteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB94DD21AE6DCB0094E2D5 /* VoteData.swift */; };
+		2FAB94E021AE99510094E2D5 /* VoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB94DF21AE99510094E2D5 /* VoteViewController.swift */; };
 		2FAFE0B71FE94F3B00AD7FDC /* HtmlTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0AE1FE94F3A00AD7FDC /* HtmlTag.swift */; };
 		2FAFE0B81FE94F3B00AD7FDC /* HtmlNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0AF1FE94F3A00AD7FDC /* HtmlNode.swift */; };
 		2FAFE0B91FE94F3B00AD7FDC /* HtmlAttr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */; };
@@ -218,6 +221,9 @@
 		2F9771E61EA648070058EDB4 /* HotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotViewController.swift; sourceTree = "<group>"; };
 		2F9772451EA65A3F0058EDB4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2FA780EC1EA8603800ACBEAF /* PostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		2FA9EC1A21AD93B200A5BFFF /* MoneyConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyConfig.swift; sourceTree = "<group>"; };
+		2FAB94DD21AE6DCB0094E2D5 /* VoteData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteData.swift; sourceTree = "<group>"; };
+		2FAB94DF21AE99510094E2D5 /* VoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteViewController.swift; sourceTree = "<group>"; };
 		2FAFE0AE1FE94F3A00AD7FDC /* HtmlTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlTag.swift; sourceTree = "<group>"; };
 		2FAFE0AF1FE94F3A00AD7FDC /* HtmlNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlNode.swift; sourceTree = "<group>"; };
 		2FAFE0B01FE94F3A00AD7FDC /* HtmlAttr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlAttr.swift; sourceTree = "<group>"; };
@@ -443,6 +449,7 @@
 				2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */,
 				2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */,
 				2F63A419213A86090074201B /* AgreementViewController.swift */,
+				2FAB94DF21AE99510094E2D5 /* VoteViewController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -464,6 +471,8 @@
 				2F8AB78E1FE6B39B00C3AFA8 /* UploadImageItem.swift */,
 				2FF5F9821FE95DF700C6535D /* AlbumData.swift */,
 				2F2670481FEFAADC00AB291D /* SearchData.swift */,
+				2FA9EC1A21AD93B200A5BFFF /* MoneyConfig.swift */,
+				2FAB94DD21AE6DCB0094E2D5 /* VoteData.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -683,7 +692,9 @@
 				2F77A66B201AFA5300322B28 /* InputValidController.swift in Sources */,
 				2FAFE0D51FE956F900AD7FDC /* ItemController.swift in Sources */,
 				2F6679E9208342750010F3AB /* HtmlArrawLabel.swift in Sources */,
+				2FA9EC1B21AD93B200A5BFFF /* MoneyConfig.swift in Sources */,
 				2F175AC71FCD37EE00917895 /* FriendData.swift in Sources */,
+				2FAB94DE21AE6DCB0094E2D5 /* VoteData.swift in Sources */,
 				2FB3A76F1FDFB07D002FE2F5 /* ChooseFriendViewController.swift in Sources */,
 				2FAFE0DD1FE956F900AD7FDC /* BlurView.swift in Sources */,
 				2FD4ADCD1EA75C3400602516 /* PostsViewController.swift in Sources */,
@@ -729,6 +740,7 @@
 				2F2670571FEFE78100AB291D /* LinkClickHandler.swift in Sources */,
 				2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */,
 				2F3885731FE2A883000749F4 /* ThemeViewController.swift in Sources */,
+				2FAB94E021AE99510094E2D5 /* VoteViewController.swift in Sources */,
 				2FB627771FC980E3005D33F0 /* History.swift in Sources */,
 				2F1C31101FEBF6AF00498C96 /* SimpleReplyView.swift in Sources */,
 				2F8AD6961EA787EE002540AA /* LoginViewController.swift in Sources */,

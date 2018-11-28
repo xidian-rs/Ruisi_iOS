@@ -164,6 +164,11 @@ public class Urls {
         return "\(baseUrl)home.php?mod=space&uid=\(uid!)&do=thread&view=me&mobile=2"
     }
     
+    // 我的金币
+    public class var myMoneyUrl: String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=credit&showcredit=1&inajax=1&mobile=2"
+    }
+    
     // 我的回复
     public class var myReplysUrl: String {
         return "\(baseUrl)forum.php?mod=guide&view=my&type=reply&inajax=1&mobile=2"

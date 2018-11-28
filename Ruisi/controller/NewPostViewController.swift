@@ -23,6 +23,8 @@ class NewPostViewController: UIViewController,
     @IBOutlet weak var subSeletedBtn: UIButton!
     @IBOutlet weak var titleInput: UITextField!
     @IBOutlet weak var contentInput: RitchTextView!
+    @IBOutlet weak var moneyConfigBtn: UIButton!
+    
     @IBOutlet weak var imagesCollection: UICollectionView! {
         didSet {
             imagesCollection.dataSource = self
@@ -39,6 +41,7 @@ class NewPostViewController: UIViewController,
     var tid: Int? //编辑模式需要
     var pid: Int? //编辑模式需要
 
+    private var moneyConfig: MoneyConfig? //散金币设置
     private var editFormDatas = [String: String]()
     private var typeIds = [KeyValueData<String, String>]()
     private var progress: UIAlertController!
@@ -216,8 +219,8 @@ class NewPostViewController: UIViewController,
 
     // 相册选择回掉
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        // Local variable inserted by Swift 4.2 migrator.
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
         // 最大图片宽度1080像素
         // rs 限制最大1M的附件
@@ -480,6 +483,18 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         if let type = typeId {
             params["typeid"] = type
         }
+        
+        // 散金币设置
+        if let config = moneyConfig, config.totalCount > 0, config.perMoney > 0 {
+//            每次金币 replycredit_extcredits 金币数量 0或者空不散金币
+//            次数 replycredit_times （replycredit_extcredits * 1.15） *  replycredit_times <= 总金币
+//            每人最多几次 replycredit_membertimes 1/2/3
+//            中奖概率 replycredit_random 100/80/50
+            params["replycredit_times"] = config.totalCount
+            params["replycredit_extcredits"] = config.perMoney
+            params["replycredit_membertimes"] = config.perTimes
+            params["replycredit_random"] = config.chance
+        }
 
         // 添加附件列表
         uploadImages.forEach { (item) in
@@ -561,7 +576,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         }
         inputValidVc?.show(vc: self)
     }
-
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? UINavigationController, let target = dest.topViewController as? ChooseForumViewController {
@@ -574,7 +589,14 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
                 }
             }
             target.currentSelectFid = self.fid!
+        } else if let dest = segue.destination as? UINavigationController, let target = dest.topViewController as? NewPostSettingViewController {
+            target.config = self.moneyConfig
+            target.callback = { config in
+                self.moneyConfig = config
+                self.moneyConfigBtn.setTitle((config.totalCount == 0 || config.perMoney == 0) ? "散金币: 不散" : "散金币: \(config.totalCount)次 每次\(config.perMoney)金币 每人最多获得\(config.perTimes)次 概率\(config.chance)%", for: .normal)
+            }
         }
+        
     }
 }
 
