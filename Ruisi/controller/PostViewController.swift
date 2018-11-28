@@ -496,7 +496,7 @@ class PostViewController: UIViewController {
             target.callback = { ok in
                 print("vote callback \(ok)")
                 if ok {
-                    reloadData()
+                    self.reloadData()
                 }
             }
         }
