@@ -13,7 +13,13 @@ import Kanna
 class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, ScrollTopable {
     
     private var datas: [Forums] = []
-    private var colCount = 6 //collectionView列数
+    private var colCount: Int { //collectionView列数
+        if type == 0 {
+            return min(UIDevice.current.orientation.isLandscape ? 12 : 9, Int(UIScreen.main.bounds.width / 75))
+        } else {
+            return min(UIDevice.current.orientation.isLandscape ? 5 : 4, Int(UIScreen.main.bounds.width / 135))
+        }
+    }
     private var type = 1 // 0-grid显示 1-列表显示
     
     var loadedUid: Int?
@@ -25,7 +31,6 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
         type = Settings.forumListDisplayType ?? 1
-        caculateColCount()
     }
     
     func scrollTop() {
@@ -47,17 +52,13 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         }
         
         Settings.forumListDisplayType = type
-        caculateColCount()
         self.collectionView?.reloadData()
     }
     
-    private func caculateColCount() {
-        if type == 0 {
-            colCount = min(9, Int(UIScreen.main.bounds.width / 75))
-        } else {
-            colCount = min(5, Int(UIScreen.main.bounds.width / 135))
-        }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.collectionView?.reloadData()
     }
+
     
     // uid == nil 加载未登陆的
     private func loadData(uid: Int?) {

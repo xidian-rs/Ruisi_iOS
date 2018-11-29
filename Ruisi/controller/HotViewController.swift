@@ -165,7 +165,7 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable,
     
     // 计算行高
     private func caculateRowheight(isSchoolNet: Bool, width: CGFloat, title: String) -> CGFloat {
-        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        let titleHeight = title.height(for: width - 32, font: UIFont.systemFont(ofSize: 16, weight: .medium))
         // 上间距(12) + 正文(计算) + 间距(8) + 昵称(14.5) + 下间距(10)
         return 12 + titleHeight + 8 + 14.5 + 10
     }

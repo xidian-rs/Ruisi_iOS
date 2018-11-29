@@ -670,7 +670,7 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     // 计算行高
     // FIXME 现在计算行高有bug，内容比较多的时候会少计算1行左右
     private func caculateRowheight(width: CGFloat, content: NSAttributedString) -> CGFloat {
-        let contentHeight = content.height(for: self.tableViewWidth - 30)
+        let contentHeight = content.height(for: self.tableViewWidth - 32)
         //print(self.tableViewWidth)
         return 12 + 36 + 6 + contentHeight + 15
     }

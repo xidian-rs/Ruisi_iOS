@@ -31,6 +31,13 @@ class WaterFallCollectionViewLayout: UICollectionViewLayout {
         super.init(coder: aDecoder)
     }
 
+    public func updateScreenState(width: Int) {
+        columnCount = Int(width / 160)
+        maxHeightDic.removeAll()
+        attributesArray.removeAll()
+        print("width change ... \(width) \(columnCount)")
+    }
+    
     override func prepare() {
         super.prepare()
 

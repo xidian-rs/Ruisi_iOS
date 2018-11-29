@@ -20,12 +20,13 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
     private var isLoading = false
     private var datas = [ArticleListData]()
     private lazy var rsRefreshControl =  RSRefreshControl()
+    private var layout: WaterFallCollectionViewLayout!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
         collectionView.delegate = self
-        let layout = WaterFallCollectionViewLayout()
+        layout = WaterFallCollectionViewLayout()
         layout.delegate = self
         //self.automaticallyAdjustsScrollViewInsets = false //修复collectionView头部空白
         collectionView.collectionViewLayout = layout
@@ -35,6 +36,17 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         rsRefreshControl.beginRefreshing()
         loadData()
+    }
+    
+    // 屏幕方向切换
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        if UIDevice.current.orientation.isLandscape {
+//            print("Landscape")
+//        } else {
+//            print("Portrait")
+//        }
+        layout.updateScreenState(width: Int(size.width))
+        self.collectionView.reloadData()
     }
     
     @objc func reloadData() {

@@ -20,9 +20,6 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     private var subForumBtn: UIBarButtonItem!
     private var submitBtn: UIBarButtonItem!
     
-    // 是不是由记录的子分区载入
-    private var isLoadFormSetting: Bool = true
-    
     override func viewDidLoad() {
         self.autoRowHeight = false
         self.showRefreshControl = true
@@ -42,24 +39,12 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         return url
     }
     
+    
+    // 是不是由记录的子分区载入
     @objc private func switchSubForum() {
         guard subForums.count > 0 else {
             self.navigationItem.rightBarButtonItems = [submitBtn]
             return
-        }
-        
-        let f = Settings.getSelectSubForum(fid: parentFid!)
-        if f != nil && isLoadFormSetting {
-            isLoadFormSetting = false
-            for item in subForums {
-                if item.value == f!.fid {
-                    print("load choosed subforum \(self.parentFid!) -> \(item.value) \(item.key)")
-                    self.title = item.key
-                    self.fid = item.value
-                    self.reloadData()
-                    return
-                }
-            }
         }
         
         let alert = UIAlertController(title: "选择分区", message: nil, preferredStyle: .actionSheet)
@@ -196,12 +181,35 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         //从浏览历史数据库读出是否已读
         SQLiteDatabase.instance?.setReadHistory(datas: &subDatas)
         
-        if subForums.count > 0 {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        if subForums.count > 0 && self.currentPage == 1 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
+                guard let this = self else { return }
                 // 设置子板块
-                if !(self.navigationItem.rightBarButtonItems ?? []).contains(self.subForumBtn) {
-                    self.navigationItem.rightBarButtonItems = [self.submitBtn, self.subForumBtn]
-                    self.switchSubForum()
+                if !(this.navigationItem.rightBarButtonItems ?? []).contains(this.subForumBtn) {
+                    this.navigationItem.rightBarButtonItems = [this.submitBtn, this.subForumBtn]
+                    guard subDatas.count == 0 else {
+                        this.subForums.insert(KeyValueData<String, Int>(key: this.title ?? "主版块", value: this.fid!), at: 0)
+                        return
+                    }
+                    let f = Settings.getSelectSubForum(fid: this.parentFid!)
+                    var item: KeyValueData<String, Int>?
+                    if f != nil {
+                        for v in this.subForums {
+                            if v.value == f!.fid {
+                                item = v
+                                break
+                            }
+                        }
+                    }
+                    
+                    if item == nil {
+                        item = this.subForums.first!
+                    }
+                    
+                    print("empty forum auto switch to subforum")
+                    this.title = item!.key
+                    this.fid = item!.value
+                    this.reloadData()
                 }
             }
         }
@@ -268,7 +276,7 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     
     // 计算行高
     private func caculateRowheight(isSchoolNet: Bool, width: CGFloat, title: String) -> CGFloat {
-        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        let titleHeight = title.height(for: width - 32, font: UIFont.systemFont(ofSize: 16, weight: .medium))
         if isSchoolNet { // 上间距(12) + 正文(计算) + 间距(8) + 头像(36) + 下间距(10)
             return 12 + titleHeight + 8 + 36 + 10
         } else { // 上间距(12) + 正文(计算) + 间距(8) + 昵称(14.5) + 下间距(10)

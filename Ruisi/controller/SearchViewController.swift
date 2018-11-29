@@ -144,7 +144,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func caculateRowHeight(width: CGFloat, text: String) -> CGFloat {
-        let titleHeight = text.height(for: self.tableViewWidth - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        let titleHeight = text.height(for: self.tableViewWidth - 32, font: UIFont.systemFont(ofSize: 16, weight: .medium))
         // 上间距(12) + 正文(计算) + 下间距(12)
         return 12 + titleHeight + 12
     }

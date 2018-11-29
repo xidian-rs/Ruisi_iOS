@@ -158,7 +158,7 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
     
     // 计算行高
     private func caculateRowheight(width: CGFloat, title: String) -> CGFloat {
-        let titleHeight = title.height(for: width - 30, font: UIFont.systemFont(ofSize: 16, weight: .medium))
+        let titleHeight = title.height(for: width - 32, font: UIFont.systemFont(ofSize: 16, weight: .medium))
         // 上间距(12) + 正文(计算) + 间距(5) + 昵称(14.5) + 下间距(10)
         return 12 + titleHeight + 5 + 14.5 + 10
     }

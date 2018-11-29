@@ -298,10 +298,10 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
     
     // 计算行高 content 最多4行最高72
     private func caculateRowheight(width: CGFloat, content: String) -> CGFloat {
-        let contentHeight = min(content.height(for: width - 30 - 36 - 8, font: UIFont.systemFont(ofSize: 15)), 72)
-        // 上间距(12) + 标题(19.5) + 间距(5) + 正文(计算) + 下间距(10)
+        let contentHeight = min(content.height(for: width - 32 - 36 - 8, font: UIFont.systemFont(ofSize: 15)), 72)
+        // 上间距(12) + 标题(19.5) + 间距(5) + 正文(计算) + 下间距(12)
         // 12 是arrawLabel的内边距
-        return 12 + 19.5 + 5 + contentHeight + 12 + 10
+        return 12 + 19.5 + 5 + contentHeight + 12 + 12
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

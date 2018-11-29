@@ -37,7 +37,6 @@ UITableViewDataSource, UINavigationControllerDelegate {
         myTableView.delegate = self
         
         avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        avaterImage.layer.cornerRadius = avaterImage.frame.width / 2
         
         isLogin = App.isLogin
         updateUi()
@@ -45,6 +44,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         if App.isLogin != isLogin {
             isLogin = App.isLogin
             updateUi()
@@ -73,6 +73,9 @@ UITableViewDataSource, UINavigationControllerDelegate {
             usernameLabel.text = "点击头像登陆"
             avaterImage.image = #imageLiteral(resourceName: "placeholder")
         }
+        
+
+        avaterImage.layer.cornerRadius = avaterImage.frame.width / 2
     }
     
     
