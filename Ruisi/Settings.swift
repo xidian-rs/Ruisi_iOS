@@ -123,6 +123,17 @@ public class Settings {
             UserDefaults.standard.set(newValue, forKey: key_rember_password)
         }
     }
+    
+    // 是否关闭最近常逛的版块
+    public static var closeRecentVistForum: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "key_close_recent_vist_forum")
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: "key_close_recent_vist_forum")
+        }
+    }
 
     // 显示置顶
     public static var showZhiding: Bool {

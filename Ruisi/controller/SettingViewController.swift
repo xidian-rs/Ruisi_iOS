@@ -18,6 +18,7 @@ class SettingViewController: UITableViewController {
     @IBOutlet weak var showZhidingSwitch: UISwitch!
     @IBOutlet weak var enableTailSwitch: UISwitch!
     @IBOutlet weak var postRenderTypeSwitch: UISwitch!
+    @IBOutlet weak var rencentVistForumSwitch: UISwitch!
     
     private let defaultTail = "[size=1][color=Gray]-----来自[url=\(Urls.getPostUrl(tid: App.POST_ID))]手机睿思IOS版[/url][/color][/size]"
     
@@ -27,6 +28,7 @@ class SettingViewController: UITableViewController {
         showZhidingSwitch.isOn = Settings.showZhiding
         enableTailSwitch.isOn = Settings.enableTail
         postRenderTypeSwitch.isOn = Settings.postContentRenderType
+        rencentVistForumSwitch.isOn = Settings.closeRecentVistForum
         tailContentTextVIew.text = Settings.tailContent
         tailContentTextVIew.isEditable = enableTailSwitch.isOn
         tailContentTextVIew.text = Settings.tailContent ?? defaultTail
@@ -44,13 +46,20 @@ class SettingViewController: UITableViewController {
     
     private func setNetworkTypeText() {
         if networkChangeSwitch.selectedSegmentIndex == 0 {
-            networkNoticeLabel.text = "判断类型为:\(App.isSchoolNet ? "校园网" : "外网")"
+            networkNoticeLabel.text = "自动判断类型为:\(App.isSchoolNet ? "校园网" : "外网")"
         } else if networkChangeSwitch.selectedSegmentIndex == 1 {
             networkNoticeLabel.text = "当前选择:外网"
         } else {
             networkNoticeLabel.text = "当前选择:校园网"
         }
     }
+    
+    // 是否显示最近常逛的功能
+    @IBAction func closeRencentVistForum(_ sender: UISwitch) {
+        print("closeRencentVistForum \(sender.isOn)")
+        Settings.closeRecentVistForum = sender.isOn
+    }
+    
     
     // 是否显示置顶帖
     @IBAction func showZhidingValueChange(_ sender: UISwitch) {
@@ -65,10 +74,10 @@ class SettingViewController: UITableViewController {
         setNetworkTypeText()
         
         if sender.selectedSegmentIndex == 1 {
-            showAlert(title: "提示", message: "网络类型已切换为外网,此设置校园网也可访问,如校园网没流量可设置为自动或校园网")
+            showAlert(title: "提示", message: "网络类型已切换为外网(校园网外网均可访问,不免流量)")
             App.isSchoolNet = false
         } else if sender.selectedSegmentIndex == 2 {
-            showAlert(title: "提示", message: "网络类型已切换为校园网,此设置不在校园网是无法访问的(如4G流量),如果无法访问请设回自动或者外网")
+            showAlert(title: "提示", message: "网络类型已切换为校园网,外网无法访问(如4G流量)")
             App.isSchoolNet = true
         } else {
             showAlert(title: "提示", message: "网络类型已切换为自动判断,下次重启后开始生效")

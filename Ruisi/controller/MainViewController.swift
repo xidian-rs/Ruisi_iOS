@@ -50,6 +50,11 @@ class MainViewController: UITabBarController {
     
     @objc func networkChange(_ notification: Notification) {
         checkNetwork()
+        for navVc in self.children {
+            if let vc = navVc as? UINavigationController, let dest = vc.children.first as? ForumsViewController {
+                dest.networkChange()
+            }
+        }
     }
     
     // 检查网络类型

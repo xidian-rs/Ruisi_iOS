@@ -12,6 +12,7 @@ import SQLite3
 // 数据库用于保存浏览历史，可以查看浏览历史 如果一个帖子已经查看在帖子列表页面此帖子标题灰色显示
 public class SQLiteDatabase {
     private let TABLE_READ_HISTORY = "rs_read_history"
+    private let TABLE_FORM_READ_COUNT = "rs_form_read_count"
 
     fileprivate static var db: SQLiteDatabase?
     fileprivate let dbPointer: OpaquePointer?
@@ -143,6 +144,15 @@ public class SQLiteDatabase {
         """
         try excute(sql: tbHistorySql)
         print("success create table: \n\(TABLE_READ_HISTORY)")
+        
+        let tbFormReadCountSql = """
+        CREATE TABLE IF NOT EXISTS \(TABLE_FORM_READ_COUNT) (
+        fid INTEGER primary key,
+        count INTEGER NOT NULL DEFAULT 1,
+        time DATETIME NOT NULL)
+        """
+        try excute(sql: tbFormReadCountSql)
+        print("success create table: \n\(TABLE_FORM_READ_COUNT)")
     }
 
     // 删除所有的表
@@ -150,6 +160,10 @@ public class SQLiteDatabase {
         let dropSql = "DROP TABLE IF EXISTS \(TABLE_READ_HISTORY)"
         try excute(sql: dropSql)
         print("success drop table:\(TABLE_READ_HISTORY)")
+        
+        let dropSql2 = "DROP TABLE IF EXISTS \(TABLE_FORM_READ_COUNT)"
+        try excute(sql: dropSql2)
+        print("success drop table:\(TABLE_FORM_READ_COUNT)")
     }
 
     // MARK: - 浏览历史相关
@@ -261,5 +275,75 @@ public class SQLiteDatabase {
     func clearHistory() throws {
         let sql = "DELETE FROM \(TABLE_READ_HISTORY)"
         try excute(sql: sql)
+    }
+    
+    // MARK: - 分区浏览记录，提取出最常浏览
+    public func addVisitFormLog(fid: Int) {
+        let sql1 = "UPDATE \(TABLE_FORM_READ_COUNT) set count = count + 1 where fid = ?"
+        guard let statemet1 = try? prepare(statement: sql1) else {
+            print("prepare sql error \(sql1) \(errorMessage)")
+            return
+        }
+        defer {
+            sqlite3_finalize(statemet1)
+        }
+        
+        guard sqlite3_bind_int(statemet1, 1, Int32(fid)) == SQLITE_OK else {
+            print("bind sql error \(sql1) \(errorMessage)")
+            return
+        }
+        
+        
+        guard sqlite3_step(statemet1) == SQLITE_DONE else {
+            print("step sql error \(sql1) \(errorMessage)")
+            return
+        }
+        
+        let affectRows = sqlite3_changes(dbPointer!)
+        if affectRows == 0 {
+            let sql2 = "REPLACE INTO \(TABLE_FORM_READ_COUNT)(fid,count,time) values(?,1,CURRENT_TIMESTAMP)"
+            guard let statemet2 = try? prepare(statement: sql2) else {
+                print("prepare sql error \(sql2) \(errorMessage)")
+                return
+            }
+            
+            defer {
+                sqlite3_finalize(statemet2)
+            }
+            
+            guard sqlite3_bind_int(statemet2, 1, Int32(fid)) == SQLITE_OK else {
+                print("bind sql error \(sql2) \(errorMessage)")
+                return
+            }
+            
+            guard sqlite3_step(statemet2) == SQLITE_DONE else {
+                print("step sql error \(sql2) \(errorMessage)")
+                return
+            }
+        }
+        print("Successfully inserted forumReadHistory row.")
+    }
+    
+    // 加载最近浏览的版块
+    func loadRecentVisitForums(count: Int) -> [Int] {
+        var datas = [Int]()
+        let sql = "SELECT * FROM \(TABLE_FORM_READ_COUNT) order by count desc,time desc limit \(count)"
+        
+        guard let statement = try? prepare(statement: sql) else {
+            return datas
+        }
+        
+        defer {
+            sqlite3_finalize(statement)
+        }
+        
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            let fid = Int(sqlite3_column_int(statement, 0))
+            //let count = Int(sqlite3_column_int(statement, 1))
+            //let time = String(cString: sqlite3_column_text(statement, 2))
+            datas.append(fid)
+        }
+        
+        return datas
     }
 }

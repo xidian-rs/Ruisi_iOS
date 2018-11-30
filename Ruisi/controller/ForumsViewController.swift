@@ -12,7 +12,29 @@ import Kanna
 // 首页 - 板块列表
 class ForumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, ScrollTopable {
     
-    private var datas: [Forums] = []
+    private var datas: [Forums] = [] {
+        didSet {
+            if !Settings.closeRecentVistForum && recentFids.count > 0 {
+                let fs = Forums(gid: 0, name: "最近常逛", login: false, canPost: true)
+                var ffs = [Forum]()
+                for recentFid in recentFids {
+                    for item in datas {
+                        if let ff = item.findForum(fid: recentFid) {
+                            ffs.append(ff)
+                            break
+                        }
+                    }
+                    
+                    if ffs.count == (type == 0 ? colCount : colCount * 2) {
+                        break
+                    }
+                }
+
+                fs.forums = ffs
+                datas.insert(fs, at: 0)
+            }
+        }
+    }
     private var colCount: Int { //collectionView列数
         if type == 0 {
             return min(UIDevice.current.orientation.isLandscape ? 12 : 9, Int(UIScreen.main.bounds.width / 75))
@@ -24,6 +46,11 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     var loadedUid: Int?
     var loaded = false
+    var recentFids = [Int]()
+    
+    private var isWrhr: Bool {
+        return traitCollection.verticalSizeClass == .regular && traitCollection.horizontalSizeClass == .regular
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +58,26 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.clearsSelectionOnViewWillAppear = true
         type = Settings.forumListDisplayType ?? 1
+        
+        if !Settings.closeRecentVistForum, let fids = SQLiteDatabase.instance?.loadRecentVisitForums(count: 10) {
+            recentFids.append(contentsOf: fids)
+        }
     }
     
     func scrollTop() {
         self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+    
+    public func networkChange() {
+        if !(Network.reachability?.isConnectedToNetwork ?? false) {
+            if !(self.title?.contains("未连接") ?? false) {
+                self.title = self.title! + "(未连接)"
+            }
+        } else {
+            if self.title?.contains("未连接") ?? false {
+                self.title = String(self.title![self.title!.startIndex ..< self.title!.range(of: "(未连接)")!.lowerBound])
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -168,23 +211,23 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     //单元格大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if type == 0 {
-            let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 5) - CGFloat(16)) / CGFloat(colCount)
+            let cellSize = (collectionView.frame.width - CGFloat((colCount - 1) * 5) - CGFloat(isWrhr ? 32 : 16)) / CGFloat(colCount)
             return CGSize(width: cellSize, height: cellSize + UIFont.systemFont(ofSize: 12).lineHeight - 6)
         } else {
-            let cellSize = (collectionView.frame.width - CGFloat(16)) / CGFloat(colCount)
-            return CGSize(width: cellSize, height: 52)
+            let cellSize = (collectionView.frame.width - CGFloat(isWrhr ? 32 : 16)) / CGFloat(colCount)
+            return CGSize(width: cellSize, height: 56)
         }
     }
     
     // collectionView的上下左右间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+        return UIEdgeInsets(top: 5, left: isWrhr ? 16 : 8, bottom: 5, right: isWrhr ? 16 : 8)
     }
     
     
     // 单元的行间距    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return (type == 0) ? 5 : 0
+        return (type == 0) ? 5 : (isWrhr ? 10 : 0)
     }
     
     
@@ -260,12 +303,19 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         selectedIndexPath = indexPath
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let type = Urls.getPostsType(fid: datas[indexPath.section].forums![indexPath.row].fid, isSchoolNet: App.isSchoolNet)
+        let fid = datas[indexPath.section].forums![indexPath.row].fid
+        let type = Urls.getPostsType(fid: fid, isSchoolNet: App.isSchoolNet)
         switch type {
         case .imageGrid:
             self.performSegue(withIdentifier: "forumToImagePosts", sender: self)
         default:
             self.performSegue(withIdentifier: "forumToNormalPosts", sender: self)
+        }
+        
+        if !Settings.closeRecentVistForum {
+            DispatchQueue.global(qos: .userInitiated).async {
+                SQLiteDatabase.instance?.addVisitFormLog(fid: fid)
+            }
         }
     }
     

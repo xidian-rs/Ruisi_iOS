@@ -46,4 +46,14 @@ public class Forums: Codable {
     func setForums(forums: [Forum]) {
         self.forums = forums
     }
+    
+    func findForum(fid: Int) -> Forum? {
+        for i in forums ?? [] {
+            if i.fid == fid {
+                return i
+            }
+        }
+        
+        return nil
+    }
 }

@@ -74,8 +74,12 @@ UITableViewDataSource, UINavigationControllerDelegate {
             avaterImage.image = #imageLiteral(resourceName: "placeholder")
         }
         
-
-        avaterImage.layer.cornerRadius = avaterImage.frame.width / 2
+        // avaterImage.frame.width / 2 对iPad好像不起作用
+        if traitCollection.verticalSizeClass == .regular && traitCollection.horizontalSizeClass == .regular {
+            avaterImage.layer.cornerRadius = 60
+        } else {
+            avaterImage.layer.cornerRadius = 40
+        }
     }
     
     
