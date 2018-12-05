@@ -59,8 +59,19 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         indicateView = UIActivityIndicatorView(style: .gray)
         indicateView?.hidesWhenStopped = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: indicateView!)
+        
+        loadForumhash()
     }
     
+    
+    func loadForumhash() {
+        HttpUtil.GET(url: Urls.searchUrl, params: nil) { (ok, res) in
+            if let hash = Utils.getFormHash(from: res) {
+                print("set new hash:\(hash)")
+                Settings.formhash = hash
+            }
+        }
+    }
     
     func loadData(url: String) {
         isLoading = true
@@ -215,8 +226,10 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                                     errText = summeryNode.text
                                 } else if let errNode = doc.xpath("/html/body/div[1]/p[1]").first {
                                     errText = errNode.text
+                                } else if res.contains("您当前的访问请求当中含有非法字符") {
+                                    errText = "非法请求参数,被系统拒绝"
                                 }
-                                self.placeholderText = errText ?? "没有查询到搜索结果"
+                                self.placeholderText = errText ?? "没有查询到\(text)的搜索结果"
                             }
                             
                             DispatchQueue.main.async {

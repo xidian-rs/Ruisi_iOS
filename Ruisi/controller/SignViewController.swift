@@ -15,11 +15,14 @@ import IntentsUI
 // https://www.jianshu.com/p/19b248333b18
 class SignViewController: UIViewController {
 
+    // 是否从捷径打开
     var openFromSiri = false
 
     let items = ["开心", "难过", "郁闷", "无聊", "怒", "擦汗", "奋斗", "慵懒", "衰"]
     let itemsValue = ["kx", "ng", "ym", "wl", "nu", "ch", "fd", "yl", "shuai"]
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
+    @IBOutlet weak var signingView: UIActivityIndicatorView!
+    
     @IBOutlet weak var labelSmiley: UILabel!
     @IBOutlet weak var btnSmiley: UIButton!
     @IBOutlet weak var inputText: UITextField!
@@ -41,6 +44,8 @@ class SignViewController: UIViewController {
             btnSmiley.isHidden = isSigned
             inputText.isHidden = isSigned
             btnSign.isHidden = isSigned
+            
+            signingView.stopAnimating()
         }
     }
     var chooseAlert: UIAlertController!
@@ -73,8 +78,7 @@ class SignViewController: UIViewController {
 
     @IBAction func signBtnClick(_ sender: UIButton? = nil) {
         self.inputText.resignFirstResponder()
-        showLoadingView()
-
+        setSigningState(signing: true)
         let xinqin = itemsValue[currentSelect]
         let say = inputText.text
 
@@ -88,12 +92,11 @@ class SignViewController: UIViewController {
         HttpUtil.POST(url: Urls.signPostUrl, params: ["qdxq": xinqin, "qdmode": qmode, "todaysay": say ?? "来自手机睿思IOS", "fastreplay": 0]) { ok, res in
             let message: String
             let success: Bool
-
+            
             if ok, let s = res.range(of: "恭喜你签到成功") {
                 success = true
                 let end = res.range(of: "</div>", options: .literal, range: s.upperBound..<res.endIndex)
                 message = String(res[s.lowerBound..<end!.lowerBound])
-                
             } else if let eStart = res.range(of: "class=\"c\">")?.upperBound {
                 //<div class="c">对不起，您所在的用户组未被加入允许签到的行列. </div>
                 success = false
@@ -105,14 +108,11 @@ class SignViewController: UIViewController {
             }
 
             DispatchQueue.main.async { [weak self] in
-                self?.dismiss(animated: true, completion: {
-                    let vc = UIAlertController(title: success ? "签到成功" : "签到失败", message: message, preferredStyle: .alert)
-                    vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
-                        self?.dismiss(animated: true)
-                    }))
-                    self?.present(vc, animated: true)
-                })
-
+                self?.setSigningState(signing: false)
+                let vc = UIAlertController(title: success ? "签到成功" : "签到失败", message: message, preferredStyle: .alert)
+                vc.addAction(UIAlertAction(title: "好", style: .cancel))
+                self?.present(vc, animated: true)
+                self?.openFromSiri = false
                 self?.checkSignStatus()
             }
         }
@@ -167,19 +167,16 @@ class SignViewController: UIViewController {
         }
     }
 
-
-    var loadingAlert: UIAlertController?
-
-    func showLoadingView() {
-        if loadingAlert == nil {
-            loadingAlert = UIAlertController(title: "签到中", message: "请稍后...", preferredStyle: .alert)
-            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-            loadingIndicator.hidesWhenStopped = true
-            loadingIndicator.style = .gray
-            loadingIndicator.startAnimating()
-            loadingAlert!.view.addSubview(loadingIndicator)
+    func setSigningState(signing: Bool) {
+        if signing {
+            signingView.startAnimating()
+            btnSign.setTitle("签到中...", for: .normal)
+            inputText.isEnabled = false
+        } else {
+            signingView.stopAnimating()
+            btnSign.setTitle("开始签到", for: .normal)
+            inputText.isEnabled = true
         }
-        present(loadingAlert!, animated: true)
     }
     
     
@@ -312,6 +309,4 @@ extension SignViewController: INUIEditVoiceShortcutViewControllerDelegate {
         print("cenceled")
         controller.dismiss(animated: true, completion: nil)
     }
-    
-    
 }

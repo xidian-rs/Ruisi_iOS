@@ -93,7 +93,7 @@ class VoteViewController: UITableViewController {
             if choose == "" {
                 choose = voteData.options[item].key
             } else {
-                choose = choose + "&pollanswers[]=" + voteData.options[item].key
+                choose = choose + "&pollanswers%5b%5d=" + voteData.options[item].key
             }
             
             if voteData.maxSelect == 1 {
@@ -101,12 +101,13 @@ class VoteViewController: UITableViewController {
             }
         }
         
+        //[] -> %5b%5d
         var url = "forum.php?mod=misc&action=votepoll&fid=\(fid!)&tid=\(tid!)&pollsubmit=yes&quickforward=yes&mobile=2"
         var params = [String:String]()
         if voteData.maxSelect == 1 {
             params["pollanswers[]"] = choose
         } else {
-            url = url + "&pollanswers[]=" + choose
+            url = url + "&pollanswers%5b%5d=" + choose
         }
         HttpUtil.POST(url: url, params: params) { (ok, res) in
             print(res)
