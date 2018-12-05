@@ -16,7 +16,7 @@
 
 ### 使用
 - 安装Cocoapods: `sudo gem install cocoapods`
-- 克隆本项目: `git clone https://github.com/freedom10086/Ruisi.git`
+- 克隆本项目: `git clone https://github.com/freedom10086/Ruisi_Ios.git`
 - 在项目文件夹中运行:  `pod install`
 - 打开生成的`.xcworkspace`文件，构建并运行.
 
