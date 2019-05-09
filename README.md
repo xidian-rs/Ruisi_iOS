@@ -18,7 +18,7 @@
 - 安装Cocoapods: `sudo gem install cocoapods`
 - 克隆本项目: `git clone https://github.com/freedom10086/Ruisi_Ios.git`
 - 在项目文件夹中运行:  `pod install`
-- 打开生成的`.xcworkspace`文件，构建并运行.
+- 使用xcode(需要10.x及以上版本)打开生成的`.xcworkspace`文件，构建并运行.
 
 ### 移植到你的论坛
 > 理论上支持任何Discuz 3.x版本
