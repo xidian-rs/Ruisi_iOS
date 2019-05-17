@@ -535,7 +535,7 @@ class PostViewController: UIViewController {
             vc.tid = tid
             vc.pid = pid
             self.show(vc, sender: self)
-        case .login():
+        case .login:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as! LoginViewController
             self.present(vc, animated: true)
         case .vote(let (fid, tid)):
@@ -836,10 +836,12 @@ extension PostViewController: GalleryItemsDataSource {
         return { imageCompletion in
             self.currentFetch = imageCompletion
             if index <= self.albums.count - 1,let url = URL(string: self.albums[index].src) {
-                ImageDownloader.default.downloadImage(with: url, options: [], progressBlock: nil) {
-                    (image, error, url, data) in
-                    if let i = image {
-                        imageCompletion(i)
+                ImageDownloader.default.downloadImage(with: url, options: [], progressBlock: nil) { result in
+                    switch result {
+                    case .success(let i):
+                        imageCompletion(i.image)
+                    case .failure(let error):
+                        print("downloadImage Error: \(error)")
                     }
                 }
             }

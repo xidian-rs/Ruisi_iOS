@@ -128,7 +128,7 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
             if let searchText = currentSearchText?.trimmingCharacters(in: CharacterSet.whitespaces),let range = title.range(of: searchText) {
                 let attrStr = NSMutableAttributedString(string: title)
                 attrStr.addAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.red],
-                                      range: NSMakeRange(range.lowerBound.encodedOffset, range.upperBound.encodedOffset - range.lowerBound.encodedOffset))
+                                      range: NSMakeRange(range.lowerBound.utf16Offset(in: searchText), range.upperBound.utf16Offset(in: searchText) - range.lowerBound.utf16Offset(in: searchText)))
                 attrTitle = attrStr
             }else {
                 attrTitle = NSAttributedString(string: title)

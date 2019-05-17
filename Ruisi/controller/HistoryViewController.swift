@@ -124,7 +124,7 @@ class HistoryViewController: UITableViewController {
         if editingStyle == .delete {
             let tid = historys[indexPath.row].tid
             DispatchQueue.global(qos: .userInitiated).async {
-                try? SQLiteDatabase.instance?.deleteHistory(tid: tid)
+                ((try? SQLiteDatabase.instance?.deleteHistory(tid: tid)) as ()??)
                 self.historys.remove(at: indexPath.row)
                 DispatchQueue.main.async {
                     tableView.deleteRows(at: [indexPath], with: .fade)

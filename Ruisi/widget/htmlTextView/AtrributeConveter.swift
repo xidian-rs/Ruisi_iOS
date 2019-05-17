@@ -61,7 +61,7 @@ class AttributeConverter: HtmlParserDelegate {
         paraStyle.lineHeightMultiple = CGFloat(1.5)
 
         addAttrs([NSAttributedString.Key.paragraphStyle: paraStyle], start: 0, end: position)
-        addAttrs([NSAttributedString.Key.font: font], start: 0, end: position)
+        addAttrs([NSAttributedString.Key.font: font!], start: 0, end: position)
         return attributedString
     }
     

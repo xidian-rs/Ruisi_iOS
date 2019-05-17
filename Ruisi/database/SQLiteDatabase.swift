@@ -172,7 +172,7 @@ public class SQLiteDatabase {
         let sql = """
         REPLACE INTO \(TABLE_READ_HISTORY)(tid,title,author,created,last_read) VALUES (?,?,?,?,CURRENT_TIMESTAMP)
         """
-        guard let statemet = try? prepare(statement: sql) else {
+        guard let statemet = ((try? prepare(statement: sql)) as OpaquePointer??) else {
             print(errorMessage)
             return
         }
@@ -198,7 +198,7 @@ public class SQLiteDatabase {
     // 判断list<> 是否为已读并修改返回
     func setReadHistory(datas: inout [ArticleListData]) {
         let sql = "SELECT * from \(TABLE_READ_HISTORY) where tid = ?"
-        guard let statement = try? prepare(statement: sql) else {
+        guard let statement = ((try? prepare(statement: sql)) as OpaquePointer??) else {
             return
         }
         defer {
@@ -223,7 +223,7 @@ public class SQLiteDatabase {
     func loadReadHistory(count: Int, offset: Int = 0) -> [History] {
         var datas = [History]()
         let sql = "SELECT * FROM \(TABLE_READ_HISTORY) order by last_read desc limit \(count) offset \(offset)"
-        guard let statement = try? prepare(statement: sql) else {
+        guard let statement = ((try? prepare(statement: sql)) as OpaquePointer??) else {
             return datas
         }
 
@@ -280,7 +280,7 @@ public class SQLiteDatabase {
     // MARK: - 分区浏览记录，提取出最常浏览
     public func addVisitFormLog(fid: Int) {
         let sql1 = "UPDATE \(TABLE_FORM_READ_COUNT) set count = count + 1 where fid = ?"
-        guard let statemet1 = try? prepare(statement: sql1) else {
+        guard let statemet1 = ((try? prepare(statement: sql1)) as OpaquePointer??) else {
             print("prepare sql error \(sql1) \(errorMessage)")
             return
         }
@@ -302,7 +302,7 @@ public class SQLiteDatabase {
         let affectRows = sqlite3_changes(dbPointer!)
         if affectRows == 0 {
             let sql2 = "REPLACE INTO \(TABLE_FORM_READ_COUNT)(fid,count,time) values(?,1,CURRENT_TIMESTAMP)"
-            guard let statemet2 = try? prepare(statement: sql2) else {
+            guard let statemet2 = ((try? prepare(statement: sql2)) as OpaquePointer??) else {
                 print("prepare sql error \(sql2) \(errorMessage)")
                 return
             }
@@ -329,7 +329,7 @@ public class SQLiteDatabase {
         var datas = [Int]()
         let sql = "SELECT * FROM \(TABLE_FORM_READ_COUNT) order by count desc,time desc limit \(count)"
         
-        guard let statement = try? prepare(statement: sql) else {
+        guard let statement = ((try? prepare(statement: sql)) as OpaquePointer??) else {
             return datas
         }
         
