@@ -1,6 +1,6 @@
 ## 西电睿思手机客户端(iOS)
 
-### 【喜大普奔】睿思外网域名rsbbs.xidian.edu.cn 已恢复，App可正常使用
+### 睿思外网域名rsbbs.xidian.edu.cn 暂时无法访问，App只能内网使用
 
 
 [![Build Status](https://travis-ci.org/freedom10086/Ruisi_Ios.svg?branch=master)](https://travis-ci.org/freedom10086/Ruisi_Ios)
