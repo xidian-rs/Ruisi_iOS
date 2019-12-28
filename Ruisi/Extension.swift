@@ -243,10 +243,11 @@ extension UIViewController {
         return true
     }
     
-    func showLoginAlert(message: String? = nil) {
+    func showLoginAlert(message: String? = nil, success: (()-> Void)? = nil) {
         let alert = UIAlertController(title: "需要登陆", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            ((dest as? UINavigationController)?.viewControllers[0] as? LoginViewController)?.dismissAlertClosure = success
             self.present(dest!, animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))

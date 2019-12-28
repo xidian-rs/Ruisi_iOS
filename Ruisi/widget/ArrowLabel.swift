@@ -28,7 +28,13 @@ class ArrowLabel: UILabel {
         p2.addLine(to: CGPoint(x: rect.minX + 22, y: rect.minY + 6))
         p2.addLine(to: CGPoint(x: rect.minX + 17, y: rect.minY))
         p2.close()
-        let bg = UIColor(white: 0.96, alpha: 1)
+        
+        let bg: UIColor
+        if #available(iOS 13.0, *) {
+            bg = UIColor.secondarySystemBackground
+        } else {
+            bg = UIColor(white: 0.96, alpha: 1)
+        }
         bg.setFill()
         p2.fill()
 

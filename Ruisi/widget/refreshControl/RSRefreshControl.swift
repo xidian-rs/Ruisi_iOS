@@ -11,9 +11,17 @@ import UIKit
 class RSRefreshControl: UIControl {
     private let refreshOffsetHeight: CGFloat = 64 // 刷新位置临界点
     
+    var indicatStyle: UIActivityIndicatorView.Style {
+        if #available(iOS 13.0, *) {
+            return UIActivityIndicatorView.Style.medium
+        } else {
+            return UIActivityIndicatorView.Style.gray
+        }
+    }
+    
     // 父scrollView
     private weak var scrollView: UIScrollView?
-    private lazy var progress =  UIActivityIndicatorView(style: .gray)
+    private lazy var progress =  UIActivityIndicatorView(style: indicatStyle)
     private lazy var titleLabel =  UILabel()
     private var initTopInset: CGFloat = 0
     
@@ -64,7 +72,11 @@ class RSRefreshControl: UIControl {
         progress.stopAnimating()
         
         titleLabel.font = UIFont.systemFont(ofSize: 14)
-        titleLabel.textColor = UIColor.darkGray
+        if #available(iOS 13.0, *) {
+            titleLabel.textColor = UIColor.placeholderText
+        } else {
+            titleLabel.textColor = UIColor.darkGray
+        }
         titleLabel.text = " 下拉刷新 "
         titleLabel.isUserInteractionEnabled = false
         titleLabel.textAlignment = .center

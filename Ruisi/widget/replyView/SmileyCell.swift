@@ -34,6 +34,22 @@ class SmileyCell: UICollectionViewCell {
         fatalError("you shou init this view in code!")
     }
     
+    var titleColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondaryLabel
+        } else {
+            return UIColor.darkText
+        }
+    }
+    
+    var titleColorSelected: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.tertiaryLabel
+        } else {
+            return UIColor.darkGray
+        }
+    }
+    
     func setupUi() {
         let leftMargin: CGFloat = 8
         let bottomMargin: CGFloat = 0
@@ -46,8 +62,8 @@ class SmileyCell: UICollectionViewCell {
                 let x = leftMargin + CGFloat(c) * w
                 let y = CGFloat(r) * h
                 let btn = UIButton(frame: CGRect(x: x, y: y, width: w, height: h))
-                btn.setTitleColor(UIColor.darkText, for: .normal)
-                btn.setTitleColor(UIColor.darkGray, for: .highlighted)
+                btn.setTitleColor(titleColor, for: .normal)
+                btn.setTitleColor(titleColorSelected, for: .highlighted)
                 btn.addTarget(self, action: #selector(smileyClick), for: .touchUpInside)
                 btn.tag = r * columnCount + c
                 //btn.sizeToFit()
@@ -62,6 +78,7 @@ class SmileyCell: UICollectionViewCell {
             for j in 0..<columnCount {
                 let index = i * columnCount + j
                 if index == rowCount * columnCount - 1 {
+                    // delete btn
                     let btn =  contentView.subviews.last as! UIButton
                     btn.isHidden = false
                     btn.setImage(#imageLiteral(resourceName: "backspace"), for: [])

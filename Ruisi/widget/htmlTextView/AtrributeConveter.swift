@@ -96,7 +96,7 @@ class AttributeConverter: HtmlParserDelegate {
     
     func characters(text: String) {
         //print(text)
-        attributedString.append(NSAttributedString(string: text))
+        attributedString.append(NSAttributedString(string: text, attributes: [NSAttributedString.Key.foregroundColor: textColor!]))
         //还要根据栈顶的元素类型添加适当的\n
     }
     
@@ -177,7 +177,9 @@ class AttributeConverter: HtmlParserDelegate {
                 break
             case .B, .STRONG:
                 //addAttrs([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)], start: start, end: end)
-                addAttrs([NSAttributedString.Key.foregroundColor: UIColor.black], start: start, end: end)
+                //addAttrs([NSAttributedString.Key.foregroundColor: UIColor.black], start: start, end: end)
+                // set black color has bug in iOS 13 in dark mode
+                break
             case .P:
                 handleParagraph(start: start, attr: attr)
             case .A:

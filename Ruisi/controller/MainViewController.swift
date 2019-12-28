@@ -15,6 +15,12 @@ class MainViewController: UITabBarController {
     var checkCount = 0
     var isAutoNetworkType = (Settings.networkType == 0)
     
+    var schoolNetChecking = false
+    var outNetChecking = false
+    
+    var schoolNetSuccess = false
+    var outNetSuccess = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,6 +29,17 @@ class MainViewController: UITabBarController {
         }
         
         checkNetwork()
+        
+        if isAutoNetworkType {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                // delay 500ms if all net work is still not ok set net work type out
+                if let this = self, this.isAutoNetworkType, !this.schoolNetSuccess, !this.outNetSuccess {
+                    print("delay 500ms temp set net to out net...")
+                    App.isSchoolNet = false
+                }
+            }
+        }
+        
     }
     
     deinit {
@@ -49,10 +66,15 @@ class MainViewController: UITabBarController {
     }
     
     @objc func networkChange(_ notification: Notification) {
+        print("network change...")
         checkNetwork()
-        for navVc in self.children {
-            if let vc = navVc as? UINavigationController, let dest = vc.children.first as? ForumsViewController {
-                dest.networkChange()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            print("start update forums ...")
+            for navVc in self?.children ?? [] {
+                if let vc = navVc as? UINavigationController, let dest = vc.children.first as? ForumsViewController {
+                    dest.networkChange()
+                }
             }
         }
     }
@@ -60,7 +82,13 @@ class MainViewController: UITabBarController {
     // 检查网络类型
     func checkNetwork() {
         print("======checkNetwork======")
+        
+        checkCount = 0
+        schoolNetSuccess = false
+        outNetSuccess = false
+        
         if Settings.networkType == 0 {
+            // auto network type
             print("Reachability Summary")
             print("Status:", Network.reachability?.status ?? "unknown")
             print("ConnectedToNetwork:", Network.reachability?.isConnectedToNetwork ?? "unknown")
@@ -70,19 +98,47 @@ class MainViewController: UITabBarController {
             print("====================")
             
             App.isSchoolNet = (Network.reachability?.isReachableViaWiFi ?? false) ? (Network.reachability?.isReachable ?? false) : false
-            checkCount = 0
             print("临时设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
+            if App.isSchoolNet {
+                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                    self?.checkLogin(isSchoolNet: true)
+                }
+            } else {
+                // not school net
+                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                    self?.checkLogin(isSchoolNet: false)
+                }
+            }
         } else {
+            // manul network type
             App.isSchoolNet = (Settings.networkType == 2)
             print("手动设置网络类型为:\(App.isSchoolNet ? "校园网" : "校外网")")
+            checkCount = 1
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                self?.checkLogin(isSchoolNet: App.isSchoolNet)
+            }
         }
-        
-        checkLogin()
     }
     
     
     //判断是否登陆 和 再次判断网络类型
-    func checkLogin() {
+    func checkLogin(isSchoolNet: Bool) {
+        if isSchoolNet && schoolNetChecking {
+            print("checking... no need check school net..")
+            return
+        }
+        
+        if !isSchoolNet && outNetChecking {
+            print("checking... no need check out net..")
+            return
+        }
+        
+        if isSchoolNet {
+            schoolNetChecking = true
+        } else {
+            outNetChecking = true
+        }
+        
         if checkCount >= 2 {
             DispatchQueue.main.async { [weak self] in
                 if self?.isAutoNetworkType ?? true {
@@ -92,7 +148,7 @@ class MainViewController: UITabBarController {
                         self?.showAlert(title: "网络错误", message: "无法连接到服务器!估计是睿思服务器又崩溃了 囧rz")
                     }
                 } else {
-                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!请检查网络连接或者网络设置,你当前设置网络类型为:\(App.isSchoolNet ? "校园网" : "外网")")
+                    self?.showAlert(title: "网络错误", message: "无法连接到服务器!请检查网络连接或者网络设置,你当前手动设置网络类型为:\(App.isSchoolNet ? "校园网" : "外网")！")
                 }
                 
             }
@@ -100,20 +156,52 @@ class MainViewController: UITabBarController {
             return
         }
         
+        let url: String
+        if isSchoolNet {
+            url = Urls.checkLoginUrlInner
+        } else {
+            url = Urls.checkLoginUrlOut
+        }
         checkCount += 1
-        HttpUtil.PING(url: Urls.checkLoginUrl, timeout: App.isSchoolNet ? 2 : 3) { [weak self] (ok, res) in
+        HttpUtil.PING(url: url, timeout: App.isSchoolNet ? 1.5 : 2) { [weak self] (ok, res) in
             guard let this = self else { return }
+            if isSchoolNet {
+                this.schoolNetChecking = false
+            } else {
+                this.outNetChecking = false
+            }
+            
             if !ok {
                 if this.isAutoNetworkType {
-                    App.isSchoolNet = !App.isSchoolNet
+                    this.checkLogin(isSchoolNet: !isSchoolNet)
                 } else {
+                    // manul mode
                     this.checkCount += 2
+                    this.checkLogin(isSchoolNet: !isSchoolNet)
                 }
-                this.checkLogin()
                 return
             }
+            
+            if isSchoolNet {
+                // school net success
+                this.schoolNetSuccess = true
+                App.isSchoolNet = true
+            } else {
+                // out net success
+                if !this.schoolNetSuccess {
+                    this.outNetSuccess = true
+                    App.isSchoolNet = false
+                } else {
+                    // but school net already success ignore
+                    this.outNetSuccess = true
+                    print("ignore out net success, school net is already success")
+                    if App.isLogin {
+                        // school net is already login not to check login state
+                        return
+                    }
+                }
+            }
         
-            this.checkCount = 0
             if res.contains("id=\"loginform\"") {
                 Settings.uid = nil
                 print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin)")

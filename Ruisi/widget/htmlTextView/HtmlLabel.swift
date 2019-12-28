@@ -30,6 +30,14 @@ class HtmlLabel: UILabel {
         }
     }
     
+    var defaultColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.label
+        } else {
+            return UIColor.darkText
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
@@ -54,7 +62,7 @@ class HtmlLabel: UILabel {
     }
     
     private func initialize() {
-        textColor = UIColor.darkText
+        self.textColor = defaultColor
         isUserInteractionEnabled = true
         
         initTextStorage()

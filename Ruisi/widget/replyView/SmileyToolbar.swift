@@ -13,20 +13,34 @@ class SmileyToolbar: UIView {
     
     public var itemSelected: ((_ btn: UIButton,_ position: Int)->())?
     
+    var secondTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondaryLabel
+        } else {
+            return UIColor.darkText
+        }
+    }
+    
+    var thirdTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.tertiaryLabel
+        } else {
+            return UIColor.darkGray
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = UIColor(white: 0.97, alpha: 1.0)
         for i in 0..<SmileyManager.shared.smileys.count {
             let btn = UIButton()
             btn.setTitle(SmileyManager.shared.smileys[i].name, for: [])
-            btn.setTitleColor(UIColor.darkGray, for: .normal)
-            btn.setTitleColor(UIColor.darkText, for: .selected)
-            btn.setTitleColor(UIColor.darkText, for: .selected)
+            btn.setTitleColor(thirdTextColor, for: .normal)
+            btn.setTitleColor(secondTextColor, for: .selected)
+            btn.setTitleColor(secondTextColor, for: .selected)
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             
             btn.layer.cornerRadius = 0
-            btn.layer.borderWidth = 0.25
-            btn.layer.borderColor = UIColor.lightGray.cgColor
             btn.layer.masksToBounds = true
             
             btn.tag = i
@@ -44,14 +58,31 @@ class SmileyToolbar: UIView {
         itemSelected?(btn, btn.tag)
     }
     
+    var btnBgSelected: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondarySystemBackground
+        } else {
+            return UIColor(white: 0.94, alpha: 1.0)
+        }
+    }
+    
+    var btnBg: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.tertiarySystemBackground
+        } else {
+            return UIColor.clear
+        }
+    }
+    
     func selectItem(at position: Int) {
         for (k,item) in subviews.enumerated() {
             let btn =  item as! UIButton
             if k == position {
-                btn.backgroundColor = UIColor(white: 0.94, alpha: 1.0)
+                // selected
+                btn.backgroundColor = btnBgSelected
                 btn.isSelected = true
             } else {
-                btn.backgroundColor = UIColor.clear
+                btn.backgroundColor = btnBg
                 btn.isSelected = false
             }
         }

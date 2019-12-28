@@ -26,15 +26,29 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
         return v
     }
     
+    var currentIndicateColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.tertiaryLabel
+        } else {
+            return UIColor(white: 0.88, alpha: 1.0)
+        }
+    }
+    
+    var indicateColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondaryLabel
+        } else {
+            return UIColor(white: 0.97, alpha: 1.0)
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        smileyPageControl.currentPageIndicatorTintColor = UIColor(white: 0.90, alpha: 1.0)
-        smileyPageControl.pageIndicatorTintColor = UIColor(white: 0.97, alpha: 1.0)
-        smileyPageControl.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
+        smileyPageControl.currentPageIndicatorTintColor = currentIndicateColor
+        smileyPageControl.pageIndicatorTintColor = indicateColor
         switchTab(section: 0, item: 0)
         
-        smileyCollection.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
         smileyCollection.register(SmileyCell.self, forCellWithReuseIdentifier: "cell")
         smileyToolbar.itemSelected = { [weak self] (btn,pos) in
             self?.smileyCollection.scrollToItem(at: IndexPath(item: 0, section: pos) , at: UICollectionView.ScrollPosition.left, animated: true)

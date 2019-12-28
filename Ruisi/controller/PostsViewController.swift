@@ -214,6 +214,17 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
             }
         }
         
+        
+        if subDatas.count == 0 && currentPage == 1 && doc.xpath("//*[@id=\"loginform\"]").count > 0 {
+            // need login
+            DispatchQueue.main.async { [weak self] in
+                self?.showLoginAlert(message: "你需要登陆才能查看此板块！") {
+                    self?.rsRefreshControl?.beginRefreshing()
+                    self?.reloadData()
+                }
+            }
+        }
+        
         return subDatas
     }
     
@@ -235,11 +246,13 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         let haveImageLabel = cell.viewWithTag(4) as! UILabel
         titleLabel.text = d.title
         if d.isRead {
-            titleLabel.textColor = UIColor.darkGray
+            if #available(iOS 13.0, *) {
+                titleLabel.textColor = UIColor.secondaryLabel
+            } else {
+                titleLabel.textColor = UIColor.darkGray
+            }
         } else if let color = d.titleColor {
             titleLabel.textColor = color
-        } else {
-            titleLabel.textColor = UIColor.darkText
         }
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount

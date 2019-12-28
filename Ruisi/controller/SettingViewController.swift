@@ -80,7 +80,7 @@ class SettingViewController: UITableViewController {
             showAlert(title: "提示", message: "网络类型已切换为校园网,外网无法访问(如4G流量)")
             App.isSchoolNet = true
         } else {
-            showAlert(title: "提示", message: "网络类型已切换为自动判断,下次重启后开始生效")
+            showAlert(title: "提示", message: "网络类型已切换为自动判断, 重启APP后开始生效！")
         }
 
         print("chnage network, auro:\(sender.selectedSegmentIndex == 0) is school net:\(App.isSchoolNet)")

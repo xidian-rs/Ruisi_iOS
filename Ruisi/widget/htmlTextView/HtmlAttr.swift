@@ -101,7 +101,23 @@ class HtmlAttr {
         }
         return nil
     }
-
+    
+    static var defaultTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.label
+        } else {
+            return UIColor.darkText
+        }
+    }
+    
+    static var defaultBgColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.systemBackground
+        } else {
+            return UIColor.white
+        }
+    }
+    
     //color="red" " color:red "
     //attr css
     //color="#ff0000"
@@ -114,9 +130,13 @@ class HtmlAttr {
             }
 
             if let color = getAttr(from: from, start: s.upperBound) {
+                print("textcolor \(color)")
                 if color.first == "#" {
                     return Utils.getHtmlColor(from: color)
                 } else {
+                    if color.lowercased() == "black" {
+                        return defaultTextColor
+                    }
                     return Utils.parseColor(int: colors[color.lowercased()])
                 }
             }
@@ -143,7 +163,17 @@ class HtmlAttr {
                 print("bgcolor \(color)")
                 if color.first == "#" {
                     return Utils.getHtmlColor(from: String(color))
+                } else if (color.starts(with: "rgb")) {
+                    // eg rgb(255, 255, 255)
+                    let b = Utils.getRgbColor(from: String(color))
+                    if b! == UIColor.white {
+                        return defaultBgColor
+                    }
+                    return b
                 } else {
+                    if color.lowercased() == "white" {
+                        return nil
+                    }
                     return Utils.parseColor(int: colors[color.lowercased()])
                 }
             }

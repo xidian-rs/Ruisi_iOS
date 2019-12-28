@@ -31,7 +31,10 @@ class NewPostViewController: UIViewController,
             imagesCollection.delegate = self
         }
     }
-
+    
+    @IBOutlet weak var inputToTitleConstraint: NSLayoutConstraint!
+    @IBOutlet weak var inputToTopConstraint: NSLayoutConstraint!
+    
     var fid: Int?
     var typeId: String?
     var name: String?
@@ -54,6 +57,14 @@ class NewPostViewController: UIViewController,
             }
         }
     }
+    
+    var boardColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondarySystemBackground
+        } else {
+            return UIColor(white: 0.96, alpha: 1.0)
+        }
+    }
 
     // 验证码相关
     private var haveValid = false
@@ -67,11 +78,15 @@ class NewPostViewController: UIViewController,
         if isEditMode {
             forumStackView.isHidden = true
             selectedBtn.isHidden = true
+            inputToTopConstraint.isActive = true
+            inputToTitleConstraint.isActive = false
+        } else {
+            inputToTopConstraint.isActive = false
+            inputToTitleConstraint.isActive = true
         }
 
-        let color = UIColor(white: 0.96, alpha: 1.0)
-        contentInput.layer.borderColor = color.cgColor
-        contentInput.layer.borderWidth = 1.4
+        contentInput.layer.borderColor = boardColor.cgColor
+        contentInput.layer.borderWidth = 1.2
         contentInput.layer.cornerRadius = 3.0
         contentInput.showToolbar = true
         contentInput.context = self
@@ -147,9 +162,9 @@ class NewPostViewController: UIViewController,
             addBtn.addTarget(self, action: #selector(addUploadClick), for: .touchUpInside)
         }
 
-        cell.contentView.layer.cornerRadius = 2.0
-        cell.contentView.layer.borderWidth = 1.0
-        cell.contentView.layer.borderColor = UIColor(white: 0.97, alpha: 1.0).cgColor
+        cell.contentView.layer.cornerRadius = 3.0
+        cell.contentView.layer.borderWidth = 1.2
+        cell.contentView.layer.borderColor = boardColor.cgColor
         cell.contentView.layer.masksToBounds = true
 
         return cell
@@ -357,6 +372,9 @@ class NewPostViewController: UIViewController,
                     if (self?.typeIds.count ?? 0) > 0 {
                         self?.forumStackView.isHidden = false
                         self?.subSeletedBtn.isHidden = false
+                        
+                        self?.inputToTopConstraint.isActive = false
+                        self?.inputToTitleConstraint.isActive = true
 
                         if let typeId = self?.typeId {
                             for data in (self?.typeIds ?? []) {
@@ -369,6 +387,8 @@ class NewPostViewController: UIViewController,
                     } else {
                         self?.forumStackView.isHidden = true
                         self?.subSeletedBtn.isHidden = true
+                        self?.inputToTopConstraint.isActive = true
+                        self?.inputToTitleConstraint.isActive = false
                     }
 
                     if let title = self?.editFormDatas["subject"] {

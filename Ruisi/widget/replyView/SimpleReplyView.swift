@@ -62,7 +62,6 @@ class SimpleReplyView: AboveKeyboardView {
         let view =  Bundle.main.loadNibNamed("SimpleReplyView", owner: self, options: nil)![0] as! UIView
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(view)
-        view.backgroundColor = UIColor(white: 0.96, alpha: 1.0)
         view.frame = self.bounds
     }
     
@@ -167,9 +166,9 @@ extension SimpleReplyView: UITextViewDelegate {
     }
     
     func setUpTextView() {
-        let color = UIColor(white: 0.95, alpha: 1.0)
-        contentView.layer.borderColor = color.cgColor
-        contentView.layer.borderWidth = 1.0
+        //let color = UIColor(white: 0.95, alpha: 1.0)
+        //contentView.layer.borderColor = color.cgColor
+        //contentView.layer.borderWidth = 1.0
         contentView.layer.cornerRadius = 3.0
         //contentView.backgroundColor = UIColor(white: 0.99, alpha: 1.0)
         

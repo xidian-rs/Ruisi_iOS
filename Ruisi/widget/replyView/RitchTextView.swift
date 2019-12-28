@@ -46,9 +46,17 @@ class RitchTextView: UITextView {
         setUpToolbarView()
     }
     
+    var placeTextColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.placeholderText
+        } else {
+            return UIColor.lightGray
+        }
+    }
+    
     private func setUpPlaceholder() {
         placeholderLabel.font = font
-        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.textColor = placeTextColor
         placeholderLabel.sizeToFit()
         placeholderLabel.frame = CGRect(x: 5, y: 8, width: 100, height: 15)
         

@@ -68,7 +68,11 @@ class InputValidController {
     
     // 输入框改变
     @objc func inputChange(textField: UITextField) {
-        self.validInputTextField.textColor = UIColor.darkText
+        if #available(iOS 13.0, *) {
+            self.validInputTextField.textColor = UIColor.label
+        } else {
+            self.validInputTextField.textColor = UIColor.darkText
+        }
         if let text = textField.text, text.count == 4 {
             checkValid(hash: self.validhash, value: text)
         }
@@ -139,7 +143,7 @@ class InputValidController {
             }
             
             DispatchQueue.main.async {
-                self.validInputTextField.textColor = success ? .green : .orange
+                self.validInputTextField.textColor = success ? UIColor.systemGreen : UIColor.systemOrange
             }
         }
     }

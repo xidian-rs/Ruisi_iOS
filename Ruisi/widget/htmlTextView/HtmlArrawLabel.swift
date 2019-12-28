@@ -20,14 +20,22 @@ class HtmlArrawLabel: HtmlLabel {
         super.init(coder: aDecoder)
     }
     
+    var bgColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.secondarySystemBackground
+        } else {
+            return UIColor(white: 0.96, alpha: 1)
+        }
+    }
+    
     override func draw(_ rect: CGRect) {
         let p2 = UIBezierPath()
         p2.move(to: CGPoint(x: rect.minX + 12, y: rect.minY + 6))
         p2.addLine(to: CGPoint(x: rect.minX + 22, y: rect.minY + 6))
         p2.addLine(to: CGPoint(x: rect.minX + 17, y: rect.minY))
         p2.close()
-        let bg = UIColor(white: 0.96, alpha: 1)
-        bg.setFill()
+        
+        bgColor.setFill()
         p2.fill()
         
         let bgPath = UIBezierPath(roundedRect: rect.offsetBy(dx: 0, dy: 6), cornerRadius: 3)

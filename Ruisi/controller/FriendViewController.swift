@@ -99,8 +99,6 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         usernameView.text = datas[indexPath.row].username
         if let color = datas[indexPath.row].usernameColor {
             usernameView.textColor = color
-        } else {
-            usernameView.textColor = UIColor.darkText
         }
         descriptionView.text = datas[indexPath.row].description
         

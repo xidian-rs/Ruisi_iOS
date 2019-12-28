@@ -34,8 +34,6 @@ class ToolbarView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        print("ToolbarView")
-        backgroundColor = UIColor(white: 0.98, alpha: 1.0)
         titleLabel.isHidden = true
     }
     

@@ -37,16 +37,12 @@ UITableViewDataSource, UINavigationControllerDelegate {
         myTableView.delegate = self
         
         avaterImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:))))
-        
-        isLogin = App.isLogin
         updateUi()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         if App.isLogin != isLogin {
-            isLogin = App.isLogin
             updateUi()
         }
         
@@ -55,6 +51,8 @@ UITableViewDataSource, UINavigationControllerDelegate {
     }
     
     private func updateUi() {
+        print("update login ui")
+        isLogin = App.isLogin
         usergradeLabel.isHidden = !isLogin
         if isLogin {
             usernameLabel.text = Settings.username
@@ -93,6 +91,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
                 } else {
                     //login
                     let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+                    ((dest as? UINavigationController)?.viewControllers[0] as? LoginViewController)?.dismissAlertClosure = updateUi
                     self.present(dest!, animated: true, completion: nil)
                 }
             default:
@@ -193,6 +192,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
         let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
+            ((dest as? UINavigationController)?.viewControllers[0] as? LoginViewController)?.dismissAlertClosure = self.updateUi
             self.present(dest!, animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))

@@ -146,6 +146,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                 if let userNode = html.xpath("//*[@id=\"usermsg\"]/a").first {
                     uid = Utils.getNum(prefix: "uid=", from: userNode["href"]!)
                 }
+                var forumCount = 0
                 let groups = html.xpath("//*[@id=\"wp\"]/div")
                 var listForms = [Forums]()
                 for group in groups {
@@ -163,6 +164,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                                 let f = Forum(fid: fid, name: item.text!, login: false)
                                 f.new = new
                                 
+                                forumCount += 1
                                 forms.append(f)
                             }
                         }
@@ -185,6 +187,17 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                 if let d = try? JSONEncoder().encode(listForms) {
                     Settings.setForumlist(uid: uid, data: d)
                     print("板块列表保存完毕")
+                }
+                
+                if forumCount <= 5 && !App.isLogin {
+                    DispatchQueue.main.async { [weak self] in
+                        if let this = self {
+                            this.showLoginAlert(message: "你可能需要登陆才能查看更多板块！", success: {
+                                this.loadFormlistFromWeb()
+                            })
+                        }
+                        
+                    }
                 }
             }
         }
@@ -243,7 +256,8 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     // 变色
     override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        collectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor(white: 0.96, alpha: 1.0)
+        let bg = collectionView.cellForItem(at: indexPath)?.backgroundColor
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = bg?.withAlphaComponent(0.05)
     }
     
     //结束变色
@@ -263,7 +277,6 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             let label = head.viewWithTag(1) as! UILabel
             label.text = datas[indexPath.section].name
             label.textColor = ThemeManager.currentPrimaryColor
-            head.backgroundColor = UIColor(white: 0.96, alpha: 1)
             return head
         }
         

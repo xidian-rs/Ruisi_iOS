@@ -17,10 +17,10 @@ import UIKit
 // bg,...
 class ThemeManager {
     private static var themeBackUp: Theme?
-
-    public static let colors = [
-        0xd12121, 0x1e1e1e, 0xf44836, 0xf2821e, 0x7bb736, 0x16c24b,
-        0x16a8c2, 0x2b86e3, 0x3f51b5, 0x9c27b0, 0xcc268f, 0x39c5bb]
+    
+    public static let colors: [UIColor] = [
+        UIColor.systemRed, parseHexColor(0x1e1e1e), parseHexColor(0xf44836), UIColor.systemOrange, UIColor.systemGreen, parseHexColor(0x16c24b),
+        UIColor.systemTeal, parseHexColor(0x2b86e3), UIColor.blue, UIColor.purple, parseHexColor(0xcc268f), parseHexColor(0x39c5bb)]
 
     public static let names = [
         "默认", "黑色", "橘红", "橘黄", "原谅", "翠绿",
@@ -30,7 +30,7 @@ class ThemeManager {
         get {
             var ts = [Theme]()
             for i in 0..<ThemeManager.colors.count {
-                ts.append(Theme(id: i, name: ThemeManager.names[i], titleColor: UIColor.white, primaryColor: ThemeManager.parseHexColor(ThemeManager.colors[i])))
+                ts.append(Theme(id: i, name: ThemeManager.names[i], titleColor: UIColor.white, primaryColor: ThemeManager.colors[i]))
             }
             return ts
         }
@@ -48,7 +48,7 @@ class ThemeManager {
         UINavigationBar.appearance().titleTextAttributes = textAttributes //标题颜色
         UINavigationBar.appearance().tintColor = theme.titleColor //按钮颜色
         UINavigationBar.appearance().barTintColor = theme.primaryColor //背景色
-
+        
         //设置tabBar颜色
         UITabBar.appearance().tintColor = theme.primaryColor
 
@@ -60,7 +60,7 @@ class ThemeManager {
         get {
             if ThemeManager.themeBackUp == nil {
                 ThemeManager.themeBackUp = Theme(id: Settings.currentTheme, name: names[Settings.currentTheme], titleColor: UIColor.white,
-                        primaryColor: parseHexColor(colors[Settings.currentTheme]))
+                        primaryColor: colors[Settings.currentTheme])
             }
             return ThemeManager.themeBackUp!
         }

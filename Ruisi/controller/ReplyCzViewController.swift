@@ -37,6 +37,14 @@ class ReplyCzViewController: UIViewController {
         }
     }
     
+    var boderColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.tertiarySystemBackground
+        } else {
+            return UIColor(white: 0.97, alpha: 1.0)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         canPost = false
@@ -48,9 +56,8 @@ class ReplyCzViewController: UIViewController {
         loadingIndicator.startAnimating();
         progress.view.addSubview(loadingIndicator)
         progress.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-        
-        let color = UIColor(white: 0.97, alpha: 1.0)
-        replyTextView.layer.borderColor = color.cgColor
+
+        replyTextView.layer.borderColor = boderColor.cgColor
         replyTextView.layer.borderWidth = 1.0
         replyTextView.layer.cornerRadius = 2.0
         replyTextView.showToolbar = true

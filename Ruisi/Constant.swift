@@ -57,6 +57,14 @@ public class Urls {
         return "\(baseUrl)member.php?mod=logging&action=login&inajax=1&mobile=2"
     }
     
+    public class var checkLoginUrlInner: String {
+        return "\(BASE_URL_EDU)member.php?mod=logging&action=login&inajax=1&mobile=2"
+    }
+    
+    public class var checkLoginUrlOut: String {
+        return "\(BASE_URL_ME)member.php?mod=logging&action=login&inajax=1&mobile=2"
+    }
+    
     // 注册检测的地址，检查用户名/邮箱/邀请码是否合法
     public class var regCheckUrl: String {
         return "\(baseUrl)forum.php?mod=ajax&inajax=1&mobile=2"

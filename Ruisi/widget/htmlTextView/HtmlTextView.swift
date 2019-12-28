@@ -20,10 +20,18 @@ class HtmlTextView: UITextView, UITextViewDelegate {
     var htmlText: String? {
         didSet {
             if let text = htmlText {
-                attributedText = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: UIColor.darkText).convert(src: text)
+                attributedText = AttributeConverter(font: UIFont.systemFont(ofSize: 16), textColor: defaultColor).convert(src: text)
             } else {
                 attributedText = nil
             }
+        }
+    }
+    
+    var defaultColor: UIColor {
+        if #available(iOS 13.0, *) {
+            return UIColor.label
+        } else {
+            return UIColor.darkText
         }
     }
     
@@ -42,7 +50,7 @@ class HtmlTextView: UITextView, UITextViewDelegate {
         textContainerInset = UIEdgeInsets.zero
         //textContainer.lineFragmentPadding = 0
         //layoutManager.usesFontLeading = false
-        textColor = UIColor.darkText
+        textColor = defaultColor
         
         //let linkAttributes: [NSAttributedString.Key : Any] = [
             //NSAttributedString.Key.foregroundColor: linkTextClor,

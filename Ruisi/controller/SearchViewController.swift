@@ -125,10 +125,10 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
             let title = result.xpath("a").first?.text ?? "标题"
             //print("tid: \(tid!) title: \(title)")
             let attrTitle: NSAttributedString
-            if let searchText = currentSearchText?.trimmingCharacters(in: CharacterSet.whitespaces),let range = title.range(of: searchText) {
+            if let searchText = currentSearchText?.trimmingCharacters(in: CharacterSet.whitespaces), let range = title.range(of: searchText) {
                 let attrStr = NSMutableAttributedString(string: title)
-                attrStr.addAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.red],
-                                      range: NSMakeRange(range.lowerBound.utf16Offset(in: searchText), range.upperBound.utf16Offset(in: searchText) - range.lowerBound.utf16Offset(in: searchText)))
+                attrStr.addAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.systemRed],
+                                      range: NSRange(range, in: title))
                 attrTitle = attrStr
             }else {
                 attrTitle = NSAttributedString(string: title)
@@ -165,11 +165,14 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         if datas.count == 0 {//no data avaliable
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
             label.text = placeholderText
-            label.textColor = UIColor.black
             label.numberOfLines = 0
             label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor.placeholderText
+            } else {
+                label.textColor = UIColor.lightGray
+            }
             label.sizeToFit()
             
             tableView.backgroundView = label;

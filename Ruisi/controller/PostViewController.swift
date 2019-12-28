@@ -352,7 +352,13 @@ class PostViewController: UIViewController {
                     content = content! + ext
                 }
                 
-                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 15), textColor: UIColor.darkText).convert(src: content!)
+                let textColor: UIColor
+                if #available(iOS 13.0, *) {
+                    textColor = UIColor.label
+                } else {
+                    textColor = UIColor.darkText
+                }
+                let attrContent = AttributeConverter(font: UIFont.systemFont(ofSize: 15), textColor: textColor).convert(src: content!)
                 let c = PostData(content: attrContent, author: author ?? "匿名",
                                  uid: uid ?? 0, time: time ?? "未知时间",
                                  pid: pid ?? 0, index: index ?? "#?", replyUrl: replyCzUrl)
@@ -394,7 +400,11 @@ class PostViewController: UIViewController {
     func setUpHeaderView(title: String?) {
         if isSetHeaderView { return }
         let label = UILabel()
-        label.textColor = UIColor.darkText
+        if #available(iOS 13.0, *) {
+            label.textColor = UIColor.label
+        } else {
+            label.textColor = UIColor.darkText
+        }
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         if let t = title {
@@ -601,7 +611,11 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         if data.pid == self.pid {
-            cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            if #available(iOS 13.0, *) {
+                cell.backgroundColor = UIColor.secondarySystemBackground
+            } else {
+                cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+            }
         } else {
             cell.backgroundColor = UIColor.clear
         }

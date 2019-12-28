@@ -107,7 +107,6 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
                 
                 let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
                 let color = Utils.getHtmlColor(from: a?["style"])
-                
                 let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: author, replys: replyStr, haveImage: haveImg, titleColor: color)
                 d.rowHeight = caculateRowheight(width: self.tableViewWidth, title: d.title)
                 subDatas.append(d)
@@ -133,8 +132,6 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
         titleLabel.text = d.title
         if let color = d.titleColor {
             titleLabel.textColor = color
-        } else {
-            titleLabel.textColor = UIColor.darkText
         }
         
         if d.author.count > 0 {

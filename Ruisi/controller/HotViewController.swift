@@ -129,13 +129,14 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable,
         
         titleLabel.text = d.title
         if d.isRead {
-            titleLabel.textColor = UIColor.darkGray
+            if #available(iOS 13.0, *) {
+                titleLabel.textColor = UIColor.secondaryLabel
+            } else {
+                titleLabel.textColor = UIColor.darkGray
+            }
         } else if let color = d.titleColor {
             titleLabel.textColor = color
-        } else {
-            titleLabel.textColor = UIColor.darkText
         }
-        
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount
         haveImageLabel.isHidden = !d.haveImage

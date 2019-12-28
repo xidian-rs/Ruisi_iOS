@@ -94,6 +94,33 @@ public class Utils {
         }
         return nil
     }
+    
+    // rgb(255, 255, 255)
+    public static func getRgbColor(from str: String?) -> UIColor? {
+        if let text = str {
+            do {
+                let regex = try NSRegularExpression(pattern: "[0-9]+")
+                let results = regex.matches(in: text,
+                                            range: NSRange(text.startIndex..., in: text))
+                let nums = results.map {
+                    Int(text[Range($0.range, in: text)!])
+                }
+                if nums.count == 3 {
+                    if nums[0] == 255 && nums[1] == 255 && nums[2] == 255 {
+                        return UIColor.white
+                    } else if nums[0] == 0 && nums[1] == 0 && nums[2] == 0 {
+                        return UIColor.black
+                    }
+                    return UIColor(red: CGFloat(nums[0]!) / 255, green: CGFloat(nums[1]!) / 255, blue: CGFloat(nums[2]!) / 255, alpha: 1)
+                }
+                return nil
+            } catch let error {
+                print("invalid regex: \(error.localizedDescription)")
+                return nil
+            }
+        }
+        return nil
+    }
 
     // 16精致颜色转UIColor
     public static func parseColor(int: Int?) -> UIColor? {

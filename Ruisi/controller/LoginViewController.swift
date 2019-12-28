@@ -39,6 +39,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return passwordTextField.text ?? ""
     }
     
+    public var dismissAlertClosure: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -275,7 +277,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 
                 vc = UIAlertController(title: "登陆成功", message: "欢迎[\(grade) \(name)]", preferredStyle: .alert)
                 vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
-                    self?.dismiss(animated: true, completion: nil)
+                    self?.dismiss(animated: true) {
+                        self?.dismissAlertClosure?()
+                    }
                 }))
             }
             

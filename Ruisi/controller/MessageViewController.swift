@@ -13,6 +13,8 @@ import Kanna
 // TODO 支持消息小圆点
 class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable, UIViewControllerPreviewingDelegate {
     
+    @IBOutlet weak var tabSegment: UISegmentedControl!
+    
     private var lastLoginState = false
     private var emptyPlaceholderText: String?
     private var initContentOffset: CGFloat = 0.0
@@ -273,13 +275,15 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
             let title = emptyPlaceholderText ?? "暂无消息"
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
             label.text = title
-            label.textColor = UIColor.darkGray
             label.numberOfLines = 0
             label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor.placeholderText
+            } else {
+                label.textColor = UIColor.lightGray
+            }
             label.sizeToFit()
-            
             tableView.backgroundView = label
             tableView.separatorStyle = .none
             
