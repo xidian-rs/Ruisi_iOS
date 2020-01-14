@@ -215,7 +215,7 @@ class PasswordViewController: UIViewController {
                         success = true
                         title = "操作成功"
                         Settings.uid = nil
-                        print("退出登陆")
+                        print("退出登录")
                         content = "密码修改成功请重新登录"
                     } else if (self?.mode == 2 && content?.contains("确认 Email 已发送") ?? false) || content?.contains("个人资料保存成功") ?? false {
                         success = true

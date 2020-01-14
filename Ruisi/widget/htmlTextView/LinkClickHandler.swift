@@ -31,7 +31,7 @@ class LinkClickHandler {
             } else if url.contains("forum.php?mod=post&action=newthread") {//发帖链接
                 let fid = Utils.getNum(prefix: "fid=", from: url)
                 delegate(.newPost(fid: fid))
-            } else if url.contains("member.php?mod=logging&action=login") { //登陆
+            } else if url.contains("member.php?mod=logging&action=login") { //登录
                 delegate(.login)
             } else if url.contains("forum.php?mod=forumdisplay&fid=") { // 分区列表
                 if let fid = Utils.getNum(prefix: "fid=", from: url) {

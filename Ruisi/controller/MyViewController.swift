@@ -23,7 +23,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
     var images = ["ic_refresh_48pt", "ic_color_lens_48pt", "ic_share_48pt", "ic_favorite_48pt", "ic_settings_48pt"]
     var titles = ["签到中心", "主题设置", "分享手机睿思","五星好评", "设置"]
     
-    // 创建的时候的登陆状态
+    // 创建的时候的登录状态
     var isLogin: Bool!
     
     override func viewDidLoad() {
@@ -68,7 +68,7 @@ UITableViewDataSource, UINavigationControllerDelegate {
                 }
             }
         } else {
-            usernameLabel.text = "点击头像登陆"
+            usernameLabel.text = "点击头像登录"
             avaterImage.image = #imageLiteral(resourceName: "placeholder")
         }
         
@@ -189,8 +189,8 @@ UITableViewDataSource, UINavigationControllerDelegate {
     }
     
     func showLoginAlert() {
-        let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+        let alert = UIAlertController(title: "需要登录", message: "你需要登录才能执行此操作", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登录", style: .default, handler: { (alert) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
             ((dest as? UINavigationController)?.viewControllers[0] as? LoginViewController)?.dismissAlertClosure = self.updateUi
             self.present(dest!, animated: true, completion: nil)

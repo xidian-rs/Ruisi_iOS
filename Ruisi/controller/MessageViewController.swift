@@ -25,8 +25,8 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
         showRefreshControl = lastLoginState
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        if !lastLoginState { // 非登陆状态
-            self.emptyPlaceholderText = "需要登陆才能查看"
+        if !lastLoginState { // 非登录状态
+            self.emptyPlaceholderText = "需要登录才能查看"
         }
         initContentOffset = self.tableView.contentOffset.y
     }
@@ -36,12 +36,12 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
         if lastLoginState != App.isLogin {
             lastLoginState = App.isLogin
             showRefreshControl = lastLoginState
-            if lastLoginState { //未登陆转为登陆
+            if lastLoginState { //未登录转为登录
                 emptyPlaceholderText = nil
                 rsRefreshControl?.beginRefreshing()
                 loadData(position)
-            } else { //登陆转为未登陆
-                emptyPlaceholderText = "需要登陆才能查看"
+            } else { //登录转为未登录
+                emptyPlaceholderText = "需要登录才能查看"
                 datas.removeAll()
                 tableView.reloadData()
             }
@@ -85,7 +85,7 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
             reloadData()
         } else {
             self.datas.removeAll()
-            self.emptyPlaceholderText = "需要登陆才能查看"
+            self.emptyPlaceholderText = "需要登录才能查看"
             self.tableView.reloadData()
         }
     }

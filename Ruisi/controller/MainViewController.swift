@@ -121,7 +121,7 @@ class MainViewController: UITabBarController {
     }
     
     
-    //判断是否登陆 和 再次判断网络类型
+    //判断是否登录 和 再次判断网络类型
     func checkLogin(isSchoolNet: Bool) {
         if isSchoolNet && schoolNetChecking {
             print("checking... no need check school net..")
@@ -204,7 +204,7 @@ class MainViewController: UITabBarController {
         
             if res.contains("id=\"loginform\"") {
                 Settings.uid = nil
-                print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin)")
+                print("网络类型:\(App.isSchoolNet) 是否登录:\(App.isLogin)")
             } else if res.contains("欢迎您回来") {
                 let start = res.range(of: "{'")!.upperBound
                 let end = res.range(of: "'}", range: start..<res.endIndex)!.lowerBound
@@ -222,9 +222,9 @@ class MainViewController: UITabBarController {
                     }
                 }
                 
-                print("网络类型:\(App.isSchoolNet) 是否登陆:\(App.isLogin) uid:\(Settings.uid ?? 0) name:\(Settings.username ?? "") grade:\(Settings.grade ?? "")")
+                print("网络类型:\(App.isSchoolNet) 是否登录:\(App.isLogin) uid:\(Settings.uid ?? 0) name:\(Settings.username ?? "") grade:\(Settings.grade ?? "")")
             } else {
-                print("网络类型:\(App.isSchoolNet) 未知登陆状态")
+                print("网络类型:\(App.isSchoolNet) 未知登录状态")
             }
         }
     }

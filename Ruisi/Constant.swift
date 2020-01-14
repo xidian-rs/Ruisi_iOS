@@ -9,7 +9,7 @@
 import Foundation
 
 public class App {
-    //是否登陆
+    //是否登录
     public static var isLogin: Bool {
         return Settings.uid != nil
     }
@@ -47,12 +47,12 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=guide&view=new&mobile=2"//&page=1
     }
 
-    // 登陆
+    // 登录
     public class var loginUrl: String {
         return "\(baseUrl)member.php?mod=logging&action=login&mobile=2"
     }
     
-    // 检查登陆
+    // 检查登录
     public class var checkLoginUrl: String {
         return "\(baseUrl)member.php?mod=logging&action=login&inajax=1&mobile=2"
     }

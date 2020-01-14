@@ -252,7 +252,7 @@ public class Settings {
     }
     
     //设置板块列表
-    //uid == nil 表示未登陆
+    //uid == nil 表示未登录
     public static func setForumlist(uid: Int?, data: Data) {
         UserDefaults.standard.set((Date().timeIntervalSince1970 / 86400), forKey: "\(key_forumlist_saved_time)_\(uid ?? 0)")
         DispatchQueue.global(qos: .background).async {
@@ -283,7 +283,7 @@ public class Settings {
         }
     }
     
-    //uid == nil 表示未登陆
+    //uid == nil 表示未登录
     public static func getForumlist(uid: Int?) -> Data? {
         return UserDefaults.standard.data(forKey: "\(key_forumlist)_\(uid ?? 0)")
     }
