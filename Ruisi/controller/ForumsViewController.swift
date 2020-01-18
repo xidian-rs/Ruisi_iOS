@@ -29,9 +29,11 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                         break
                     }
                 }
-
-                fs.forums = ffs
-                datas.insert(fs, at: 0)
+                
+                if ffs.count > 0 {
+                    fs.forums = ffs
+                    datas.insert(fs, at: 0)
+                }
             }
         }
     }
@@ -188,7 +190,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                     Settings.setForumlist(uid: uid, data: d)
                     print("板块列表保存完毕")
                 }
-                
+
                 if forumCount <= 5 && !App.isLogin {
                     DispatchQueue.main.async { [weak self] in
                         if let this = self {

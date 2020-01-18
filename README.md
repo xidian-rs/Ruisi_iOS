@@ -1,8 +1,5 @@
 ## 西电睿思手机客户端(iOS)
 
-### 睿思外网域名rsbbs.xidian.edu.cn 暂时无法访问，App只能内网使用
-
-
 [![Build Status](https://travis-ci.org/freedom10086/Ruisi_Ios.svg?branch=master)](https://travis-ci.org/freedom10086/Ruisi_Ios)
 
 西安电子科技大学校园睿思论坛客户端。    
@@ -12,7 +9,7 @@
 
 
 ### 下载
-- App Store 已下架 **请自行编译**
+- App Store [西电睿思](https://apps.apple.com/us/app/西电睿思/id1322805454)
 
 ### 编译
 - 安装Cocoapods: `sudo gem install cocoapods`

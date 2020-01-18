@@ -677,10 +677,10 @@
             </objects>
             <point key="canvasLocation" x="-1575.3623188405797" y="-557.60869565217399"/>
         </scene>
-        <!--登陆-->
+        <!--登录-->
         <scene sceneID="YrY-yN-Fyd">
             <objects>
-                <viewController storyboardIdentifier="loginView" hidesBottomBarWhenPushed="YES" id="NUc-Li-a0X" userLabel="登陆" customClass="LoginViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginView" hidesBottomBarWhenPushed="YES" id="NUc-Li-a0X" userLabel="登录" customClass="LoginViewController" customModule="Ruisi" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6NO-qs-TCk"/>
                         <viewControllerLayoutGuide type="bottom" id="N03-r1-Ovy"/>
@@ -786,13 +786,13 @@
                             <constraint firstItem="N6z-FV-PNc" firstAttribute="centerX" secondItem="DGS-gI-FLW" secondAttribute="centerX" id="xHT-72-a54"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="登陆" id="sS6-vW-DhV">
+                    <navigationItem key="navigationItem" title="登录" id="sS6-vW-DhV">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="U1O-fc-wmf">
                             <connections>
                                 <action selector="cencelClick:" destination="NUc-Li-a0X" id="uY5-X8-MFi"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="登陆" id="Upl-J1-me0">
+                        <barButtonItem key="rightBarButtonItem" title="登录" id="Upl-J1-me0">
                             <connections>
                                 <action selector="loginClick:" destination="NUc-Li-a0X" id="2rw-i6-sAO"/>
                             </connections>
