@@ -9,7 +9,7 @@
 
 
 ### 下载
-- App Store [西电睿思](https://apps.apple.com/us/app/西电睿思/id1322805454)
+- App Store [西电睿思](https://apps.apple.com/cn/app/西电睿思/id1322805454)
 
 ### 编译
 - 安装Cocoapods: `sudo gem install cocoapods`
