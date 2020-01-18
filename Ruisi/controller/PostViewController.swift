@@ -189,7 +189,7 @@ class PostViewController: UIViewController {
                 }
                 
                 if this.replyLzUrl == nil { //不支持回复
-                    this.replyView.placeholder = "本帖不支持回复(已关闭,\(App.isLogin ? "没有权限" : "未登陆"))"
+                    this.replyView.placeholder = "本帖不支持回复(已关闭,\(App.isLogin ? "没有权限" : "未登录"))"
                     this.replyView.contentView.isEditable = false
                 } else {
                     this.replyView.placeholder = "回复楼主:\(this.datas[0].author)"
@@ -723,7 +723,7 @@ extension PostViewController {
             } else if res.contains("字符的限制") {
                 reason = "抱歉，您的帖子小于 13 个字符的限制"
             } else if res.contains("form id=\"loginform\"") {
-                reason = "你需要登陆才能回贴"
+                reason = "你需要登录才能回贴"
                 isLogin = false
             } else {
                 //print(res)

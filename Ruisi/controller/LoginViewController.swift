@@ -10,7 +10,7 @@ import UIKit
 import Kanna
 import Kingfisher
 
-// 登陆页面
+// 登录页面
 // 部分支持 password autofill api 需要后台支持
 // https://developer.apple.com/documentation/security/password_autofill/
 class LoginViewController: UIViewController, UITextFieldDelegate {
@@ -85,7 +85,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         presentingViewController?.dismiss(animated: true)
     }
     
-    func alert(title: String? = "登陆错误", message: String) {
+    func alert(title: String? = "登录错误", message: String) {
         let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
         vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
         self.present(vc, animated: true)
@@ -98,11 +98,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             if ok {
                 if res.contains("欢迎您回来") {
-                    print("你现在是登陆状")
+                    print("你现在是登录状")
                     self?.loginResult(isok: true, res: res, haveLoadingView: false)
                     return
                 } else {
-                    print("不是登陆状态")
+                    print("不是登录状态")
                     if let s = res.range(of: "[CDATA[")?.upperBound ,let e =  res.range(of: "]]></root>")?.lowerBound {
                         if let html = try? HTML(html: String(res[s..<e]), encoding: .utf8) {
                             let hash = html.css("input#formhash").first?["value"]
@@ -126,7 +126,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 errorTitle = "加载失败"
-                errorContent = "加载登陆信息失败，是否重新加载"
+                errorContent = "加载登录信息失败，是否重新加载"
             }
             
             if let t = errorTitle {
@@ -231,7 +231,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async { [weak self] in
             let vc: UIAlertController
             if !isok {
-                vc = UIAlertController(title: "登陆失败", message: res, preferredStyle: .alert)
+                vc = UIAlertController(title: "登录失败", message: res, preferredStyle: .alert)
                 vc.addAction(UIAlertAction(title: "好", style: .cancel, handler: nil))
             } else {
                 let start = res.range(of: "欢迎您回来")!.upperBound
@@ -275,7 +275,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     Settings.remberPassword = false
                 }
                 
-                vc = UIAlertController(title: "登陆成功", message: "欢迎[\(grade) \(name)]", preferredStyle: .alert)
+                vc = UIAlertController(title: "登录成功", message: "欢迎[\(grade) \(name)]", preferredStyle: .alert)
                 vc.addAction(UIAlertAction(title: "好", style: .default, handler: { action in
                     self?.dismiss(animated: true) {
                         self?.dismissAlertClosure?()

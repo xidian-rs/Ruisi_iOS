@@ -57,7 +57,7 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
     }
     
     @objc func newPostClick() {
-        if checkLogin(message: "你需要登陆才能发帖") {
+        if checkLogin(message: "你需要登录才能发帖") {
             self.performSegue(withIdentifier: "imagePostsToNewPost", sender: self)
         }
     }

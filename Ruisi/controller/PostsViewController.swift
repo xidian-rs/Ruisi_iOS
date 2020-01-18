@@ -218,7 +218,7 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         if subDatas.count == 0 && currentPage == 1 && doc.xpath("//*[@id=\"loginform\"]").count > 0 {
             // need login
             DispatchQueue.main.async { [weak self] in
-                self?.showLoginAlert(message: "你需要登陆才能查看此板块！") {
+                self?.showLoginAlert(message: "你需要登录才能查看此板块！") {
                     self?.rsRefreshControl?.beginRefreshing()
                     self?.reloadData()
                 }
@@ -325,8 +325,8 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     
     @objc func newPostClick() {
         if !App.isLogin {
-            let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能发帖", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+            let alert = UIAlertController(title: "需要登录", message: "你需要登录才能发帖", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "登录", style: .default, handler: { (alert) in
                 let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
                 self.present(dest!, animated: true, completion: nil)
             }))

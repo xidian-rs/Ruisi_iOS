@@ -75,7 +75,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         } else if Settings.uid != nil {
             passwordSafeBtn.isHidden = false
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登陆", style: .plain, target: self, action: #selector(exitClick))
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "退出登录", style: .plain, target: self, action: #selector(exitClick))
             self.chatBtn.isHidden = true
             passwordSafeBtn.addTarget(self, action: #selector(passwordSafeClick), for: .touchUpInside)
         } else {
@@ -109,8 +109,8 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         if App.isLogin {
             return true
         }
-        let alert = UIAlertController(title: "需要登陆", message: "此功能需要登陆，你要去登陆吗", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (action) in
+        let alert = UIAlertController(title: "需要登录", message: "此功能需要登录，你要去登录吗", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登录", style: .default, handler: { (action) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
             self.present(dest!, animated: true, completion: nil)
         }))
@@ -166,7 +166,7 @@ class UserDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     @objc func exitClick() {
-        let alert = UIAlertController(title: "提示", message: "你要退出登陆吗？", preferredStyle: .alert)
+        let alert = UIAlertController(title: "提示", message: "你要退出登录吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "退出", style: .destructive, handler: { (action) in
             self.doExit()
         }))

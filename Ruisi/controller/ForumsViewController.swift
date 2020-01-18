@@ -103,7 +103,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     }
 
     
-    // uid == nil 加载未登陆的
+    // uid == nil 加载未登录的
     private func loadData(uid: Int?) {
         loadedUid = (Settings.uid ?? 0)
         print("====================")
@@ -183,7 +183,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                     self?.collectionView?.reloadData()
                 }
                 
-                print("从网页加载板块列表完成 登陆:\(App.isLogin) uid:\(uid ?? 0) 设置里的uid:\(Settings.uid ?? 0)")
+                print("从网页加载板块列表完成 登录:\(App.isLogin) uid:\(uid ?? 0) 设置里的uid:\(Settings.uid ?? 0)")
                 if let d = try? JSONEncoder().encode(listForms) {
                     Settings.setForumlist(uid: uid, data: d)
                     print("板块列表保存完毕")
@@ -192,7 +192,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
                 if forumCount <= 5 && !App.isLogin {
                     DispatchQueue.main.async { [weak self] in
                         if let this = self {
-                            this.showLoginAlert(message: "你可能需要登陆才能查看更多板块！", success: {
+                            this.showLoginAlert(message: "你可能需要登录才能查看更多板块！", success: {
                                 this.loadFormlistFromWeb()
                             })
                         }
@@ -335,8 +335,8 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     // MARK: UICollectionViewDelegate
     func showLoginAlert() {
-        let alert = UIAlertController(title: "需要登陆", message: "你需要登陆才能执行此操作", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "登陆", style: .default, handler: { (alert) in
+        let alert = UIAlertController(title: "需要登录", message: "你需要登录才能执行此操作", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "登录", style: .default, handler: { (alert) in
             let dest = self.storyboard?.instantiateViewController(withIdentifier: "loginViewNavigtion")
             self.present(dest!, animated: true, completion: nil)
         }))
