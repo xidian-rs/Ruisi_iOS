@@ -36,7 +36,7 @@ class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate
         self.navigationItem.rightBarButtonItem = button1
         
         //CFBundleVersion
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+        if let version = getVersionNum() {
             versionLabel.text = "当前版本 version: \(version)"
         } else {
             versionLabel.text = "获取版本号出错"
@@ -46,6 +46,9 @@ class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate
         print("current versionCode:\(versionCode)")
     }
     
+    private func getVersionNum() -> String? {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }
     
     private func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: Error) {
         switch result {
@@ -60,7 +63,7 @@ class AboutViewController: UIViewController, MFMailComposeViewControllerDelegate
     }
     
     @objc func feedBackClick() {
-        let emailTitle = "手机睿思(iOS)反馈\(Settings.username != nil ? (" -by:" + Settings.username!) : "") -ver:\(self.versionLabel.text ?? "unknown")"
+        let emailTitle = "手机睿思(iOS)反馈\(Settings.username != nil ? (" -by:" + Settings.username!) : "") -ver:\(getVersionNum() ?? "unknown")"
         let messageBody = ""
         let toRecipents = ["2351386755@qq.com"]
         

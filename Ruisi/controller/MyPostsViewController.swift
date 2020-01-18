@@ -166,11 +166,14 @@ class MyPostsViewController: BaseTableViewController<ArticleListData> {
             let title = "暂无帖子"
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
             label.text = title
-            label.textColor = UIColor.darkGray
             label.numberOfLines = 0
             label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 20)
-            label.textColor = UIColor.lightGray
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor.placeholderText
+            } else {
+                label.textColor = UIColor.lightGray
+            }
             label.sizeToFit()
             
             tableView.backgroundView = label

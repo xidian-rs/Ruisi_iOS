@@ -80,7 +80,7 @@ class AttributeConverter: HtmlParserDelegate {
         case .UNKNOWN:
             break;
         case .BR:
-            handleBlockTag()
+            handleBr()
         case .IMG: // 图片标签留着最后处理不然有可能会被替换
             handleImg(start: position, attr: node.attr)
         case .HR:
@@ -255,26 +255,33 @@ class AttributeConverter: HtmlParserDelegate {
     
     //div ul 等块状标签
     //主要是添加回车
-    private var lastignore = false
     private var appendCount = 0 //添加的字符
     
     private func handleBlockTag() { // 适当减少连续br的数目
         if attributedString.length == 0 {
             return
         }
-        if lastignore {
-            attributedString.append(NSAttributedString(string: "\n"))
-            appendCount += 1
-            lastignore = false
-        } else if let item = attributedString.string.last, item != "\n" {
-            lastignore = false
-            attributedString.append(NSAttributedString(string: "\n"))
-            appendCount += 1
-        } else {
-            lastignore = true
+        if attributedString.string.hasSuffix("\n") {
+            return
         }
+        attributedString.append(NSAttributedString(string: "\n"))
+        appendCount += 1
     }
     
+    private func handleBr() {
+        // 适当减少连续br的数目
+        if attributedString.length == 0 {
+            return
+        }
+        
+        // br 前面如果有2h行空行的话忽略br
+        if attributedString.string.hasSuffix("\n\n") {
+            return
+        }
+        
+        attributedString.append(NSAttributedString(string: "\n"))
+        appendCount += 1
+    }
     
     // 段落处理
     func handleParagraph(start: Int, attr: HtmlAttr?) {
@@ -301,6 +308,22 @@ class AttributeConverter: HtmlParserDelegate {
                     let attrStringWithImage = NSAttributedString(attachment: attach)
                     self.attributedString.insert(attrStringWithImage, at: start)
                 }
+            } else if let range =  src.range(of: "static/image/"), let image = ImageGetter.getStatic(src: String(src[range.lowerBound...]), start: start) { // static/image/bt/torrent.gif
+                 //  static/image/smiley/tieba/tb025.png
+                let attach = NSTextAttachment()
+                attach.image = image
+                let width: CGFloat
+                let height: CGFloat
+                if image.size.height > 2 * self.font.lineHeight {
+                    width = image.size.width
+                    height = image.size.height
+                } else {
+                    width = (self.font.lineHeight * 1.0 / image.size.height) * image.size.width
+                    height = self.font.lineHeight
+                }
+                attach.bounds = CGRect(x: 0, y: -3, width: width, height: height)
+                let attrStringWithImage = NSAttributedString(attachment: attach)
+                self.attributedString.insert(attrStringWithImage, at: start)
             } else {
                 //attributes: [NSLinkAttributeName:URL(string: attr?.src ?? "", relativeTo: baseURL) ?? baseURL as Any]
                 let img = NSAttributedString(string: " [图片] ")

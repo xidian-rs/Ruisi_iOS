@@ -25,7 +25,8 @@ class ImageGetter {
         let dir = String(src[..<lastIndex])
             .replacingOccurrences(of: "static/image", with: "assets")
         var name = String(src[src.index(after: lastIndex)...])
-        if src.contains("smiley/jgz/") || src.contains("smiley/tieba/") || src.contains("smiley/acn/") || src.contains("smiley/default/") {
+        if src.contains("smiley/jgz/") || src.contains("smiley/tieba/") || src.contains("smiley/acn/")
+            || src.contains("smiley/default/") || src.contains("smiley/common/") {
             name = name.replacingOccurrences(of: ".png", with: "").replacingOccurrences(of: ".gif", with: "") // assets/smiley/tieba/111
             if let path = Bundle.main.path(forResource: String(name), ofType: "png", inDirectory: String(dir)) {
                 return UIImage(contentsOfFile: path)
@@ -60,8 +61,24 @@ class ImageGetter {
                     }
                     
                     queen.remove(src)
-                    }.resume()
+                }.resume()
             }
+        }
+        
+        return nil
+    }
+    
+    public static func getStatic(src: String, start: Int) -> UIImage? {
+        // static/image/bt/torrent.gif
+        guard let lastIndex = src.range(of: "/", options: .backwards)?.lowerBound else { return nil }
+        guard let lastPointIndex = src.range(of: ".", options: .backwards)?.lowerBound else { return nil }
+        let ext = String(src[src.index(after: lastPointIndex)...])
+        
+        let dir = String(src[..<lastIndex]).replacingOccurrences(of: "static/image", with: "assets")
+        let name = String(src[lastIndex..<lastPointIndex])
+
+        if let path = Bundle.main.path(forResource: String(name), ofType: ext, inDirectory: String(dir)) {
+            return UIImage(contentsOfFile: path)
         }
         
         return nil

@@ -310,12 +310,18 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     }
     
     func doStarPost(tid: Any) {
+        showLoadingView(title: "收藏中", message: "请稍后...")
         PostViewController.doStarPost(tid: tid, callback: { (ok, res) in
-            // TODO 收藏逻辑
-            print("star result \(ok) \(res)")
+            DispatchQueue.main.async { [weak self] in
+                let vc: UIAlertController
+                vc = UIAlertController(title: ok ? "收藏成功" : "收藏失败", message: ok ? "" : res, preferredStyle: .alert)
+                vc.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+                self?.dismiss(animated: true, completion: {
+                    self?.present(vc, animated: true)
+                })
+            }
         })
     }
-    
     
     @objc func newPostClick() {
         if !App.isLogin {
@@ -374,5 +380,19 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         if let vc = self.peekedVc {
             self.show(vc, sender: self)
         }
+    }
+    
+    var loadingView: UIAlertController?
+    
+    func showLoadingView(title: String, message: String) {
+        if loadingView == nil {
+            loadingView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.style = .gray
+            loadingIndicator.startAnimating()
+            loadingView!.view.addSubview(loadingIndicator)
+        }
+        present(loadingView!, animated: true)
     }
 }

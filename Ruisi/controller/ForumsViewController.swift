@@ -276,7 +276,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
             let head = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "head", for: indexPath)
             let label = head.viewWithTag(1) as! UILabel
             label.text = datas[indexPath.section].name
-            label.textColor = ThemeManager.currentPrimaryColor
+            label.textColor = ThemeManager.currentTintColor
             return head
         }
         

@@ -93,7 +93,7 @@ class NewPostViewController: UIViewController,
         contentInput.placeholder = "帖子内容"
 
         subSeletedBtn.isHidden = true
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(postClick))]
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: isEditMode ? "保存编辑" : "发布" , style: .done, target: self, action: #selector(postClick))]
 
         progress = UIAlertController(title: isEditMode ? "提交中" : "发帖中", message: "请稍后...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 13, width: 50, height: 50))
@@ -373,9 +373,6 @@ class NewPostViewController: UIViewController,
                         self?.forumStackView.isHidden = false
                         self?.subSeletedBtn.isHidden = false
                         
-                        self?.inputToTopConstraint.isActive = false
-                        self?.inputToTitleConstraint.isActive = true
-
                         if let typeId = self?.typeId {
                             for data in (self?.typeIds ?? []) {
                                 if data.key == typeId {
@@ -387,15 +384,17 @@ class NewPostViewController: UIViewController,
                     } else {
                         self?.forumStackView.isHidden = true
                         self?.subSeletedBtn.isHidden = true
-                        self?.inputToTopConstraint.isActive = true
-                        self?.inputToTitleConstraint.isActive = false
                     }
 
                     if let title = self?.editFormDatas["subject"] {
                         if title == "" {
                             self?.titleInput.isHidden = true
+                            self?.inputToTopConstraint.isActive = true
+                            self?.inputToTitleConstraint.isActive = false
                         } else {
                             self?.titleInput.text = self?.editFormDatas["subject"]
+                            self?.inputToTopConstraint.isActive = false
+                            self?.inputToTitleConstraint.isActive = true
                         }
                     }
                     self?.contentInput.text = self?.editFormDatas["message"]

@@ -159,9 +159,8 @@ class ReplyCzViewController: UIViewController {
                 } else {
                     self?.isSuccess = true
                     self?.progress.dismiss(animated: true) {
-                        let alert = UIAlertController(title: "回复成功!", message: "是否需要返回", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-                        alert.addAction(UIAlertAction(title: "返回", style: .default) { action in
+                        let alert = UIAlertController(title: "回复发表成功!", message: nil, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "确认", style: .default) { action in
                             self?.dismiss(animated: true, completion: nil)
                         })
                         self?.present(alert, animated: true, completion: nil)

@@ -443,7 +443,9 @@ class PostViewController: UIViewController {
         })
         sheet.addAction(UIAlertAction(title: "收藏文章", style: .default) { action in
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
-                self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+                DispatchQueue.main.async {
+                    self.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+                }
             })
         })
         sheet.addAction(UIAlertAction(title: "分享文章", style: .default) { action in
@@ -775,8 +777,9 @@ extension PostViewController: UIViewControllerPreviewingDelegate {
     override var previewActionItems: [UIPreviewActionItem] {
         let ac1 = UIPreviewAction(title: "收藏", style: .default) { (ac, vc) in
             PostViewController.doStarPost(tid: self.tid!, callback: { (ok, res) in
-                // FIXME 无法弹出提示窗口
-                vc.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+                DispatchQueue.main.async {
+                    vc.showAlert(title: ok ? "收藏成功!" : "收藏错误", message: res)
+                }
             })
         }
         

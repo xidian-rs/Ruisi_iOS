@@ -175,7 +175,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             params["seccodeverify"] = self.validValue!
         }
         
-        showLoadingView()
+        showLoadingView(title: "登录中", message: "请稍后...")
         HttpUtil.POST(url: Urls.loginUrl + "&loginsubmit=yes", params: params, callback: { [weak self] ok, res in
             if ok {
                 if res.contains("欢迎您回来") {
@@ -296,9 +296,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var loadingView: UIAlertController?
     
-    func showLoadingView() {
+    func showLoadingView(title: String, message: String) {
         if loadingView == nil {
-            loadingView = UIAlertController(title: "登陆中", message: "请稍后...", preferredStyle: .alert)
+            loadingView = UIAlertController(title: title, message: message, preferredStyle: .alert)
             let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
             loadingIndicator.hidesWhenStopped = true
             loadingIndicator.style = .gray

@@ -118,6 +118,33 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable,
         return subDatas
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        _ = super.numberOfSections(in: tableView)
+        if datas.count == 0 && !isLoading {//no data avaliable
+            let title = "暂无内容"
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+            label.text = title
+            label.numberOfLines = 0
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 20)
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor.placeholderText
+            } else {
+                label.textColor = UIColor.lightGray
+            }
+            label.sizeToFit()
+            
+            tableView.backgroundView = label
+            tableView.separatorStyle = .none
+            
+            return 0
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+            return 1
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
