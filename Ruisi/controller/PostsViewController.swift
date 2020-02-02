@@ -67,7 +67,66 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
     // 子类重写此方法支持解析自己的数据
     override func parseData(pos: Int, doc: HTMLDocument) -> [ArticleListData] {
         var subDatas: [ArticleListData] = []
-        if isSchoolNet {
+        
+        let showZhidin = (currentPage == 1) && Settings.showZhiding
+        if doc.title?.contains("手机版") ?? !isSchoolNet {
+            // 手机版页面
+            if (self.currentPage == 1 || self.datas.count == 0) && subForums.count == 0 {
+                for item in doc.xpath("//*[@id=\"subname_list\"]/ul/li") {
+                    let a = item.xpath("a").first!
+                    guard let fid = Utils.getNum(prefix: "fid=", from: a["href"]!) else {
+                        continue
+                    }
+                    subForums.append(KeyValueData(key: a.text!, value: fid))
+                    print("子板块: \(a.text!) fid:\(fid)")
+                }
+            }
+            
+            let nodes = doc.css(".threadlist ul li")
+            for li in nodes {
+                let a = li.css("a").first
+                var tid: Int?
+                if let u = a?["href"] {
+                    tid = Utils.getNum(from: u)
+                } else {
+                    //没有tid和咸鱼有什么区别
+                    continue
+                }
+                var replysStr: String?
+                var authorStr: String?
+                let replys = li.css("span.num").first
+                let author = li.css(".by").first
+                if let r = replys {
+                    replysStr = r.text
+                    a?.removeChild(r)
+                }
+                if let au = author {
+                    authorStr = au.text
+                    a?.removeChild(au)
+                }
+                let img = (li.css("img").first)?["src"]
+                var haveImg = false
+                if let i = img {
+                    haveImg = i.contains("icon_tu.png")
+                    if !showZhidin && i.contains("icon_top.png") {
+                        continue
+                    }
+                }
+                
+                let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
+                let color = Utils.getHtmlColor(from: a?["style"])
+                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者", replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
+                d.rowHeight = caculateRowheight(isSchoolNet: false, width: self.tableViewWidth, title: d.title)
+                subDatas.append(d)
+            }
+            
+            if let pg = doc.xpath("/html/body/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
+                self.totalPage = Utils.getNum(from: sumNode.text!) ?? self.currentPage
+            } else {
+                self.totalPage = self.currentPage
+            }
+        } else {
+            // 电脑版
             if (self.currentPage == 1 || self.datas.count == 0) && subForums.count == 0 {
                 for item in doc.css("#subforum_\(fid!) table tr h2 a") {
                     guard let fid = Utils.getNum(prefix: "fid=", from: item["href"]!) else {
@@ -78,7 +137,6 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
                 }
             }
             
-            let showZhidin = (currentPage == 1) && Settings.showZhiding
             let nodes = doc.xpath("//*[@id=\"threadlisttableid\"]/tbody")
             for li in nodes {
                 if li["id"] == nil || (!showZhidin && li["id"]!.contains("stickthread")) {
@@ -119,58 +177,6 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
                 subDatas.append(d)
             }
             if let pg = doc.xpath("//*[@id=\"fd_page_bottom\"]/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
-                self.totalPage = Utils.getNum(from: sumNode.text!) ?? self.currentPage
-            } else {
-                self.totalPage = self.currentPage
-            }
-        } else {
-            if (self.currentPage == 1 || self.datas.count == 0) && subForums.count == 0 {
-                for item in doc.xpath("//*[@id=\"subname_list\"]/ul/li") {
-                    let a = item.xpath("a").first!
-                    guard let fid = Utils.getNum(prefix: "fid=", from: a["href"]!) else {
-                        continue
-                    }
-                    subForums.append(KeyValueData(key: a.text!, value: fid))
-                    print("子板块: \(a.text!) fid:\(fid)")
-                }
-            }
-            
-            let nodes = doc.css(".threadlist ul li")
-            for li in nodes {
-                let a = li.css("a").first
-                var tid: Int?
-                if let u = a?["href"] {
-                    tid = Utils.getNum(from: u)
-                } else {
-                    //没有tid和咸鱼有什么区别
-                    continue
-                }
-                var replysStr: String?
-                var authorStr: String?
-                let replys = li.css("span.num").first
-                let author = li.css(".by").first
-                if let r = replys {
-                    replysStr = r.text
-                    a?.removeChild(r)
-                }
-                if let au = author {
-                    authorStr = au.text
-                    a?.removeChild(au)
-                }
-                let img = (li.css("img").first)?["src"]
-                var haveImg = false
-                if let i = img {
-                    haveImg = i.contains("icon_tu.png")
-                }
-                
-                let title = a?.text?.trimmingCharacters(in: CharacterSet(charactersIn: "\r\n "))
-                let color = Utils.getHtmlColor(from: a?["style"])
-                let d = ArticleListData(title: title ?? "未获取到标题", tid: tid!, author: authorStr ?? "未知作者", replys: replysStr ?? "0", read: false, haveImage: haveImg, titleColor: color)
-                d.rowHeight = caculateRowheight(isSchoolNet: false, width: self.tableViewWidth, title: d.title)
-                subDatas.append(d)
-            }
-            
-            if let pg = doc.xpath("/html/body/div[@class=\"pg\"]").first, let sumNode = pg.xpath("label/span").first {
                 self.totalPage = Utils.getNum(from: sumNode.text!) ?? self.currentPage
             } else {
                 self.totalPage = self.currentPage

@@ -74,6 +74,7 @@ class BaseTableViewController<T>: UITableViewController {
             if showRefreshControl && rsRefreshControl == nil {
                 print("add refresh control")
                 rsRefreshControl = RSRefreshControl()
+                rsRefreshControl?.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
                 rsRefreshControl?.addTarget(self, action: #selector(reloadData), for: .valueChanged)
                 self.tableView.addSubview(rsRefreshControl!)
             } else if !showRefreshControl && rsRefreshControl != nil{

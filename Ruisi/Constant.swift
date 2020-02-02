@@ -104,15 +104,16 @@ public class Urls {
         return "\(baseUrl)forum.php?mod=viewthread&tid=\(tid)&mobile=2"
     }
 
+    // 帖子列表
     public class func getPostsUrl(fid: Int) -> String {
-        if App.isSchoolNet {
-            return "\(BASE_URL_EDU)forum.php?mod=forumdisplay&fid=\(fid)" //&page=1
+        if Settings.showSimplePosts {
+            return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
         }
-        return "\(BASE_URL_ME)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
+        return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=no" //&page=1
     }
 
     public class func getPostsType(fid: Int, isSchoolNet: Bool) -> PostsType {
-        if !isSchoolNet {
+        if Settings.showSimplePosts {
             return .list
         }
         if fid == 157 || fid == 561 || fid == 13 {
@@ -193,8 +194,8 @@ public class Urls {
     }
 
     // 搜索用户
-    public static func searchFriendUrl(username: String) -> String {
-        return "\(baseUrl)home.php?mod=spacecp&ac=search&username=\(username)&searchsubmit=yes&mobile=2"
+    public class var searchFriendUrl: String {
+        return "\(baseUrl)home.php?mod=spacecp&ac=search&searchsubmit=yes&mobile=2"
     }
 
     // 添加好友

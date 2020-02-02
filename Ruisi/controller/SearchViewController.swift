@@ -12,9 +12,7 @@ import Kanna
 // 搜索页面
 //1.先提交搜索 获得url
 //2.再用url浏览结果
-class SearchViewController: UITableViewController, UISearchBarDelegate {
-    
-    @IBOutlet weak var searchBar: UISearchBar!
+class SearchViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating {
     
     var indicateView: UIActivityIndicatorView?
     var placeholderText = "请输入你要搜索的内容"
@@ -24,6 +22,8 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
     private var tableViewWidth: CGFloat = 0
     private var currentSearchText: String?
     
+    var searchController: UISearchController!
+    var searchBar: UISearchBar!
     
     private var loading = false
     open var isLoading: Bool {
@@ -53,16 +53,44 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
         
         tableViewWidth = self.tableView.frame.width
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        searchBar.delegate = self
         tableView.tableFooterView = LoadMoreView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 45))
         
         indicateView = UIActivityIndicatorView(style: .gray)
         indicateView?.hidesWhenStopped = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: indicateView!)
         
+        initSearchController()
+        
         loadForumhash()
     }
     
+    func initSearchController() {
+        searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        //是否添加半透明覆盖层
+        searchController.dimsBackgroundDuringPresentation = false
+        //是否隐藏导航栏
+        //searchController.hidesNavigationBarDuringPresentation = false
+
+        searchBar = searchController.searchBar
+        searchBar.delegate = self
+        searchBar.placeholder = "输入搜索的关键词"
+        
+        if #available(iOS 11.0, *) {
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            self.tableView.tableHeaderView = searchBar
+        }
+        // 防止搜索内容跑到statusbar
+        definesPresentationContext = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        }
+    }
     
     func loadForumhash() {
         HttpUtil.GET(url: Urls.searchUrl, params: nil) { (ok, res) in
@@ -245,6 +273,10 @@ class SearchViewController: UITableViewController, UISearchBarDelegate {
                 }
             }
         }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
     }
     
     // MARK: - Navigation

@@ -130,7 +130,7 @@ class HtmlAttr {
             }
 
             if let color = getAttr(from: from, start: s.upperBound) {
-                print("textcolor \(color)")
+                //print("textcolor \(color)")
                 if color.first == "#" {
                     return Utils.getHtmlColor(from: color)
                 } else {

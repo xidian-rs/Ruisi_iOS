@@ -22,7 +22,7 @@ class PostViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var replyView: SimpleReplyView! ////回复框view
     
-    private lazy var rsRefreshControl = RSRefreshControl()
+    private var rsRefreshControl: RSRefreshControl!
     private var datas = [PostData]()
     private var currentPage: Int = 1
     private var pageSum: Int = 1
@@ -113,9 +113,11 @@ class PostViewController: UIViewController {
             }
         }
         
-        tableView.addSubview(rsRefreshControl)
-        rsRefreshControl.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0)
-        rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        rsRefreshControl = RSRefreshControl()
+        rsRefreshControl?.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0)
+        rsRefreshControl?.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        self.tableView.addSubview(rsRefreshControl!)
+        
         rsRefreshControl.beginRefreshing()
         
         self.title = self.title ?? "加载中..."
@@ -322,18 +324,28 @@ class PostViewController: UIViewController {
                     let indexUserStart = quoteNode.text?.range(of: "引用: ")?.upperBound,
                     let indexUserEnd = quoteNode.text?.range(of: " 发表于")?.lowerBound {
                     let userName = quoteNode.text![indexUserStart..<indexUserEnd]
+                    let endIndex = quoteNode.innerHTML!.endIndex
                     
-                    let sstart = quoteNode.innerHTML!.range(of: "<br>")?.upperBound
-                    let ssend = quoteNode.innerHTML!.range(of: "</blockquote>")?.lowerBound
                     let referContent: String
-                    if sstart != nil && ssend != nil {
-                        referContent = "<blockquote>“\(userName):&nbsp;\(quoteNode.innerHTML![sstart!..<ssend!])”</blockquote>"
+                    if let firstBr = quoteNode.innerHTML!.range(of: "<br>", range: indexUserEnd..<endIndex)?.upperBound,
+                        quoteNode.innerHTML!.contains("forum.php?mod=redirect"),
+                        let ssend = quoteNode.innerHTML!.range(of: "</blockquote>", options: .backwards)?.lowerBound {
+                        // <blockquote>引用: <font size=\"2\"><a href=\"http://rsbbs.xidian.edu.cn/forum.php?mod=redirect&amp;goto=findpost&amp;pid=23720206&amp;ptid=925166\" target=\"_blank\"><font color=\"#999999\">一泓清泉 发表于 2018-3-21 22:46</font></a></font><br>\r\n视频请加上视频截图</blockquote>\n
+                        referContent = "<blockquote>“\(userName)：&nbsp;\(quoteNode.innerHTML![firstBr..<ssend])”</blockquote>"
+                            .replacingOccurrences(of: "<br>", with: " ")
+                    } else if let firstBr = quoteNode.innerHTML!.range(of: "<br>")?.upperBound,
+                        let ssend = quoteNode.innerHTML!.range(of: "</font>", options: .backwards)?.lowerBound,
+                        let sstart = quoteNode.innerHTML!.range(of: ">", range: firstBr..<ssend)?.upperBound {
+                        //<blockquote>引用: <font color="#999999">别动我橙子 发表于 2020-1-21 09:25</font><br>
+                        //<font color="#999999">13.3  今天睿思的新版本，卸载了还是搜索闪退</font>
+                        //</blockquote>
+                        referContent = "<blockquote>“\(userName)：&nbsp;\(quoteNode.innerHTML![sstart..<ssend])”</blockquote>"
                             .replacingOccurrences(of: "<br>", with: " ")
                     } else {
-                        referContent = "<blockquote>“回复:&nbsp;\(userName)”</blockquote>"
+                        referContent = "<blockquote>“回复：&nbsp;\(userName)”</blockquote>"
                     }
                     node.removeChild(quoteNode)
-                    content = referContent + "</br>" + (node.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
+                    content = referContent + "<br>" + (node.innerHTML?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "")
                 }
                 
                 if content == nil {

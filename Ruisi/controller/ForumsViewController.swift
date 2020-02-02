@@ -112,7 +112,7 @@ class ForumsViewController: UICollectionViewController, UICollectionViewDelegate
         print("加载板块列表:\(loadedUid!)")
         
         let day = Int(Date().timeIntervalSince1970 / 86400) - Settings.getFormlistSavedTime(uid: uid)
-        if day < 7, let d = Settings.getForumlist(uid: uid), let ds = try? JSONDecoder().decode([Forums].self, from: d) {
+        if day < 5, let d = Settings.getForumlist(uid: uid), let ds = try? JSONDecoder().decode([Forums].self, from: d) {
             //不用过滤
             datas = ds
             loaded = true

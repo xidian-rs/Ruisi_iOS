@@ -133,9 +133,9 @@ class MessageViewController: BaseTableViewController<MessageData>, ScrollTopable
         let unreadCount =  self.datas.reduce(0) { $0 + ($1.isRead ? 0 : 1) }
         if let tabBarVc = self.tabBarController {
             if unreadCount > 0 {
-                tabBarVc.tabBar.selectedItem?.badgeValue = unreadCount < 9 ? String(unreadCount) : "9+"
+                tabBarVc.tabBar.items?[2].badgeValue = unreadCount < 9 ? String(unreadCount) : "9+"
             } else {
-                tabBarVc.tabBar.selectedItem?.badgeValue = nil
+                tabBarVc.tabBar.items?[2].badgeValue = nil
             }
         }
     }

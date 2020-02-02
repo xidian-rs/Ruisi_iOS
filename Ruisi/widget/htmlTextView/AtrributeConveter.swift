@@ -45,7 +45,6 @@ class AttributeConverter: HtmlParserDelegate {
         }
     }
     
-
     init(font: UIFont, textColor: UIColor) {
         self.font = font
         self.textColor = textColor

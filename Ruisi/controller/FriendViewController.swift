@@ -10,10 +10,14 @@ import UIKit
 import Kanna
 
 // 我的好友页面
-class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDelegate {
+class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDelegate, UISearchResultsUpdating {
+
     private var datasCopy: [FriendData] = []
     private var searchMode = false
     private var emptyPlaceholderText: String?
+    
+    var searchController: UISearchController!
+    var searchBar: UISearchBar!
     
     private var isInSearchMode: Bool {
         set {
@@ -35,7 +39,6 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             return searchMode
         }
     }
-    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         self.autoRowHeight = false
@@ -43,7 +46,36 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         isInSearchMode = false
+        
+        initSearchController()
+    }
+    
+    func initSearchController() {
+        searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        //是否添加半透明覆盖层
+        searchController.dimsBackgroundDuringPresentation = false
+        //是否隐藏导航栏
+        //searchController.hidesNavigationBarDuringPresentation = false
+
+        searchBar = searchController.searchBar
         searchBar.delegate = self
+        searchBar.placeholder = "搜索好友"
+        
+        if #available(iOS 11.0, *) {
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            self.tableView.tableHeaderView = searchBar
+        }
+        // 防止搜索内容跑到statusbar
+        definesPresentationContext = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if #available(iOS 11.0, *) {
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        }
     }
     
     override func getUrl(page: Int) -> String {
@@ -143,11 +175,14 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
             if let title = emptyPlaceholderText {
                 let label = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
                 label.text = title
-                label.textColor = UIColor.darkGray
+                if #available(iOS 13.0, *) {
+                    label.textColor = UIColor.placeholderText
+                } else {
+                    label.textColor = UIColor.lightGray
+                }
                 label.numberOfLines = 0
                 label.textAlignment = .center
                 label.font = UIFont.systemFont(ofSize: 20)
-                label.textColor = UIColor.lightGray
                 label.sizeToFit()
                 tableView.backgroundView = label
                 tableView.separatorStyle = .none
@@ -264,11 +299,15 @@ class FriendViewController: BaseTableViewController<FriendData>, UISearchBarDele
         searchBar.resignFirstResponder()
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        // TODO 更新搜索内容写在这里而不是 searchBarSearchButtonClicked
+    }
+    
     func doSearch(text: String) {
         let label = tableView.backgroundView as? UILabel
         label?.text = "搜索中..."
         
-        HttpUtil.GET(url: Urls.searchFriendUrl(username: text), params: nil) { (ok, res) in
+        HttpUtil.GET(url: Urls.searchFriendUrl, params: ["username": text]) { (ok, res) in
             if ok, let doc = try? HTML(html: res, encoding: .utf8) {
                 let ds = self.parseData(pos: 0, doc: doc)
                 DispatchQueue.main.async {

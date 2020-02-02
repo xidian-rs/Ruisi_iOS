@@ -16,6 +16,7 @@ class SettingViewController: UITableViewController {
     @IBOutlet weak var networkNoticeLabel: UILabel!
     @IBOutlet weak var tailContentTextVIew: UITextView!
     @IBOutlet weak var showZhidingSwitch: UISwitch!
+    @IBOutlet weak var showSimplePostsSwitch: UISwitch!
     @IBOutlet weak var enableTailSwitch: UISwitch!
     @IBOutlet weak var postRenderTypeSwitch: UISwitch!
     @IBOutlet weak var rencentVistForumSwitch: UISwitch!
@@ -26,6 +27,7 @@ class SettingViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         showZhidingSwitch.isOn = Settings.showZhiding
+        showSimplePostsSwitch.isOn = Settings.showSimplePosts
         enableTailSwitch.isOn = Settings.enableTail
         postRenderTypeSwitch.isOn = Settings.postContentRenderType
         rencentVistForumSwitch.isOn = Settings.closeRecentVistForum
@@ -65,6 +67,12 @@ class SettingViewController: UITableViewController {
     @IBAction func showZhidingValueChange(_ sender: UISwitch) {
         print("hide zhiding \(sender.isOn)")
         Settings.showZhiding = sender.isOn
+    }
+    
+    // 是否x显示简洁版帖子列表
+    @IBAction func showSimplePostsValueChange(_ sender: UISwitch) {
+        print("show simple change \(sender.isOn)")
+        Settings.showSimplePosts = sender.isOn
     }
     
     
