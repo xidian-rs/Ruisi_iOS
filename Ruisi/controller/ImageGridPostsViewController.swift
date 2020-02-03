@@ -32,9 +32,12 @@ class ImageGridPostsViewController: UIViewController, UICollectionViewDataSource
         collectionView.collectionViewLayout = layout
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(newPostClick))
         
-        collectionView.addSubview(rsRefreshControl)
+        rsRefreshControl.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0)
         rsRefreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
+        collectionView.addSubview(rsRefreshControl)
+        
         rsRefreshControl.beginRefreshing()
+        
         loadData()
     }
     
