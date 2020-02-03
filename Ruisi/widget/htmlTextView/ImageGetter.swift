@@ -32,7 +32,7 @@ class ImageGetter {
             } else {
                 print("ATTENTION: default smiley not exist \(src)")
             }
-        } else if let image = getStatic(src, start) {
+        } else if let image = getStatic(src: src, start: start) {
             // other smileys eg. qiubilong
             return image
         } else {
