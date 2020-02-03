@@ -22,8 +22,7 @@ class ImageGetter {
     public static func getSmiley(src: String, start: Int, excute closure: @escaping (_ image: UIImage?) -> Void) -> UIImage? {
         // static/image/smiley/tieba/tb025.png
         guard let lastIndex = src.range(of: "/", options: .backwards)?.lowerBound else { return nil }
-        let dir = String(src[..<lastIndex])
-            .replacingOccurrences(of: "static/image", with: "assets")
+        let dir = String(src[..<lastIndex]).replacingOccurrences(of: "static/image", with: "assets")
         var name = String(src[src.index(after: lastIndex)...])
         if src.contains("smiley/jgz/") || src.contains("smiley/tieba/") || src.contains("smiley/acn/")
             || src.contains("smiley/default/") || src.contains("smiley/common/") {
@@ -33,6 +32,9 @@ class ImageGetter {
             } else {
                 print("ATTENTION: default smiley not exist \(src)")
             }
+        } else if let image = getStatic(src, start) {
+            // other smileys eg. qiubilong
+            return image
         } else {
             //  assets/smiley/tieba/tb025.png
             let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
