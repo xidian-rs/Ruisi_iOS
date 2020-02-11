@@ -221,7 +221,8 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
         }
         
         
-        if subDatas.count == 0 && currentPage == 1 && doc.xpath("//*[@id=\"loginform\"]").count > 0 {
+        
+        if subDatas.count == 0 && currentPage == 1 && (doc.xpath("//*[@id=\"loginform\"]").count > 0 || doc.text?.contains("抱歉，您尚未登录，没有权限访问该版块") ?? false) {
             // need login
             DispatchQueue.main.async { [weak self] in
                 self?.showLoginAlert(message: "你需要登录才能查看此板块！") {
@@ -259,6 +260,12 @@ class PostsViewController: BaseTableViewController<ArticleListData>,UIViewContro
             }
         } else if let color = d.titleColor {
             titleLabel.textColor = color
+        } else {
+            if #available(iOS 13.0, *) {
+                titleLabel.textColor = UIColor.label
+            } else {
+                titleLabel.textColor = UIColor.darkText
+            }
         }
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount

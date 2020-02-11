@@ -163,6 +163,12 @@ class HotViewController: BaseTableViewController<ArticleListData>,ScrollTopable,
             }
         } else if let color = d.titleColor {
             titleLabel.textColor = color
+        } else {
+            if #available(iOS 13.0, *) {
+                titleLabel.textColor = UIColor.label
+            } else {
+                titleLabel.textColor = UIColor.darkText
+            }
         }
         usernameLabel.text = d.author
         commentsLabel.text = d.replyCount
