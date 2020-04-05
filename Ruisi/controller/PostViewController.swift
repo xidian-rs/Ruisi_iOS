@@ -385,10 +385,23 @@ class PostViewController: UIViewController {
             }
         } else { //错误
             //有可能没有列表处理错误
-            let errorText = Utils.getRuisiReqError(res: doc.innerHTML);
-            print(errorText ?? "网络错误")
+            let errorText = Utils.getRuisiReqError(res: doc.innerHTML)
             DispatchQueue.main.async {
-                self.showBackAlert(title: "无法查看帖子", message: errorText ?? "帖子不存在")
+                if let errmsg = errorText {
+                    self.showBackAlert(title: "无法查看帖子", message: errmsg)
+                } else {
+                    if doc.innerHTML?.contains("form id=\"loginform\"") ?? false {
+                        self.showLoginAlert(message: "你需要登录才能查看此帖！") {
+                            self.isSetHeaderView = false
+                            self.rsRefreshControl?.beginRefreshing()
+                            self.reloadData()
+                        }
+                    } else {
+                        self.showBackAlert(title: "无法查看帖子", message: "帖子不存在")
+                    }
+                }
+                
+                
             }
         }
         return subDatas
@@ -411,27 +424,36 @@ class PostViewController: UIViewController {
     private var isSetHeaderView = false
     func setUpHeaderView(title: String?) {
         if isSetHeaderView { return }
-        let label = UILabel()
-        if #available(iOS 13.0, *) {
-            label.textColor = UIColor.label
+        if let h = tableView.tableHeaderView, h.subviews.count > 0, let l = h.subviews[0] as? UILabel {
+            if let t = title {
+                isSetHeaderView = true
+                l.text = t
+            } else {
+                l.text = "未知帖子标题"
+            }
         } else {
-            label.textColor = UIColor.darkText
+            let label = UILabel()
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor.label
+            } else {
+                label.textColor = UIColor.darkText
+            }
+            label.numberOfLines = 0
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            if let t = title {
+                isSetHeaderView = true
+                label.text = t
+            } else {
+                label.text = "未知帖子标题"
+            }
+            
+            let height = label.textHeight(for: tableView.bounds.width - 30)
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: height + 20))
+            label.frame = CGRect(x: 15, y: 12, width: tableView.bounds.width - 30, height: height + 8)
+            headerView.addSubview(label)
+            
+            tableView.tableHeaderView = headerView
         }
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        if let t = title {
-            isSetHeaderView = true
-            label.text = t
-        } else {
-            label.text = "未知帖子标题"
-        }
-        
-        let height = label.textHeight(for: tableView.bounds.width - 30)
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: height + 20))
-        label.frame = CGRect(x: 15, y: 12, width: tableView.bounds.width - 30, height: height + 8)
-        headerView.addSubview(label)
-        
-        tableView.tableHeaderView = headerView
     }
     
     
