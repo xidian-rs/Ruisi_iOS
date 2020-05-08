@@ -14,6 +14,17 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var smileyCollection: UICollectionView!
     @IBOutlet weak var smileyPageControl: UIPageControl!
     
+    
+    var intrinsicHeight: CGFloat = AboveKeyboardView.KEYBOARD_HEIGHT {
+        didSet {
+            self.invalidateIntrinsicContentSize()
+        }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: self.intrinsicHeight)
+    }
+    
     public let pageSize = 20
     
     // 表情点击回调

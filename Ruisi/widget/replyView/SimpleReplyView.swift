@@ -79,9 +79,6 @@ class SimpleReplyView: AboveKeyboardView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        saveAeraBottom = UIScreen.main.bounds.maxY - frame.maxY
-        print("saveAeraBottom:\(saveAeraBottom)")
     }
     
     
@@ -111,7 +108,9 @@ class SimpleReplyView: AboveKeyboardView {
     
     @IBAction func smileyBtnClick(_ sender: UIButton) {
         if contentView.isEditable {
-            contentView.toggleEmojiInput()
+            if !contentView.toggleEmojiInput() {
+                contentView.becomeFirstResponder()
+            }
         }
     }
     

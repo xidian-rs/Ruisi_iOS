@@ -101,7 +101,11 @@ class RitchTextView: UITextView {
         }
         
         toolbarView.onToggleSmiley {[weak self] (btn) in
-            self?.toggleEmojiInput()
+            if let this = self {
+                if !this.toggleEmojiInput() {
+                    this.becomeFirstResponder()
+                }
+            }
         }
         
         toolbarView.onHideKeyboardClick {[weak self] (btn) in
@@ -129,9 +133,10 @@ class RitchTextView: UITextView {
     
     
     // 显示隐藏表情键盘
-    public func toggleEmojiInput() {
+    public func toggleEmojiInput() -> Bool {
         if inputView == nil {
             inputView =  smileyView
+            smileyView.intrinsicHeight =  AboveKeyboardView.KEYBOARD_HEIGHT
             smileyView.smileyClick = { [weak self] item in
                 if let smiley = item {
                     if smiley.image != nil { //插入表情
@@ -148,6 +153,8 @@ class RitchTextView: UITextView {
         }
         
         reloadInputViews()
+        
+        return inputView != nil
     }
     
     // 插入图片最大宽度不超过view的宽度

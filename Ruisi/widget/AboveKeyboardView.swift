@@ -26,8 +26,6 @@ class AboveKeyboardView: UIView {
     private var keyboardIsVisible = false
     //备份当前的center以便键盘隐藏还原
     private var currentCenter: CGPoint?
-    // iPhoneX 适配
-    public var saveAeraBottom: CGFloat = 0
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,13 +41,7 @@ class AboveKeyboardView: UIView {
         if currentCenter == nil {
             currentCenter = self.center
         }
-        
-        if #available(iOS 11.0, *) {
-            saveAeraBottom = safeAreaInsets.bottom
-            print("safe aera bottom:\(safeAreaInsets.bottom)")
-        } else {
-            // Fallback on earlier versions
-        }
+        super.layoutSubviews()
     }
 
     deinit {
@@ -59,11 +51,13 @@ class AboveKeyboardView: UIView {
     // MARK: Notifications
     private func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidChange(notification:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     private func deregisterFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
@@ -98,7 +92,30 @@ class AboveKeyboardView: UIView {
         AboveKeyboardView.keyboardHeight = keyboardHeight
         print("keyboardHeight :\(keyboardHeight) keyboardTop:\(rect.origin.y)")
         
-        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight + saveAeraBottom)
+        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight)
+        UIView.commitAnimations()
+    }
+    
+    @objc private func keyboardDidChange(notification: NSNotification) {
+        print("did change")
+        if !shouldHandleKeyBoard { return }
+        keyboardIsVisible = true
+        guard let info = notification.userInfo, let rect = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        let curveValue = ((info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue) ?? 7
+        let duration = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.25
+        
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(duration)
+        UIView.setAnimationCurve(UIView.AnimationCurve(rawValue: curveValue) ?? UIView.AnimationCurve.easeInOut)
+        
+        let keyboardHeight = rect.height
+        AboveKeyboardView.keyboardHeight = keyboardHeight
+        print("keyboardHeight :\(keyboardHeight) keyboardTop:\(rect.origin.y)")
+        
+        self.center = CGPoint(x: currentCenter!.x, y: currentCenter!.y - keyboardHeight)
         UIView.commitAnimations()
     }
 
