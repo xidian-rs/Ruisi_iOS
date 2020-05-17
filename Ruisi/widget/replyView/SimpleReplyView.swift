@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SimpleReplyView: AboveKeyboardView {
+class SimpleReplyView: UIView {
     
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var smileyBtn: UIButton!

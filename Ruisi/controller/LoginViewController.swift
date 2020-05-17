@@ -119,7 +119,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             }
                             
                             if show {
-                                self?.showInputValidDialog()
+                                DispatchQueue.main.async {
+                                    self?.showInputValidDialog()
+                                }
                             }
                         }
                     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // 首选项管理类
 public class Settings {
@@ -31,6 +32,8 @@ public class Settings {
     private static let key_forumlist_saved_time = "key_forumlist_saved_time"
     private static let key_work_type = "key_work_type"
     private static let key_select_subforum = "key_select_subforum"
+    
+    public static var KEYBOARD_HEIGHT: CGFloat = 253
     
     static func getMessageId(type: Int) -> Int {
         switch type {

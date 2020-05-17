@@ -562,9 +562,9 @@ class PostViewController: UIViewController {
         switch type {
         case .viewUser(let uid):
             self.performSegue(withIdentifier: "postToUserDetail", sender: uid)
-        case .viewAlbum(let (aid, url)):
+        case .viewAlbum(let aid, let url):
             showAlbums(aid: aid, url: url)
-        case .viewPost(let (tid, pid)):
+        case .viewPost(let tid, let pid):
             if tid == self.tid { // 点击了跳转到本帖的url
                 if let p = pid {
                     for i in 0..<datas.count {
@@ -584,7 +584,7 @@ class PostViewController: UIViewController {
         case .login:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as! LoginViewController
             self.present(vc, animated: true)
-        case .vote(let (fid, tid)):
+        case .vote(let fid, let tid):
             var voteData: VoteData?
             for item in datas {
                 if let v = item.voteData {

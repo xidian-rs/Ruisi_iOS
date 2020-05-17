@@ -93,19 +93,13 @@ class SmileyItem: Codable {
         return nil
     }
     
-    public func imageText(font: UIFont) -> NSAttributedString {
-        guard let image = image else { return NSAttributedString(string: "")}
+    public func imageAttach() -> ImageAttachment? {
+        guard let image = image else { return nil}
         
         let attach =  ImageAttachment()
         attach.value = value
         attach.image = image
-        attach.bounds = CGRect(x: 0, y: -2, width: font.lineHeight, height: font.lineHeight)
-        
-        let attrStr = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attach))
-        
-        //添加font属性防止字体变小
-        attrStr.addAttributes([NSAttributedString.Key.font: font],
-                              range: NSRange(location: 0, length: 1))
-        return attrStr
+        attach.bounds = CGRect(x: 0, y: -3.5, width: 17, height: 17)
+        return attach
     }
 }

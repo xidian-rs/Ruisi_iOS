@@ -14,10 +14,12 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     @IBOutlet weak var smileyCollection: UICollectionView!
     @IBOutlet weak var smileyPageControl: UIPageControl!
     
-    
-    var intrinsicHeight: CGFloat = AboveKeyboardView.KEYBOARD_HEIGHT {
+    var intrinsicHeight: CGFloat = Settings.KEYBOARD_HEIGHT {
         didSet {
             self.invalidateIntrinsicContentSize()
+            if let cell = smileyCollection.cellForItem(at: IndexPath(item: currItem, section: currSection)) as? SmileyCell {
+                // FIXME 高度不对
+            }
         }
     }
     
@@ -33,7 +35,7 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     class func smileyView() -> SmileyView {
         let nib = UINib(nibName: "SmileyView", bundle: nil)
         let v = nib.instantiate(withOwner: self, options: nil).first as! SmileyView
-        v.frame = CGRect(x: 0, y: 0, width: v.frame.width, height: AboveKeyboardView.KEYBOARD_HEIGHT)
+        v.frame = CGRect(x: 0, y: 0, width: v.frame.width, height: Settings.KEYBOARD_HEIGHT)
         return v
     }
     
@@ -77,17 +79,24 @@ class SmileyView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell =  collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SmileyCell
+        cell.updateUI()
         cell.delegate = self
         let smileys = SmileyManager.shared.smileys[indexPath.section].getSmileys(page: indexPath.item, pageSize: cell.pageSize)
         cell.setSmileys(smileys: smileys)
         return cell
     }
     
+    private var currSection: Int = 0
+    private var currItem: Int = 0
+    
     // 切换tab
     func switchTab(section: Int, item: Int) {
         smileyPageControl.numberOfPages = SmileyManager.shared.smileys[section].pageCount(size: pageSize)
         smileyPageControl.currentPage = item
         //print("section: \(section), item: \(item)")
+        
+        currSection = section
+        currItem = item
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

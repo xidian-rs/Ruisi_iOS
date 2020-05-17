@@ -127,7 +127,11 @@ class HistoryViewController: UITableViewController {
                 ((try? SQLiteDatabase.instance?.deleteHistory(tid: tid)) as ()??)
                 self.historys.remove(at: indexPath.row)
                 DispatchQueue.main.async {
-                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    if self.historys.count == 0 {
+                        tableView.reloadData()
+                    } else {
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                    }
                 }
             }
         }

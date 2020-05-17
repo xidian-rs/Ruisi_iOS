@@ -50,6 +50,25 @@ class SmileyCell: UICollectionViewCell {
         }
     }
     
+    func updateUI() {
+        let leftMargin: CGFloat = 8
+        let bottomMargin: CGFloat = 0
+        
+        let w = (frame.width - 2 * leftMargin) / CGFloat(columnCount)
+        let h = (frame.height - bottomMargin) / CGFloat(rowCount)
+        
+        for r in 0..<rowCount {
+            for c in 0..<columnCount {
+                let x = leftMargin + CGFloat(c) * w
+                let y = CGFloat(r) * h
+                
+                let index = r * columnCount + c
+                contentView.subviews[index].frame = CGRect(x: x, y: y, width: w, height: h)
+            }
+        }
+        contentView.layoutIfNeeded()
+    }
+    
     func setupUi() {
         let leftMargin: CGFloat = 8
         let bottomMargin: CGFloat = 0

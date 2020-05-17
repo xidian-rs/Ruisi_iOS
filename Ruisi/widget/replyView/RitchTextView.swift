@@ -10,6 +10,8 @@ import UIKit
 
 class RitchTextView: UITextView {
     
+    public var isSetHeight = false
+    
     lazy var smileyView: SmileyView = SmileyView.smileyView()
     lazy var toolbarView: ToolbarView = ToolbarView.toolbarView()
     lazy var placeholderLabel: UILabel = UILabel()
@@ -136,11 +138,20 @@ class RitchTextView: UITextView {
     public func toggleEmojiInput() -> Bool {
         if inputView == nil {
             inputView =  smileyView
-            smileyView.intrinsicHeight =  AboveKeyboardView.KEYBOARD_HEIGHT
+            if !isSetHeight {
+                isSetHeight = true
+                smileyView.intrinsicHeight =  Settings.KEYBOARD_HEIGHT
+                print("change smiley view size to \(Settings.KEYBOARD_HEIGHT)")
+            }
+            
             smileyView.smileyClick = { [weak self] item in
                 if let smiley = item {
                     if smiley.image != nil { //插入表情
-                        self?.insertImageText(imageText: smiley.imageText(font: self?.font ?? UIFont.systemFont(ofSize: 15)))
+                        if let attach = smiley.imageAttach() {
+                            self?.insertSmiley(attach: attach)
+                        } else {
+                            // TODO default error image
+                        }
                     } else if let select = self?.selectedTextRange{ // 插入文字
                         self?.replace(select, withText: " " + smiley.value)
                     }
@@ -148,7 +159,7 @@ class RitchTextView: UITextView {
                     self?.deleteBackward()
                 }
             }
-        }else {
+        } else {
             inputView = nil
         }
         
@@ -159,7 +170,9 @@ class RitchTextView: UITextView {
     
     // 插入图片最大宽度不超过view的宽度
     func inserImage(image: UIImage, aid: Int) {
-        let attrStr = NSMutableAttributedString()
+        let range = selectedRange
+        let attrString = NSMutableAttributedString(attributedString: attributedText)
+        
         let attach =  ImageAttachment()
         //discuz 插入图片写法
         attach.value = " [attachimg]\(aid)[/attachimg] "
@@ -169,22 +182,36 @@ class RitchTextView: UITextView {
         
         attach.bounds = CGRect(x: 0, y: 0, width:  width, height: height)
         
+        let attrStr = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attach))
         //添加font属性防止字体变小
-        attrStr.addAttributes([NSAttributedString.Key.attachment : attach,NSAttributedString.Key.font: font ?? UIFont.systemFont(ofSize: 15)],range: NSRange(location: 0, length: 1))
-        insertImageText(imageText: attrStr)
+        attrStr.addAttributes([
+            NSAttributedString.Key.font: font ?? UIFont.systemFont(ofSize: 15),
+            NSAttributedString.Key.foregroundColor: textColor ?? UIColor.darkText
+        ], range: NSRange(location: 0, length: 1))
+        
+        attrString.replaceCharacters(in: range, with: attrStr)
+        attributedText = attrString
+        
+        //重新设置光标的位置
+        selectedRange = NSRange(location: range.location + 1, length: 0)
         
         //手冻执行代理
         delegate?.textViewDidChange?(self)
         self.textChnage()
     }
     
-    
     // 插入image属性文本
-    func insertImageText(imageText: NSAttributedString) {
+    func insertSmiley(attach: ImageAttachment) {
         let range = selectedRange
-        
         let attrString = NSMutableAttributedString(attributedString: attributedText)
-        attrString.replaceCharacters(in: range, with: imageText)
+        
+        let attrStr = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attach))
+        attrStr.addAttributes([
+            NSAttributedString.Key.font: font ?? UIFont.systemFont(ofSize: 15),
+            NSAttributedString.Key.foregroundColor: textColor ?? UIColor.darkText
+        ], range: NSRange(location: 0, length: 1))
+        
+        attrString.replaceCharacters(in: range, with: attrStr)
         attributedText = attrString
         
         //重新设置光标的位置

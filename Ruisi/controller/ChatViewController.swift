@@ -44,7 +44,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         
         replyView.isSending = false
-        replyView.shouldHandleKeyBoard = false
+        //replyView.shouldHandleKeyBoard = false
         replyView.placeholder = "发送私信"
         self.replyView.enableTail = false
         self.replyView.minTextLen = 8

@@ -15,7 +15,6 @@
 		2F0233B31FDFF23F00373969 /* AtData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0233B21FDFF23F00373969 /* AtData.swift */; };
 		2F0287561FEA45A3005C2D2A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0287491FEA45A3005C2D2A /* Extensions.swift */; };
 		2F09C6B31FD447E10012286C /* ChooseForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */; };
-		2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */; };
 		2F16B5E31EA502420068EE20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F16B5E21EA502420068EE20 /* AppDelegate.swift */; };
 		2F16B5E81EA502420068EE20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5E61EA502420068EE20 /* Main.storyboard */; };
 		2F16B5ED1EA502420068EE20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F16B5EC1EA502420068EE20 /* Assets.xcassets */; };
@@ -124,6 +123,7 @@
 		2FF7B1B020550B5C00DE202E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */; };
 		2FF7B1B220557ADC00DE202E /* ForgetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */; };
 		2FF905851F125F4500B88DA6 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF905841F125F4500B88DA6 /* MessageData.swift */; };
+		2FFA009B246FE911005F41EA /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFA009A246FE911005F41EA /* KeyboardLayoutConstraint.swift */; };
 		984BEE229C75F1F36A692B31 /* Pods_Ruisi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB3DD8EC910C367A9D2527A /* Pods_Ruisi.framework */; };
 /* End PBXBuildFile section */
 
@@ -149,7 +149,6 @@
 		2F0233B21FDFF23F00373969 /* AtData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtData.swift; sourceTree = "<group>"; };
 		2F0287491FEA45A3005C2D2A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2F09C6B21FD447E10012286C /* ChooseForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseForumViewController.swift; sourceTree = "<group>"; };
-		2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboveKeyboardView.swift; sourceTree = "<group>"; };
 		2F16B5DF1EA502420068EE20 /* Ruisi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ruisi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F16B5E21EA502420068EE20 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F16B5E71EA502420068EE20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -262,6 +261,7 @@
 		2FF7B1AF20550B5C00DE202E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		2FF7B1B120557ADC00DE202E /* ForgetPasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordController.swift; sourceTree = "<group>"; };
 		2FF905841F125F4500B88DA6 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
+		2FFA009A246FE911005F41EA /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
 		5B234EA6D38FE03BE17A7D68 /* Pods-Ruisi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ruisi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ruisi/Pods-Ruisi.debug.xcconfig"; sourceTree = "<group>"; };
 		A84F4CE1CA58E76A05931BD1 /* Pods-Ruisi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ruisi.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ruisi/Pods-Ruisi.release.xcconfig"; sourceTree = "<group>"; };
 		FCB3DD8EC910C367A9D2527A /* Pods_Ruisi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ruisi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -289,12 +289,12 @@
 				2FD4ADCA1EA74D4200602516 /* ArrowLabel.swift */,
 				2F35E9AD1F00F69E00CDD60D /* LoadMoreView.swift */,
 				2F35E9AF1F00F6ED00CDD60D /* LoadMoreView.xib */,
-				2F09CCFB1FD6646A00EE854C /* AboveKeyboardView.swift */,
 				2FB16E061FD817A800863BF9 /* LTHRadioButton.swift */,
 				2F3885801FE2B022000749F4 /* ColorItemView.swift */,
 				2F37A08E1FE3F78900493A59 /* WaterFallCollectionViewLayout.swift */,
 				2F8E7C5D1FF276410007B6E6 /* TagLabel.swift */,
 				2F77A66A201AFA5300322B28 /* InputValidController.swift */,
+				2FFA009A246FE911005F41EA /* KeyboardLayoutConstraint.swift */,
 			);
 			path = widget;
 			sourceTree = "<group>";
@@ -672,6 +672,7 @@
 				2F16B5F81EA504330068EE20 /* ForumsViewController.swift in Sources */,
 				2FF5F9831FE95DF700C6535D /* AlbumData.swift in Sources */,
 				2F0233B31FDFF23F00373969 /* AtData.swift in Sources */,
+				2FFA009B246FE911005F41EA /* KeyboardLayoutConstraint.swift in Sources */,
 				2FA780ED1EA8603800ACBEAF /* PostViewController.swift in Sources */,
 				2FAFE0DE1FE956F900AD7FDC /* UtilityFunctions.swift in Sources */,
 				2F1C31011FEBDCD900498C96 /* SmileyCollectionLayout.swift in Sources */,
@@ -711,7 +712,6 @@
 				2F7A9E631F03AF3900994123 /* FriendViewController.swift in Sources */,
 				2FAFE0D01FE956F900AD7FDC /* GalleryConfiguration.swift in Sources */,
 				2FAFE0D31FE956F900AD7FDC /* GalleryPagingDataSource.swift in Sources */,
-				2F09CCFC1FD6646A00EE854C /* AboveKeyboardView.swift in Sources */,
 				2FAFE0BB1FE94F3B00AD7FDC /* HtmlParser.swift in Sources */,
 				2F7A9E651F03AF6900994123 /* MyPostsViewController.swift in Sources */,
 				2F1C30FD1FEBDCD900498C96 /* SmileyToolbar.swift in Sources */,
@@ -895,7 +895,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ruisi/Ruisi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
@@ -904,7 +904,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.3;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -924,7 +924,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ruisi/Ruisi.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 3B86X32L6X;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = Ruisi/Info.plist;
@@ -933,7 +933,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.3;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xdluoyang.Ruisi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
