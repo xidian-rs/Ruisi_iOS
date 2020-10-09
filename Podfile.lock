@@ -1,8 +1,8 @@
 PODS:
   - Kanna (5.0.0)
-  - Kingfisher (5.12.0):
-    - Kingfisher/Core (= 5.12.0)
-  - Kingfisher/Core (5.12.0)
+  - Kingfisher (5.15.5):
+    - Kingfisher/Core (= 5.15.5)
+  - Kingfisher/Core (5.15.5)
 
 DEPENDENCIES:
   - Kanna (~> 5.0.0)
@@ -15,7 +15,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Kanna: a32875df62975f8f4b871e933b4ea1a5c3b8be0f
-  Kingfisher: dc6e0f53bb5b12c3e75bedb0e01bbd7a640eea69
+  Kingfisher: e3ec347a5ab8817b7585ef46923a2d2b9a7d8fbe
 
 PODFILE CHECKSUM: 08230e426e3edfdcab749c9f9847dcf27788d0ac
 

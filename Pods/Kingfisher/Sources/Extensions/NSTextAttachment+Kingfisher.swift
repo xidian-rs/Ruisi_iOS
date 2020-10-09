@@ -1,8 +1,8 @@
 //
-//  WKInterfaceImage+Kingfisher.swift
+//  NSTextAttachment+Kingfisher.swift
 //  Kingfisher
 //
-//  Created by Rodrigo Borges Soares on 04/05/18.
+//  Created by Benjamin Briggs on 22/07/2019.
 //
 //  Copyright (c) 2019 Wei Wang <onevcat@gmail.com>
 //
@@ -24,18 +24,23 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#if canImport(WatchKit)
+#if !os(watchOS)
 
-import WatchKit
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
 
-extension KingfisherWrapper where Base: WKInterfaceImage {
+extension KingfisherWrapper where Base: NSTextAttachment {
 
     // MARK: Setting Image
 
-    /// Sets an image to the image view with a source.
+    /// Sets an image to the text attachment with a source.
     ///
     /// - Parameters:
-    ///   - source: The `Source` object contains information about the image.
+    ///   - source: The `Source` object defines data information from network or a data provider.
+    ///   - attributedView: The owner of the attributed string which this `NSTextAttachment` is added.
     ///   - placeholder: A placeholder to show while retrieving the image from the given `resource`.
     ///   - options: An options set to define image setting behaviors. See `KingfisherOptionsInfo` for more.
     ///   - progressBlock: Called when the image downloading progress gets updated. If the response does not contain an
@@ -47,11 +52,37 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
     ///
     /// Internally, this method will use `KingfisherManager` to get the requested source
     /// Since this method will perform UI changes, you must call it from the main thread.
-    /// Both `progressBlock` and `completionHandler` will be also executed in the main thread.
+    ///
+    /// The retrieved image will be set to `NSTextAttachment.image` property. Because it is not an image view based
+    /// rendering, options related to view, such as `.transition`, are not supported.
+    ///
+    /// Kingfisher will call `setNeedsDisplay` on the `attributedView` when the image task done. It gives the view a
+    /// chance to render the attributed string again for displaying the downloaded image. For example, if you set an
+    /// attributed with this `NSTextAttachment` to a `UILabel` object, pass it as the `attributedView` parameter.
+    ///
+    /// Here is a typical use case:
+    ///
+    /// ```swift
+    /// let attributedText = NSMutableAttributedString(string: "Hello World")
+    /// let textAttachment = NSTextAttachment()
+    ///
+    /// textAttachment.kf.setImage(
+    ///     with: URL(string: "https://onevcat.com/assets/images/avatar.jpg")!,
+    ///     attributedView: label,
+    ///     options: [
+    ///        .processor(
+    ///            ResizingImageProcessor(referenceSize: .init(width: 30, height: 30))
+    ///            |> RoundCornerImageProcessor(cornerRadius: 15))
+    ///     ]
+    /// )
+    /// attributedText.replaceCharacters(in: NSRange(), with: NSAttributedString(attachment: textAttachment))
+    /// label.attributedText = attributedText
+    /// ```
     ///
     @discardableResult
     public func setImage(
         with source: Source?,
+        attributedView: KFCrossPlatformView,
         placeholder: KFCrossPlatformImage? = nil,
         options: KingfisherOptionsInfo? = nil,
         progressBlock: DownloadProgressBlock? = nil,
@@ -59,38 +90,37 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
     {
         var mutatingSelf = self
         guard let source = source else {
-            base.setImage(placeholder)
+            base.image = placeholder
             mutatingSelf.taskIdentifier = nil
             completionHandler?(.failure(KingfisherError.imageSettingError(reason: .emptySource)))
             return nil
         }
-        
+
         var options = KingfisherParsedOptionsInfo(KingfisherManager.shared.defaultOptions + (options ?? .empty))
         if !options.keepCurrentImageWhileLoading {
-            base.setImage(placeholder)
+            base.image = placeholder
         }
-        
+
         let issuedIdentifier = Source.Identifier.next()
         mutatingSelf.taskIdentifier = issuedIdentifier
-        
+
         if let block = progressBlock {
             options.onDataReceived = (options.onDataReceived ?? []) + [ImageLoadingProgressSideEffect(block)]
         }
-        
+
         if let provider = ImageProgressiveProvider(options, refresh: { image in
-            self.base.setImage(image)
+            self.base.image = image
         }) {
             options.onDataReceived = (options.onDataReceived ?? []) + [provider]
         }
-        
+
         options.onDataReceived?.forEach {
             $0.onShouldApply = { issuedIdentifier == self.taskIdentifier }
         }
-        
+
         let task = KingfisherManager.shared.retrieveImage(
             with: source,
             options: options,
-            downloadTaskUpdated: { mutatingSelf.imageTask = $0 },
             completionHandler: { result in
                 CallbackQueue.mainCurrentOrAsync.execute {
                     guard issuedIdentifier == self.taskIdentifier else {
@@ -105,33 +135,37 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
                         completionHandler?(.failure(error))
                         return
                     }
-                    
+
                     mutatingSelf.imageTask = nil
                     mutatingSelf.taskIdentifier = nil
-                    
+
                     switch result {
                     case .success(let value):
-                        self.base.setImage(value.image)
-                        completionHandler?(result)
-                        
+                        self.base.image = value.image
+                        #if canImport(UIKit)
+                        attributedView.setNeedsDisplay()
+                        #else
+                        attributedView.setNeedsDisplay(attributedView.bounds)
+                        #endif
                     case .failure:
                         if let image = options.onFailureImage {
-                            self.base.setImage(image)
+                            self.base.image = image
                         }
-                        completionHandler?(result)
                     }
+                    completionHandler?(result)
                 }
-            }
+        }
         )
-        
+
         mutatingSelf.imageTask = task
         return task
     }
-    
-    /// Sets an image to the image view with a requested resource.
+
+    /// Sets an image to the text attachment with a source.
     ///
     /// - Parameters:
-    ///   - resource: The `Resource` object contains information about the image.
+    ///   - resource: The `Resource` object contains information about the resource.
+    ///   - attributedView: The owner of the attributed string which this `NSTextAttachment` is added.
     ///   - placeholder: A placeholder to show while retrieving the image from the given `resource`.
     ///   - options: An options set to define image setting behaviors. See `KingfisherOptionsInfo` for more.
     ///   - progressBlock: Called when the image downloading progress gets updated. If the response does not contain an
@@ -141,20 +175,47 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
     ///
     /// - Note:
     ///
-    /// Internally, this method will use `KingfisherManager` to get the requested resource, from either cache
-    /// or network. Since this method will perform UI changes, you must call it from the main thread.
-    /// Both `progressBlock` and `completionHandler` will be also executed in the main thread.
+    /// Internally, this method will use `KingfisherManager` to get the requested source
+    /// Since this method will perform UI changes, you must call it from the main thread.
+    ///
+    /// The retrieved image will be set to `NSTextAttachment.image` property. Because it is not an image view based
+    /// rendering, options related to view, such as `.transition`, are not supported.
+    ///
+    /// Kingfisher will call `setNeedsDisplay` on the `attributedView` when the image task done. It gives the view a
+    /// chance to render the attributed string again for displaying the downloaded image. For example, if you set an
+    /// attributed with this `NSTextAttachment` to a `UILabel` object, pass it as the `attributedView` parameter.
+    ///
+    /// Here is a typical use case:
+    ///
+    /// ```swift
+    /// let attributedText = NSMutableAttributedString(string: "Hello World")
+    /// let textAttachment = NSTextAttachment()
+    ///
+    /// textAttachment.kf.setImage(
+    ///     with: URL(string: "https://onevcat.com/assets/images/avatar.jpg")!,
+    ///     attributedView: label,
+    ///     options: [
+    ///        .processor(
+    ///            ResizingImageProcessor(referenceSize: .init(width: 30, height: 30))
+    ///            |> RoundCornerImageProcessor(cornerRadius: 15))
+    ///     ]
+    /// )
+    /// attributedText.replaceCharacters(in: NSRange(), with: NSAttributedString(attachment: textAttachment))
+    /// label.attributedText = attributedText
+    /// ```
     ///
     @discardableResult
     public func setImage(
         with resource: Resource?,
+        attributedView: KFCrossPlatformView,
         placeholder: KFCrossPlatformImage? = nil,
         options: KingfisherOptionsInfo? = nil,
         progressBlock: DownloadProgressBlock? = nil,
         completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
     {
         return setImage(
-            with: resource?.convertToSource(),
+            with: resource.map { .network($0) },
+            attributedView: attributedView,
             placeholder: placeholder,
             options: options,
             progressBlock: progressBlock,
@@ -163,7 +224,7 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
 
     // MARK: Cancelling Image
 
-    /// Cancel the image download task bounded to the image view if it is running.
+    /// Cancel the image download task bounded to the text attachment if it is running.
     /// Nothing will happen if the downloading has already finished.
     public func cancelDownloadTask() {
         imageTask?.cancel()
@@ -174,8 +235,8 @@ private var taskIdentifierKey: Void?
 private var imageTaskKey: Void?
 
 // MARK: Properties
-extension KingfisherWrapper where Base: WKInterfaceImage {
-    
+extension KingfisherWrapper where Base: NSTextAttachment {
+
     public private(set) var taskIdentifier: Source.Identifier.Value? {
         get {
             let box: Box<Source.Identifier.Value>? = getAssociatedObject(base, &taskIdentifierKey)
@@ -190,15 +251,6 @@ extension KingfisherWrapper where Base: WKInterfaceImage {
     private var imageTask: DownloadTask? {
         get { return getAssociatedObject(base, &imageTaskKey) }
         set { setRetainedAssociatedObject(base, &imageTaskKey, newValue)}
-    }
-}
-
-extension KingfisherWrapper where Base: WKInterfaceImage {
-    /// Gets the image URL bound to this image view.
-    @available(*, deprecated, message: "Use `taskIdentifier` instead to identify a setting task.")
-    public private(set) var webURL: URL? {
-        get { return nil }
-        set { }
     }
 }
 

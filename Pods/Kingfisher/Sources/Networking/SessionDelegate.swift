@@ -27,6 +27,7 @@
 import Foundation
 
 // Represents the delegate object of downloader session. It also behave like a task manager for downloading.
+@objc(KFSessionDelegate) // Fix for ObjC header name conflicting. https://github.com/onevcat/Kingfisher/issues/1530
 class SessionDelegate: NSObject {
 
     typealias SessionChallengeFunc = (
@@ -62,7 +63,9 @@ class SessionDelegate: NSObject {
 
         // Create a new task if necessary.
         let task = SessionDataTask(task: dataTask)
-        task.onCallbackCancelled.delegate(on: self) { [unowned task] (self, value) in
+        task.onCallbackCancelled.delegate(on: self) { [weak task] (self, value) in
+            guard let task = task else { return }
+
             let (token, callback) = value
 
             let error = KingfisherError.requestError(reason: .taskCancelled(task: task, token: token))
@@ -70,6 +73,7 @@ class SessionDelegate: NSObject {
             // No other callbacks waiting, we can clear the task now.
             if !task.containsCallbacks {
                 let dataTask = task.task
+                dataTask.cancel()
                 self.remove(dataTask)
             }
         }
