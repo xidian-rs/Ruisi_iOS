@@ -13,7 +13,7 @@
 
 ### 编译
 - 安装Cocoapods: `sudo gem install cocoapods`
-- 克隆本项目: `git clone https://github.com/xidian-rs/Ruisi_Ios.git`
+- 克隆本项目: `git clone https://github.com/xidian-rs/Ruisi_iOS.git`
 - 在项目文件夹中运行:  `pod install`
 - 使用xcode(需要10.x及以上版本)打开生成的`.xcworkspace`文件，构建并运行.
 
