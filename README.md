@@ -13,7 +13,7 @@
 
 ### 编译
 - 安装Cocoapods: `sudo gem install cocoapods`
-- 克隆本项目: `git clone https://github.com/freedom10086/Ruisi_Ios.git`
+- 克隆本项目: `git clone https://github.com/xidian-rs/Ruisi_Ios.git`
 - 在项目文件夹中运行:  `pod install`
 - 使用xcode(需要10.x及以上版本)打开生成的`.xcworkspace`文件，构建并运行.
 
@@ -25,12 +25,7 @@
 ```
 //校园网地址
 public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
-//校外网地址
-public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
 
-public static var baseUrl: String {
-    return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_ME
-}
 ```
 4. 修改配置文件`forums.json`，按照默认模版填上你论坛板块信息
 5. 板块图标放到`forumlogo`目录，文件名`common_2_icon.gif`，中间的数字替换为板块`fid`
