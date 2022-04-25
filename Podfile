@@ -1,8 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '10.0'
+platform :ios, '12.0'
 use_frameworks!
 
 target 'Ruisi' do
-  pod 'Kanna', '~> 5.0.0'
-  pod 'Kingfisher', '~> 5.0'
+  pod 'Kanna', '~> 5.2.2'
+  pod 'Kingfisher', '~> 7.0'
 end

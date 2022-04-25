@@ -43,12 +43,18 @@ import CoreGraphics
 import ImageIO
 
 private var animatedImageDataKey: Void?
+private var imageFrameCountKey: Void?
 
 // MARK: - Image Properties
 extension KingfisherWrapper where Base: KFCrossPlatformImage {
     private(set) var animatedImageData: Data? {
         get { return getAssociatedObject(base, &animatedImageDataKey) }
         set { setRetainedAssociatedObject(base, &animatedImageDataKey, newValue) }
+    }
+    
+    public var imageFrameCount: Int? {
+        get { return getAssociatedObject(base, &imageFrameCountKey) }
+        set { setRetainedAssociatedObject(base, &imageFrameCountKey, newValue) }
     }
     
     #if os(macOS)
@@ -84,7 +90,8 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
     var duration: TimeInterval { return base.duration }
     var size: CGSize { return base.size }
     
-    private(set) var imageSource: CGImageSource? {
+    /// The image source reference of current image.
+    public private(set) var imageSource: CGImageSource? {
         get { return getAssociatedObject(base, &imageSourceKey) }
         set { setRetainedAssociatedObject(base, &imageSourceKey, newValue) }
     }
@@ -96,7 +103,11 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
         guard let cgImage = cgImage else {
             return pixel * 4
         }
-        return pixel * cgImage.bitsPerPixel / 8
+        let bytesPerPixel = cgImage.bitsPerPixel / 8
+        guard let imageCount = images?.count else {
+            return pixel * bytesPerPixel
+        }
+        return pixel * bytesPerPixel * imageCount
     }
 }
 
@@ -195,11 +206,7 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
             let rep = NSBitmapImageRep(cgImage: cgImage)
             return rep.representation(using: .png, properties: [:])
         #else
-            #if swift(>=4.2)
             return base.pngData()
-            #else
-            return UIImagePNGRepresentation(base)
-            #endif
         #endif
     }
 
@@ -215,11 +222,7 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
             let rep = NSBitmapImageRep(cgImage: cgImage)
             return rep.representation(using:.jpeg, properties: [.compressionFactor: compressionQuality])
         #else
-            #if swift(>=4.2)
             return base.jpegData(compressionQuality: compressionQuality)
-            #else
-            return UIImageJPEGRepresentation(base, compressionQuality)
-            #endif
         #endif
     }
 
@@ -231,16 +234,18 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
     }
 
     /// Returns a data representation for `base` image, with the `format` as the format indicator.
+    /// - Parameters:
+    ///   - format: The format in which the output data should be. If `unknown`, the `base` image will be
+    ///             converted in the PNG representation.
+    ///   - compressionQuality: The compression quality when converting image to a lossy format data.
     ///
-    /// - Parameter format: The format in which the output data should be. If `unknown`, the `base` image will be
-    ///                     converted in the PNG representation.
     /// - Returns: The output data representing.
-    public func data(format: ImageFormat) -> Data? {
+    public func data(format: ImageFormat, compressionQuality: CGFloat = 1.0) -> Data? {
         return autoreleasepool { () -> Data? in
             let data: Data?
             switch format {
             case .PNG: data = pngRepresentation()
-            case .JPEG: data = jpegRepresentation(compressionQuality: 1.0)
+            case .JPEG: data = jpegRepresentation(compressionQuality: compressionQuality)
             case .GIF: data = gifRepresentation()
             case .unknown: data = normalized.kf.pngRepresentation()
             }
@@ -284,6 +289,7 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
             kf?.duration = animatedImage.duration
         }
         image?.kf.animatedImageData = data
+        image?.kf.imageFrameCount = Int(CGImageSourceGetCount(imageSource))
         return image
         #else
         
@@ -307,6 +313,7 @@ extension KingfisherWrapper where Base: KFCrossPlatformImage {
             kf?.animatedImageData = data
         }
         
+        image?.kf.imageFrameCount = Int(CGImageSourceGetCount(imageSource))
         return image
         #endif
     }

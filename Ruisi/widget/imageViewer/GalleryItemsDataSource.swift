@@ -11,7 +11,7 @@ import UIKit
 public typealias FetchImageBlock = (@escaping (UIImage?) -> Void) -> Void
 
 // 提供数据源的协议
-public protocol GalleryItemsDataSource: class {
+public protocol GalleryItemsDataSource: AnyObject {
     func itemCount() -> Int
     func provideGalleryItem(_ index: Int) -> FetchImageBlock
 }

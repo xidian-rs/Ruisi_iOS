@@ -11,11 +11,11 @@ import Foundation
 // 默认的处理链接点击的函数
 class LinkClickHandler {
     class func handle (url: String, delegate: ((LinkClickType) -> Void)) {
-        // base http://rs.xidian.edu.cn/
-        // asb  http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=862167&aid=871569&from=album&page=1&mobile=2
+        // base https://rs.xidian.edu.cn/
+        // asb  https://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=862167&aid=871569&from=album&page=1&mobile=2
         print("url click", url)
         // 内部链接点击
-        if url.hasPrefix(Urls.BASE_URL_EDU) || url.hasPrefix(Urls.BASE_URL_ME) {
+        if url.hasPrefix(Urls.BASE_URL_EDU) {
             if url.contains("from=album") && url.contains("aid") { //点击了图片
                 if let aid = Utils.getNum(prefix: "aid=", from: url) {
                     delegate(.viewAlbum(aid: aid, url: url))
