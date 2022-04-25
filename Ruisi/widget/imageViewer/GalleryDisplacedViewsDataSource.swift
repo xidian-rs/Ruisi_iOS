@@ -34,7 +34,7 @@ extension DisplaceableView {
 }
 
 // 提供动画开始的view
-public protocol GalleryDisplacedViewsDataSource: class {
+public protocol GalleryDisplacedViewsDataSource: AnyObject {
     // 展示评议动画的view
     func provideDisplacementItem(atIndex index: Int) -> DisplaceableView?
 }

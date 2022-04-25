@@ -28,7 +28,11 @@ import Foundation
 
 // Represents the delegate object of downloader session. It also behave like a task manager for downloading.
 @objc(KFSessionDelegate) // Fix for ObjC header name conflicting. https://github.com/onevcat/Kingfisher/issues/1530
+<<<<<<< HEAD
+open class SessionDelegate: NSObject {
+=======
 class SessionDelegate: NSObject {
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 
     typealias SessionChallengeFunc = (
         URLSession,
@@ -73,13 +77,25 @@ class SessionDelegate: NSObject {
             // No other callbacks waiting, we can clear the task now.
             if !task.containsCallbacks {
                 let dataTask = task.task
+<<<<<<< HEAD
+
+                self.cancelTask(dataTask)
+                self.remove(task)
+=======
                 dataTask.cancel()
                 self.remove(dataTask)
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             }
         }
         let token = task.addCallback(callback)
         tasks[url] = task
         return DownloadTask(sessionTask: task, cancelToken: token)
+    }
+
+    private func cancelTask(_ dataTask: URLSessionDataTask) {
+        lock.lock()
+        defer { lock.unlock() }
+        dataTask.cancel()
     }
 
     func append(
@@ -91,23 +107,24 @@ class SessionDelegate: NSObject {
         return DownloadTask(sessionTask: task, cancelToken: token)
     }
 
-    private func remove(_ task: URLSessionTask) {
-        guard let url = task.originalRequest?.url else {
+    private func remove(_ task: SessionDataTask) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        guard let url = task.originalURL else {
             return
         }
-        lock.lock()
-        defer {lock.unlock()}
+        task.removeAllCallbacks()
         tasks[url] = nil
     }
 
     private func task(for task: URLSessionTask) -> SessionDataTask? {
+        lock.lock()
+        defer { lock.unlock() }
 
         guard let url = task.originalRequest?.url else {
             return nil
         }
-
-        lock.lock()
-        defer { lock.unlock() }
         guard let sessionTask = tasks[url] else {
             return nil
         }
@@ -142,7 +159,7 @@ class SessionDelegate: NSObject {
 
 extension SessionDelegate: URLSessionDataDelegate {
 
-    func urlSession(
+    open func urlSession(
         _ session: URLSession,
         dataTask: URLSessionDataTask,
         didReceive response: URLResponse,
@@ -165,7 +182,7 @@ extension SessionDelegate: URLSessionDataDelegate {
         completionHandler(.allow)
     }
 
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         guard let task = self.task(for: dataTask) else {
             return
         }
@@ -179,10 +196,10 @@ extension SessionDelegate: URLSessionDataDelegate {
         }
     }
 
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    open func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let sessionTask = self.task(for: task) else { return }
 
-        if let url = task.originalRequest?.url {
+        if let url = sessionTask.originalURL {
             let result: Result<URLResponse, KingfisherError>
             if let error = error {
                 result = .failure(KingfisherError.responseError(reason: .URLSessionError(error: error)))
@@ -198,8 +215,8 @@ extension SessionDelegate: URLSessionDataDelegate {
         if let error = error {
             result = .failure(KingfisherError.responseError(reason: .URLSessionError(error: error)))
         } else {
-            if let data = onDidDownloadData.call(sessionTask), let finalData = data {
-                result = .success((finalData, task.response))
+            if let data = onDidDownloadData.call(sessionTask) {
+                result = .success((data, task.response))
             } else {
                 result = .failure(KingfisherError.responseError(reason: .dataModifyingFailed(task: sessionTask)))
             }
@@ -207,7 +224,7 @@ extension SessionDelegate: URLSessionDataDelegate {
         onCompleted(task: task, result: result)
     }
 
-    func urlSession(
+    open func urlSession(
         _ session: URLSession,
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
@@ -215,7 +232,7 @@ extension SessionDelegate: URLSessionDataDelegate {
         onReceiveSessionChallenge.call((session, challenge, completionHandler))
     }
 
-    func urlSession(
+    open func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
         didReceive challenge: URLAuthenticationChallenge,
@@ -224,7 +241,7 @@ extension SessionDelegate: URLSessionDataDelegate {
         onReceiveSessionTaskChallenge.call((session, task, challenge, completionHandler))
     }
     
-    func urlSession(
+    open func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
         willPerformHTTPRedirection response: HTTPURLResponse,
@@ -249,7 +266,7 @@ extension SessionDelegate: URLSessionDataDelegate {
         guard let sessionTask = self.task(for: task) else {
             return
         }
-        remove(task)
         sessionTask.onTaskDone.call((result, sessionTask.callbacks))
+        remove(sessionTask)
     }
 }

@@ -24,7 +24,7 @@
 3. 修改代码文件`Constant.swift`，设置里的论坛地址，修改`baseUrl`指向你的论坛地址（由于我们学校论坛有2个地址所以这儿我填了2个根地址，按需删除）
 ```
 //校园网地址
-public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
+public static let BASE_URL_EDU = "https://rs.xidian.edu.cn/"
 
 ```
 4. 修改配置文件`forums.json`，按照默认模版填上你论坛板块信息

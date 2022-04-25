@@ -116,7 +116,7 @@ class InputValidController {
         HttpUtil.GET_VALID_IMAGE(url: Urls.updateValidUrl(update: update!, hash: hash)) { (ok, data) in
             if ok, let d = data {
                 DispatchQueue.main.async {
-                    self.validImageView.image =   UIImage.gif(data: d)
+                    self.validImageView.image = UIImage.gif(data: d)
                 }
             }
         }

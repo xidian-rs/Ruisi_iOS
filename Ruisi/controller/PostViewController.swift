@@ -330,7 +330,7 @@ class PostViewController: UIViewController {
                     if let firstBr = quoteNode.innerHTML!.range(of: "<br>", range: indexUserEnd..<endIndex)?.upperBound,
                         quoteNode.innerHTML!.contains("forum.php?mod=redirect"),
                         let ssend = quoteNode.innerHTML!.range(of: "</blockquote>", options: .backwards)?.lowerBound {
-                        // <blockquote>引用: <font size=\"2\"><a href=\"http://rsbbs.xidian.edu.cn/forum.php?mod=redirect&amp;goto=findpost&amp;pid=23720206&amp;ptid=925166\" target=\"_blank\"><font color=\"#999999\">一泓清泉 发表于 2018-3-21 22:46</font></a></font><br>\r\n视频请加上视频截图</blockquote>\n
+                        // <blockquote>引用: <font size=\"2\"><a href=\"http://rs.xidian.edu.cn/forum.php?mod=redirect&amp;goto=findpost&amp;pid=23720206&amp;ptid=925166\" target=\"_blank\"><font color=\"#999999\">一泓清泉 发表于 2018-3-21 22:46</font></a></font><br>\r\n视频请加上视频截图</blockquote>\n
                         referContent = "<blockquote>“\(userName)：&nbsp;\(quoteNode.innerHTML![firstBr..<ssend])”</blockquote>"
                             .replacingOccurrences(of: "<br>", with: " ")
                     } else if let firstBr = quoteNode.innerHTML!.range(of: "<br>")?.upperBound,
@@ -353,7 +353,7 @@ class PostViewController: UIViewController {
                 }
                 
                 // 处理未点击添加到帖子里的图片
-                // http://rsbbs.xidian.edu.cn/forum.php?mod=viewthread&tid=952530&page=1&mobile=2
+                // http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=952530&page=1&mobile=2
                 let extraImageNodes = comment.xpath("div/ul[2]/li/a")
                 for extraImageNode in extraImageNodes {
                     if let d = extraImageNode.xpath("//div").first {

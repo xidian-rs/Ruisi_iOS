@@ -27,12 +27,10 @@ public class App {
 
 public class Urls {
     //校园网地址
-    public static let BASE_URL_EDU = "http://rs.xidian.edu.cn/"
-    //校外网地址
-    public static let BASE_URL_ME = "http://rsbbs.xidian.edu.cn/"
-    
+    public static let BASE_URL_EDU = "https://rs.xidian.edu.cn/"
+
     public class var baseUrl: String {
-        return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_ME
+        return App.isSchoolNet ? BASE_URL_EDU : BASE_URL_EDU
     }
 
     // 签到 需要校园网
@@ -62,7 +60,7 @@ public class Urls {
     }
     
     public class var checkLoginUrlOut: String {
-        return "\(BASE_URL_ME)member.php?mod=logging&action=login&inajax=1&mobile=2"
+        return "\(BASE_URL_EDU)member.php?mod=logging&action=login&inajax=1&mobile=2"
     }
     
     // 注册检测的地址，检查用户名/邮箱/邀请码是否合法
