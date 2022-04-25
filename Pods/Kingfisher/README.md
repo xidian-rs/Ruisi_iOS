@@ -69,7 +69,11 @@ With the powerful options, you can do hard tasks with Kingfisher in a simple way
 ```swift
 let url = URL(string: "https://example.com/high_resolution_image.png")
 let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
+<<<<<<< HEAD
              |> RoundCornerImageProcessor(cornerRadius: 20)
+=======
+             >> RoundCornerImageProcessor(cornerRadius: 20)
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 imageView.kf.indicatorType = .activity
 imageView.kf.setImage(
     with: url,
@@ -154,9 +158,13 @@ struct ContentView: View {
 
 ### Learn More
 
+<<<<<<< HEAD
 To learn the use of Kingfisher by more examples, take a look at the well-prepared [Cheat Sheet](https://github.com/onevcat/Kingfisher/wiki/Cheat-Sheet).
 There we summarized the most common tasks in Kingfisher, you can get a better idea of what this framework can do. 
 There are also some performance tips, remember to check them too.
+=======
+To learn the use of Kingfisher by more examples, take a look at the [Cheat Sheet](https://github.com/onevcat/Kingfisher/wiki/Cheat-Sheet). There we summarized most common tasks in Kingfisher, you can get a better idea on what this framework can do. There are also some tips for performance in the same page, remember to check them too.
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 
 ## Requirements
 

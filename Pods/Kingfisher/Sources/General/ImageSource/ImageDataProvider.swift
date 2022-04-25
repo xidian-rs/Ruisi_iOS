@@ -55,9 +55,12 @@ public protocol ImageDataProvider {
 
 public extension ImageDataProvider {
     var contentURL: URL? { return nil }
+<<<<<<< HEAD
     func convertToSource() -> Source {
         .provider(self)
     }
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 }
 
 /// Represents an image data provider for loading from a local file URL on disk.
@@ -101,6 +104,11 @@ public struct LocalFileImageDataProvider: ImageDataProvider {
         loadingQueue.execute {
             handler(Result(catching: { try Data(contentsOf: fileURL) }))
         }
+    }
+
+    /// The URL of the local file on the disk.
+    public var contentURL: URL? {
+        return fileURL
     }
 
     /// The URL of the local file on the disk.

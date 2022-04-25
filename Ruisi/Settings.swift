@@ -21,7 +21,7 @@ public class Settings {
     private static let key_enable_tail = "key_enable_tail"
     private static let key_tail_content = "key_tail_content"
     private static let key_show_zhiding = "key_show_zhiding"
-    private static let key_show_simple_posts = "key_show_simple_posts"
+    private static let key_show_complex_posts = "key_show_complex_posts"
     private static let key_message_id_reply = "key_message_id_reply"
     private static let key_message_id_pm = "key_message_id_pm"
     private static let key_message_id_at = "key_message_id_at"
@@ -150,14 +150,14 @@ public class Settings {
         }
     }
     
-    // 简洁帖子列表
-    public static var showSimplePosts: Bool {
+    // 完整帖子列表
+    public static var showFullStylePosts: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: key_show_simple_posts)
+            return UserDefaults.standard.bool(forKey: key_show_complex_posts)
         }
 
         set {
-            UserDefaults.standard.set(newValue, forKey: key_show_simple_posts)
+            UserDefaults.standard.set(newValue, forKey: key_show_complex_posts)
         }
     }
 

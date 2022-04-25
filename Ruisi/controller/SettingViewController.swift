@@ -27,7 +27,7 @@ class SettingViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         showZhidingSwitch.isOn = Settings.showZhiding
-        showSimplePostsSwitch.isOn = Settings.showSimplePosts
+        showSimplePostsSwitch.isOn = Settings.showFullStylePosts
         enableTailSwitch.isOn = Settings.enableTail
         postRenderTypeSwitch.isOn = Settings.postContentRenderType
         rencentVistForumSwitch.isOn = Settings.closeRecentVistForum
@@ -71,8 +71,8 @@ class SettingViewController: UITableViewController {
     
     // 是否x显示简洁版帖子列表
     @IBAction func showSimplePostsValueChange(_ sender: UISwitch) {
-        print("show simple change \(sender.isOn)")
-        Settings.showSimplePosts = sender.isOn
+        print("show complex posts change \(sender.isOn)")
+        Settings.showFullStylePosts = sender.isOn
     }
     
     

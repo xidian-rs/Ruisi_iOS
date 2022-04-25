@@ -241,6 +241,7 @@ public class KingfisherManager {
                 completionHandler?(.failure(error))
                 return
             }
+<<<<<<< HEAD
             // When low data mode constrained error, retry with the low data mode source instead of use alternative on fly.
             guard !error.isLowDataModeConstrained else {
                 if let source = retrievingContext.options.lowDataModeSource {
@@ -254,6 +255,9 @@ public class KingfisherManager {
             }
             if let nextSource = retrievingContext.popAlternativeSource() {
                 retrievingContext.appendError(error, to: source)
+=======
+            if let nextSource = retrievingContext.popAlternativeSource() {
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
                 startNewRetrieveTask(with: nextSource, downloadTaskUpdated: downloadTaskUpdated)
             } else {
                 // No other alternative source. Finish with error.
@@ -288,7 +292,31 @@ public class KingfisherManager {
                         }
                     }
                 } else {
+<<<<<<< HEAD
                     failCurrentSource(currentSource, with: error)
+=======
+
+                    // Skip alternative sources if the user cancelled it.
+                    guard !error.isTaskCancelled else {
+                        completionHandler?(.failure(error))
+                        return
+                    }
+                    if let nextSource = retrievingContext.popAlternativeSource() {
+                        retrievingContext.appendError(error, to: currentSource)
+                        startNewRetrieveTask(with: nextSource, downloadTaskUpdated: downloadTaskUpdated)
+                    } else {
+                        // No other alternative source. Finish with error.
+                        if retrievingContext.propagationErrors.isEmpty {
+                            completionHandler?(.failure(error))
+                        } else {
+                            retrievingContext.appendError(error, to: currentSource)
+                            let finalError = KingfisherError.imageSettingError(
+                                reason: .alternativeSourcesExhausted(retrievingContext.propagationErrors)
+                            )
+                            completionHandler?(.failure(finalError))
+                        }
+                    }
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
                 }
             }
         }
@@ -359,8 +387,9 @@ public class KingfisherManager {
                         return
                     }
 
+                    let finalImage = options.imageModifier?.modify(image) ?? image
                     options.callbackQueue.execute {
-                        let result = ImageLoadingResult(image: image, url: nil, originalData: data)
+                        let result = ImageLoadingResult(image: finalImage, url: nil, originalData: data)
                         completionHandler(.success(result))
                     }
                 }

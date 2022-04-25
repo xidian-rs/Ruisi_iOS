@@ -28,7 +28,11 @@ import Foundation
 
 // Represents the delegate object of downloader session. It also behave like a task manager for downloading.
 @objc(KFSessionDelegate) // Fix for ObjC header name conflicting. https://github.com/onevcat/Kingfisher/issues/1530
+<<<<<<< HEAD
 open class SessionDelegate: NSObject {
+=======
+class SessionDelegate: NSObject {
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 
     typealias SessionChallengeFunc = (
         URLSession,
@@ -73,9 +77,14 @@ open class SessionDelegate: NSObject {
             // No other callbacks waiting, we can clear the task now.
             if !task.containsCallbacks {
                 let dataTask = task.task
+<<<<<<< HEAD
 
                 self.cancelTask(dataTask)
                 self.remove(task)
+=======
+                dataTask.cancel()
+                self.remove(dataTask)
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             }
         }
         let token = task.addCallback(callback)

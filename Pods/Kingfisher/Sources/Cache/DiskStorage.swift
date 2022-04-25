@@ -50,10 +50,13 @@ public enum DiskStorage {
         var maybeCached : Set<String>?
         let maybeCachedCheckingQueue = DispatchQueue(label: "com.onevcat.Kingfisher.maybeCachedCheckingQueue")
 
+<<<<<<< HEAD
         // `false` if the storage initialized with an error. This prevents unexpected forcibly crash when creating
         // storage in the default cache.
         private var storageReady: Bool = true
 
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
         /// Creates a disk storage with the given `DiskStorage.Config`.
         ///
         /// - Parameter config: The config used for this disk storage.
@@ -78,6 +81,7 @@ public enum DiskStorage {
             metaChangingQueue = DispatchQueue(label: creation.cacheName)
             setupCacheChecking()
 
+<<<<<<< HEAD
             if creatingDirectory {
                 try? prepareDirectory()
             }
@@ -88,6 +92,14 @@ public enum DiskStorage {
                 do {
                     self.maybeCached = Set()
                     try self.config.fileManager.contentsOfDirectory(atPath: self.directoryURL.path).forEach { fileName in
+=======
+            try prepareDirectory()
+
+            maybeCachedCheckingQueue.async {
+                do {
+                    self.maybeCached = Set()
+                    try config.fileManager.contentsOfDirectory(atPath: self.directoryURL.path).forEach { fileName in
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
                         self.maybeCached?.insert(fileName)
                     }
                 } catch {

@@ -228,7 +228,11 @@ extension KingfisherWrapper where Base: NSButton {
         progressBlock: DownloadProgressBlock? = nil,
         completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
     {
+<<<<<<< HEAD
         return setAlternateImage(
+=======
+        return setImage(
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             with: resource?.convertToSource(),
             placeholder: placeholder,
             options: options,
@@ -314,6 +318,41 @@ extension KingfisherWrapper where Base: NSButton {
         return task
     }
 
+<<<<<<< HEAD
+=======
+    /// Sets an alternate image to the button with a requested resource.
+    ///
+    /// - Parameters:
+    ///   - resource: The `Resource` object contains information about the resource.
+    ///   - placeholder: A placeholder to show while retrieving the image from the given `resource`.
+    ///   - options: An options set to define image setting behaviors. See `KingfisherOptionsInfo` for more.
+    ///   - progressBlock: Called when the image downloading progress gets updated. If the response does not contain an
+    ///                    `expectedContentLength`, this block will not be called.
+    ///   - completionHandler: Called when the image retrieved and set finished.
+    /// - Returns: A task represents the image downloading.
+    ///
+    /// - Note:
+    /// Internally, this method will use `KingfisherManager` to get the requested resource, from either cache
+    /// or network. Since this method will perform UI changes, you must call it from the main thread.
+    /// Both `progressBlock` and `completionHandler` will be also executed in the main thread.
+    ///
+    @discardableResult
+    public func setAlternateImage(
+        with resource: Resource?,
+        placeholder: KFCrossPlatformImage? = nil,
+        options: KingfisherOptionsInfo? = nil,
+        progressBlock: DownloadProgressBlock? = nil,
+        completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
+    {
+        return setAlternateImage(
+            with: resource?.convertToSource(),
+            placeholder: placeholder,
+            options: options,
+            progressBlock: progressBlock,
+            completionHandler: completionHandler)
+    }
+
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
     // MARK: Cancelling Alternate Image Downloading Task
 
     /// Cancels the alternate image download task of the button if it is running.

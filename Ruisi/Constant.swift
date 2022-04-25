@@ -104,14 +104,14 @@ public class Urls {
 
     // 帖子列表
     public class func getPostsUrl(fid: Int) -> String {
-        if Settings.showSimplePosts {
+        if !Settings.showFullStylePosts {
             return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=2" //&page=1
         }
         return "\(baseUrl)forum.php?mod=forumdisplay&fid=\(fid)&mobile=no" //&page=1
     }
 
     public class func getPostsType(fid: Int, isSchoolNet: Bool) -> PostsType {
-        if Settings.showSimplePosts {
+        if !Settings.showFullStylePosts {
             return .list
         }
         if fid == 157 || fid == 561 || fid == 13 {

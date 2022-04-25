@@ -353,13 +353,56 @@ public enum Radius {
 ///
 public struct RoundCornerImageProcessor: ImageProcessor {
 
+<<<<<<< HEAD
+=======
+    /// Represents a radius specified in a `RoundCornerImageProcessor`.
+    public enum Radius {
+        /// The radius should be calculated as a fraction of the image width. Typically the associated value should be
+        /// between 0 and 0.5, where 0 represents no radius and 0.5 represents using half of the image width.
+        case widthFraction(CGFloat)
+        /// The radius should be calculated as a fraction of the image height. Typically the associated value should be
+        /// between 0 and 0.5, where 0 represents no radius and 0.5 represents using half of the image height.
+        case heightFraction(CGFloat)
+        /// Use a fixed point value as the round corner radius.
+        case point(CGFloat)
+
+        var radiusIdentifier: String {
+            switch self {
+            case .widthFraction(let f):
+                return "w_frac_\(f)"
+            case .heightFraction(let f):
+                return "h_frac_\(f)"
+            case .point(let p):
+                return p.description
+            }
+        }
+    }
+
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
     /// Identifier of the processor.
     /// - Note: See documentation of `ImageProcessor` protocol for more.
     public let identifier: String
 
+<<<<<<< HEAD
     /// The radius will be applied in processing. Specify a certain point value with `.point`, or a fraction of the
     /// target image with `.widthFraction`. or `.heightFraction`. For example, given a square image with width and
     /// height equals,  `.widthFraction(0.5)` means use half of the length of size and makes the final image a round one.
+=======
+    /// Corner radius will be applied in processing. To provide backward compatibility, this property returns `0` unless
+    /// `Radius.point` is specified.
+    @available(*, deprecated, message: "Use `radius` property instead.")
+    public var cornerRadius: CGFloat {
+        switch radius {
+        case .widthFraction, .heightFraction:
+            return 0.0
+        case .point(let value):
+            return value
+        }
+    }
+
+    /// The radius will be applied in processing. Specify a certain point value with `.point`, or a fraction of the
+    /// target image with `.fraction`. `.fraction(0.5)` means use half of the
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
     public let radius: Radius
     
     /// The target corners which will be applied rounding.
@@ -393,6 +436,7 @@ public struct RoundCornerImageProcessor: ImageProcessor {
         roundingCorners corners: RectCorner = .all,
         backgroundColor: KFCrossPlatformColor? = nil
     )
+<<<<<<< HEAD
     {
         let radius = Radius.point(cornerRadius)
         self.init(radius: radius, targetSize: targetSize, roundingCorners: corners, backgroundColor: backgroundColor)
@@ -414,6 +458,29 @@ public struct RoundCornerImageProcessor: ImageProcessor {
         backgroundColor: KFCrossPlatformColor? = nil
     )
     {
+=======
+    {
+        let radius = Radius.point(cornerRadius)
+        self.init(radius: radius, targetSize: targetSize, roundingCorners: corners, backgroundColor: backgroundColor)
+    }
+
+    /// Creates a `RoundCornerImageProcessor`.
+    ///
+    /// - Parameters:
+    ///   - radius: The radius will be applied in processing.
+    ///   - targetSize: Target size of output image should be. If `nil`,
+    ///                 the image will keep its original size after processing.
+    ///                 Default is `nil`.
+    ///   - corners: The target corners which will be applied rounding. Default is `.all`.
+    ///   - backgroundColor: Background color to apply for the output image. Default is `nil`.
+    public init(
+        radius: Radius,
+        targetSize: CGSize? = nil,
+        roundingCorners corners: RectCorner = .all,
+        backgroundColor: KFCrossPlatformColor? = nil
+    )
+    {
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
         self.radius = radius
         self.targetSize = targetSize
         self.roundingCorners = corners
@@ -449,6 +516,17 @@ public struct RoundCornerImageProcessor: ImageProcessor {
         switch item {
         case .image(let image):
             let size = targetSize ?? image.kf.size
+
+            let cornerRadius: CGFloat
+            switch radius {
+            case .point(let point):
+                cornerRadius = point
+            case .widthFraction(let widthFraction):
+                cornerRadius = size.width * widthFraction
+            case .heightFraction(let heightFraction):
+                cornerRadius = size.height * heightFraction
+            }
+
             return image.kf.scaled(to: options.scaleFactor)
                         .kf.image(
                             withRadius: radius,

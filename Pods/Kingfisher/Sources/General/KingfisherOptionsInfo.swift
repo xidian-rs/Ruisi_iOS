@@ -252,6 +252,7 @@ public enum KingfisherOptionsInfoItem {
     /// when pass to an `ImageDownloader` or `ImageCache`.
     ///
     case retryStrategy(RetryStrategy)
+<<<<<<< HEAD
 
     /// The `Source` should be loaded when user enables Low Data Mode and the original source fails with an
     /// `NSURLErrorNetworkUnavailableReason.constrained` error. When this option is set, the
@@ -262,6 +263,8 @@ public enum KingfisherOptionsInfoItem {
     /// If not set or the `source` is `nil`, the device Low Data Mode will be ignored and the original source will
     /// be loaded following the system default behavior, in a normal way.
     case lowDataMode(Source?)
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 }
 
 // Improve performance by parsing the input `KingfisherOptionsInfo` (self) first.
@@ -306,7 +309,10 @@ public struct KingfisherParsedOptionsInfo {
     public var progressiveJPEG: ImageProgressive? = nil
     public var alternativeSources: [Source]? = nil
     public var retryStrategy: RetryStrategy? = nil
+<<<<<<< HEAD
     public var lowDataModeSource: Source? = nil
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
 
     var onDataReceived: [DataReceivingSideEffect]? = nil
     
@@ -349,7 +355,10 @@ public struct KingfisherParsedOptionsInfo {
             case .progressiveJPEG(let value): progressiveJPEG = value
             case .alternativeSources(let sources): alternativeSources = sources
             case .retryStrategy(let strategy): retryStrategy = strategy
+<<<<<<< HEAD
             case .lowDataMode(let source): lowDataModeSource = source
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             }
         }
 
@@ -392,8 +401,12 @@ class ImageLoadingProgressSideEffect: DataReceivingSideEffect {
             return
         }
 
+<<<<<<< HEAD
         let dataLength = Int64(task.mutableData.count)
         DispatchQueue.main.async {
+=======
+            let dataLength = Int64(task.mutableData.count)
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             self.block(dataLength, expectedContentLength)
         }
     }

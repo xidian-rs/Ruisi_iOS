@@ -76,6 +76,7 @@ public enum Source {
         switch self {
         case .network(let resource): return resource.downloadURL
         case .provider(let provider): return provider.contentURL
+<<<<<<< HEAD
         }
     }
 }
@@ -102,6 +103,8 @@ extension Source: Hashable {
         case .provider(let p):
             hasher.combine(p.cacheKey)
             hasher.combine(p.contentURL)
+=======
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
         }
     }
 }

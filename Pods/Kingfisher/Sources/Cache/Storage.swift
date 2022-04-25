@@ -58,7 +58,11 @@ public enum StorageExpiration {
         case .seconds(let seconds):
             return date.addingTimeInterval(seconds)
         case .days(let days):
+<<<<<<< HEAD
             let duration: TimeInterval = TimeInterval(TimeConstants.secondsInOneDay) * TimeInterval(days)
+=======
+            let duration = TimeInterval(TimeConstants.secondsInOneDay) * TimeInterval(days)
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             return date.addingTimeInterval(duration)
         case .date(let ref):
             return ref

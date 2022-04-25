@@ -220,9 +220,14 @@ extension KingfisherWrapper where Base: UIButton {
         progressBlock: DownloadProgressBlock? = nil,
         completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
     {
+<<<<<<< HEAD
         let options = KingfisherParsedOptionsInfo(KingfisherManager.shared.defaultOptions + (options ?? .empty))
         return setBackgroundImage(
             with: source,
+=======
+        return setImage(
+            with: resource?.convertToSource(),
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
             for: state,
             placeholder: placeholder,
             parsedOptions: options,
@@ -345,6 +350,44 @@ extension KingfisherWrapper where Base: UIButton {
         return task
     }
 
+<<<<<<< HEAD
+=======
+    /// Sets a background image to the button for a specified state with a requested resource.
+    ///
+    /// - Parameters:
+    ///   - resource: The `Resource` object contains information about the resource.
+    ///   - state: The button state to which the image should be set.
+    ///   - placeholder: A placeholder to show while retrieving the image from the given `resource`.
+    ///   - options: An options set to define image setting behaviors. See `KingfisherOptionsInfo` for more.
+    ///   - progressBlock: Called when the image downloading progress gets updated. If the response does not contain an
+    ///                    `expectedContentLength`, this block will not be called.
+    ///   - completionHandler: Called when the image retrieved and set finished.
+    /// - Returns: A task represents the image downloading.
+    ///
+    /// - Note:
+    /// Internally, this method will use `KingfisherManager` to get the requested resource, from either cache
+    /// or network. Since this method will perform UI changes, you must call it from the main thread.
+    /// Both `progressBlock` and `completionHandler` will be also executed in the main thread.
+    ///
+    @discardableResult
+    public func setBackgroundImage(
+        with resource: Resource?,
+        for state: UIControl.State,
+        placeholder: UIImage? = nil,
+        options: KingfisherOptionsInfo? = nil,
+        progressBlock: DownloadProgressBlock? = nil,
+        completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
+    {
+        return setBackgroundImage(
+            with: resource?.convertToSource(),
+            for: state,
+            placeholder: placeholder,
+            options: options,
+            progressBlock: progressBlock,
+            completionHandler: completionHandler)
+    }
+
+>>>>>>> 59bf698aa2666b52390b297af280e12982abbe70
     // MARK: Cancelling Background Downloading Task
     
     /// Cancels the background image download task of the button if it is running.
